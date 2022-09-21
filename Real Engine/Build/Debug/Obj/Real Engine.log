@@ -1,0 +1,8 @@
+﻿  Main.cpp
+MSVCRTD.lib(exe_main.obj) : error LNK2019: unresolved external symbol _main referenced in function "int __cdecl invoke_main(void)" (?invoke_main@@YAHXZ)
+Source\External\Glew\lib\Release\x64\glew32.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+Source\External\Glew\lib\Release\x64\glew32s.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+Source\External\Glfw\lib-vc2019\glfw3.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+Source\External\Glfw\lib-vc2019\glfw3_mt.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+Source\External\Glfw\lib-vc2019\glfw3dll.lib : warning LNK4272: library machine type 'x64' conflicts with target machine type 'x86'
+C:\Users\allenbn\source\repos\Real Engine\Build\Debug\Real Engine.exe : fatal error LNK1120: 1 unresolved externals
