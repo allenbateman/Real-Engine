@@ -8,7 +8,7 @@
     <Filter Include="Resource Files\Engine">
       <UniqueIdentifier>{247b30f0-8223-4b56-98a9-599e213ac3c6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Resource Files\Helpers">
+    <Filter Include="Resource Files\Utils">
       <UniqueIdentifier>{78cc8111-146a-4c30-bbc4-be9d0f459e9a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -16,11 +16,17 @@
     <ClCompile Include="Source\Main.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Module.cpp">
-      <Filter>Resource Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Application.cpp">
       <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Log.cpp">
+      <Filter>Resource Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Resource Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -29,6 +35,21 @@
     </ClInclude>
     <ClInclude Include="Source\Application.h">
       <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Window.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Log.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SString.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Defs.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Resource Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

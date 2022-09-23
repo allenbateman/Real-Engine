@@ -1,39 +1,105 @@
+
 #include <iostream>
-#include "External/Glfw/include/GLFW/glfw3.h"
+#include "Log.h"
+#include "Application.h"
 
-int main(void)
+enum MainState
 {
-    GLFWwindow* window;
+    CREATE = 1,
+    AWAKE,
+    START,
+    LOOP,
+    CLEAN,
+    FAIL,
+    EXIT
+};
 
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
+Application* app;
 
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(920, 720, "Real Engine", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
+int main(int argc, char* args[])
+{
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
+	LOG("Engine starting ...");
 
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
-    {
-        /* Render here */
-        glClearColor(0.39f, 0.39f, 0.39f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+	MainState state = CREATE;
+	int result = EXIT_FAILURE;
 
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
+	while (state != EXIT)
+	{
+		switch (state)
+		{
+			// Allocate the engine --------------------------------------------
+		case CREATE:
+			LOG("CREATION PHASE ===============================");
 
-        /* Poll for and process events */
-        glfwPollEvents();
-    }
+			app = new Application(argc, args);
 
-    glfwTerminate();
-    return 0;
+			if (app != NULL)
+				state = AWAKE;
+			else
+				state = FAIL;
+
+			break;
+
+			// Awake all modules -----------------------------------------------
+		case AWAKE:
+			LOG("AWAKE PHASE ===============================");
+			if (app->Awake() == true)
+				state = START;
+			else
+			{
+				LOG("ERROR: Awake failed");
+				state = FAIL;
+			}
+
+			break;
+
+			// Call all modules before first frame  ----------------------------
+		case START:
+			LOG("START PHASE ===============================");
+			if (app->Start() == true)
+			{
+				state = LOOP;
+				LOG("UPDATE PHASE ===============================");
+			}
+			else
+			{
+				state = FAIL;
+				LOG("ERROR: Start failed");
+			}
+			break;
+
+			// Loop all modules until we are asked to leave ---------------------
+		case LOOP:
+			if (app->Update() == false)
+				state = CLEAN;
+			break;
+
+			// Cleanup allocated memory -----------------------------------------
+		case CLEAN:
+			LOG("CLEANUP PHASE ===============================");
+			if (app->CleanUp() == true)
+			{
+				RELEASE(app);
+				result = EXIT_SUCCESS;
+				state = EXIT;
+			}
+			else
+				state = FAIL;
+
+			break;
+
+			// Exit with errors and shame ---------------------------------------
+		case FAIL:
+			LOG("Exiting with errors :(");
+			result = EXIT_FAILURE;
+			state = EXIT;
+			break;
+		}
+	}
+
+	LOG("... Bye! :)\n");
+
+	// Dump memory leaks
+	return result;
 }
