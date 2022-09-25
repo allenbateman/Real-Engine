@@ -1,13 +1,26 @@
 #include "Application.h"
 
+//include all modules 
+#include "Window.h"
+#include "Input.h"
+
+
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
+	appName.Create("Real Engine");
 	frames = 0;
+
+	window = new Window(true);
+	input = new Input(true);
+
+	modules.push_back(window);
+	modules.push_back(input);
+
 }
 
 Application::~Application()
 {
-	list <Module>::iterator current = modules.end();
+	list <Module*>::iterator current = modules.end();
 
 	while (current == modules.end())
 	{
@@ -22,9 +35,9 @@ bool Application::Awake()
 {
 	bool ret = true;
 	
-	for (list<Module>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
-		current->Awake();
+		(*current)->Awake();
 	}
 
 	return ret;
@@ -34,9 +47,9 @@ bool Application::Start()
 {
 	bool ret = true;
 
-	for (list<Module>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
-		current->Start();
+		(*current)->Start();
 	}
 
 	return ret;
@@ -70,9 +83,9 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	for (list<Module>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
-		current->CleanUp();
+
 	}
 
 	return ret;
@@ -124,16 +137,16 @@ bool Application::PreUpdate()
 {
 	bool ret = true;
 
-	for (list<Module>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 	//  set Debug mode
 	//	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
 	//		current->data->DEBUG = !item->data->DEBUG;
 
-		if (current->active == false)
+		if ((*current)->active == false)
 			continue;
 
-		current->PreUpdate();
+		(*current)->PreUpdate();
 	}
 
 	return ret;
@@ -145,12 +158,12 @@ bool Application::DoUpdate()
 	//calculate frame rate
 
 
-	for (list<Module>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
-		if (current->active == false)
+		if ((*current)->active == false)
 			continue;
 
-		current->Update(dt);
+		(*current)->Update(dt);
 	}
 
 	return ret;
@@ -160,12 +173,12 @@ bool Application::PostUpdate()
 {
 	bool ret = true;
 
-	for (list<Module>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
-		if (current->active == false)
+		if ((*current)->active == false)
 			continue;
 
-		current->PostUpdate();
+		(*current)->PostUpdate();
 	}
 
 	return ret;

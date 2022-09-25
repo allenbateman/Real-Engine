@@ -9,8 +9,7 @@
 Window::Window(bool isActive) : Module(isActive)
 {
 	window = NULL;
-	screenSurface = NULL;
-	name = "window";
+	name.Create("Window");
 }
 
 // Destructor
@@ -21,25 +20,53 @@ Window::~Window()
 // Called before render is available
 bool Window::Awake()
 {
-	LOG("Init SDL window & surface");
 	bool ret = true;
 
+	LOG("Init glfw window ");
+	if (!glfwInit())
+	{
+		ret = false;
+		LOG("GLFW could not be loaded");
+	}
+
+	window = glfwCreateWindow(800, 600,"Real Engine", NULL, NULL);
+
+	glfwGetFramebufferSize(window, &width, &height);
+
+	if (!window)
+	{
+		glfwTerminate();
+		ret = false;
+	}
+
+	glfwMakeContextCurrent(window);
+
 	return ret;
+}
+
+bool Window::PreUpdate()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	glfwSwapBuffers(window);
+
+	glfwPollEvents();
+
+	return true;
+}
+
+bool Window::PostUpdate()
+{
+
+	
+	return true;
 }
 
 // Called before quitting
 bool Window::CleanUp()
 {
-	LOG("Destroying window and quitting all SDL systems");
-
-	//// Destroy window
-	//if (window != NULL)
-	//{
-	//	SDL_DestroyWindow(window);
-	//}
-
-	//// Quit SDL subsystems
-	//SDL_Quit();
+	LOG("Destroying window and quitting all GLFW systems");
+	glfwTerminate();
 	return true;
 }
 
@@ -47,8 +74,6 @@ bool Window::CleanUp()
 void Window::SetTitle(const char* new_title)
 {
 	name = new_title;
-
-	
 }
 
 void Window::GetWindowSize(unsigned int& width, unsigned int& height) const

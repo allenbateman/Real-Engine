@@ -1,7 +1,7 @@
 #include "Module.h"	
 #include "SString.h"
+
 struct GLFWwindow;
-struct SDL_Surface;
 
 class Window : public Module
 {
@@ -14,6 +14,10 @@ class Window : public Module
 
 		// Called before render is available
 		bool Awake();
+
+		bool PreUpdate();
+
+		bool PostUpdate();
 
 		// Called before quitting
 		bool CleanUp();
@@ -39,14 +43,10 @@ class Window : public Module
 	public:
 		// The window we'll be rendering to
 		GLFWwindow* window;
-
-		// The surface contained by the window
-		SDL_Surface* screenSurface;
-
 	private:
 		SString title;
-		unsigned int width;
-		unsigned int height;
+		 int width;
+		 int height;
 		unsigned int scale;
 
 		bool fullScreen;

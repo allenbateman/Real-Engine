@@ -5,7 +5,7 @@
 #include "Log.h"
 #include "Module.h"
 #include <list>
-
+#include <cstdlib>
 using namespace std;
 
 // Modules
@@ -75,7 +75,8 @@ private:
 public:
 
 	// Modules
-	Window* win;
+	Window *window;
+	Input *input;
 
 	float dt;
 	bool exit = false;
@@ -85,7 +86,7 @@ private:
 	SString title;
 	SString organization;
 
-	list <Module> modules;
+	list <Module*> modules;
 
 	uint frames;
 
@@ -107,6 +108,8 @@ private:
 	float averageFps = 0.0f;
 
 	uint32 maxFrameRate = 0;
+
+	SString appName;
 };
 
 

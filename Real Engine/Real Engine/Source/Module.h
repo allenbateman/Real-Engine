@@ -4,6 +4,7 @@
 #include <iostream>
 #include "SString.h"
 
+class Application;
 
 class Module
 {

@@ -1,5 +1,2 @@
-﻿  Application.cpp
-  Window.cpp
-  Generating Code...
-  LINK : C:\Users\allen\Documents\GitHub\Real-Engine\Real Engine\Build\Debug\Real Engine.exe not found or not built by the last incremental link; performing full link
+﻿  Window.cpp
   Real Engine.vcxproj -> C:\Users\allen\Documents\GitHub\Real-Engine\Real Engine\Build\Debug\Real Engine.exe
