@@ -20,14 +20,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 Application::~Application()
 {
-	list <Module*>::iterator current = modules.end();
-
-	while (current == modules.end())
-	{
-		modules.pop_back();
-		current = modules.end();
-	}
-		
 	modules.clear();
 }
 
@@ -61,8 +53,8 @@ bool Application::Update()
 
 	PrepareUpdate();
 
-//	if (input->GetWindowEvent(WE_QUIT) == true)
-//		ret = false;
+	if (input->GetWindowEvent(WE_QUIT) == true)
+		ret = false;
 
 	if (ret == true)
 		ret = PreUpdate();
@@ -85,7 +77,7 @@ bool Application::CleanUp()
 
 	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
-
+		(*current)->CleanUp();
 	}
 
 	return ret;

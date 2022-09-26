@@ -98,7 +98,7 @@ int main(int argc, char* args[])
 		}
 	}
 
-	LOG("... Bye! :)\n");
+	LOG("Real Engine shutdown...\n");
 
 	// Dump memory leaks
 	return result;

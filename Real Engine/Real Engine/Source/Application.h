@@ -111,6 +111,6 @@ private:
 
 	SString appName;
 };
-
+extern Application* app;
 
 #endif	// __APP_H__

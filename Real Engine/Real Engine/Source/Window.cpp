@@ -46,18 +46,19 @@ bool Window::Awake()
 
 bool Window::PreUpdate()
 {
+
+
+
 	glClear(GL_COLOR_BUFFER_BIT);
-
-	glfwSwapBuffers(window);
-
-	glfwPollEvents();
 
 	return true;
 }
 
 bool Window::PostUpdate()
 {
+	glfwSwapBuffers(window);
 
+	glfwPollEvents();
 	
 	return true;
 }

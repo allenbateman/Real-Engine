@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
 
-//#define NUM_KEYS 352
+#define MAX_KEYS 300
 #define NUM_MOUSE_BUTTONS 5
 //#define LAST_KEYS_PRESSED_BUFFER 50
 
@@ -20,6 +20,8 @@ enum KeyState
 	KEY_REPEAT,
 	KEY_UP
 };
+
+
 
 class Input : public Module
 {
@@ -42,13 +44,15 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	static void windowCloseCallback(GLFWwindow* window);
+
 
 	// Check key states (includes mouse and joy buttons)
-	KeyState GetKey(int id) const
-	{
-		return keyboard[id];
-	}
+	//KeyState GetKey(int id) const
+	//{
+	//	return (*keyboard[id]);
+	//}
 
 	KeyState GetMouseButtonDown(int id) const
 	{
@@ -63,11 +67,11 @@ public:
 	void GetMouseMotion(int& x, int& y);
 
 private:
-	bool windowEvents[WE_COUNT];
-	KeyState* keyboard;
+	static bool windowEvents[WE_COUNT];
+	//static KeyState* keyboard[sizeof(KeyState) * MAX_KEYS];
 	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
 	int	mouseMotionX;
-	int mouseMotionY;
+	int mouseMotionY;  
 	int mouseX;
 	int mouseY;
 };

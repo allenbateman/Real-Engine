@@ -7,7 +7,7 @@
 class Application;
 
 class Module
-{
+{ 
 public:
 	Module(bool isActive) : active(isActive) {}
 
