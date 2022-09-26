@@ -48,7 +48,10 @@ bool Input::Start()
 // Called each loop iteration
 bool Input::PreUpdate()
 {
-
+	if (glfwGetKey(app->window->window, GLFW_KEY_A) == GLFW_PRESS)
+	{
+		cout << "A pressed"<<endl;
+	}
 	return true;
 }
 
