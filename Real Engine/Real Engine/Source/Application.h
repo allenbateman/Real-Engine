@@ -1,7 +1,6 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
-#include "External/Glfw/include/GLFW/glfw3.h"
 #include "Log.h"
 #include "Module.h"
 #include <list>

@@ -3,8 +3,9 @@
 #include "Defs.h"
 #include "Log.h"
 
-//#include "Defs.h"
-//#include "Log.h"
+#include <glew.h>
+#include <gl/gl.h>
+#include "glfw3.h"
 
 Window::Window(bool isActive) : Module(isActive)
 {
@@ -46,9 +47,6 @@ bool Window::Awake()
 
 bool Window::PreUpdate()
 {
-
-
-
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	return true;

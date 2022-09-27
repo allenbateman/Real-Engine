@@ -44,8 +44,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
-	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-	static void windowCloseCallback(GLFWwindow* window);
+	//static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	//static void windowCloseCallback(GLFWwindow* window);
 	int GetKey(int key);
 
 

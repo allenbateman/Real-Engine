@@ -11,6 +11,12 @@
     <Filter Include="Resource Files\Utils">
       <UniqueIdentifier>{78cc8111-146a-4c30-bbc4-be9d0f459e9a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\External">
+      <UniqueIdentifier>{4e7c7f26-4830-4e61-a3ca-1dba209b8477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\External\ImGui">
+      <UniqueIdentifier>{17dc4e20-71f3-44f7-820f-328b238e09a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -27,6 +33,27 @@
     </ClCompile>
     <ClCompile Include="Source\Input.cpp">
       <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui_demo.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui_draw.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui_tables.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui_widgets.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\backends\imgui_impl_opengl3.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -50,6 +77,33 @@
     </ClInclude>
     <ClInclude Include="Source\Input.h">
       <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imconfig.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imgui.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imgui_internal.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imstb_rectpack.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imstb_textedit.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imstb_truetype.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\backends\imgui_impl_opengl3.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\backends\imgui_impl_glfw.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>Resource Files\External\ImGui</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
