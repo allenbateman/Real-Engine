@@ -30,3 +30,12 @@
 *.exe
 *.out
 *.app
+
+#Temporary Files
+*.ipch
+*.log
+*.tlog
+*.pdb
+*.idb
+*.suo
+*.db
