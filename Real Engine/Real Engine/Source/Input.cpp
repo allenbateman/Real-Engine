@@ -15,8 +15,6 @@
 #include "External/ImGui/backends/imgui_impl_glfw.h"
 #include "External/ImGui/backends/imgui_impl_opengl3.h"
 
-#include "glew.h"
-#include "glfw3.h"
 
 bool Input::windowEvents[WE_COUNT];
 KeyState Input::keyboard[sizeof(KeyState) * MAX_KEYS];
@@ -51,9 +49,9 @@ bool Input::Start()
 {
 
 	//bind input callback with glfw
-	//glfwSetInputMode(app->window->window, GLFW_STICKY_KEYS, GLFW_TRUE);
-	//glfwSetKeyCallback(app->window->window, KeyCallback);
-	//glfwSetWindowCloseCallback(app->window->window, windowCloseCallback);
+	glfwSetInputMode(app->window->window, GLFW_STICKY_KEYS, GLFW_TRUE);
+	glfwSetKeyCallback(app->window->window, KeyCallback);
+	glfwSetWindowCloseCallback(app->window->window, windowCloseCallback);
 
 
 	// Setup Dear ImGui context
@@ -83,7 +81,7 @@ bool Input::PreUpdate()
 	}
 	if (GetKey(GLFW_KEY_ESCAPE) == KEY_REPEAT)
 	{
-		//windowCloseCallback(app->window->window);
+		windowCloseCallback(app->window->window);
 	}
 
 	// feed inputs to dear imgui, start new frame
@@ -144,28 +142,28 @@ void Input::GetMouseMotion(int& x, int& y)
 }
 
 
-//void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
-//{
-//		switch (action)
-//		{
-//		case GLFW_PRESS:
-//			keyboard[key] = KeyState::KEY_DOWN;
-//			break;
-//		case GLFW_REPEAT:
-//			keyboard[key] = KeyState::KEY_REPEAT;
-//			break;
-//		case GLFW_RELEASE:
-//			keyboard[key] = KeyState::KEY_UP;
-//			break;
-//		default:
-//			keyboard[key] = KeyState::KEY_IDLE;
-//			break;
-//		}	
-//}
+void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+		switch (action)
+		{
+		case GLFW_PRESS:
+			keyboard[key] = KeyState::KEY_DOWN;
+			break;
+		case GLFW_REPEAT:
+			keyboard[key] = KeyState::KEY_REPEAT;
+			break;
+		case GLFW_RELEASE:
+			keyboard[key] = KeyState::KEY_UP;
+			break;
+		default:
+			keyboard[key] = KeyState::KEY_IDLE;
+			break;
+		}	
+}
 
-//void Input::windowCloseCallback(GLFWwindow* window)
-//{
-//	//check if we want to close the window, save project.... etc
-//	windowEvents[WE_QUIT] = true;
-//	glfwSetWindowShouldClose(window, GLFW_TRUE);
-//}
+void Input::windowCloseCallback(GLFWwindow* window)
+{
+	//check if we want to close the window, save project.... etc
+	windowEvents[WE_QUIT] = true;
+	glfwSetWindowShouldClose(window, GLFW_TRUE);
+}

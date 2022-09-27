@@ -3,9 +3,6 @@
 #include "Defs.h"
 #include "Log.h"
 
-#include <glew.h>
-#include <gl/gl.h>
-#include "glfw3.h"
 
 Window::Window(bool isActive) : Module(isActive)
 {

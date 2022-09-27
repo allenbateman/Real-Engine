@@ -1,6 +1,10 @@
 #ifndef __APPLICATION_H__
 #define __APPLICATION_H__
 
+
+#include "glew.h"
+#include "glfw3.h"
+
 #include "Log.h"
 #include "Module.h"
 #include <list>
