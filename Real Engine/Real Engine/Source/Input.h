@@ -46,6 +46,7 @@ public:
 
 	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	static void windowCloseCallback(GLFWwindow* window);
+	int GetKey(int key);
 
 
 	// Check key states (includes mouse and joy buttons)
@@ -68,7 +69,7 @@ public:
 
 private:
 	static bool windowEvents[WE_COUNT];
-	//static KeyState* keyboard[sizeof(KeyState) * MAX_KEYS];
+	static KeyState keyboard[sizeof(KeyState) * MAX_KEYS];
 	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
 	int	mouseMotionX;
 	int mouseMotionY;  

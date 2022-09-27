@@ -5,10 +5,8 @@
 #include "Defs.h"
 #include "Log.h"
 
-
-
-
 bool Input::windowEvents[WE_COUNT];
+KeyState Input::keyboard[sizeof(KeyState) * MAX_KEYS];
 
 Input::Input(bool isActive) : Module(isActive)
 {
@@ -40,6 +38,7 @@ bool Input::Start()
 {
 
 	//bind input callback with glfw
+	//glfwSetInputMode(app->window->window, GLFW_STICKY_KEYS, GLFW_TRUE);
 	glfwSetKeyCallback(app->window->window, KeyCallback);
 	glfwSetWindowCloseCallback(app->window->window, windowCloseCallback);
 	return true;
@@ -48,11 +47,23 @@ bool Input::Start()
 // Called each loop iteration
 bool Input::PreUpdate()
 {
-	if (glfwGetKey(app->window->window, GLFW_KEY_A) == GLFW_PRESS)
+	for (int i = 0; i < MAX_KEYS; i++)
 	{
-		cout << "A pressed"<<endl;
+		if (keyboard[i] == KEY_UP)
+		{
+			keyboard[i] = KEY_IDLE;
+		}
+	}
+	if (GetKey(GLFW_KEY_ESCAPE) == KEY_REPEAT)
+	{
+		windowCloseCallback(app->window->window);
 	}
 	return true;
+}
+
+int Input:: GetKey(int key)
+{
+	return keyboard[key];
 }
 
 // Called before quitting
@@ -85,25 +96,21 @@ void Input::GetMouseMotion(int& x, int& y)
 
 void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
-	cout << key << endl;
-
-
-	/*switch (action)
-	{
-	case GLFW_PRESS:
-		(*keyboard[key]) = KeyState::KEY_DOWN;
-		break;
-	case GLFW_REPEAT:
-		(*keyboard[key]) = KeyState::KEY_REPEAT;
-		break;
-	case GLFW_RELEASE:
-		(*keyboard[key]) = KeyState::KEY_UP;
-		break;
-	default:
-		(*keyboard[key]) = KeyState::KEY_IDLE;
-		break;
-	}*/
-	
+		switch (action)
+		{
+		case GLFW_PRESS:
+			keyboard[key] = KeyState::KEY_DOWN;
+			break;
+		case GLFW_REPEAT:
+			keyboard[key] = KeyState::KEY_REPEAT;
+			break;
+		case GLFW_RELEASE:
+			keyboard[key] = KeyState::KEY_UP;
+			break;
+		default:
+			keyboard[key] = KeyState::KEY_IDLE;
+			break;
+		}	
 }
 
 void Input::windowCloseCallback(GLFWwindow* window)
