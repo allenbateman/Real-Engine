@@ -1,5 +1,6 @@
 #include "Module.h"	
 #include "SString.h"
+#include "DemoEvent.h"
 
 struct GLFWwindow;
 
@@ -39,6 +40,14 @@ class Window : public Module
 
 		void SetFullScreen(bool fullScreen);
 		bool GetFullScreen();
+
+
+		//void PrintTestEvent(DemoEvent* demo);
+		void PrintTestEvent();
+
+		bool HandleEvent(list<Event*>* eventList);
+
+		
 
 	public:
 		// The window we'll be rendering to

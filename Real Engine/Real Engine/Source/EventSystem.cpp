@@ -12,18 +12,28 @@ EventSystem::~EventSystem()
 
 bool EventSystem::Awake()
 {
+	moduleList = app->GetModuleList();
 	return true;
 }
 
 bool EventSystem::Start()
 {
+
 	list<Event*>::iterator event1 = eventList.begin();
-	SubcribeModule(app->window, (*event1));
+	//SubcribeModule(app->window, (*event1));
 	return true;
 }
 
 bool EventSystem::PreUpdate()
 {
+	
+	for (list<Module*>::iterator currentModule = (*moduleList).begin(); currentModule != (*moduleList).end(); currentModule++)
+	{
+		
+		(*currentModule)->HandleEvent(&eventList);
+
+	}
+	
 	return true;
 }
 

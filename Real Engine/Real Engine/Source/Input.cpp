@@ -27,8 +27,7 @@ Input::Input(bool isActive) : Module(isActive)
 	//memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
 	memset(mouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
 
-	event1 = new DemoEvent();
-	app->eventSystem->AddEvent(event1);
+	
 }
 
 // Destructor
@@ -41,6 +40,10 @@ Input::~Input()
 bool Input::Awake()
 {
 	LOG("Init SDL input event system");
+
+	event1 = new DemoEvent();
+	app->eventSystem->AddEvent(event1);
+
 	bool ret = true;
 	return ret;
 }

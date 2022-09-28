@@ -4,6 +4,7 @@
 #include <iostream>
 #include "SString.h"
 #include "Event.h"
+#include <list>
 class Application;
 
 class Module
@@ -66,12 +67,17 @@ public:
 		}
 	}
 
-	virtual bool HandleEvent(Event* myEvent) { return true; };
+	virtual bool HandleEvent(list<Event*>* eventList) 
+	{
+		return true; 
+	}
 
 public:
+
 	SString name;
 	bool active;
 	bool DEBUG = false;
+	list<EventType> subscribedEvents;
 };
 
 #endif // __MODULE_H__

@@ -51,6 +51,8 @@ public:
 	void LoadGameRequest();
 	void SaveGameRequest() const;
 
+	list<Module*>* GetModuleList() ;
+
 
 
 private:

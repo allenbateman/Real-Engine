@@ -39,6 +39,9 @@ bool Window::Awake()
 
 	glfwMakeContextCurrent(window);
 
+	
+	subscribedEvents.push_back(NONE);
+
 	return ret;
 }
 
@@ -104,4 +107,36 @@ void Window::SetFullScreen(bool fullScreen)
 bool Window::GetFullScreen()
 {
 	return fullScreen;
+}
+
+bool Window::HandleEvent(list<Event*>* eventList)
+{
+	
+	for (list<EventType>::iterator currentType = subscribedEvents.begin(); currentType != subscribedEvents.end(); currentType++)
+	{
+		for (list<Event*>::iterator currentEvent = (*eventList).begin(); currentEvent != (*eventList).end(); currentEvent++)
+		{
+			if ((*currentType) == (*currentEvent)->GetType())
+			{
+				switch ((*currentType))
+				{
+				case NONE:
+				{
+					
+					PrintTestEvent();
+				} break;
+				default:
+					break;
+				}
+			}
+		}
+		
+	}
+	
+	return true;
+}
+
+void Window::PrintTestEvent()
+{
+	cout << "Test Succesful!" << endl;
 }

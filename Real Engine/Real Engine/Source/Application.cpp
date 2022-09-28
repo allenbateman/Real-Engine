@@ -15,6 +15,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	eventSystem = new EventSystem(true);
 	modules.push_back(window);
 	modules.push_back(input);
+	modules.push_back(eventSystem);
 
 }
 
@@ -115,6 +116,11 @@ void Application::LoadGameRequest()
 
 void Application::SaveGameRequest() const
 {
+}
+
+list<Module*>* Application::GetModuleList() 
+{
+	return &modules;
 }
 
 void Application::PrepareUpdate()

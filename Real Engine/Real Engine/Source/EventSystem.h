@@ -23,5 +23,6 @@ public:
 
 private:
 	list<Event*> eventList;
+	list <Module*>* moduleList;
 };
 
