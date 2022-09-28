@@ -42,10 +42,10 @@ class Window : public Module
 		bool GetFullScreen();
 
 
-		//void PrintTestEvent(DemoEvent* demo);
 		void PrintTestEvent();
 
-		bool HandleEvent(list<Event*>* eventList);
+		bool HandleEvents(list<Event*>* eventList);
+		bool HandleEvent(Event* event);
 
 		
 

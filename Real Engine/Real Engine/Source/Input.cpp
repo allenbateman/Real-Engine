@@ -41,8 +41,8 @@ bool Input::Awake()
 {
 	LOG("Init SDL input event system");
 
-	event1 = new DemoEvent();
-	app->eventSystem->AddEvent(event1);
+
+
 
 	bool ret = true;
 	return ret;
@@ -88,6 +88,17 @@ bool Input::PreUpdate()
 		windowCloseCallback(app->window->window);
 	}
 
+//------------------------------------
+
+
+	if (GetKey(GLFW_KEY_SPACE) == KEY_DOWN)
+	{
+		event1 = new DemoEvent();
+		app->eventSystem->AddEvent(event1);
+	}
+
+
+//------------------------------------
 	// feed inputs to dear imgui, start new frame
 	ImGui_ImplOpenGL3_NewFrame();
 	ImGui_ImplGlfw_NewFrame();
@@ -106,6 +117,10 @@ bool Input::PreUpdate()
 	glfwGetFramebufferSize(app->window->window, &display_w, &display_h);
 	glViewport(0, 0, display_w, display_h);
 	glfwSwapBuffers(app->window->window);
+
+//------------------------------------
+
+
 
 
 	return true;

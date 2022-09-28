@@ -23,6 +23,7 @@ public:
 
 private:
 	list<Event*> eventList;
+	list<Event*> eventsToDelete;
 	list <Module*>* moduleList;
 };
 

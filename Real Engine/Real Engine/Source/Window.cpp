@@ -2,6 +2,9 @@
 #include "Application.h"
 #include "Defs.h"
 #include "Log.h"
+#include <string>
+#include <iostream>
+
 
 
 Window::Window(bool isActive) : Module(isActive)
@@ -109,21 +112,28 @@ bool Window::GetFullScreen()
 	return fullScreen;
 }
 
-bool Window::HandleEvent(list<Event*>* eventList)
+bool Window::HandleEvents(list<Event*>* eventList)
 {
 	
 	for (list<EventType>::iterator currentType = subscribedEvents.begin(); currentType != subscribedEvents.end(); currentType++)
 	{
 		for (list<Event*>::iterator currentEvent = (*eventList).begin(); currentEvent != (*eventList).end(); currentEvent++)
 		{
+			//Child* pChild = (Child*)&parent;
 			if ((*currentType) == (*currentEvent)->GetType())
 			{
 				switch ((*currentType))
 				{
 				case NONE:
 				{
-					
-					PrintTestEvent();
+					//DemoEvent* dEvent = (DemoEvent*)&currentEvent;
+					//DemoEvent* dEvent = dynamic_cast<DemoEvent*>(*currentEvent);
+					//if (dEvent != nullptr)
+					//{
+					//	cout << dEvent->msg << endl;
+					//	PrintTestEvent();
+					//}
+				
 				} break;
 				default:
 					break;
@@ -136,7 +146,28 @@ bool Window::HandleEvent(list<Event*>* eventList)
 	return true;
 }
 
+bool Window::HandleEvent(Event* singleEvent)
+{
+
+	switch (singleEvent->type)
+	{
+		case NONE:
+		{
+			DemoEvent* dEvent = dynamic_cast<DemoEvent*>(singleEvent);
+			if (dEvent != nullptr)
+			{
+				cout << dEvent->msg << endl;
+				PrintTestEvent();
+				return true;
+			}
+		}break;
+		
+	}
+
+	return false;
+}
+
 void Window::PrintTestEvent()
 {
-	cout << "Test Succesful!" << endl;
+	cout << "What do I do with this data?" << endl;
 }

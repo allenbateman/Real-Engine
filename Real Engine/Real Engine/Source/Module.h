@@ -67,7 +67,7 @@ public:
 		}
 	}
 
-	virtual bool HandleEvent(list<Event*>* eventList) 
+	virtual bool HandleEvent(Event* singleEvent)
 	{
 		return true; 
 	}

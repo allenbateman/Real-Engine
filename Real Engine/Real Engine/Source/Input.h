@@ -61,7 +61,6 @@ public:
 	void GetMousePosition(int& x, int& y);
 	void GetMouseMotion(int& x, int& y);
 
-	
 	DemoEvent* event1;
 
 private:

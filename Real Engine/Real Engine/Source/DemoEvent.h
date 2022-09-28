@@ -4,6 +4,9 @@ class DemoEvent : public Event
 {
 public:
 	DemoEvent() { type = EventType::NONE; };
+	~DemoEvent() {};
 
-	string msg = "Hola soy event none";
+	//if this were a input event type
+	const char* msg = "input event data";
+
 };
