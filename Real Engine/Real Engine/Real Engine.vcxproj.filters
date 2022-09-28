@@ -17,6 +17,12 @@
     <Filter Include="Resource Files\External\ImGui">
       <UniqueIdentifier>{17dc4e20-71f3-44f7-820f-328b238e09a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Engine\Event System">
+      <UniqueIdentifier>{2a49d56c-6f91-4ef0-9f34-a0b7f6cdcf66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\Event System\Event">
+      <UniqueIdentifier>{0b587513-9354-4210-8cc3-2fd31df9d016}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -54,6 +60,9 @@
     </ClCompile>
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp">
       <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EventSystem.cpp">
+      <Filter>Resource Files\Engine\Event System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +113,15 @@
     </ClInclude>
     <ClInclude Include="Source\External\ImGui\backends\imgui_impl_opengl3_loader.h">
       <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\DemoEvent.h">
+      <Filter>Resource Files\Engine\Event System\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Event.h">
+      <Filter>Resource Files\Engine\Event System\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EventSystem.h">
+      <Filter>Resource Files\Engine\Event System</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

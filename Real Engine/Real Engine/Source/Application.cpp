@@ -3,7 +3,7 @@
 //include all modules 
 #include "Window.h"
 #include "Input.h"
-
+#include "EventSystem.h"
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -12,7 +12,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	window = new Window(true);
 	input = new Input(true);
-
+	eventSystem = new EventSystem(true);
 	modules.push_back(window);
 	modules.push_back(input);
 

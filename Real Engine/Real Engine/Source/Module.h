@@ -3,7 +3,7 @@
 
 #include <iostream>
 #include "SString.h"
-
+#include "Event.h"
 class Application;
 
 class Module
@@ -65,6 +65,8 @@ public:
 			CleanUp();
 		}
 	}
+
+	virtual bool HandleEvent(Event* myEvent) { return true; };
 
 public:
 	SString name;

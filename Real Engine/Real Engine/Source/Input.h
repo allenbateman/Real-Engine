@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "DemoEvent.h"
 
 #define MAX_KEYS 300
 #define NUM_MOUSE_BUTTONS 5
@@ -59,6 +60,9 @@ public:
 	// Get mouse / axis position
 	void GetMousePosition(int& x, int& y);
 	void GetMouseMotion(int& x, int& y);
+
+	
+	DemoEvent* event1;
 
 private:
 	static bool windowEvents[WE_COUNT];

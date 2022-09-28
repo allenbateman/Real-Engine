@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\EventSystem.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_opengl3.cpp" />
     <ClCompile Include="Source\External\ImGui\imgui.cpp" />
@@ -35,6 +36,9 @@
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Defs.h" />
+    <ClInclude Include="Source\DemoEvent.h" />
+    <ClInclude Include="Source\Event.h" />
+    <ClInclude Include="Source\EventSystem.h" />
     <ClInclude Include="Source\External\ImGui\backends\imgui_impl_glfw.h" />
     <ClInclude Include="Source\External\ImGui\backends\imgui_impl_opengl3.h" />
     <ClInclude Include="Source\External\ImGui\backends\imgui_impl_opengl3_loader.h" />

@@ -14,7 +14,7 @@ using namespace std;
 // Modules
 class Window;
 class Input;
-
+class EventSystem;
 
 class Application
 {
@@ -80,6 +80,7 @@ public:
 	// Modules
 	Window *window;
 	Input *input;
+	EventSystem* eventSystem;
 
 	float dt;
 	bool exit = false;

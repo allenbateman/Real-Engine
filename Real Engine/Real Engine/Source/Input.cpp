@@ -4,7 +4,7 @@
 #include "Application.h"
 #include "Input.h"
 #include "Window.h"
-
+#include "EventSystem.h"
 
 
 #include "Defs.h"
@@ -26,6 +26,9 @@ Input::Input(bool isActive) : Module(isActive)
 	//keyboard = new KeyState[MAX_KEYS];
 	//memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
 	memset(mouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
+
+	event1 = new DemoEvent();
+	app->eventSystem->AddEvent(event1);
 }
 
 // Destructor
@@ -39,8 +42,6 @@ bool Input::Awake()
 {
 	LOG("Init SDL input event system");
 	bool ret = true;
-
-
 	return ret;
 }
 
