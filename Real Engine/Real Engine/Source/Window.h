@@ -9,19 +9,13 @@ class Window : public Module
 	public:
 
 		Window(bool isActive);
-
-		// Destructor
 		virtual ~Window();
-
-		// Called before render is available
 		bool Awake();
-
-		bool PreUpdate();
-
-		bool PostUpdate();
-
-		// Called before quitting
 		bool CleanUp();
+
+
+		void Swapbuffers();
+		void Clear();
 
 		// Changae title
 		void SetTitle(const char* title);
@@ -43,8 +37,6 @@ class Window : public Module
 
 
 		void PrintTestEvent();
-
-		bool HandleEvents(list<Event*>* eventList);
 		bool HandleEvent(Event* event);
 
 		

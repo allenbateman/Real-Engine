@@ -13,17 +13,16 @@ public:
 	bool Awake();
 	bool Start();
 	bool PreUpdate();
-	bool Update();
+	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
 
 	void SubcribeModule(Module* _module, Event* _event);
 	void Unsubscribe(Module* _module, Event* _event);
 	void AddEvent(Event* newEvent);
+	void BroadcastEvents();
 
 private:
 	list<Event*> eventList;
-	list<Event*> eventsToDelete;
-	list <Module*>* moduleList;
 };
 

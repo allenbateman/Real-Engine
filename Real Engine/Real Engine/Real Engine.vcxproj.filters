@@ -23,6 +23,9 @@
     <Filter Include="Resource Files\Engine\Event System\Event">
       <UniqueIdentifier>{0b587513-9354-4210-8cc3-2fd31df9d016}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Engine\UI System">
+      <UniqueIdentifier>{a9dc5ece-616d-41d3-8516-5712e0699d21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -63,6 +66,12 @@
     </ClCompile>
     <ClCompile Include="Source\EventSystem.cpp">
       <Filter>Resource Files\Engine\Event System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UiSystem.cpp">
+      <Filter>Resource Files\Engine\UI System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -122,6 +131,15 @@
     </ClInclude>
     <ClInclude Include="Source\EventSystem.h">
       <Filter>Resource Files\Engine\Event System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ApplicationEvents.h">
+      <Filter>Resource Files\Engine\Event System\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UiSystem.h">
+      <Filter>Resource Files\Engine\UI System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer.h">
+      <Filter>Resource Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

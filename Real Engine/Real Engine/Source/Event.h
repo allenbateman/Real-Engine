@@ -17,3 +17,5 @@ public:
 	EventType type;
 
 };
+
+

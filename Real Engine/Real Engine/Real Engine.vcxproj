@@ -31,10 +31,13 @@
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Renderer.cpp" />
+    <ClCompile Include="Source\UiSystem.cpp" />
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\ApplicationEvents.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\DemoEvent.h" />
     <ClInclude Include="Source\Event.h" />
@@ -51,7 +54,9 @@
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\Log.h" />
     <ClInclude Include="Source\Module.h" />
+    <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\SString.h" />
+    <ClInclude Include="Source\UiSystem.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -118,9 +123,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <IntDir>$(SolutionDir)$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

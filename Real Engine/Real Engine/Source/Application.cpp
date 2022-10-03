@@ -4,6 +4,8 @@
 #include "Window.h"
 #include "Input.h"
 #include "EventSystem.h"
+#include "UiSystem.h"
+#include "Renderer.h"
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -13,9 +15,20 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	window = new Window(true);
 	input = new Input(true);
 	eventSystem = new EventSystem(true);
+	uiSystem = new UiSystem(true);
+	renderer = new Renderer(true);
+
+	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);
+
+
+	//last
+	// 
+	//renderer
+	modules.push_back(uiSystem);
 	modules.push_back(eventSystem);
+	modules.push_back(renderer);
 
 }
 
@@ -123,8 +136,14 @@ list<Module*>* Application::GetModuleList()
 	return &modules;
 }
 
+void Application::BroadcastEvents()
+{
+	eventSystem->BroadcastEvents();
+}
+
 void Application::PrepareUpdate()
 {
+	BroadcastEvents();
 }
 
 void Application::FinishUpdate()

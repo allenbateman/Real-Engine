@@ -15,27 +15,18 @@ using namespace std;
 class Window;
 class Input;
 class EventSystem;
+class UiSystem;
+class Renderer;
 
 class Application
 {
 public:
 
-	// Constructor
 	Application(int argc, char* args[]);
-
-	// Destructor
 	virtual ~Application();
-
-	// Called before render is available
 	bool Awake();
-
-	// Called before the first frame
 	bool Start();
-
-	// Called each loop iteration
 	bool Update();
-
-	// Called before quitting
 	bool CleanUp();
 
 	// Add a new module to handle
@@ -53,23 +44,16 @@ public:
 
 	list<Module*>* GetModuleList() ;
 
+	void BroadcastEvents();
 
 
 private:
 
-	// Call modules before each loop iteration
+	// Call modules iteration
 	void PrepareUpdate();
-
-	// Call modules before each loop iteration
 	void FinishUpdate();
-
-	// Call modules before each loop iteration
 	bool PreUpdate();
-
-	// Call modules on each loop iteration
 	bool DoUpdate();
-
-	// Call modules after each loop iteration
 	bool PostUpdate();
 
 
@@ -83,19 +67,21 @@ public:
 	Window *window;
 	Input *input;
 	EventSystem* eventSystem;
+	UiSystem* uiSystem;
+	Renderer* renderer;
 
 	float dt;
 	bool exit = false;
 private:
+
 	int argc;
 	char** args;
+
+	SString appName;
 	SString title;
 	SString organization;
 
 	list <Module*> modules;
-
-	uint frames;
-
 
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
@@ -107,15 +93,13 @@ private:
 	//Timer frameTime;
 	//Timer lastSecFrameTime;
 
+	uint frames;
+	uint32 maxFrameRate = 0;
 	uint64 frameCount = 0;
 	uint32 framesPerSecond = 0;
 	uint32 lastSecFrameCount = 0;
 	bool FPSCapTo30 = false;
 	float averageFps = 0.0f;
-
-	uint32 maxFrameRate = 0;
-
-	SString appName;
 };
 extern Application* app;
 

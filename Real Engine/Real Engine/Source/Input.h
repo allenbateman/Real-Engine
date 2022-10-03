@@ -29,20 +29,10 @@ class Input : public Module
 
 public:
 	Input(bool isActive);
-
-	// Destructor
 	virtual ~Input();
-
-	// Called before render is available
 	bool Awake();
-
-	// Called before the first frame
 	bool Start();
-
-	// Called each loop iteration
 	bool PreUpdate();
-
-	// Called before quitting
 	bool CleanUp();
 
 	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);

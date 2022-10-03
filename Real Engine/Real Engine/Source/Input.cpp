@@ -1,6 +1,4 @@
 
-
-
 #include "Application.h"
 #include "Input.h"
 #include "Window.h"
@@ -9,12 +7,6 @@
 
 #include "Defs.h"
 #include "Log.h"
-
-
-#include "External/ImGui/imgui.h"
-#include "External/ImGui/backends/imgui_impl_glfw.h"
-#include "External/ImGui/backends/imgui_impl_opengl3.h"
-
 
 bool Input::windowEvents[WE_COUNT];
 KeyState Input::keyboard[sizeof(KeyState) * MAX_KEYS];
@@ -57,25 +49,15 @@ bool Input::Start()
 	glfwSetKeyCallback(app->window->window, KeyCallback);
 	glfwSetWindowCloseCallback(app->window->window, windowCloseCallback);
 
-
-	// Setup Dear ImGui context
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	// Setup Dear ImGui style
-	ImGui::StyleColorsDark();
-	// Setup Platform/Renderer bindings
-	ImGui_ImplGlfw_InitForOpenGL(app->window->window, true);
-	ImGui_ImplOpenGL3_Init("#version 410");
-
-
-
 	return true;
 }
 
 // Called each loop iteration
 bool Input::PreUpdate()
 {
+	//get all events occurred in the window
+	glfwPollEvents();
+
 	for (int i = 0; i < MAX_KEYS; i++)
 	{
 		if (keyboard[i] == KEY_UP)
@@ -90,28 +72,15 @@ bool Input::PreUpdate()
 
 //------------------------------------
 
-
 	if (GetKey(GLFW_KEY_SPACE) == KEY_DOWN)
 	{
 		event1 = new DemoEvent();
+
 		app->eventSystem->AddEvent(event1);
+		event1 = nullptr;
 	}
 
-
 //------------------------------------
-	// feed inputs to dear imgui, start new frame
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
-
-	// render your GUI
-	ImGui::Begin("Demo window");
-	ImGui::Button("Hello!");
-	ImGui::End();
-
-	// Render dear imgui into screen
-	ImGui::Render();
-	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
 	int display_w, display_h;
 	glfwGetFramebufferSize(app->window->window, &display_w, &display_h);
@@ -119,9 +88,6 @@ bool Input::PreUpdate()
 	glfwSwapBuffers(app->window->window);
 
 //------------------------------------
-
-
-
 
 	return true;
 }
@@ -135,9 +101,9 @@ int Input:: GetKey(int key)
 bool Input::CleanUp()
 {
 	LOG("Quitting Input event subsystem");
-	ImGui_ImplOpenGL3_Shutdown();
-	ImGui_ImplGlfw_Shutdown();
-	ImGui::DestroyContext();
+
+
+	delete event1;
 	return true;
 }
 

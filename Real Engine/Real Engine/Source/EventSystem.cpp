@@ -12,7 +12,6 @@ EventSystem::~EventSystem()
 
 bool EventSystem::Awake()
 {
-	moduleList = app->GetModuleList();
 	return true;
 }
 
@@ -28,7 +27,7 @@ bool EventSystem::PreUpdate()
 	return true;
 }
 
-bool EventSystem::Update()
+bool EventSystem::Update(float dt)
 {
 	return true;
 }
@@ -40,6 +39,7 @@ bool EventSystem::PostUpdate()
 
 bool EventSystem::CleanUp()
 {
+	eventList.clear();
 	return true;
 }
 
@@ -55,14 +55,20 @@ void EventSystem::Unsubscribe(Module* _module, Event* _event)
 void EventSystem::AddEvent(Event* newEvent)
 {
 	eventList.push_back(newEvent);
+}
 
+void EventSystem::BroadcastEvents()
+{
 
-	// mover esto de abajo a otro lado?
-	//para controlar cuando mandar los eventos
+	if (eventList.empty())
+		return;
 
 	list<Event*>::iterator event1 = eventList.begin();
 
-	for (list<Module*>::iterator currentModule = (*moduleList).begin(); currentModule != (*moduleList).end(); currentModule++)
+	if ((*event1) == nullptr)
+		return;
+	
+	for (list<Module*>::iterator currentModule = app->GetModuleList()->begin(); currentModule != app->GetModuleList()->end(); currentModule++)
 	{
 		//check if module has any subscription
 		if (!(*currentModule)->subscribedEvents.empty())
@@ -73,13 +79,8 @@ void EventSystem::AddEvent(Event* newEvent)
 				//send event to be filtered by the module
 				(*currentModule)->HandleEvent(*event1);
 				//remove the event sent from list
-				//eventList.pop_front();
-				//Add event pending to delete
-				//no se donde se borran todos los obj event que creamos
-				//eventsToDelete.push_back(*event1);
+				eventList.remove(*event1);
 			}
 		}
 	}
-
-
 }

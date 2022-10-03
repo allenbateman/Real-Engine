@@ -42,34 +42,29 @@ bool Window::Awake()
 
 	glfwMakeContextCurrent(window);
 
-	
 	subscribedEvents.push_back(NONE);
 
 	return ret;
-}
-
-bool Window::PreUpdate()
-{
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	return true;
-}
-
-bool Window::PostUpdate()
-{
-	glfwSwapBuffers(window);
-
-	glfwPollEvents();
-	
-	return true;
 }
 
 // Called before quitting
 bool Window::CleanUp()
 {
 	LOG("Destroying window and quitting all GLFW systems");
+
+	glfwDestroyWindow(window);
 	glfwTerminate();
 	return true;
+}
+
+void Window::Swapbuffers()
+{
+	glfwSwapBuffers(window);
+}
+
+void Window::Clear()
+{
+	glClear(GL_COLOR_BUFFER_BIT);
 }
 
 // Set new window title
@@ -112,40 +107,6 @@ bool Window::GetFullScreen()
 	return fullScreen;
 }
 
-bool Window::HandleEvents(list<Event*>* eventList)
-{
-	
-	for (list<EventType>::iterator currentType = subscribedEvents.begin(); currentType != subscribedEvents.end(); currentType++)
-	{
-		for (list<Event*>::iterator currentEvent = (*eventList).begin(); currentEvent != (*eventList).end(); currentEvent++)
-		{
-			//Child* pChild = (Child*)&parent;
-			if ((*currentType) == (*currentEvent)->GetType())
-			{
-				switch ((*currentType))
-				{
-				case NONE:
-				{
-					//DemoEvent* dEvent = (DemoEvent*)&currentEvent;
-					//DemoEvent* dEvent = dynamic_cast<DemoEvent*>(*currentEvent);
-					//if (dEvent != nullptr)
-					//{
-					//	cout << dEvent->msg << endl;
-					//	PrintTestEvent();
-					//}
-				
-				} break;
-				default:
-					break;
-				}
-			}
-		}
-		
-	}
-	
-	return true;
-}
-
 bool Window::HandleEvent(Event* singleEvent)
 {
 
@@ -161,7 +122,9 @@ bool Window::HandleEvent(Event* singleEvent)
 				return true;
 			}
 		}break;
-		
+		 
+		default:
+			break;
 	}
 
 	return false;
