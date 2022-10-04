@@ -14,8 +14,14 @@ struct KeyInput : public Event
 struct MouseInput : public Event
 {
 	MouseInput() { type = EventType::MOUSE_HOLE_MOUSE; };
-	~MouseInput();
+	~MouseInput() {};
 	KeyState keyState;
 	int key;
 	int x, y;
+
+	void DisplayData(){
+		cout << "Mouse event." << endl;
+		cout << "mose x = " << x << endl;
+		cout << "mose y = " << y << endl;
+	}
 };

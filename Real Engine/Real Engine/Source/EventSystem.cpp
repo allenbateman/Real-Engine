@@ -1,6 +1,7 @@
 #include "EventSystem.h"
 #include "Application.h"
 #include "Window.h"
+#include "Log.h"
 EventSystem::EventSystem(bool isActive) : Module(isActive)
 {
 
@@ -45,8 +46,17 @@ bool EventSystem::CleanUp()
 
 void EventSystem::SubcribeModule(Module* _module, Event* _event)
 {
-	mymap.insert(std::pair<char, int>('a', 100));
-	//obs.insert(std::pair <Module*,vector<Event*>>(_module,_event));
+	obs[_module].push_back(_event);
+
+	for (typename std::map<Module*, vector<Event*>>::const_iterator i = obs.begin(); i != obs.end(); ++i)
+	{
+		
+		string name = i->first->name.GetString();
+		cout<<"Module "<<  name << " subscribed to: ";
+		
+		for (typename vector<Event*>::const_iterator e = i->second.begin(); e != i->second.end(); e++)
+			(*e)->BaseDisplay();
+	}
 }
 
 void EventSystem::Unsubscribe(Module* _module, Event* _event)
