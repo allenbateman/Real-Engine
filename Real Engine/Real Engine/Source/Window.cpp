@@ -32,6 +32,7 @@ bool Window::Awake()
 
 	window = glfwCreateWindow(800, 600,"Real Engine", NULL, NULL);
 
+	
 	glfwGetFramebufferSize(window, &width, &height);
 
 	if (!window)
@@ -65,6 +66,13 @@ void Window::Swapbuffers()
 void Window::Clear()
 {
 	glClear(GL_COLOR_BUFFER_BIT);
+	glMatrixMode(GL_MODELVIEW);
+	int winWidth;
+	int winHeight;
+	//GetWindowSize(&width, &height);
+	glViewport(-width/2, 0, width, height);
+	
+	//glLoadMatrixf(cam->GetOpenGLViewMatrix());
 }
 
 // Set new window title
@@ -128,6 +136,14 @@ bool Window::HandleEvent(Event* singleEvent)
 	}
 
 	return false;
+}
+
+void Window::ResizeWindow(int newWidth, int newHeight)
+{
+	glfwSetWindowSize(window, newWidth, newHeight);
+	glfwGetFramebufferSize(window, &width, &height);
+	width = newWidth;
+	height = newHeight;
 }
 
 void Window::PrintTestEvent()
