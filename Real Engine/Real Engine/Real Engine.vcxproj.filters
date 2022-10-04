@@ -76,8 +76,19 @@
     <ClCompile Include="Source\UiSystem.cpp">
       <Filter>Resource Files\Engine\UI System</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="Source\Panel.cpp">
       <Filter>Resource Files\Engine\UI System</Filter>
+=======
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Color.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\glmath.cpp">
+      <Filter>Resource Files\Engine</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -147,11 +158,22 @@
     <ClInclude Include="Source\Renderer.h">
       <Filter>Resource Files\Engine</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
     <ClInclude Include="Source\Panel.h">
       <Filter>Resource Files\Engine\UI System</Filter>
     </ClInclude>
     <ClInclude Include="Source\InputEnums.h">
       <Filter>Resource Files\Engine\Enums</Filter>
+=======
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Color.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\glmath.h">
+      <Filter>Resource Files\Engine</Filter>
+>>>>>>> Stashed changes
     </ClInclude>
   </ItemGroup>
 </Project>

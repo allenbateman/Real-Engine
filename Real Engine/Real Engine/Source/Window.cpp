@@ -31,6 +31,7 @@ bool Window::Awake()
 	}
 
 	window = glfwCreateWindow(800, 600,"Real Engine", NULL, NULL);
+	
 
 	
 	glfwGetFramebufferSize(window, &width, &height);
