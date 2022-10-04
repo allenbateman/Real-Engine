@@ -4,6 +4,8 @@
 #include <vector>
 #include "Event.h"
 #include <map>
+#include <functional>
+
 
 class EventSystem : public Module
 {
@@ -18,13 +20,14 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void SubcribeModule(Module* _observer, Event* _event);
+	void SubcribeModule(Module* _observer,Event* _event);
 	void Unsubscribe(Module* _observer, Event* _event);
 	void AddEvent(Event* newEvent);
 	void BroadcastEvents();
 
 private:
-	//std::map<EventType type, std::vector<SlotType> > _observers;
+	std::map<char, int> mymap;
+	std::map<Module*, vector<Event*>> obs;
 	list<Event*> eventList;
 };
 

@@ -45,7 +45,8 @@ bool EventSystem::CleanUp()
 
 void EventSystem::SubcribeModule(Module* _module, Event* _event)
 {
-	//for 
+	mymap.insert(std::pair<char, int>('a', 100));
+	//obs.insert(std::pair <Module*,vector<Event*>>(_module,_event));
 }
 
 void EventSystem::Unsubscribe(Module* _module, Event* _event)
