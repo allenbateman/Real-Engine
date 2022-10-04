@@ -18,7 +18,6 @@ class Input;
 class EventSystem;
 class UiSystem;
 class Renderer;
-class Camera;
 
 class Application
 {
@@ -71,7 +70,6 @@ public:
 	EventSystem* eventSystem;
 	UiSystem* uiSystem;
 	Renderer* renderer;
-	Camera* camera;
 
 	float dt;
 	bool exit = false;

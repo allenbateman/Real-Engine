@@ -20,7 +20,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
-    <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\EventSystem.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_opengl3.cpp" />
@@ -29,15 +28,10 @@
     <ClCompile Include="Source\External\ImGui\imgui_draw.cpp" />
     <ClCompile Include="Source\External\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Source\External\ImGui\imgui_widgets.cpp" />
-    <ClCompile Include="Source\glmath.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
-<<<<<<< Updated upstream
     <ClCompile Include="Source\Panel.cpp" />
-=======
-    <ClCompile Include="Source\Camera.cpp" />
->>>>>>> Stashed changes
     <ClCompile Include="Source\Renderer.cpp" />
     <ClCompile Include="Source\UiSystem.cpp" />
     <ClCompile Include="Source\Window.cpp" />
@@ -45,7 +39,6 @@
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\ApplicationEvents.h" />
-    <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\DemoEvent.h" />
     <ClInclude Include="Source\Event.h" />
@@ -59,16 +52,11 @@
     <ClInclude Include="Source\External\ImGui\imstb_rectpack.h" />
     <ClInclude Include="Source\External\ImGui\imstb_textedit.h" />
     <ClInclude Include="Source\External\ImGui\imstb_truetype.h" />
-    <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\InputEnums.h" />
     <ClInclude Include="Source\Log.h" />
     <ClInclude Include="Source\Module.h" />
-<<<<<<< Updated upstream
     <ClInclude Include="Source\Panel.h" />
-=======
-    <ClInclude Include="Source\Camera.h" />
->>>>>>> Stashed changes
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\SString.h" />
     <ClInclude Include="Source\UiSystem.h" />
@@ -150,12 +138,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\ImGui;$(ProjectDir)Source\External\Glew\include\GL;C:\Users\fernandofg2\Desktop\GitHub\Real-Engine\Real Engine\Real Engine\Source\External\GL_Math\glmath-0.6\include\glmath;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\ImGui;$(ProjectDir)Source\External\Glew\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>Source\External\Glfw\lib-vc2019;Source\External\Glew\lib\Release\x64;C:\Users\fernandofg2\Desktop\GitHub\Real-Engine\Real Engine\Real Engine\Source\External\GL_Math\glmath-0.6\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>Source\External\Glfw\lib-vc2019;Source\External\Glew\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;glew32.lib;opengl32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
