@@ -1,11 +1,10 @@
 #pragma once
 #include "Module.h"
 #include "DemoEvent.h"
-
+#include "InputEnums.h"
 #define MAX_KEYS 300
 #define NUM_MOUSE_BUTTONS 5
 //#define LAST_KEYS_PRESSED_BUFFER 50
-
 enum EventWindow
 {
 	WE_QUIT = 0,
@@ -13,16 +12,6 @@ enum EventWindow
 	WE_SHOW = 2,
 	WE_COUNT
 };
-
-enum KeyState
-{
-	KEY_IDLE = 0,
-	KEY_DOWN,
-	KEY_REPEAT,
-	KEY_UP
-};
-
-
 
 class Input : public Module
 {
@@ -36,6 +25,8 @@ public:
 	bool CleanUp();
 
 	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+	static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+	static void MousePositionCallback(GLFWwindow* window, double xpos, double ypos);
 	static void windowCloseCallback(GLFWwindow* window);
 	int GetKey(int key);
 
@@ -56,10 +47,10 @@ public:
 private:
 	static bool windowEvents[WE_COUNT];
 	static KeyState keyboard[sizeof(KeyState) * MAX_KEYS];
-	KeyState mouseButtons[NUM_MOUSE_BUTTONS];
+	static KeyState mouseButtons[sizeof(KeyState) * NUM_MOUSE_BUTTONS];
 	int	mouseMotionX;
 	int mouseMotionY;  
-	int mouseX;
-	int mouseY;
+	static int mouseX;
+	static int mouseY;
 };
 

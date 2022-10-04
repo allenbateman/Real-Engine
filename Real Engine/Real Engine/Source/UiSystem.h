@@ -1,6 +1,7 @@
 #pragma once
 #include "Application.h"
 #include "Module.h"
+#include "Panel.h"
 
 #include "External/ImGui/imgui.h"
 #include "External/ImGui/backends/imgui_impl_glfw.h"
@@ -22,6 +23,6 @@ public:
 	void RenderUi();
 
 private:
-
+	vector<Panel*> panelList;
 };
 

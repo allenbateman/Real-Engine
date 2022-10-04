@@ -31,6 +31,7 @@
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Panel.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
     <ClCompile Include="Source\UiSystem.cpp" />
     <ClCompile Include="Source\Window.cpp" />
@@ -52,8 +53,10 @@
     <ClInclude Include="Source\External\ImGui\imstb_textedit.h" />
     <ClInclude Include="Source\External\ImGui\imstb_truetype.h" />
     <ClInclude Include="Source\Input.h" />
+    <ClInclude Include="Source\InputEnums.h" />
     <ClInclude Include="Source\Log.h" />
     <ClInclude Include="Source\Module.h" />
+    <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\SString.h" />
     <ClInclude Include="Source\UiSystem.h" />

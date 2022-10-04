@@ -10,6 +10,10 @@
 
 bool Input::windowEvents[WE_COUNT];
 KeyState Input::keyboard[sizeof(KeyState) * MAX_KEYS];
+KeyState Input::mouseButtons[sizeof(KeyState) * NUM_MOUSE_BUTTONS];
+
+int Input::mouseX = 0;
+int Input::mouseY = 0;
 
 Input::Input(bool isActive) : Module(isActive)
 {
@@ -17,7 +21,7 @@ Input::Input(bool isActive) : Module(isActive)
 
 	//keyboard = new KeyState[MAX_KEYS];
 	//memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
-	memset(mouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
+	//memset(mouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
 
 	
 }
@@ -65,6 +69,14 @@ bool Input::PreUpdate()
 			keyboard[i] = KEY_IDLE;
 		}
 	}
+	for (int i = 0; i < NUM_MOUSE_BUTTONS; i++)
+	{
+		if (mouseButtons[i] == KEY_UP)
+		{
+			mouseButtons[i] = KEY_IDLE;
+		}
+	}
+
 	if (GetKey(GLFW_KEY_ESCAPE) == KEY_REPEAT)
 	{
 		windowCloseCallback(app->window->window);
@@ -107,8 +119,6 @@ bool Input::CleanUp()
 	return true;
 }
 
-
-
 bool Input::GetWindowEvent(EventWindow ev)
 {
 	return windowEvents[ev];
@@ -144,6 +154,31 @@ void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 			keyboard[key] = KeyState::KEY_IDLE;
 			break;
 		}	
+}
+
+void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+{
+	switch (action)
+	{
+	case GLFW_PRESS:
+		mouseButtons[button] = KeyState::KEY_DOWN;
+		break;
+	case GLFW_REPEAT:
+		mouseButtons[button] = KeyState::KEY_REPEAT;
+		break;
+	case GLFW_RELEASE:
+		mouseButtons[button] = KeyState::KEY_UP;
+		break;
+	default:
+		mouseButtons[button] = KeyState::KEY_IDLE;
+		break;
+	}
+}
+
+void Input::MousePositionCallback(GLFWwindow* window, double xpos, double ypos)
+{
+	mouseX = xpos;
+	mouseY = ypos;
 }
 
 void Input::windowCloseCallback(GLFWwindow* window)

@@ -26,6 +26,9 @@
     <Filter Include="Resource Files\Engine\UI System">
       <UniqueIdentifier>{a9dc5ece-616d-41d3-8516-5712e0699d21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Engine\Enums">
+      <UniqueIdentifier>{789bb4cc-94cf-48df-ae4a-753452ea8016}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -71,6 +74,9 @@
       <Filter>Resource Files\Engine</Filter>
     </ClCompile>
     <ClCompile Include="Source\UiSystem.cpp">
+      <Filter>Resource Files\Engine\UI System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Panel.cpp">
       <Filter>Resource Files\Engine\UI System</Filter>
     </ClCompile>
   </ItemGroup>
@@ -140,6 +146,12 @@
     </ClInclude>
     <ClInclude Include="Source\Renderer.h">
       <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panel.h">
+      <Filter>Resource Files\Engine\UI System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputEnums.h">
+      <Filter>Resource Files\Engine\Enums</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

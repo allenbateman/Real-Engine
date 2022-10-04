@@ -8,6 +8,7 @@
 #include "Log.h"
 #include "Module.h"
 #include <list>
+#include <vector>
 #include <cstdlib>
 using namespace std;
 

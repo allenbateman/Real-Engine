@@ -22,6 +22,12 @@ bool UiSystem::Start()
 	ImGui_ImplGlfw_InitForOpenGL(app->window->window, true);
 	ImGui_ImplOpenGL3_Init("#version 410");
 
+
+	for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)
+	{
+
+	}
+
 	return true;
 }
 
