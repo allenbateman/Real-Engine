@@ -39,6 +39,7 @@ class Window : public Module
 		void PrintTestEvent();
 		bool HandleEvent(Event* event);
 
+		void ResizeWindow(int newWidth, int newHeight);
 		
 
 	public:
@@ -46,8 +47,8 @@ class Window : public Module
 		GLFWwindow* window;
 	private:
 		SString title;
-		 int width;
-		 int height;
+		  int width;
+		  int height;
 		unsigned int scale;
 
 		bool fullScreen;

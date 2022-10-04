@@ -39,6 +39,17 @@ bool Renderer::Update()
 
 bool Renderer::PostUpdate()
 {
+
+	glLineWidth(2.0f);
+	glBegin(GL_TRIANGLES);
+	glColor3f(255, 0, 0);
+	glVertex3f(0.0f, 0.0f, 0.0f);
+	glVertex3f(700.0f, 500.0f, 0.0f);
+	glVertex3f(700.0f, 0.0f, 0.0f);
+	glEnd();
+
+
+
 //	app->window->Swapbuffers();
 	app->uiSystem->RenderUi();
 
@@ -49,3 +60,5 @@ bool Renderer::CleanUp()
 {
 	return true;
 }
+
+
