@@ -6,6 +6,7 @@
 #include "EventSystem.h"
 #include "UiSystem.h"
 #include "Renderer.h"
+#include "Camera.h"
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -17,10 +18,12 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	eventSystem = new EventSystem(true);
 	uiSystem = new UiSystem(true);
 	renderer = new Renderer(true);
+	camera = new Camera(true);
 
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);
+	modules.push_back(camera);
 
 
 	//last
