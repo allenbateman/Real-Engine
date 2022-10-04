@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\EventSystem.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_opengl3.cpp" />
@@ -28,6 +30,7 @@
     <ClCompile Include="Source\External\ImGui\imgui_draw.cpp" />
     <ClCompile Include="Source\External\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Source\External\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\glmath.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
@@ -38,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\Events.h" />
@@ -51,6 +56,7 @@
     <ClInclude Include="Source\External\ImGui\imstb_rectpack.h" />
     <ClInclude Include="Source\External\ImGui\imstb_textedit.h" />
     <ClInclude Include="Source\External\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\InputEnums.h" />
     <ClInclude Include="Source\Log.h" />

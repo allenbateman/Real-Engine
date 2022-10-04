@@ -1,6 +1,7 @@
 #include "Application.h"
 #include "Camera.h"
 #include "Input.h"
+#include "Window.h"
 
 
 Camera::Camera(bool isActive) : Module(isActive)
@@ -64,12 +65,13 @@ bool Camera::Update(float dt)
 	}
 	cview = normal;
 	
-	if (freecam) DebugMode(dt);
+	DebugMode(dt);
 	
 		
 
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
+	
 
 	return true;
 }
@@ -131,14 +133,17 @@ void Camera::DebugMode(float dt)
 	// Now we can make this movememnt frame rate independant!
 
 	vec3 newPos(0, 0, 0);
-	float speed = 3.0f * dt;
+	//float speed = 3.0f * dt;
+	float speed = 30.0f;
 	if (app->input->GetKey(GLFW_KEY_LEFT_SHIFT) == KEY_REPEAT)
 		speed = 12.0f * dt;
 
 	if (app->input->GetKey(GLFW_KEY_R) == KEY_REPEAT) newPos.y += speed;
 	if (app->input->GetKey(GLFW_KEY_F) == KEY_REPEAT) newPos.y -= speed;
 
-	if (app->input->GetKey(GLFW_KEY_W) == KEY_REPEAT) newPos -= Z * speed;
+	if (app->input->GetKey(GLFW_KEY_W) == KEY_REPEAT) {
+		newPos -= Z * speed;
+	}
 	if (app->input->GetKey(GLFW_KEY_S) == KEY_REPEAT) newPos += Z * speed;
 
 
