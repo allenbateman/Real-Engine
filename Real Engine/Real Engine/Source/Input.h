@@ -1,7 +1,7 @@
 #pragma once
 #include "Module.h"
-#include "DemoEvent.h"
 #include "InputEnums.h"
+#include "Events.h"
 #define MAX_KEYS 300
 #define NUM_MOUSE_BUTTONS 5
 //#define LAST_KEYS_PRESSED_BUFFER 50
@@ -42,7 +42,7 @@ public:
 	void GetMousePosition(int& x, int& y);
 	void GetMouseMotion(int& x, int& y);
 
-	DemoEvent* event1;
+	MouseInput* mouseEvent;
 
 private:
 	static bool windowEvents[WE_COUNT];

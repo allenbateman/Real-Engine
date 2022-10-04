@@ -18,27 +18,18 @@ int Input::mouseY = 0;
 Input::Input(bool isActive) : Module(isActive)
 {
 	name.Create("Input");
-
-	//keyboard = new KeyState[MAX_KEYS];
-	//memset(keyboard, KEY_IDLE, sizeof(KeyState) * MAX_KEYS);
-	//memset(mouseButtons, KEY_IDLE, sizeof(KeyState) * NUM_MOUSE_BUTTONS);
-
-	
 }
 
 // Destructor
 Input::~Input()
 {
-	//delete[] Input::keyboard;
+
 }
 
 // Called before render is available
 bool Input::Awake()
 {
 	LOG("Init SDL input event system");
-
-
-
 
 	bool ret = true;
 	return ret;
@@ -47,7 +38,6 @@ bool Input::Awake()
 // Called before the first frame
 bool Input::Start()
 {
-
 	//bind input callback with glfw
 	glfwSetInputMode(app->window->window, GLFW_STICKY_KEYS, GLFW_TRUE);
 	glfwSetKeyCallback(app->window->window, KeyCallback);
@@ -86,10 +76,10 @@ bool Input::PreUpdate()
 
 	if (GetKey(GLFW_KEY_SPACE) == KEY_DOWN)
 	{
-		event1 = new DemoEvent();
-
-		app->eventSystem->AddEvent(event1);
-		event1 = nullptr;
+		//mouseEvent = new MouseInput();
+		//mouseEvent->
+		//app->eventSystem->AddEvent(mouseEvent);
+		//mouseEvent = nullptr;
 	}
 
 //------------------------------------
@@ -114,8 +104,6 @@ bool Input::CleanUp()
 {
 	LOG("Quitting Input event subsystem");
 
-
-	delete event1;
 	return true;
 }
 

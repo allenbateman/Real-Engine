@@ -122,13 +122,13 @@ bool Window::HandleEvent(Event* singleEvent)
 	{
 		case NONE:
 		{
-			DemoEvent* dEvent = dynamic_cast<DemoEvent*>(singleEvent);
-			if (dEvent != nullptr)
-			{
-				cout << dEvent->msg << endl;
-				PrintTestEvent();
-				return true;
-			}
+			//DemoEvent* dEvent = dynamic_cast<DemoEvent*>(singleEvent);
+			//if (dEvent != nullptr)
+			//{
+			//	cout << dEvent->msg << endl;
+			//	PrintTestEvent();
+			//	return true;
+			//}
 		}break;
 		 
 		default:

@@ -129,17 +129,11 @@
     <ClInclude Include="Source\External\ImGui\backends\imgui_impl_opengl3_loader.h">
       <Filter>Resource Files\External\ImGui</Filter>
     </ClInclude>
-    <ClInclude Include="Source\DemoEvent.h">
-      <Filter>Resource Files\Engine\Event System\Event</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Event.h">
       <Filter>Resource Files\Engine\Event System\Event</Filter>
     </ClInclude>
     <ClInclude Include="Source\EventSystem.h">
       <Filter>Resource Files\Engine\Event System</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\ApplicationEvents.h">
-      <Filter>Resource Files\Engine\Event System\Event</Filter>
     </ClInclude>
     <ClInclude Include="Source\UiSystem.h">
       <Filter>Resource Files\Engine\UI System</Filter>
@@ -152,6 +146,9 @@
     </ClInclude>
     <ClInclude Include="Source\InputEnums.h">
       <Filter>Resource Files\Engine\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events.h">
+      <Filter>Resource Files\Engine\Event System\Event</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
