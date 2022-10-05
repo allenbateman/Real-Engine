@@ -44,7 +44,7 @@ bool EventSystem::CleanUp()
 	return true;
 }
 
-void EventSystem::SubcribeModule(Module* _module, Event* _event)
+void EventSystem::SubcribeModule(Module* _module, EventType _event)
 {
 	obs[_module].push_back(_event);
 }
@@ -55,14 +55,15 @@ void EventSystem::Unsubscribe(Module* _module, Event* _event)
 
 void EventSystem::PostEvent(Event* _event)
 {
-	auto eventType = _event->GetType();
-
-	for (typename std::map<Module*, vector<Event*>>::const_iterator i = obs.begin(); i != obs.end(); ++i)
+	for (typename std::map<Module*, vector<EventType>>::const_iterator i = obs.begin(); i != obs.end(); ++i)
 	{
 
-		for (typename vector<Event*>::const_iterator e = i->second.begin(); e != i->second.end(); e++)
-			if ((*e)->type == _event->type)
+		for (typename vector<EventType>::const_iterator e = i->second.begin(); e != i->second.end(); e++)
+			if ((*e) == _event->type)
+			{
 				i->first->HandleEvent(_event);
+				i->first->Test();
+			}
 	}
 		
 }
@@ -99,13 +100,13 @@ void EventSystem::BroadcastEvents()
 
 void EventSystem::PrintMapping()
 {
-	for (typename std::map<Module*, vector<Event*>>::const_iterator i = obs.begin(); i != obs.end(); ++i)
+	for (typename std::map<Module*, vector<EventType>>::const_iterator i = obs.begin(); i != obs.end(); ++i)
 	{
 
 		string name = i->first->name.GetString();
 		cout << "Module " << name << " subscribed to:"<<endl;
 
-		for (typename vector<Event*>::const_iterator e = i->second.begin(); e != i->second.end(); e++)
-			(*e)->BaseDisplay();
+		for (typename vector<EventType>::const_iterator e = i->second.begin(); e != i->second.end(); e++)
+			 cout<<(*e);
 	}
 }

@@ -6,9 +6,11 @@
 #include "glfw3.h"
 
 #include "Log.h"
+#include "Defs.h"
 #include "Module.h"
 #include "Timer.h"
 #include <list>
+#include <string>
 #include <vector>
 #include <cstdlib>
 using namespace std;

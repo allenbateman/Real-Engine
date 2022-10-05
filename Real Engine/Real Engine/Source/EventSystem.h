@@ -20,7 +20,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void SubcribeModule(Module* _observer,Event* _event);
+	void SubcribeModule(Module* _observer, EventType _event);
 	void Unsubscribe(Module* _observer, Event* _event);
 
 	void PostEvent(Event* _event);
@@ -29,8 +29,8 @@ public:
 	void PrintMapping();
 
 private:
-	using SlotType = std::function< void(const Event&) >;
-	std::map<Module*, vector<Event*>> obs;
+
+	std::map<Module*, vector<EventType>> obs;
 	list<Event*> eventList;
 };
 

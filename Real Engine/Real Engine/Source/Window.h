@@ -10,6 +10,7 @@ class Window : public Module
 		Window(bool isActive);
 		virtual ~Window();
 		bool Awake();
+		bool Start();
 		bool CleanUp();
 
 
@@ -36,8 +37,7 @@ class Window : public Module
 
 
 		void PrintTestEvent();
-		bool HandleEvent(Event* event);
-
+		virtual bool HandleEvent( Event* event);
 		void ResizeWindow(int newWidth, int newHeight);
 		
 

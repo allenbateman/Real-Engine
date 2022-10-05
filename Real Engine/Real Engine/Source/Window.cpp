@@ -1,9 +1,8 @@
 #include "Window.h"
 #include "Application.h"
-#include "Defs.h"
-#include "Log.h"
-#include <string>
-#include <iostream>
+#include "EventSystem.h"
+#include "Events.h"
+
 
 
 
@@ -46,6 +45,13 @@ bool Window::Awake()
 	subscribedEvents.push_back(NONE);
 
 	return ret;
+}
+
+bool Window::Start()
+{
+	app->eventSystem->SubcribeModule(this, EventType::KEY_INPUT);
+	app->eventSystem->SubcribeModule(this, EventType::MOUSE_HOLE_MOUSE);
+	return true;
 }
 
 // Called before quitting
@@ -115,7 +121,7 @@ bool Window::GetFullScreen()
 	return fullScreen;
 }
 
-bool Window::HandleEvent(Event* singleEvent)
+bool Window::HandleEvent( Event* singleEvent) 
 {
 
 	switch (singleEvent->type)
@@ -130,12 +136,22 @@ bool Window::HandleEvent(Event* singleEvent)
 			//	return true;
 			//}
 		}break;
-		 
+		case KEY_INPUT:
+		{
+			//KeyInput* keyboard = dynamic_cast<KeyInput*>(singleEvent);
+			singleEvent->DisplayData();
+		}
+			break;
 		default:
 			break;
 	}
 
 	return false;
+}
+
+void Window::Test()
+{
+	cout << "I'm baby";
 }
 
 void Window::ResizeWindow(int newWidth, int newHeight)

@@ -45,11 +45,7 @@ bool Input::Start()
 	glfwSetCursorPosCallback(app->window->window, MousePositionCallback);
 	glfwSetWindowCloseCallback(app->window->window, windowCloseCallback);
 
-	mouseEvent.x = mouseX;
-	mouseEvent.y = mouseY;
-	app->eventSystem->SubcribeModule(this, &mouseEvent);
 
-	app->eventSystem->SubcribeModule(this, &keyEvent);
 	return true;
 }
 
