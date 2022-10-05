@@ -6,8 +6,8 @@ enum EventType {
 	NONE = 0,
 	MOUSE_INPUT,
 	MOUSE_POSITION,
-	MOUSE_HOLE_MOUSE,
-	KEY_INPUT
+	KEY_INPUT,
+	MOUSE_HOLE_MOUSE
 };
 
 class Event {

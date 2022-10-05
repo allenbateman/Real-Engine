@@ -8,7 +8,7 @@ class Panel
 
 	virtual bool Init();
 	virtual bool Update();
-	virtual void HandleEvenets(Event* e);
+	virtual void HandleEvents(Event* e);
 
 	bool active;
 	

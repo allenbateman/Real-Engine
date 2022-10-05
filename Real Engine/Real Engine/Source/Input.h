@@ -45,7 +45,8 @@ public:
 	void GetMousePosition(int& x, int& y);
 	void GetMouseMotion(int& x, int& y);
 
-	MouseInput mouseEvent;
+	MouseInput mouseButtonEvent;
+	MousePosition mousePositionEvent;
 	KeyInput keyEvent;
 
 private:

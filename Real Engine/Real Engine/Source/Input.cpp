@@ -55,6 +55,7 @@ bool Input::PreUpdate()
 	//get all events occurred in the window
 	glfwPollEvents();
 
+	//Set keys state
 	for (int i = 0; i < MAX_KEYS; i++)
 	{
 		if (keyboard[i] == KEY_UP)
@@ -73,16 +74,6 @@ bool Input::PreUpdate()
 	if (GetKey(GLFW_KEY_ESCAPE) == KEY_REPEAT)
 	{
 		windowCloseCallback(app->window->window);
-	}
-
-//------------------------------------
-
-	if (GetKey(GLFW_KEY_SPACE) == KEY_DOWN)
-	{
-		//mouseEvent = new MouseInput();
-		//mouseEvent->
-		//app->eventSystem->AddEvent(mouseEvent);
-		//mouseEvent = nullptr;
 	}
 
 //------------------------------------
@@ -180,6 +171,8 @@ void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int 
 
 void Input::RetriveMouseButtonCallBack(int button, int action, int mods)
 {
+	mouseButtonEvent.key = button;
+	mouseButtonEvent.keyState = mouseButtons[button];
 }
 
 void Input::MousePositionCallback(GLFWwindow* window, double xpos, double ypos)
@@ -192,6 +185,8 @@ void Input::MousePositionCallback(GLFWwindow* window, double xpos, double ypos)
 
 void Input::RetriveMousePositionCallBack(double xpos, double ypos)
 {
+	mousePositionEvent.x = xpos;
+	mousePositionEvent.y = ypos;
 }
 
 void Input::windowCloseCallback(GLFWwindow* window)

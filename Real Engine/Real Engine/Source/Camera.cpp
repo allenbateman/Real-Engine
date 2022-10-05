@@ -2,6 +2,7 @@
 #include "Camera.h"
 #include "Input.h"
 #include "Window.h"
+#include "EventSystem.h"
 
 
 Camera::Camera(bool isActive) : Module(isActive)
@@ -28,6 +29,10 @@ bool Camera::Start()
 
 	freecam = false;
 
+	app->eventSystem->SubcribeModule(this, KEY_INPUT);
+	app->eventSystem->SubcribeModule(this, MOUSE_INPUT);
+	app->eventSystem->SubcribeModule(this, MOUSE_POSITION);
+
 	return ret;
 }
 
@@ -36,6 +41,36 @@ bool Camera::CleanUp()
 {
 	
 
+	return true;
+}
+
+bool Camera::HandleEvent(Event* e)
+{
+	switch (e->type)
+	{
+	case KEY_INPUT:
+	{
+		vec3 newPos(0, 0, 0);
+		KeyInput* ki = dynamic_cast<KeyInput*>(e);
+
+		if (ki->key == GLFW_KEY_F && ki->keyState == KEY_REPEAT)newPos -= Y * cameraSpeed;
+		if (ki->key == GLFW_KEY_R && ki->keyState == KEY_REPEAT)newPos += Y * cameraSpeed;
+		if (ki->key == GLFW_KEY_W && ki->keyState == KEY_REPEAT)newPos -= Z * cameraSpeed;
+		if (ki->key == GLFW_KEY_S && ki->keyState == KEY_REPEAT)newPos += Z * cameraSpeed;
+		if (ki->key == GLFW_KEY_A && ki->keyState == KEY_REPEAT)newPos -= X * cameraSpeed;
+		if (ki->key == GLFW_KEY_D && ki->keyState == KEY_REPEAT)newPos += X * cameraSpeed;
+
+
+		Move(newPos);
+	}
+		break;
+	case MOUSE_INPUT:
+		break;
+	case MOUSE_POSITION:
+		break;
+	default:
+		break;
+	}
 	return true;
 }
 
@@ -132,24 +167,24 @@ void Camera::DebugMode(float dt)
 	// Implement a debug camera with keys and mouse
 	// Now we can make this movememnt frame rate independant!
 
-	vec3 newPos(0, 0, 0);
-	float speed = 100.0f * dt;
-	
-	if (app->input->GetKey(GLFW_KEY_LEFT_SHIFT) == KEY_REPEAT)
-		speed = 12.0f * dt;
+	//vec3 newPos(0, 0, 0);
+	//float speed = 100.0f * dt;
+	//
+	//if (app->input->GetKey(GLFW_KEY_LEFT_SHIFT) == KEY_REPEAT)
+	//	speed = 12.0f * dt;
 
-	if (app->input->GetKey(GLFW_KEY_R) == KEY_REPEAT) newPos.y += speed;
-	if (app->input->GetKey(GLFW_KEY_F) == KEY_REPEAT) newPos.y -= speed;
+	//if (app->input->GetKey(GLFW_KEY_R) == KEY_REPEAT) newPos.y += speed;
+	//if (app->input->GetKey(GLFW_KEY_F) == KEY_REPEAT) newPos.y -= speed;
 
-	if (app->input->GetKey(GLFW_KEY_W) == KEY_REPEAT) newPos -= Z * speed;
-	if (app->input->GetKey(GLFW_KEY_S) == KEY_REPEAT) newPos += Z * speed;
+	//if (app->input->GetKey(GLFW_KEY_W) == KEY_REPEAT) newPos -= Z * speed;
+	//if (app->input->GetKey(GLFW_KEY_S) == KEY_REPEAT) newPos += Z * speed;
 
 
-	if (app->input->GetKey(GLFW_KEY_A) == KEY_REPEAT) newPos -= X * speed;
-	if (app->input->GetKey(GLFW_KEY_D) == KEY_REPEAT) newPos += X * speed;
+	//if (app->input->GetKey(GLFW_KEY_A) == KEY_REPEAT) newPos -= X * speed;
+	//if (app->input->GetKey(GLFW_KEY_D) == KEY_REPEAT) newPos += X * speed;
 
-	Position += newPos;
-	Reference += newPos;
+	//Position += newPos;
+	//Reference += newPos;
 
 	// Mouse motion ----------------
 	
