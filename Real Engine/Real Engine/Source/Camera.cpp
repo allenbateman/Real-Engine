@@ -133,17 +133,15 @@ void Camera::DebugMode(float dt)
 	// Now we can make this movememnt frame rate independant!
 
 	vec3 newPos(0, 0, 0);
-	//float speed = 3.0f * dt;
-	float speed = 30.0f;
+	float speed = 100.0f * dt;
+	
 	if (app->input->GetKey(GLFW_KEY_LEFT_SHIFT) == KEY_REPEAT)
 		speed = 12.0f * dt;
 
 	if (app->input->GetKey(GLFW_KEY_R) == KEY_REPEAT) newPos.y += speed;
 	if (app->input->GetKey(GLFW_KEY_F) == KEY_REPEAT) newPos.y -= speed;
 
-	if (app->input->GetKey(GLFW_KEY_W) == KEY_REPEAT) {
-		newPos -= Z * speed;
-	}
+	if (app->input->GetKey(GLFW_KEY_W) == KEY_REPEAT) newPos -= Z * speed;
 	if (app->input->GetKey(GLFW_KEY_S) == KEY_REPEAT) newPos += Z * speed;
 
 
@@ -154,7 +152,7 @@ void Camera::DebugMode(float dt)
 	Reference += newPos;
 
 	// Mouse motion ----------------
-
+	
 	if(app->input->GetMouseButtonDown(GLFW_MOUSE_BUTTON_1) == KEY_REPEAT)
 	{
 		int dx = 0;

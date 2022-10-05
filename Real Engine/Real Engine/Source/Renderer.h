@@ -1,5 +1,10 @@
 #pragma once
 #include "Module.h"
+#include "glmath.h"
+
+
+#define MAX_LIGHTS 8
+
 class Renderer : public Module
 {
 public:
@@ -13,5 +18,11 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
+	void OnResize(int width, int height);
+	
+	
+	/*Light lights[MAX_LIGHTS];*/
+	mat3x3 NormalMatrix;
+	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 };
 

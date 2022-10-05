@@ -36,6 +36,7 @@
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Panel.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
+    <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\UiSystem.cpp" />
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
@@ -64,6 +65,7 @@
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\SString.h" />
+    <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\UiSystem.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
