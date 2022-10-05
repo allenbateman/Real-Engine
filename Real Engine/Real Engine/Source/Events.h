@@ -9,6 +9,12 @@ struct KeyInput : public Event
 	~KeyInput() {};
 	KeyState keyState;
 	int key;
+	int scancode;
+	void DisplayData() {
+		cout << "Key event." << endl;
+		cout << "Key pressed = " << key << endl;
+		cout << "key state ="  << keyState << endl;
+	}
 };
 
 struct MouseInput : public Event

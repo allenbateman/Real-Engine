@@ -22,11 +22,14 @@ public:
 
 	void SubcribeModule(Module* _observer,Event* _event);
 	void Unsubscribe(Module* _observer, Event* _event);
-	void AddEvent(Event* newEvent);
+
+	void PostEvent(Event* _event);
+
 	void BroadcastEvents();
+	void PrintMapping();
 
 private:
-	std::map<char, int> mymap;
+	using SlotType = std::function< void(const Event&) >;
 	std::map<Module*, vector<Event*>> obs;
 	list<Event*> eventList;
 };

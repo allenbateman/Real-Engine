@@ -15,7 +15,7 @@ class Event {
 public:
 	Event() {};
 	virtual ~Event() {};
-	EventType GetType() { return type; };
+	EventType GetType() const { return type; };
 	EventType type;
 	void BaseDisplay() { DisplayData(); };
 	virtual void DisplayData() {};

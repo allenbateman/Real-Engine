@@ -67,7 +67,7 @@ public:
 		}
 	}
 
-	virtual bool HandleEvent(Event* singleEvent)
+	virtual bool HandleEvent(const Event* singleEvent)
 	{
 		return true; 
 	}

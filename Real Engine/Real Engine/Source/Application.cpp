@@ -61,6 +61,8 @@ bool Application::Start()
 		(*current)->Start();
 	}
 
+	eventSystem->PrintMapping();
+
 	return ret;
 }
 

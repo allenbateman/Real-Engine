@@ -41,12 +41,15 @@ bool Input::Start()
 	//bind input callback with glfw
 	glfwSetInputMode(app->window->window, GLFW_STICKY_KEYS, GLFW_TRUE);
 	glfwSetKeyCallback(app->window->window, KeyCallback);
+	glfwSetMouseButtonCallback(app->window->window, MouseButtonCallback);
+	glfwSetCursorPosCallback(app->window->window, MousePositionCallback);
 	glfwSetWindowCloseCallback(app->window->window, windowCloseCallback);
 
 	mouseEvent.x = mouseX;
 	mouseEvent.y = mouseY;
 	app->eventSystem->SubcribeModule(this, &mouseEvent);
 
+	app->eventSystem->SubcribeModule(this, &keyEvent);
 	return true;
 }
 
@@ -146,6 +149,16 @@ void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 			keyboard[key] = KeyState::KEY_IDLE;
 			break;
 		}	
+		Input* input = app->input;
+		input->RetriveKeyCallBack(key, scancode, action, mods);
+}
+
+void Input::RetriveKeyCallBack(int key, int scancode, int action, int mods)
+{
+	keyEvent.key = key;
+	keyEvent.scancode = scancode;
+	keyEvent.keyState = keyboard[key];
+	app->eventSystem->PostEvent(&keyEvent);
 }
 
 void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
