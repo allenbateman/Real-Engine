@@ -88,6 +88,9 @@
     <ClCompile Include="Source\glmath.cpp">
       <Filter>Resource Files\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Resource Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -166,6 +169,9 @@
       <Filter>Resource Files\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\glmath.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
       <Filter>Resource Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>

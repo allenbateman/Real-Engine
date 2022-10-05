@@ -7,6 +7,7 @@
 
 #include "Log.h"
 #include "Module.h"
+#include "Timer.h"
 #include <list>
 #include <vector>
 #include <cstdlib>
@@ -73,7 +74,7 @@ public:
 	Renderer* renderer;
 	Camera* camera;
 
-	float dt;
+	
 	bool exit = false;
 private:
 
@@ -95,6 +96,8 @@ private:
 	//Timer startupTime;
 	//Timer frameTime;
 	//Timer lastSecFrameTime;
+	Timer	timer;
+	float	dt;
 
 	uint frames;
 	uint32 maxFrameRate = 0;

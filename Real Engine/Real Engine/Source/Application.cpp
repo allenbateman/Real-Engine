@@ -49,6 +49,7 @@ bool Application::Awake()
 		(*current)->Awake();
 	}
 
+	timer.Start();
 	return ret;
 }
 
@@ -146,6 +147,9 @@ void Application::BroadcastEvents()
 
 void Application::PrepareUpdate()
 {
+	dt = (float) timer.Read();
+	timer.Start();
+
 	BroadcastEvents();
 }
 
