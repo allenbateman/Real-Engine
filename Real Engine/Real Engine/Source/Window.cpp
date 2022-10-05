@@ -128,30 +128,22 @@ bool Window::HandleEvent( Event* singleEvent)
 	{
 		case NONE:
 		{
-			//DemoEvent* dEvent = dynamic_cast<DemoEvent*>(singleEvent);
-			//if (dEvent != nullptr)
-			//{
-			//	cout << dEvent->msg << endl;
-			//	PrintTestEvent();
-			//	return true;
-			//}
 		}break;
 		case KEY_INPUT:
-		{
-			//KeyInput* keyboard = dynamic_cast<KeyInput*>(singleEvent);
 			singleEvent->DisplayData();
-		}
+			break;
+		case MOUSE_HOLE_MOUSE:
+			singleEvent->DisplayData();
+			//if(getKey == GLFW_R
+			//pos.y++;
+			//if(getKey == GLFW_F
+			//pos.f--;
 			break;
 		default:
 			break;
 	}
 
 	return false;
-}
-
-void Window::Test()
-{
-	cout << "I'm baby";
 }
 
 void Window::ResizeWindow(int newWidth, int newHeight)

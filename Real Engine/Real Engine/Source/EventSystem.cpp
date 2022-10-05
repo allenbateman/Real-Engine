@@ -62,7 +62,6 @@ void EventSystem::PostEvent(Event* _event)
 			if ((*e) == _event->type)
 			{
 				i->first->HandleEvent(_event);
-				i->first->Test();
 			}
 	}
 		

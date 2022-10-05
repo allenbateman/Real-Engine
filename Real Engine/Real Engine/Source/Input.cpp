@@ -174,12 +174,24 @@ void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int 
 		mouseButtons[button] = KeyState::KEY_IDLE;
 		break;
 	}
+	Input* input = app->input;
+	input->RetriveMouseButtonCallBack(button, action, mods);
+}
+
+void Input::RetriveMouseButtonCallBack(int button, int action, int mods)
+{
 }
 
 void Input::MousePositionCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	mouseX = xpos;
 	mouseY = ypos;
+	Input* input = app->input;
+	input->RetriveMousePositionCallBack(xpos,ypos);
+}
+
+void Input::RetriveMousePositionCallBack(double xpos, double ypos)
+{
 }
 
 void Input::windowCloseCallback(GLFWwindow* window)
