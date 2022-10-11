@@ -173,6 +173,7 @@ void Input::RetriveMouseButtonCallBack(int button, int action, int mods)
 {
 	mouseButtonEvent.key = button;
 	mouseButtonEvent.keyState = mouseButtons[button];
+	app->eventSystem->PostEvent(&mouseButtonEvent);
 }
 
 void Input::MousePositionCallback(GLFWwindow* window, double xpos, double ypos)
@@ -187,6 +188,7 @@ void Input::RetriveMousePositionCallBack(double xpos, double ypos)
 {
 	mousePositionEvent.x = xpos;
 	mousePositionEvent.y = ypos;
+	app->eventSystem->PostEvent(&mousePositionEvent);
 }
 
 void Input::windowCloseCallback(GLFWwindow* window)

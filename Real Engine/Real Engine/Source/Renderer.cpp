@@ -88,9 +88,20 @@ bool Renderer::Update()
 bool Renderer::PostUpdate()
 {
 
+	
+	vec3 cubePos(0.0f, 0.0f, 0.0f);
+	DrawDirectCube(cubePos, 10.0f);
+
+
+
+
+
+	
+
 	glLineWidth(2.0f);
 
 	glBegin(GL_LINES);
+	glColor3f(255, 255, 255);
 
 	float d = 200.0f;
 
@@ -128,5 +139,89 @@ void Renderer::OnResize(int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+}
+
+void Renderer:: DrawDirectCube(vec3 position, float size)
+{
+
+	float x = position.x;
+	float y = position.y;
+	float z = position.z;
+
+	glLineWidth(1.0f);
+	glBegin(GL_TRIANGLES);
+	
+	
+	//Front
+	glColor3f(255, 0, 0);
+
+	glVertex3f(x + size, y + size, z);
+	glVertex3f(x, y + size, z);
+	glVertex3f(x, y, z);
+
+	glVertex3f(x, y, z);
+	glVertex3f(x + size, y, z);
+	glVertex3f(x + size, y + size, z);
+
+
+
+	//Right
+	glColor3f(255, 255, 0);
+
+	glVertex3f(x + size, y + size, z);
+	glVertex3f(x + size, y, z);
+	glVertex3f(x + size, y, z + size);
+
+	glVertex3f(x + size, y, z + size);
+	glVertex3f(x + size, y + size, z + size);
+	glVertex3f(x + size, y + size, z);
+
+	//Top
+	glColor3f(0, 255, 255);
+
+	glVertex3f(x + size, y + size, z);
+	glVertex3f(x + size, y + size, z + size);
+	glVertex3f(x, y + size, z + size);
+
+	glVertex3f(x, y + size, z + size);
+	glVertex3f(x, y + size, z);
+	glVertex3f(x + size, y + size, z);
+
+	//Back
+	glColor3f(0, 0, 255);
+
+	glVertex3f(x + size, y + size, z + size);
+	glVertex3f(x, y + size, z + size);
+	glVertex3f(x, y, z + size);
+
+	glVertex3f(x, y, z + size);
+	glVertex3f(x + size, y, z + size);
+	glVertex3f(x, y + size, z + size);
+
+	//Left
+	glColor3f(100, 255, 255);
+
+	glVertex3f(x, y + size, z + size);
+	glVertex3f(x, y + size, z);
+	glVertex3f(x, y, z);
+
+	glVertex3f(x, y, z);
+	glVertex3f(x, y, z + size);
+	glVertex3f(x , y + size, z + size);
+
+	//Bottom
+	glColor3f(100, 100, 255);
+
+	glVertex3f(x + size, y, z + size);
+	glVertex3f(x, y, z + size);
+	glVertex3f(x, y, z);
+
+	glVertex3f(x, y, z);
+	glVertex3f(x + size, y, z);
+	glVertex3f(x + size, y, z + size);
+
+
+
+	glEnd();
 }
 

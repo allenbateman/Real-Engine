@@ -65,8 +65,42 @@ bool Camera::HandleEvent(Event* e)
 	}
 		break;
 	case MOUSE_INPUT:
+	{
+		mouseLeft = false;
+		mouseRight = false;
+		MouseInput* mo = dynamic_cast<MouseInput*>(e);
+
+		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseMotion = (0.0f, 0.0f);
+		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_DOWN)mouseMotion = (0.0f, 0.0f);
+
+		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseLeft = true;
+		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_DOWN)mouseRight = true;
+
+		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_UP);
+		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_UP);
+			
+		
+			
+	}
+
 		break;
 	case MOUSE_POSITION:
+	{
+		if (mouseLeft)
+		{
+			MousePosition* mo = dynamic_cast<MousePosition*>(e);
+			mouseMotion.x -= mo->x;
+			mouseMotion.y -= mo->y;
+
+			vec3 rotation(mouseMotion.x, mouseMotion.y, 0);
+			Look(Position, rotation, false);
+			
+		}
+		if (mouseRight)
+		{
+
+		}
+	}
 		break;
 	default:
 		break;

@@ -20,7 +20,7 @@ public:
 
 	void OnResize(int width, int height);
 	
-	
+	void DrawDirectCube(vec3 position, float size);
 	/*Light lights[MAX_LIGHTS];*/
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;

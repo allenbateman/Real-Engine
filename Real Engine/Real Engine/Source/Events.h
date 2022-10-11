@@ -11,15 +11,15 @@ struct KeyInput : public Event
 	int key = NULL;
 	int scancode = NULL;
 	void DisplayData() {
-		cout << "Key event." << endl;
-		cout << "Key pressed = " << key << endl;
-		cout << "key state ="  << keyState << endl;
+		cout << "Key event: ";
+		cout << "Key pressed = " << key;
+		cout << " key state ="  << keyState << endl;
 	}
 };
 
 struct MouseInput : public Event
 {
-	MouseInput() { type = EventType::MOUSE_HOLE_MOUSE; };
+	MouseInput() { type = EventType::MOUSE_INPUT; };
 	~MouseInput() {};
 	KeyState keyState = KEY_IDLE;
 	int key = NULL;

@@ -29,7 +29,7 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
-	float cameraSpeed = 5.0f;
+	float cameraSpeed = 2.5f;
 	
 private:
 	enum view
@@ -44,4 +44,9 @@ private:
 	view cview = normal;
 	mat4x4 ViewMatrix, ViewMatrixInverse;
 	bool freecam;
+
+	vec2 mouseMotion;
+
+	bool mouseLeft;
+	bool mouseRight;
 };
