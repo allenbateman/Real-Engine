@@ -7,7 +7,8 @@ enum EventType {
 	MOUSE_INPUT,
 	MOUSE_POSITION,
 	KEY_INPUT,
-	MOUSE_HOLE_MOUSE
+	MOUSE_HOLE_MOUSE,
+	PANEL_RESIZE
 };
 
 class Event {

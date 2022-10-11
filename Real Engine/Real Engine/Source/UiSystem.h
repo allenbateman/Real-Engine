@@ -3,9 +3,10 @@
 #include "Module.h"
 #include "Panel.h"
 
-#include "External/ImGui/imgui.h"
-#include "External/ImGui/backends/imgui_impl_glfw.h"
-#include "External/ImGui/backends/imgui_impl_opengl3.h"
+
+
+
+#include "Viewport.h"
 
 class UiSystem :  public Module
 {
@@ -24,5 +25,7 @@ public:
 
 private:
 	vector<Panel*> panelList;
+
+	Viewport* camViewport;
 };
 

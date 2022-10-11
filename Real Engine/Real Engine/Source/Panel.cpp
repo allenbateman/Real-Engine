@@ -19,6 +19,17 @@ bool Panel::Update()
 	return true;
 }
 
-void Panel::HandleEvenets(Event* e)
+bool Panel::PostUpdate()
+{
+	return true;
+}
+
+bool Panel::CleanUp()
+{
+	return true;
+}
+
+void Panel::HandleEvents(Event* e)
 {
 }
+

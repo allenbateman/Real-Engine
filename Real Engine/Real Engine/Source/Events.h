@@ -23,6 +23,7 @@ struct MouseInput : public Event
 	~MouseInput() {};
 	KeyState keyState = KEY_IDLE;
 	int key = NULL;
+	int x = 0, y = 0;
 	void DisplayData(){
 		cout << "Mouse input key:" << key << ", state: " << keyState << "\n";
 	}

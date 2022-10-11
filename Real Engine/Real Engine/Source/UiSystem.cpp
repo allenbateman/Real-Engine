@@ -22,10 +22,12 @@ bool UiSystem::Start()
 	ImGui_ImplGlfw_InitForOpenGL(app->window->window, true);
 	ImGui_ImplOpenGL3_Init("#version 410");
 
+	camViewport = new Viewport(true);
+	panelList.push_back(camViewport);
 
 	for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)
 	{
-
+		(*it)->Init();
 	}
 
 	return true;
@@ -61,10 +63,10 @@ void UiSystem::PrepareFrame()
 
 void UiSystem::UpdatePanels()
 {
-	// render your GUI
-	ImGui::Begin("Demo window");
-	ImGui::Button("Hello!");
-	ImGui::End();
+	for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)
+	{
+		(*it)->Update();
+	}
 }
 
 void UiSystem::RenderUi()
