@@ -46,7 +46,7 @@ bool Renderer::Awake()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
 
-	OnResize(app->window->GetWidth(), app->window->GetHeight());
+	OnResize(0,0,app->window->GetWidth(), app->window->GetHeight());
 
 
 	return true;
@@ -87,7 +87,7 @@ bool Renderer::Update()
 
 bool Renderer::PostUpdate()
 {
-
+	app->uiSystem->RenderUi();
 	
 	vec3 cubePos(0.0f, 0.0f, 0.0f);
 	DrawDirectCube(cubePos, 10.0f);
@@ -118,7 +118,7 @@ bool Renderer::PostUpdate()
 
 
 //	app->window->Swapbuffers();
-	app->uiSystem->RenderUi();
+
 
 	return true;
 }
@@ -128,9 +128,9 @@ bool Renderer::CleanUp()
 	return true;
 }
 
-void Renderer::OnResize(int width, int height)
+void Renderer::OnResize(int xPos, int yPos, int width, int height)
 {
-	glViewport(0, 0, width, height);
+	glViewport(xPos, yPos, width, height);
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
