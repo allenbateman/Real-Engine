@@ -99,7 +99,7 @@ void EventSystem::BroadcastEvents()
 
 void EventSystem::PrintMapping()
 {
-	for (typename std::map<Module*, vector<EventType>>::const_iterator i = obs.begin(); i != obs.end(); ++i)
+	/*for (typename std::map<Module*, vector<EventType>>::const_iterator i = obs.begin(); i != obs.end(); ++i)
 	{
 
 		string name = i->first->name.GetString();
@@ -107,5 +107,5 @@ void EventSystem::PrintMapping()
 
 		for (typename vector<EventType>::const_iterator e = i->second.begin(); e != i->second.end(); e++)
 			 cout<<(*e);
-	}
+	}*/
 }

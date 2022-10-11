@@ -29,7 +29,7 @@ bool Viewport::Update()
 	vMax.y += ImGui::GetWindowPos().y;
 
 	ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(255, 255, 0, 255));
-	app->renderer->OnResize(vMin.x, vMin.y, vMax.x, vMax.y);
+	//app->renderer->OnResize(vMin.x, vMin.y, vMax.x, vMax.y);
 
 	ImGui::End();
 

@@ -86,16 +86,59 @@ bool Camera::HandleEvent(Event* e)
 		break;
 	case MOUSE_POSITION:
 	{
+		MousePosition* mo = dynamic_cast<MousePosition*>(e);
+		
+
+
 		if (mouseLeft)
 		{
-			MousePosition* mo = dynamic_cast<MousePosition*>(e);
-			mouseMotion.x -= mo->x;
-			mouseMotion.y -= mo->y;
-
-			vec3 rotation(mouseMotion.x, mouseMotion.y, 0);
-			Look(Position, rotation, false);
+			float displacement = 0.0f;	
 			
+			displacement = mo->x - mouseMotion.x;
+					
+			
+
+			float DeltaX = displacement * 0.01;
+			if (displacement < 0.0f)
+			{
+				
+
+				X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				
+			}
+			
+			if(displacement > 0.0f)
+			{
+				
+
+				X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+				Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+
+			}
+			cout << DeltaX << endl;
+			
+			mouseMotion.y += mo->y;
+			
+
+			/*float DeltaY = mouseMotion.y * 0.001f;
+
+			Y = rotate(Y, DeltaY, X);
+			Z = rotate(Z, DeltaY, X);
+
+			if (Y.y < 0.0f)
+			{
+				Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
+				Y = cross(Z, X);
+			}*/
 		}
+
+		//Position = Reference + Z * length(Position);
+		
+		CalculateViewMatrix();
+		
 		if (mouseRight)
 		{
 
@@ -240,6 +283,8 @@ void Camera::DebugMode(float dt)
 			X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
 			Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
 			Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
+			
+
 		}
 
 		if (dy != 0)
