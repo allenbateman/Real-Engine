@@ -129,6 +129,7 @@ bool Camera::HandleEvent(Event* e)
 
 		X.y = 0;
 		Y.x = 0;
+		Z.y = 0;
 		
 		CalculateViewMatrix();
 		
