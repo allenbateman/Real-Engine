@@ -79,15 +79,6 @@ bool Input::PreUpdate()
 		windowCloseCallback(app->window->window);
 	}
 
-//------------------------------------
-
-	int display_w, display_h;
-	glfwGetFramebufferSize(app->window->window, &display_w, &display_h);
-	glViewport(0, 0, display_w, display_h);
-	glfwSwapBuffers(app->window->window);
-
-//------------------------------------
-
 	return true;
 }
 

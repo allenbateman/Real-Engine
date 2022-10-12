@@ -20,6 +20,7 @@ bool Viewport::Update()
 	ImGui::SetNextWindowSize(ImVec2{ 720,720 }, ImGuiCond_FirstUseEver);
 	ImGui::Begin("Camera Viewport");
 
+	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImVec2 vMin = ImGui::GetWindowContentRegionMin();
 	ImVec2 vMax = ImGui::GetWindowContentRegionMax();
 

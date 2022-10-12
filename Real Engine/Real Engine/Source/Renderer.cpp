@@ -32,15 +32,6 @@ bool Renderer::Awake()
 	GLfloat MaterialDiffuse[] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, MaterialDiffuse);
 
-
-	/*lights[0].ref = GL_LIGHT0;
-	lights[0].ambient.Set(0.25f, 0.25f, 0.25f, 1.0f);
-	lights[0].diffuse.Set(0.75f, 0.75f, 0.75f, 1.0f);
-	lights[0].SetPos(0.0f, 0.0f, 2.5f);
-	lights[0].Init();
-
-	lights[0].Active(true);*/
-
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_LIGHTING);
@@ -54,27 +45,17 @@ bool Renderer::Awake()
 
 bool Renderer::Start()
 {
+	//GenerateBuffer();
 	return true;
 }
 
 bool Renderer::PreUpdate()
 {
+
 	//clear window rendered buffer
-
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glLoadIdentity();
-
-	
-
+	app->window->Clear();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(app->camera->GetViewMatrix());
-
-	/*lights[0].SetPos(app->camera->Position.x, app->camera->Position.y, app->camera->Position.z);
-
-	for (uint i = 0; i < MAX_LIGHTS; ++i)
-		lights[i].Render();*/
-	
-	app->window->Clear();
 
 	return true;
 }
@@ -91,12 +72,6 @@ bool Renderer::PostUpdate()
 	
 	vec3 cubePos(0.0f, 0.0f, 0.0f);
 	DrawDirectCube(cubePos, 10.0f);
-
-
-
-
-
-	
 
 	glLineWidth(2.0f);
 
@@ -117,7 +92,7 @@ bool Renderer::PostUpdate()
 
 
 
-//	app->window->Swapbuffers();
+	app->window->Swapbuffers();
 
 
 	return true;
@@ -224,5 +199,39 @@ void Renderer:: DrawDirectCube(vec3 position, float size)
 
 
 	glEnd();
+}
+
+void Renderer::GenerateBuffer()
+{
+
+
+	glGenFramebuffers(1, &FBO);
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
+
+
+	glGenTextures(1, &framebufferTexture);
+	glBindTexture(GL_TEXTURE_2D, framebufferTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, app->window->GetWidth(), app->window->GetWidth(), 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+	glGenRenderbuffers(1, &RBO);
+	glBindRenderbuffer(GL_RENDERBUFFER, RBO);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH24_STENCIL8, app->window->GetWidth(), app->window->GetHeight());
+	glBindRenderbuffer(GL_RENDERBUFFER, 0);
+
+
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_STENCIL_ATTACHMENT, GL_RENDERBUFFER, RBO);
+
+	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete!" << std::endl;
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+
+
+
+	//bind new buffer 
+	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 }
 

@@ -34,9 +34,6 @@ class Window : public Module
 
 		void SetFullScreen(bool fullScreen);
 		bool GetFullScreen();
-
-
-		void PrintTestEvent();
 		virtual bool HandleEvent( Event* event);
 		void ResizeWindow(int newWidth, int newHeight);
 		

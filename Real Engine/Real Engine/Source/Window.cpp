@@ -23,6 +23,8 @@ bool Window::Awake()
 	bool ret = true;
 
 	LOG("Init glfw window ");
+
+
 	if (!glfwInit())
 	{
 		ret = false;
@@ -31,16 +33,16 @@ bool Window::Awake()
 
 	window = glfwCreateWindow(800, 600,"Real Engine", NULL, NULL);
 
-	
-	glfwGetFramebufferSize(window, &width, &height);
+	glfwMakeContextCurrent(window);
+
+
 
 	if (!window)
 	{
 		glfwTerminate();
 		ret = false;
 	}
-
-	glfwMakeContextCurrent(window);
+	glfwGetFramebufferSize(window, &width, &height);
 
 	subscribedEvents.push_back(NONE);
 
@@ -71,14 +73,7 @@ void Window::Swapbuffers()
 
 void Window::Clear()
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
-	int winWidth;
-	int winHeight;
-	//GetWindowSize(&width, &height);
-	glViewport(-width/2, 0, width, height);
-	
-	//glLoadMatrixf(cam->GetOpenGLViewMatrix());
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 // Set new window title
@@ -134,10 +129,6 @@ bool Window::HandleEvent( Event* singleEvent)
 			break;
 		case MOUSE_HOLE_MOUSE:
 			singleEvent->DisplayData();
-			//if(getKey == GLFW_R
-			//pos.y++;
-			//if(getKey == GLFW_F
-			//pos.f--;
 			break;
 		default:
 			break;
@@ -152,9 +143,4 @@ void Window::ResizeWindow(int newWidth, int newHeight)
 	glfwGetFramebufferSize(window, &width, &height);
 	width = newWidth;
 	height = newHeight;
-}
-
-void Window::PrintTestEvent()
-{
-	cout << "What do I do with this data?" << endl;
 }

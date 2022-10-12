@@ -59,7 +59,7 @@ bool Application::Start()
 
 	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
-		(*current)->Start();
+		ret = (*current)->Start();
 	}
 
 	eventSystem->PrintMapping();
