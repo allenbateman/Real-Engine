@@ -13,7 +13,7 @@ Camera::Camera(bool isActive) : Module(isActive)
 	Y = vec3(0.0f, 1.0f, 0.0f);
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
-	Position = vec3(0.0f, 0.0f, 5.0f);
+	Position = vec3(0.0f, 5.0f, 30.0f);
 	Reference = vec3(0.0f, 0.0f, 0.0f);
 	
 }
