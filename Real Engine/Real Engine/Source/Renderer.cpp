@@ -194,6 +194,7 @@ void Renderer:: DrawDirectCube(vec3 position, float size)
 	glVertex3f(x, y + size, z + size);
 	glVertex3f(x, y, z + size);
 
+	
 	glVertex3f(x, y, z + size);
 	glVertex3f(x + size, y, z + size);
 	glVertex3f(x, y + size, z + size);

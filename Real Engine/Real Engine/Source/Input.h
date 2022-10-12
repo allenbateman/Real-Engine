@@ -29,7 +29,7 @@ public:
 	static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 	void RetriveMouseButtonCallBack(int button, int action, int mods);
 	static void MousePositionCallback(GLFWwindow* window, double xpos, double ypos);
-	void RetriveMousePositionCallBack(double xpos, double ypos);
+	void RetriveMousePositionCallBack(double xpos, double ypos,double dx, double dy);
 	static void windowCloseCallback(GLFWwindow* window);
 	int GetKey(int key);
 
@@ -57,5 +57,7 @@ private:
 	int mouseMotionY;  
 	static int mouseX;
 	static int mouseY;
+	static int mouseDX;
+	static int mouseDY;
 };
 

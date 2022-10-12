@@ -15,6 +15,9 @@ KeyState Input::mouseButtons[sizeof(KeyState) * NUM_MOUSE_BUTTONS];
 int Input::mouseX = 0;
 int Input::mouseY = 0;
 
+int Input::mouseDX = 0;
+int Input::mouseDY = 0;
+
 Input::Input(bool isActive) : Module(isActive)
 {
 	name.Create("Input");
@@ -178,16 +181,20 @@ void Input::RetriveMouseButtonCallBack(int button, int action, int mods)
 
 void Input::MousePositionCallback(GLFWwindow* window, double xpos, double ypos)
 {
+	if(mouseX != 0) mouseDX = xpos - mouseX;
+	if(mouseY != 0) mouseDY = ypos - mouseY;
 	mouseX = xpos;
 	mouseY = ypos;
 	Input* input = app->input;
-	input->RetriveMousePositionCallBack(xpos,ypos);
+	input->RetriveMousePositionCallBack(xpos,ypos, mouseDX, mouseDY);
 }
 
-void Input::RetriveMousePositionCallBack(double xpos, double ypos)
+void Input::RetriveMousePositionCallBack(double xpos, double ypos, double dx, double dy)
 {
 	mousePositionEvent.x = xpos;
 	mousePositionEvent.y = ypos;
+	mousePositionEvent.dx = dx;
+	mousePositionEvent.dy = dy;
 	app->eventSystem->PostEvent(&mousePositionEvent);
 }
 

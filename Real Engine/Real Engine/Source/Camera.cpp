@@ -60,6 +60,8 @@ bool Camera::HandleEvent(Event* e)
 		if (ki->key == GLFW_KEY_A && ki->keyState == KEY_REPEAT)newPos -= X * cameraSpeed;
 		if (ki->key == GLFW_KEY_D && ki->keyState == KEY_REPEAT)newPos += X * cameraSpeed;
 
+		if (ki->key == GLFW_KEY_T && ki->keyState == KEY_REPEAT) ResetCameraRotation();
+
 
 		Move(newPos);
 	}
@@ -70,16 +72,11 @@ bool Camera::HandleEvent(Event* e)
 		mouseRight = false;
 		MouseInput* mo = dynamic_cast<MouseInput*>(e);
 
-		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseMotion = (0.0f, 0.0f);
-		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_DOWN)mouseMotion = (0.0f, 0.0f);
-
 		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseLeft = true;
 		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_DOWN)mouseRight = true;
 
 		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_UP);
 		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_UP);
-			
-		
 			
 	}
 
@@ -88,54 +85,50 @@ bool Camera::HandleEvent(Event* e)
 	{
 		MousePosition* mo = dynamic_cast<MousePosition*>(e);
 		
-
-
 		if (mouseLeft)
 		{
-			float displacement = 0.0f;	
-			
-			displacement = mo->x - mouseMotion.x;
+
+			float rotationX = 0.0f;	
+			rotationX = mo->dx * rotationSpeed.x;
+
 					
-			
-
-			float DeltaX = displacement * 0.01;
-			if (displacement < 0.0f)
+			if (rotationX < 0.0f)
 			{
-				
-
-				X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				
+				X = rotate(X, rotationX, vec3(0.0f, 1.0f, 0.0f));
+				Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
+				Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
 			}
 			
-			if(displacement > 0.0f)
+			if(rotationX > 0.0f)
 			{
-				
-
-				X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-				Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-
+				X = rotate(X, rotationX, vec3(0.0f, 1.0f, 0.0f));
+				Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
+				Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
 			}
-			cout << DeltaX << endl;
-			
-			mouseMotion.y += mo->y;
 			
 
-			/*float DeltaY = mouseMotion.y * 0.001f;
+			float rotationY = 0.0f;
+			rotationY = mo->dy * rotationSpeed.y;
 
-			Y = rotate(Y, DeltaY, X);
-			Z = rotate(Z, DeltaY, X);
-
-			if (Y.y < 0.0f)
+			if (rotationY < 0.0f)
 			{
-				Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-				Y = cross(Z, X);
-			}*/
+				X = rotate(X, rotationY, vec3(1.0f, 0.0f, 0.0f));
+				Y = rotate(Y, rotationY, vec3(1.0f, 0.0f, 0.0f));
+				Z = rotate(Z, rotationY, vec3(1.0f, 0.0f, 0.0f));
+			}
+
+			if (rotationY > 0.0f)
+			{
+				X = rotate(X, rotationY, vec3(1.0f, 0.0f, 0.0f));
+				Y = rotate(Y, rotationY, vec3(1.0f, 0.0f, 0.0f));
+				Z = rotate(Z, rotationY, vec3(1.0f, 0.0f, 0.0f));
+			}
 		}
 
-		//Position = Reference + Z * length(Position);
+		//Block the roll of the camera
+
+		X.y = 0;
+		Y.x = 0;
 		
 		CalculateViewMatrix();
 		
@@ -154,33 +147,7 @@ bool Camera::HandleEvent(Event* e)
 // -----------------------------------------------------------------
 bool Camera::Update(float dt)
 {
-	if (app->input->GetKey(GLFW_KEY_C) == KEY_DOWN)
-	{
-		freecam = !freecam;
-	}
 	
-	if (app->input->GetKey(GLFW_KEY_J) == KEY_REPEAT)
-	{
-		cview = right;
-	}
-	else if (app->input->GetKey(GLFW_KEY_H) == KEY_REPEAT)
-	{
-		cview = behind;
-	}
-	else if (app->input->GetKey(GLFW_KEY_G) == KEY_REPEAT)
-	{
-		cview = left;
-	}
-	else
-	{
-		cview = normal;
-	}
-	cview = normal;
-	
-	DebugMode(dt);
-	
-		
-
 	// Recalculate matrix -------------
 	CalculateViewMatrix();
 	
@@ -231,6 +198,15 @@ void Camera::Move(const vec3 &Movement)
 	CalculateViewMatrix();
 }
 
+void Camera::ResetCameraRotation()
+{
+	X = vec3(1.0f, 0.0f, 0.0f);
+	Y = vec3(0.0f, 1.0f, 0.0f);
+	Z = vec3(0.0f, 0.0f, 1.0f);
+
+	CalculateViewMatrix();
+}
+
 // -----------------------------------------------------------------
 float* Camera::GetViewMatrix()
 {
@@ -241,31 +217,10 @@ float* Camera::GetViewMatrix()
 
 void Camera::DebugMode(float dt)
 {
-	// Implement a debug camera with keys and mouse
-	// Now we can make this movememnt frame rate independant!
-
-	//vec3 newPos(0, 0, 0);
-	//float speed = 100.0f * dt;
-	//
-	//if (app->input->GetKey(GLFW_KEY_LEFT_SHIFT) == KEY_REPEAT)
-	//	speed = 12.0f * dt;
-
-	//if (app->input->GetKey(GLFW_KEY_R) == KEY_REPEAT) newPos.y += speed;
-	//if (app->input->GetKey(GLFW_KEY_F) == KEY_REPEAT) newPos.y -= speed;
-
-	//if (app->input->GetKey(GLFW_KEY_W) == KEY_REPEAT) newPos -= Z * speed;
-	//if (app->input->GetKey(GLFW_KEY_S) == KEY_REPEAT) newPos += Z * speed;
-
-
-	//if (app->input->GetKey(GLFW_KEY_A) == KEY_REPEAT) newPos -= X * speed;
-	//if (app->input->GetKey(GLFW_KEY_D) == KEY_REPEAT) newPos += X * speed;
-
-	//Position += newPos;
-	//Reference += newPos;
-
+	
 	// Mouse motion ----------------
 	
-	if(app->input->GetMouseButtonDown(GLFW_MOUSE_BUTTON_1) == KEY_REPEAT)
+	/*if(app->input->GetMouseButtonDown(GLFW_MOUSE_BUTTON_1) == KEY_REPEAT)
 	{
 		int dx = 0;
 		int dy = 0;
@@ -302,7 +257,7 @@ void Camera::DebugMode(float dt)
 		}
 
 		Position = Reference + Z * length(Position);
-	}
+	}*/
 
 }
 

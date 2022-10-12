@@ -34,6 +34,7 @@ struct MousePosition : Event
 	MousePosition() { type = EventType::MOUSE_POSITION;};
 	~MousePosition() {};
 	int x = 0, y = 0;
+	int dx = 0, dy = 0;
 
 	void DisplayData()
 	{
