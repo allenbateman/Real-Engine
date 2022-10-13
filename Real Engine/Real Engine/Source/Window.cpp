@@ -31,6 +31,10 @@ bool Window::Awake()
 		LOG("GLFW could not be loaded");
 	}
 
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	//glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
+	//glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 	window = glfwCreateWindow(800, 600,"Real Engine", NULL, NULL);
 
 	glfwMakeContextCurrent(window);

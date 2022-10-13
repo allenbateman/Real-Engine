@@ -15,6 +15,14 @@ Renderer::~Renderer()
 
 bool Renderer::Awake()
 {
+	////Init glew
+	//if (!glewInit())
+	//	return false;
+
+	////set sync
+	//glfwSwapInterval(1);
+
+
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 
@@ -90,10 +98,7 @@ bool Renderer::PostUpdate()
 
 	glEnd();
 
-
-
 	app->window->Swapbuffers();
-
 
 	return true;
 }
