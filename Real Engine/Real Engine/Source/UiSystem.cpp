@@ -63,6 +63,19 @@ void UiSystem::PrepareFrame()
 
 void UiSystem::UpdatePanels()
 {
+	static ImGuiID dockspaceID = 0;
+	if (ImGui::Begin("Master Window", nullptr, ImGuiWindowFlags_MenuBar))
+	{
+		ImGui::TextUnformatted("DockSpace below");
+
+		// Declare Central dockspace
+		dockspaceID = ImGui::GetID("HUB_DockSpace");
+		ImGui::DockSpace(dockspaceID, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None | ImGuiDockNodeFlags_PassthruCentralNode/*|ImGuiDockNodeFlags_NoResize*/);
+	
+	
+	}
+	ImGui::End();
+
 	for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)
 	{
 		(*it)->Update();
