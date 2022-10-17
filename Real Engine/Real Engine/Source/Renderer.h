@@ -20,11 +20,6 @@ public:
 
 	void OnResize(int xPos,int yPos, int width, int height);
 	void DrawDirectCube(vec3 position, float size);
-
-	unsigned int FBO = NULL;
-	unsigned int framebufferTexture = NULL;
-	unsigned int RBO = NULL;
-
 	void GenerateBuffer();
 
 	mat3x3 NormalMatrix;

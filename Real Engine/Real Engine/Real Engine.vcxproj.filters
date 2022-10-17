@@ -32,6 +32,9 @@
     <Filter Include="Resource Files\Engine\UI System\Panels">
       <UniqueIdentifier>{67fc6e2d-f53e-47d4-8ca6-528f1f43e29a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Engine\Renderer">
+      <UniqueIdentifier>{6f74f3e0-d041-4c45-9d36-74f192c66560}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -96,6 +99,9 @@
     </ClCompile>
     <ClCompile Include="Source\Viewport.cpp">
       <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameBuffer.cpp">
+      <Filter>Resource Files\Engine\Renderer</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +191,9 @@
     </ClInclude>
     <ClInclude Include="Source\PanelEvents.h">
       <Filter>Resource Files\Engine\Event System\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameBuffer.h">
+      <Filter>Resource Files\Engine\Renderer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
