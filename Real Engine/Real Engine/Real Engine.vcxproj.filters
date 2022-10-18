@@ -38,6 +38,12 @@
     <Filter Include="Resource Files\Engine\Renderer\Shaders">
       <UniqueIdentifier>{a0822f16-559b-4386-93fb-114c72ee86c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Engine\GameObject">
+      <UniqueIdentifier>{1f4aca83-1826-4ac7-ada5-9a2b0563623f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\GameObject\Component">
+      <UniqueIdentifier>{dcadbdf2-7c50-4057-a355-23a5b8963c3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -105,6 +111,15 @@
     </ClCompile>
     <ClCompile Include="Source\FrameBuffer.cpp">
       <Filter>Resource Files\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component.cpp">
+      <Filter>Resource Files\Engine\GameObject\Component</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Resource Files\Engine\GameObject</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,6 +212,15 @@
     </ClInclude>
     <ClInclude Include="Source\FrameBuffer.h">
       <Filter>Resource Files\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component.h">
+      <Filter>Resource Files\Engine\GameObject\Component</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Resource Files\Engine\GameObject</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

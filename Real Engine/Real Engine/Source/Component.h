@@ -1,10 +1,12 @@
+#pragma once
 #include "GameObject.h"
 
-enum componentType
+ enum componentType
 {
-		DEFAULT = 0,
+	DEFAULT = 0
 };
 
+class GameObject;
 class Component
 {
 public:
@@ -14,10 +16,10 @@ public:
 	componentType type;
 	bool active;
 	GameObject* owner;
-	
-		
+
+
 	virtual void Enable();
 	virtual void Update();
 	virtual void Disable();
-	
+
 };
