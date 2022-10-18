@@ -30,7 +30,8 @@ bool Viewport::Update()
 	vMax.y += ImGui::GetWindowPos().y;
 
 	ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(255, 255, 0, 255));
-	ImGui::Image((ImTextureID)app->renderer->buffer.framebufferTexture, ImVec2{ 720,720 });
+	std::cout << app->renderer->buffer.framebufferTexture<<std::endl;
+	ImGui::Image((ImTextureID)app->renderer->buffer.framebufferTexture,ImGui::GetWindowSize());
 	ImGui::End();
 
 	return true;

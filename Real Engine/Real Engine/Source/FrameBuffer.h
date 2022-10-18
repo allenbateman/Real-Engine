@@ -10,9 +10,7 @@ public:
 
 	 void GenerateBuffer(int width ,int height);
 	GLuint framebufferTexture = NULL;
-private:
 	GLuint FBO = NULL;
-
 	GLuint RBO = NULL;
 };
 

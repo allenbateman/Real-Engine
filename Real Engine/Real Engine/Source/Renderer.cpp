@@ -39,7 +39,7 @@ bool Renderer::Awake()
 
 	OnResize(0,0,app->window->GetWidth(), app->window->GetHeight());
 
-
+	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
 	return true;
 }
 
@@ -50,7 +50,7 @@ bool Renderer::Start()
 
 bool Renderer::PreUpdate()
 {
-	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
+	
 	//clear window rendered buffer
 	app->window->Clear();
 	glMatrixMode(GL_MODELVIEW);
@@ -62,14 +62,15 @@ bool Renderer::PreUpdate()
 bool Renderer::Update()
 {
 
+
+
 	return true;
 }
 
 bool Renderer::PostUpdate()
 {	
 	
-	app->uiSystem->RenderUi();
-
+	glBindFramebuffer(GL_FRAMEBUFFER, buffer.FBO);
 	vec3 cubePos(0.0f, 0.0f, 0.0f);
 	DrawDirectCube(cubePos, 10.0f);
 
@@ -89,7 +90,11 @@ bool Renderer::PostUpdate()
 	}
 
 	glEnd();
+	//bind new buffer 
 
+
+	glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	app->uiSystem->RenderUi();
 	app->window->Swapbuffers();
 
 	return true;
