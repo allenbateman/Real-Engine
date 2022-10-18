@@ -14,7 +14,7 @@ Camera::Camera(bool isActive) : Module(isActive)
 	Z = vec3(0.0f, 0.0f, 1.0f);
 
 	Position = vec3(0.0f, 5.0f, 30.0f);
-	Reference = vec3(0.0f, 0.0f, 0.0f);
+	Reference = vec3(0.0f, 5.0f, 0.0f);
 	
 }
 
@@ -61,6 +61,7 @@ bool Camera::HandleEvent(Event* e)
 		if (ki->key == GLFW_KEY_D && ki->keyState == KEY_REPEAT)newPos += X * cameraSpeed;
 
 		if (ki->key == GLFW_KEY_T && ki->keyState == KEY_REPEAT) ResetCameraRotation();
+		if (ki->key == GLFW_KEY_G && ki->keyState == KEY_REPEAT) ResetCameraPosition();
 
 
 		Move(newPos);
@@ -90,52 +91,65 @@ bool Camera::HandleEvent(Event* e)
 
 			float rotationX = 0.0f;	
 			rotationX = mo->dx * rotationSpeed.x;
-
-					
-			if (rotationX < 0.0f)
-			{
-				X = rotate(X, rotationX, vec3(0.0f, 1.0f, 0.0f));
-				Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
-				Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
-			}
+		
+			X = rotate(X, rotationX, vec3(0.0f, 1.0f, 0.0f));
+			Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
+			Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
 			
-			if(rotationX > 0.0f)
-			{
-				X = rotate(X, rotationX, vec3(0.0f, 1.0f, 0.0f));
-				Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
-				Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
-			}
 			
-
+			
 			float rotationY = 0.0f;
 			rotationY = mo->dy * rotationSpeed.y;
 
-			if (rotationY < 0.0f)
-			{
-				X = rotate(X, rotationY, vec3(1.0f, 0.0f, 0.0f));
-				Y = rotate(Y, rotationY, vec3(1.0f, 0.0f, 0.0f));
-				Z = rotate(Z, rotationY, vec3(1.0f, 0.0f, 0.0f));
-			}
+			
+			Y = rotate(Y, rotationY, X);
+			Z = rotate(Z, rotationY, X);
 
-			if (rotationY > 0.0f)
+			if (Y.y < 0.0f)
 			{
-				X = rotate(X, rotationY, vec3(1.0f, 0.0f, 0.0f));
-				Y = rotate(Y, rotationY, vec3(1.0f, 0.0f, 0.0f));
-				Z = rotate(Z, rotationY, vec3(1.0f, 0.0f, 0.0f));
+				if (Z.y > 0.0f) Z.y = 1.0f;
+				if (Z.y > 0.0f) Z.y = -1.0f;
+				Y = cross(Z, X);
 			}
+			
+
+			CalculateViewMatrix();
+
 		}
 
-		//Block the roll of the camera
-
-		X.y = 0;
-		Y.x = 0;
-		Z.y = 0;
 		
-		CalculateViewMatrix();
 		
 		if (mouseRight)
 		{
+			float rotationX = 0.0f;
+			rotationX = mo->dx * -rotationSpeed.x;
 
+			Position -= Reference;
+
+			X = rotate(X, rotationX, vec3(0.0f, 1.0f, 0.0f));
+			Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
+			Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
+
+
+
+			float rotationY = 0.0f;
+			rotationY = mo->dy * -rotationSpeed.y;
+
+
+			Y = rotate(Y, rotationY, X);
+			Z = rotate(Z, rotationY, X);
+
+			if (Y.y < 0.0f)
+			{
+				if (Z.y > 0.0f) Z.y = 1.0f;
+				if (Z.y > 0.0f) Z.y = -1.0f;
+				Y = cross(Z, X);
+			}
+
+
+			Position = Reference + Z * length(Position);
+
+			CalculateViewMatrix();
 		}
 	}
 		break;
@@ -207,7 +221,11 @@ void Camera::ResetCameraRotation()
 
 	CalculateViewMatrix();
 }
-
+void Camera::ResetCameraPosition()
+{
+	Position = vec3(0.0f, 5.0f, 30.0f);
+	Reference = vec3(0.0f, 5.0f, 0.0f);
+}
 // -----------------------------------------------------------------
 float* Camera::GetViewMatrix()
 {
@@ -219,47 +237,7 @@ float* Camera::GetViewMatrix()
 void Camera::DebugMode(float dt)
 {
 	
-	// Mouse motion ----------------
 	
-	/*if(app->input->GetMouseButtonDown(GLFW_MOUSE_BUTTON_1) == KEY_REPEAT)
-	{
-		int dx = 0;
-		int dy = 0;
-		app->input->GetMousePosition(dx, dy);
-			
-
-		float Sensitivity = 0.25f;
-		
-		Position -= Reference;
-
-		if (dx != 0)
-		{
-			float DeltaX = (float)dx * Sensitivity;
-
-			X = rotate(X, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-			Y = rotate(Y, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-			Z = rotate(Z, DeltaX, vec3(0.0f, 1.0f, 0.0f));
-			
-
-		}
-
-		if (dy != 0)
-		{
-			float DeltaY = (float)dy * Sensitivity;
-
-			Y = rotate(Y, DeltaY, X);
-			Z = rotate(Z, DeltaY, X);
-
-			if (Y.y < 0.0f)
-			{
-				Z = vec3(0.0f, Z.y > 0.0f ? 1.0f : -1.0f, 0.0f);
-				Y = cross(Z, X);
-			}
-		}
-
-		Position = Reference + Z * length(Position);
-	}*/
-
 }
 
 // -----------------------------------------------------------------
