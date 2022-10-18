@@ -45,13 +45,12 @@ bool Renderer::Awake()
 
 bool Renderer::Start()
 {
-	//GenerateBuffer();
 	return true;
 }
 
 bool Renderer::PreUpdate()
 {
-
+	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
 	//clear window rendered buffer
 	app->window->Clear();
 	glMatrixMode(GL_MODELVIEW);
@@ -67,9 +66,10 @@ bool Renderer::Update()
 }
 
 bool Renderer::PostUpdate()
-{
-	app->uiSystem->RenderUi();
+{	
 	
+	app->uiSystem->RenderUi();
+
 	vec3 cubePos(0.0f, 0.0f, 0.0f);
 	DrawDirectCube(cubePos, 10.0f);
 

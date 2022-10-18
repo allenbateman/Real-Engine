@@ -1,5 +1,5 @@
 #include "Viewport.h"
-
+#include "FrameBuffer.h"
 Viewport::Viewport(bool isActive) : Panel(active)
 {
 }
@@ -30,8 +30,7 @@ bool Viewport::Update()
 	vMax.y += ImGui::GetWindowPos().y;
 
 	ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(255, 255, 0, 255));
-	//app->renderer->OnResize(vMin.x, vMin.y, vMax.x, vMax.y);
-
+	ImGui::Image((ImTextureID)app->renderer->buffer.framebufferTexture, ImVec2{ 720,720 });
 	ImGui::End();
 
 	return true;

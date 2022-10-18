@@ -4,13 +4,15 @@
 
 class FrameBuffer
 {
+public:
 	FrameBuffer();
 	~FrameBuffer();
 
-	void GenerateBuffer(int &width,int &height);
+	 void GenerateBuffer(int width ,int height);
+	GLuint framebufferTexture = NULL;
+private:
+	GLuint FBO = NULL;
 
-	unsigned int FBO = NULL;
-	unsigned int framebufferTexture = NULL;
-	unsigned int RBO = NULL;
+	GLuint RBO = NULL;
 };
 

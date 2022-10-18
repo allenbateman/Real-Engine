@@ -48,7 +48,7 @@ bool Window::Awake()
 	}
 	glfwGetFramebufferSize(window, &width, &height);
 
-	subscribedEvents.push_back(NONE);
+	glewInit();
 
 	return ret;
 }

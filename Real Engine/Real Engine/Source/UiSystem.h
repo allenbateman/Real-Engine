@@ -22,13 +22,13 @@ public:
 	void PrepareFrame();
 	void UpdatePanels();
 	void RenderUi();
-	void ShowExampleAppDockSpace(bool* p_open);
+	void MainAppDockSpace(bool* p_open);
 private:
 	vector<Panel*> panelList;
 
 	Viewport* camViewport;
 
-	bool* openExample;
+	bool OpenMainWindow;
 	ImGuiIO* io = nullptr;
 };
 

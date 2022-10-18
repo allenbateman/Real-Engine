@@ -1,6 +1,7 @@
 #pragma once
 #include "Module.h"
 #include "glmath.h"
+#include "FrameBuffer.h"
 
 
 #define MAX_LIGHTS 8
@@ -20,7 +21,9 @@ public:
 
 	void OnResize(int xPos,int yPos, int width, int height);
 	void DrawDirectCube(vec3 position, float size);
-	void GenerateBuffer();
+
+	FrameBuffer buffer;
+
 
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;

@@ -1,10 +1,13 @@
 #include "FrameBuffer.h"
 #include <iostream>
+FrameBuffer::FrameBuffer()
+{
+}
 FrameBuffer::~FrameBuffer()
 {
 }
 
-void FrameBuffer::GenerateBuffer(int& width, int& height)
+void FrameBuffer::GenerateBuffer(int width, int height)
 {
 	//bind frame buffer
 	glGenFramebuffers(1, &FBO);

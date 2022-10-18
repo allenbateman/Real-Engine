@@ -17,15 +17,11 @@ bool UiSystem::Start()
     ImGui::CreateContext();
     io = &ImGui::GetIO(); (void)io;
     io->ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
-    //io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
     io->ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
     io->ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-    //io.ConfigViewportsNoAutoMerge = true;
-    //io.ConfigViewportsNoTaskBarIcon = true;
-
+    io->ConfigViewportsNoTaskBarIcon = true;
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
-    //ImGui::StyleColorsLight();
     // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
     ImGuiStyle& style = ImGui::GetStyle();
     if (io->ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
@@ -45,10 +41,17 @@ bool UiSystem::Start()
 		(*it)->Init();
 	}
 
-    openExample = new bool;
-    *openExample = true;
+    OpenMainWindow = true;
 
 	return true;
+}
+
+void UiSystem::PrepareFrame()
+{
+	// feed inputs to dear imgui, start new frame
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplGlfw_NewFrame();
+	ImGui::NewFrame();
 }
 
 bool UiSystem::PreUpdate()
@@ -59,7 +62,7 @@ bool UiSystem::PreUpdate()
 
 bool UiSystem::Update(float dt)
 {
-    ShowExampleAppDockSpace(openExample);
+    MainAppDockSpace(&OpenMainWindow);
 	UpdatePanels();
    
 	return true;
@@ -75,13 +78,7 @@ bool UiSystem::CleanUp()
 	return true;
 }
 
-void UiSystem::PrepareFrame()
-{
-	// feed inputs to dear imgui, start new frame
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
-}
+
 
 void UiSystem::UpdatePanels()
 {
@@ -111,7 +108,7 @@ void UiSystem::RenderUi()
     }
 }
 
-void UiSystem::ShowExampleAppDockSpace(bool* p_open)
+void UiSystem::MainAppDockSpace(bool* p_open)
 {
     // Variables to configure the Dockspace example.
     static bool opt_fullscreen = true; // Is the Dockspace full-screen?
@@ -168,7 +165,7 @@ void UiSystem::ShowExampleAppDockSpace(bool* p_open)
     // all active windows docked into it will lose their parent and become undocked.
     // We cannot preserve the docking relationship between an active window and an inactive docking, otherwise
     // any change of dockspace/settings would lead to windows being stuck in limbo and never being visible.
-    ImGui::Begin("DockSpace test", p_open, window_flags);
+    ImGui::Begin("Real Engie", p_open, window_flags);
 
     // Remove the padding configuration - we pushed it, now we pop it:
     if (!opt_padding)
@@ -185,7 +182,7 @@ void UiSystem::ShowExampleAppDockSpace(bool* p_open)
     {
         // If it is, draw the Dockspace with the DockSpace() function.
         // The GetID() function is to give a unique identifier to the Dockspace - here, it's "MyDockSpace".
-        ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+        ImGuiID dockspace_id = ImGui::GetID("Main window");
         ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), dockspace_flags);
     }
     else

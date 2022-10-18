@@ -35,6 +35,9 @@
     <Filter Include="Resource Files\Engine\Renderer">
       <UniqueIdentifier>{6f74f3e0-d041-4c45-9d36-74f192c66560}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Engine\Renderer\Shaders">
+      <UniqueIdentifier>{a0822f16-559b-4386-93fb-114c72ee86c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -195,5 +198,10 @@
     <ClInclude Include="Source\FrameBuffer.h">
       <Filter>Resource Files\Engine\Renderer</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Shader.frag">
+      <Filter>Resource Files\Engine\Renderer\Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

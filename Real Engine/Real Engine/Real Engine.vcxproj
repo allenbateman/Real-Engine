@@ -74,6 +74,9 @@
     <ClInclude Include="Source\Viewport.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Shader.frag" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
