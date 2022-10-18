@@ -2,6 +2,8 @@
 #include "Application.h"
 #include "Window.h"
 #include "UiSystem.h"
+#include "EventSystem.h"
+#include "Events.h"
 #include "Camera.h"
 
 Renderer::Renderer(bool isActive) : Module(isActive)
@@ -40,6 +42,9 @@ bool Renderer::Awake()
 	OnResize(0,0,app->window->GetWidth(), app->window->GetHeight());
 
 	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
+
+	app->eventSystem->SubcribeModule(this,PANEL_RESIZE);
+
 	return true;
 }
 
@@ -53,6 +58,7 @@ bool Renderer::PreUpdate()
 	
 	//clear window rendered buffer
 	app->window->Clear();
+	buffer.ClearBuffer();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(app->camera->GetViewMatrix());
 
@@ -69,8 +75,10 @@ bool Renderer::Update()
 
 bool Renderer::PostUpdate()
 {	
-	
+	//bind renderer to the texture we want to render to 
 	glBindFramebuffer(GL_FRAMEBUFFER, buffer.FBO);
+
+	//Render every thing here -------------------------------------------
 	vec3 cubePos(0.0f, 0.0f, 0.0f);
 	DrawDirectCube(cubePos, 10.0f);
 
@@ -90,9 +98,9 @@ bool Renderer::PostUpdate()
 	}
 
 	glEnd();
-	//bind new buffer 
+	//Stop render  -------------------------------------------
 
-
+	//bind to the default renderer to render everything
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 	app->uiSystem->RenderUi();
 	app->window->Swapbuffers();
@@ -107,8 +115,11 @@ bool Renderer::CleanUp()
 
 void Renderer::OnResize(int xPos, int yPos, int width, int height)
 {
-	glViewport(xPos, yPos, width, height);
+	//resize the texture 
+	buffer.GenerateBuffer(width, height);
 
+	glViewport(xPos, yPos, width, height);
+	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
@@ -201,4 +212,21 @@ void Renderer:: DrawDirectCube(vec3 position, float size)
 
 
 	glEnd();
+}
+
+bool Renderer::HandleEvent(Event* e)
+{
+
+	switch (e->type)
+	{
+	case PANEL_RESIZE:
+	{
+		OnPanelResize* Pr = dynamic_cast<OnPanelResize*>(e);
+		OnResize(0, 0, Pr->x, Pr->y);
+	}
+		break;
+	default:
+		break;
+	}
+	return false;
 }

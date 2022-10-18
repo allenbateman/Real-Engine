@@ -44,6 +44,10 @@ bool Panel::CleanUp()
 	return true;
 }
 
+void Panel::BroadCastEvent(Event* e)
+{
+}
+
 void Panel::HandleEvents(Event* e)
 {
 }

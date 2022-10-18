@@ -10,6 +10,11 @@ FrameBuffer::~FrameBuffer()
 
 void FrameBuffer::GenerateBuffer(int width, int height)
 {
+
+	//clear all the elements, for resize things
+	glDeleteTextures(1, &framebufferTexture);
+	glDeleteFramebuffers(1, &FBO);
+
 	//bind frame buffer
 	glGenFramebuffers(1, &FBO);
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
@@ -34,4 +39,10 @@ void FrameBuffer::GenerateBuffer(int width, int height)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete! \n";
 
 
+}
+
+void FrameBuffer::ClearBuffer()
+{
+	glBindFramebuffer(GL_FRAMEBUFFER,FBO);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }

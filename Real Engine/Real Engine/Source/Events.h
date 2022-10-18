@@ -42,3 +42,10 @@ struct MousePosition : Event
 	}
 
 };
+
+struct  OnPanelResize : Event
+{
+	OnPanelResize(int _x, int _y) { x = _x; y = _y; type = EventType::PANEL_RESIZE; };
+	~OnPanelResize() {};
+	int x, y;
+};

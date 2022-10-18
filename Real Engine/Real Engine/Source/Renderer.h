@@ -21,6 +21,7 @@ public:
 
 	void OnResize(int xPos,int yPos, int width, int height);
 	void DrawDirectCube(vec3 position, float size);
+	bool HandleEvent(Event* e);
 
 	FrameBuffer buffer;
 

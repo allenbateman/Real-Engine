@@ -12,5 +12,7 @@ public:
 	bool Update();
 	bool PostUpdate();
 	bool CleanUp();
+	void BroadCastEvent(Event* e);
+	ImVec2 LastSize;
 };
 

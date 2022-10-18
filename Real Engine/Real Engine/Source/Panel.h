@@ -25,6 +25,8 @@ public:
 	virtual bool Update();
 	//clean panel
 	virtual bool CleanUp();
+
+	virtual void BroadCastEvent(Event* e);
 	virtual void HandleEvents(Event* e);
 	SString name;
 	bool active;

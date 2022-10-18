@@ -1,5 +1,7 @@
 #include "Viewport.h"
 #include "FrameBuffer.h"
+#include "EventSystem.h"
+#include "Events.h"
 Viewport::Viewport(bool isActive) : Panel(active)
 {
 }
@@ -23,15 +25,26 @@ bool Viewport::Update()
 	ImGuiViewport* viewport = ImGui::GetMainViewport();
 	ImVec2 vMin = ImGui::GetWindowContentRegionMin();
 	ImVec2 vMax = ImGui::GetWindowContentRegionMax();
-
+	ImVec2 availableSize;
 	vMin.x += ImGui::GetWindowPos().x;
 	vMin.y += ImGui::GetWindowPos().y;
 	vMax.x += ImGui::GetWindowPos().x;
 	vMax.y += ImGui::GetWindowPos().y;
 
 	ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(255, 255, 0, 255));
-	std::cout << app->renderer->buffer.framebufferTexture<<std::endl;
-	ImGui::Image((ImTextureID)app->renderer->buffer.framebufferTexture,ImGui::GetWindowSize());
+	availableSize = ImGui::GetContentRegionAvail();
+
+	const ImVec2& CurSize = ImGui::GetWindowViewport()->Size;
+	if (LastSize.x != CurSize.x || LastSize.y != CurSize.y)
+	{
+		LastSize = CurSize;
+		
+		BroadCastEvent(new OnPanelResize(CurSize.x, CurSize.y));
+		
+	}
+	ImGui::Image((ImTextureID)app->renderer->buffer.framebufferTexture, availableSize,ImVec2(0, 1), ImVec2(1, 0));
+	
+
 	ImGui::End();
 
 	return true;
@@ -45,4 +58,9 @@ bool Viewport::PostUpdate()
 bool Viewport::CleanUp()
 {
 	return true;
+}
+
+void Viewport::BroadCastEvent(Event* e)
+{
+	app->eventSystem->PostEvent(e);
 }
