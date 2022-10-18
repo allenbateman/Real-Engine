@@ -118,7 +118,6 @@ bool Camera::HandleEvent(Event* e)
 		}
 
 		
-		
 		if (mouseRight)
 		{
 			float rotationX = 0.0f;
@@ -225,6 +224,10 @@ void Camera::ResetCameraPosition()
 {
 	Position = vec3(0.0f, 5.0f, 30.0f);
 	Reference = vec3(0.0f, 5.0f, 0.0f);
+}
+void Camera::SetReference(vec3 myReference)
+{
+	Reference = myReference;
 }
 // -----------------------------------------------------------------
 float* Camera::GetViewMatrix()
