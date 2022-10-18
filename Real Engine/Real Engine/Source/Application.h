@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+
 using namespace std;
 
 // Modules
@@ -91,13 +92,6 @@ private:
 
 	mutable bool saveGameRequested;
 	bool loadGameRequested;
-
-	//PerfTimer ptimer;
-	//PerfTimer frameDuration;
-
-	//Timer startupTime;
-	//Timer frameTime;
-	//Timer lastSecFrameTime;
 	Timer	timer;
 	float	dt;
 

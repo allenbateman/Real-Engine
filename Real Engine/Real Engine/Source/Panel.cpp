@@ -10,14 +10,6 @@ Panel::~Panel()
 {
 }
 
-void Panel::OnAttach()
-{
-}
-
-void Panel::OnDetach()
-{
-}
-
 void Panel::Begin()
 {
 	ImGui_ImplOpenGL3_NewFrame();

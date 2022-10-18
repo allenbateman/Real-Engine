@@ -106,6 +106,12 @@
     <ClCompile Include="Source\FrameBuffer.cpp">
       <Filter>Resource Files\Engine\Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\RendererPanel.cpp">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -197,6 +203,12 @@
     </ClInclude>
     <ClInclude Include="Source\FrameBuffer.h">
       <Filter>Resource Files\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\RendererPanel.h">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

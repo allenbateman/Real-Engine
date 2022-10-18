@@ -34,7 +34,9 @@ bool UiSystem::Start()
 	ImGui_ImplOpenGL3_Init("#version 410");
 
 	camViewport = new Viewport(true);
+    mainRenderer = new RendererPanel(true);
 	panelList.push_back(camViewport);
+    panelList.push_back(mainRenderer);
 
 	for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)
 	{
@@ -75,6 +77,9 @@ bool UiSystem::CleanUp()
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
     io = nullptr;
+    panelList.clear();
+    camViewport = nullptr;
+    mainRenderer = nullptr;
 	return true;
 }
 
@@ -83,10 +88,9 @@ bool UiSystem::CleanUp()
 void UiSystem::UpdatePanels()
 {
 	for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)
-	{
+    {
 		(*it)->Update();
 	}
-  
 }
 
 void UiSystem::RenderUi()
@@ -110,11 +114,6 @@ void UiSystem::RenderUi()
 
 void UiSystem::MainAppDockSpace(bool* p_open)
 {
-    // Variables to configure the Dockspace example.
-    static bool opt_fullscreen = true; // Is the Dockspace full-screen?
-    static bool opt_padding = false; // Is there padding (a blank space) between the window edge and the Dockspace?
-    static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None; // Config flags for the Dockspace
-
     // In this example, we're embedding the Dockspace into an invisible parent window to make it more configurable.
     // We set ImGuiWindowFlags_NoDocking to make sure the parent isn't dockable into because this is handled by the Dockspace.
     //
@@ -124,7 +123,7 @@ void UiSystem::MainAppDockSpace(bool* p_open)
     // renders the menu bar, found at the end of this function.
     ImGuiWindowFlags window_flags = ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoDocking | ImGuiConfigFlags_DockingEnable;
 
-    // Is the example in Fullscreen mode?
+    // Is the window in Fullscreen mode
     if (opt_fullscreen)
     {
         // If so, get the main viewport:
@@ -199,22 +198,27 @@ void UiSystem::MainAppDockSpace(bool* p_open)
         {
             // Disabling fullscreen would allow the window to be moved to the front of other windows,
             // which we can't undo at the moment without finer window depth/z control.
-            ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
-            ImGui::MenuItem("Padding", NULL, &opt_padding);
+            //ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
+            //ImGui::MenuItem("Padding", NULL, &opt_padding);
+
+            if (ImGui::MenuItem("Renderer"))
+            {
+                mainRenderer->active = true;
+                ImGui::SetWindowFocus(mainRenderer->name.GetString());
+            }
+            ImGui::MenuItem("Object Loader");
+            ImGui::MenuItem("Inspector");
             ImGui::Separator();
 
-            // Display a menu item for each Dockspace flag, clicking on one will toggle its assigned flag.
+            //// Display a menu item for each Dockspace flag, clicking on one will toggle its assigned flag.
             if (ImGui::MenuItem("Flag: NoSplit", "", (dockspace_flags & ImGuiDockNodeFlags_NoSplit) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoSplit; }
-            if (ImGui::MenuItem("Flag: NoResize", "", (dockspace_flags & ImGuiDockNodeFlags_NoResize) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoResize; }
-            if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode; }
-            if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
-            if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, opt_fullscreen)) { dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
-            ImGui::Separator();
+            //if (ImGui::MenuItem("Flag: NoResize", "", (dockspace_flags & ImGuiDockNodeFlags_NoResize) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoResize; }
+            //if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode; }
+            //if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
+            //if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, opt_fullscreen)) { dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
+            //ImGui::Separator();
 
-            // Display a menu item to close this example.
-            if (ImGui::MenuItem("Close", NULL, false, p_open != NULL))
-                if (p_open != NULL) // Remove MSVC warning C6011 (NULL dereference) - the `p_open != NULL` in MenuItem() does prevent NULL derefs, but IntelliSense doesn't analyze that deep so we need to add this in ourselves.
-                    *p_open = false; // Changing this variable to false will close the parent window, therefore closing the Dockspace as well.
+ 
             ImGui::EndMenu();
         }
 

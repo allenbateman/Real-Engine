@@ -7,6 +7,12 @@
 
 
 #include "Viewport.h"
+#include "RendererPanel.h"
+
+// Variables to configure the Dockspace example.
+static bool opt_fullscreen = true; // Is the Dockspace full-screen?
+static bool opt_padding = false; // Is there padding (a blank space) between the window edge and the Dockspace?
+static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None; // Config flags for the Dockspace
 
 class UiSystem :  public Module
 {
@@ -27,8 +33,8 @@ private:
 	vector<Panel*> panelList;
 
 	Viewport* camViewport;
+	RendererPanel* mainRenderer;
 
 	bool OpenMainWindow;
 	ImGuiIO* io = nullptr;
 };
-

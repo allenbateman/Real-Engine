@@ -11,11 +11,6 @@ public:
 	Panel(bool startActive);
 	~Panel();
 
-
-
-	//attach detach from docking
-	virtual void OnAttach();
-	virtual void OnDetach();
 	//Begin end new windows
 	virtual void Begin();
 	virtual void End();
@@ -30,5 +25,6 @@ public:
 	virtual void HandleEvents(Event* e);
 	SString name;
 	bool active;
+	ImGuiWindowFlags window_flags;
 };
 

@@ -2,9 +2,12 @@
 #include "Module.h"
 #include "glmath.h"
 #include "FrameBuffer.h"
-
-
+#include "External/bitflags/bitflags.hpp"
 #define MAX_LIGHTS 8
+
+BEGIN_BITFLAGS(Flags)
+FLAG(r_BackCulling)
+END_BITFLAGS(Flags)
 
 class Renderer : public Module
 {
