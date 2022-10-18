@@ -194,14 +194,14 @@ void UiSystem::MainAppDockSpace(bool* p_open)
     // you should remove the below if-statement as well.
     if (ImGui::BeginMenuBar())
     {
-        if (ImGui::BeginMenu("Options"))
+        if (ImGui::BeginMenu("Windows"))
         {
             // Disabling fullscreen would allow the window to be moved to the front of other windows,
             // which we can't undo at the moment without finer window depth/z control.
             //ImGui::MenuItem("Fullscreen", NULL, &opt_fullscreen);
             //ImGui::MenuItem("Padding", NULL, &opt_padding);
 
-            if (ImGui::MenuItem("Renderer"))
+            if (ImGui::MenuItem("Render Settings"))
             {
                 mainRenderer->active = true;
                 ImGui::SetWindowFocus(mainRenderer->name.GetString());
@@ -209,14 +209,6 @@ void UiSystem::MainAppDockSpace(bool* p_open)
             ImGui::MenuItem("Object Loader");
             ImGui::MenuItem("Inspector");
             ImGui::Separator();
-
-            //// Display a menu item for each Dockspace flag, clicking on one will toggle its assigned flag.
-            if (ImGui::MenuItem("Flag: NoSplit", "", (dockspace_flags & ImGuiDockNodeFlags_NoSplit) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoSplit; }
-            //if (ImGui::MenuItem("Flag: NoResize", "", (dockspace_flags & ImGuiDockNodeFlags_NoResize) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoResize; }
-            //if (ImGui::MenuItem("Flag: NoDockingInCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_NoDockingInCentralNode) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_NoDockingInCentralNode; }
-            //if (ImGui::MenuItem("Flag: AutoHideTabBar", "", (dockspace_flags & ImGuiDockNodeFlags_AutoHideTabBar) != 0)) { dockspace_flags ^= ImGuiDockNodeFlags_AutoHideTabBar; }
-            //if (ImGui::MenuItem("Flag: PassthruCentralNode", "", (dockspace_flags & ImGuiDockNodeFlags_PassthruCentralNode) != 0, opt_fullscreen)) { dockspace_flags ^= ImGuiDockNodeFlags_PassthruCentralNode; }
-            //ImGui::Separator();
 
  
             ImGui::EndMenu();
