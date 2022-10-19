@@ -1,8 +1,8 @@
 #include "Viewport.h"
 #include "FrameBuffer.h"
 #include "EventSystem.h"
-#include "Events.h"
-Viewport::Viewport(bool isActive) : Panel(active)
+
+Viewport::Viewport(int _id,bool isActive) : Panel(id,active)
 {
 	name.Create("Camera Viewport");
 }
@@ -29,14 +29,8 @@ bool Viewport::Update()
 	if (ImGui::Begin("Camera Viewport"),NULL,window_flags)
 	{
 		ImGui::PopStyleVar();
-		OnPanelHovered();
-		ImVec2 availableSize;
-		availableSize = ImGui::GetContentRegionAvail();
-		if (LastSize.x != availableSize.x || LastSize.y != availableSize.y)
-		{
-			LastSize = availableSize;
-			BroadCastEvent(new OnPanelResize(availableSize.x, availableSize.y));
-		}
+		OnHovered();
+		OnResize();
 		ImGui::Image((ImTextureID)app->renderer->buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
 
 	}
@@ -53,9 +47,4 @@ bool Viewport::PostUpdate()
 bool Viewport::CleanUp()
 {
 	return true;
-}
-
-void Viewport::BroadCastEvent(Event* e)
-{
-	app->eventSystem->PostEvent(e);
 }

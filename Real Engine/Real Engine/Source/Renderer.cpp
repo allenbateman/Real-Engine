@@ -223,7 +223,8 @@ bool Renderer::HandleEvent(Event* e)
 	case PANEL_RESIZE:
 	{
 		OnPanelResize* Pr = dynamic_cast<OnPanelResize*>(e);
-		OnResize(0, 0, Pr->x, Pr->y);
+		if(Pr->id == eViewport)
+			OnResize(0, 0, Pr->x, Pr->y);
 	}
 		break;
 	default:

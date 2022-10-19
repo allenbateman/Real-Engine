@@ -4,7 +4,7 @@
 #include "Panel.h"
 
 
-
+#include "PanelIDs.h"
 
 #include "Viewport.h"
 #include "RendererPanel.h"

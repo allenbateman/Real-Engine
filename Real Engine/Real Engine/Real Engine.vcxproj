@@ -35,6 +35,7 @@
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
     <ClCompile Include="Source\Input.cpp" />
+    <ClCompile Include="Source\Inspector.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Panel.cpp" />
@@ -69,10 +70,12 @@
     <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\InputEnums.h" />
+    <ClInclude Include="Source\Inspector.h" />
     <ClInclude Include="Source\Log.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelEvents.h" />
+    <ClInclude Include="Source\PanelIDs.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\RendererPanel.h" />
     <ClInclude Include="Source\Scene.h" />

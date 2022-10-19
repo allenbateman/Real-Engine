@@ -3,7 +3,7 @@
 class RendererPanel : public Panel
 {
 public:
-	RendererPanel(bool isActive);
+	RendererPanel(int _id, bool isActive);
 	~RendererPanel();
 
 	void Begin();

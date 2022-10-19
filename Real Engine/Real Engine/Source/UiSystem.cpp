@@ -33,8 +33,8 @@ bool UiSystem::Start()
 	ImGui_ImplGlfw_InitForOpenGL(app->window->window, true);
 	ImGui_ImplOpenGL3_Init("#version 410");
 
-	camViewport = new Viewport(true);
-    mainRenderer = new RendererPanel(true);
+	camViewport = new Viewport(eViewport,true);
+    mainRenderer = new RendererPanel(eRender_Settings,true);
 	panelList.push_back(camViewport);
     panelList.push_back(mainRenderer);
 
@@ -206,15 +206,12 @@ void UiSystem::MainAppDockSpace(bool* p_open)
                 mainRenderer->active = true;
                 ImGui::SetWindowFocus(mainRenderer->name.GetString());
             }
-            ImGui::MenuItem("Object Loader");
             ImGui::MenuItem("Inspector");
             ImGui::Separator();
 
  
             ImGui::EndMenu();
         }
-
-
         ImGui::EndMenuBar();
     }
 
