@@ -16,6 +16,7 @@ bool Viewport::Init()
 
 	active = true;
 	window_flags = ImGuiWindowFlags_NoDocking;
+	borderOffset = 0;
 	return true;
 }
 
@@ -28,27 +29,13 @@ bool Viewport::Update()
 	if (ImGui::Begin("Camera Viewport"),NULL,window_flags)
 	{
 		ImGui::PopStyleVar();
-		if (ImGui::IsWindowHovered(0))
-		{
-			ImGuiViewport* viewport = ImGui::GetMainViewport();
-			ImVec2 vMin = ImGui::GetWindowContentRegionMin();
-			ImVec2 vMax = ImGui::GetWindowContentRegionMax();
-		
-			vMin.x += ImGui::GetWindowPos().x;
-			vMin.y += ImGui::GetWindowPos().y;
-			vMax.x += ImGui::GetWindowPos().x;
-			vMax.y += ImGui::GetWindowPos().y;
-
-			ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, IM_COL32(125, 125,125, 200));
-		}
+		OnPanelHovered();
 		ImVec2 availableSize;
 		availableSize = ImGui::GetContentRegionAvail();
-		const ImVec2& CurSize = ImGui::GetWindowViewport()->Size;
-		if (LastSize.x != CurSize.x || LastSize.y != CurSize.y)
+		if (LastSize.x != availableSize.x || LastSize.y != availableSize.y)
 		{
-			LastSize = CurSize;
-
-			BroadCastEvent(new OnPanelResize(CurSize.x, CurSize.y));
+			LastSize = availableSize;
+			BroadCastEvent(new OnPanelResize(availableSize.x, availableSize.y));
 		}
 		ImGui::Image((ImTextureID)app->renderer->buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
 

@@ -31,9 +31,12 @@ bool RendererPanel::Update()
 	if (!active)
 		return false;
 
+	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
 	ImGui::SetNextWindowSize(ImVec2{ 720,720 }, ImGuiCond_FirstUseEver);
 	if (ImGui::Begin(name.GetString(), &active))
 	{
+		ImGui::PopStyleVar();
+		OnPanelHovered();
 		if (ImGui::MenuItem("Back culling", "", (BackCullFacing) != 1)) { BackCullFacing = !BackCullFacing;  BackCullFacing ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE); }
 		if (ImGui::MenuItem("Depth test", "", (DepthTest) != 1)) { DepthTest = !DepthTest;  DepthTest ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST); }
 		if (ImGui::MenuItem("Lighting", "", (Lightning) != 1)) { Lightning = !Lightning;  Lightning ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING); }

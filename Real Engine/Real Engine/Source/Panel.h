@@ -21,10 +21,16 @@ public:
 	//clean panel
 	virtual bool CleanUp();
 
+	virtual bool OnPanelHovered();
+
 	virtual void BroadCastEvent(Event* e);
 	virtual void HandleEvents(Event* e);
 	SString name;
 	bool active;
 	ImGuiWindowFlags window_flags;
+	//store the border offset of available space in each panel
+	int borderOffset = 2;
+	ImColor borderColor = { 125, 125, 125, 200 };
 };
+
 
