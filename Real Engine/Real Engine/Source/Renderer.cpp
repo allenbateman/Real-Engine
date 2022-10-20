@@ -45,12 +45,13 @@ bool Renderer::Awake()
 	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
 
 	app->eventSystem->SubcribeModule(this,PANEL_RESIZE);
-
 	return true;
 }
 
 bool Renderer::Start()
 {
+
+	objLoader.LoadObject("C:/Users/allen/Documents/GitHub/Real-Engine/RealEngine/Output/Assets/BakerHouse.fbx");
 	return true;
 }
 

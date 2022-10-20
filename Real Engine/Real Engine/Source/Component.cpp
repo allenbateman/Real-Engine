@@ -2,9 +2,9 @@
 
 
 
-Component::Component(componentType type)
+Component::Component()
 {
-	this->type = type;
+
 }
 
 Component::~Component()

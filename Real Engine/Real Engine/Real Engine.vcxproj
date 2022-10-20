@@ -23,6 +23,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\ComponentSystemHandeler.cpp" />
     <ClCompile Include="Source\EventSystem.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_opengl3.cpp" />
@@ -38,11 +39,16 @@
     <ClCompile Include="Source\Inspector.cpp" />
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
+    <ClCompile Include="Source\Material.cpp" />
+    <ClCompile Include="Source\Mesh.cpp" />
+    <ClCompile Include="Source\ObjectLoader.cpp" />
     <ClCompile Include="Source\Panel.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
     <ClCompile Include="Source\RendererPanel.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
+    <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\UiSystem.cpp" />
     <ClCompile Include="Source\Viewport.cpp" />
     <ClCompile Include="Source\Window.cpp" />
@@ -52,6 +58,7 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\ComponentSystemHandeler.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\Events.h" />
@@ -72,7 +79,10 @@
     <ClInclude Include="Source\InputEnums.h" />
     <ClInclude Include="Source\Inspector.h" />
     <ClInclude Include="Source\Log.h" />
+    <ClInclude Include="Source\Material.h" />
+    <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Module.h" />
+    <ClInclude Include="Source\ObjectLoader.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelEvents.h" />
     <ClInclude Include="Source\PanelIDs.h" />
@@ -80,7 +90,9 @@
     <ClInclude Include="Source\RendererPanel.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SString.h" />
+    <ClInclude Include="Source\Texture.h" />
     <ClInclude Include="Source\Timer.h" />
+    <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\UiSystem.h" />
     <ClInclude Include="Source\Viewport.h" />
     <ClInclude Include="Source\Window.h" />

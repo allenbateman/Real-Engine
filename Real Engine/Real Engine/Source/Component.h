@@ -1,22 +1,21 @@
 #pragma once
-#include "GameObject.h"
-
- enum componentType
+#include "glmath.h"
+#include <iostream>
+ enum ComponentType
 {
-	DEFAULT = 0
+	DEFAULT = 0,
+	MESH
 };
 
-class GameObject;
 class Component
 {
 public:
-	Component(componentType type);
+	Component();
 	~Component();
 
-	componentType type;
+	ComponentType type;
+	int id;
 	bool active;
-	GameObject* owner;
-
 
 	virtual void Enable();
 	virtual void Update();

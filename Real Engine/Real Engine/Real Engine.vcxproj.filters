@@ -38,6 +38,15 @@
     <Filter Include="Resource Files\Engine\Renderer\Shaders">
       <UniqueIdentifier>{a0822f16-559b-4386-93fb-114c72ee86c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Engine\GameObjects">
+      <UniqueIdentifier>{5de24f1f-7b1d-4512-bc44-78f50f04b250}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\GameObjects\Components">
+      <UniqueIdentifier>{83e6d777-b5de-4734-80ba-bc85346665de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\Component Systems">
+      <UniqueIdentifier>{f9124852-c67c-43a8-884b-d1b46b10e557}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -82,9 +91,6 @@
     <ClCompile Include="Source\Renderer.cpp">
       <Filter>Resource Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\UiSystem.cpp">
-      <Filter>Resource Files\Engine\UI System</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Panel.cpp">
       <Filter>Resource Files\Engine\UI System</Filter>
     </ClCompile>
@@ -106,14 +112,41 @@
     <ClCompile Include="Source\FrameBuffer.cpp">
       <Filter>Resource Files\Engine\Renderer</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Component.cpp" />
-    <ClCompile Include="Source\GameObject.cpp" />
-    <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\RendererPanel.cpp">
       <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\Inspector.cpp">
       <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\GameObject.cpp">
+      <Filter>Resource Files\Engine\GameObjects</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component.cpp">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectLoader.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Material.cpp">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Mesh.cpp">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Texture.cpp">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Transform.cpp">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentSystemHandeler.cpp">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UiSystem.cpp">
+      <Filter>Resource Files\Engine\UI System</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -171,9 +204,6 @@
     <ClInclude Include="Source\EventSystem.h">
       <Filter>Resource Files\Engine\Event System</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UiSystem.h">
-      <Filter>Resource Files\Engine\UI System</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Renderer.h">
       <Filter>Resource Files\Engine</Filter>
     </ClInclude>
@@ -207,9 +237,6 @@
     <ClInclude Include="Source\FrameBuffer.h">
       <Filter>Resource Files\Engine\Renderer</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Component.h" />
-    <ClInclude Include="Source\GameObject.h" />
-    <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\RendererPanel.h">
       <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClInclude>
@@ -218,6 +245,36 @@
     </ClInclude>
     <ClInclude Include="Source\PanelIDs.h">
       <Filter>Resource Files\Engine\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameObject.h">
+      <Filter>Resource Files\Engine\GameObjects</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component.h">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectLoader.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Material.h">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Mesh.h">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Texture.h">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Transform.h">
+      <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentSystemHandeler.h">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UiSystem.h">
+      <Filter>Resource Files\Engine\UI System</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

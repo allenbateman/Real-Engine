@@ -4,8 +4,12 @@ void GameObject::Update()
 {
 }
 
-Component* GameObject::CreateComponent(componentType type)
+void GameObject::Destroy()
 {
-    Component* item = new Component(type);
+}
+
+Component* GameObject::CreateComponent(ComponentType type)
+{
+    Component* item = new Component();
     return item;
 }

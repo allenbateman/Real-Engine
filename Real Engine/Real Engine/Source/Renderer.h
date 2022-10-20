@@ -3,6 +3,8 @@
 #include "glmath.h"
 #include "FrameBuffer.h"
 #include "External/bitflags/bitflags.hpp"
+#include "ObjectLoader.h"
+
 #define MAX_LIGHTS 8
 
 BEGIN_BITFLAGS(Flags)
@@ -28,7 +30,8 @@ public:
 
 	FrameBuffer buffer;
 
-
+	ObjectLoader objLoader;
+	
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 };

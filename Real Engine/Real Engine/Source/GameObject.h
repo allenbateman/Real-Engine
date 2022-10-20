@@ -5,17 +5,17 @@
 #include "Component.h"
 
 class Component;
-enum componentType;
+enum ComponentType;
 
 class GameObject
 {
 public:
 	void Update();
-	Component* CreateComponent(componentType type);
+	void Destroy();
+	Component* CreateComponent(ComponentType type);
 	
+	int id;
 	bool active;
 	SString name;
 	std::list<Component*> components;
-
-
 };
