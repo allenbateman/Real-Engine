@@ -1,4 +1,6 @@
 #include "ObjectLoader.h"
+#include "glew.h"
+#include "glfw3.h"
 
 ObjectLoader::ObjectLoader()
 {
@@ -35,7 +37,31 @@ bool ObjectLoader::LoadObject(const char* file_path)
                 }
             }
         }
-       
+
+        ////bind frame buffer
+        //glGenVertexArrays(1, &VAO);
+        //glGenBuffers(1, &VBO);
+        //glGenBuffers(1, &EBO);
+        //glBindVertexArray(VAO);
+        //// load data into vertex buffers
+        //glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        //glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(BoneVertex), &vertices[0], GL_STATIC_DRAW);
+        //glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+        //glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(unsigned int), &indices[0], GL_STATIC_DRAW);
+
+        //// set the vertex attribute pointers
+        //// vertex Positions
+        //glEnableVertexAttribArray(0);
+        //glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(BoneVertex), (void*)0);
+        //// vertex texture coords
+        //glEnableVertexAttribArray(2);
+        //glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(BoneVertex), (void*)offsetof(BoneVertex, texCoords));
+
+        ////reset
+        //glBindVertexArray(0);
+
+      /*  if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+            std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete! \n";*/
         aiReleaseImport(scene);
     }
     else

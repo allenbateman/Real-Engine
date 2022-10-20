@@ -70,8 +70,6 @@ bool Renderer::PreUpdate()
 bool Renderer::Update()
 {
 
-
-
 	return true;
 }
 
@@ -81,6 +79,22 @@ bool Renderer::PostUpdate()
 	glBindFramebuffer(GL_FRAMEBUFFER, buffer.FBO);
 
 	//Render every thing here -------------------------------------------
+
+	//glBindBuffer(GL_ARRAY_BUFFER, objLoader.meshTest.id_vertex);
+	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(objLoader.meshTest.vertices), 0);
+	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(objLoader.meshTest.vertices), (const GLvoid*)12);
+	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(objLoader.meshTest.vertices), (const GLvoid*)20);
+
+	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, objLoader.meshTest.id_index);
+
+	//const unsigned int MaterialIndex = objLoader.meshTest.id_index;
+
+	//if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
+	//	m_Textures[MaterialIndex]->Bind(GL_TEXTURE0);
+	//}
+
+	//glDrawElements(GL_TRIANGLES, objLoader.meshTest.num_index, GL_UNSIGNED_INT, 0);
+
 	vec3 cubePos(0.0f, 0.0f, 0.0f);
 	DrawDirectCube(cubePos, 10.0f);
 
