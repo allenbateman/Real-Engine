@@ -1,5 +1,6 @@
 #pragma once
 enum PanelID {
-	eViewport,
-	eRender_Settings
+	eNoType = 0,
+	eViewport = 1,
+	eRender_Settings = 2
 };

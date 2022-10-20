@@ -49,3 +49,10 @@ struct  OnPanelResize : Event
 	~OnPanelResize() {};
 	int x, y,id;
 };
+
+struct OnPanelFocus :Event {
+	OnPanelFocus(int _id, bool isFocused) { id = _id; focused = isFocused; type = EventType::ON_PANEL_FOCUS; };
+	~OnPanelFocus() {};
+	int id;
+	bool focused = false;
+};

@@ -3,7 +3,7 @@
 #include "Input.h"
 #include "Window.h"
 #include "EventSystem.h"
-
+#include "PanelIDs.h"
 
 Camera::Camera(bool isActive) : Module(isActive)
 {
@@ -32,6 +32,7 @@ bool Camera::Start()
 	app->eventSystem->SubcribeModule(this, KEY_INPUT);
 	app->eventSystem->SubcribeModule(this, MOUSE_INPUT);
 	app->eventSystem->SubcribeModule(this, MOUSE_POSITION);
+	app->eventSystem->SubcribeModule(this, ON_PANEL_FOCUS);
 
 	return ret;
 }
@@ -48,8 +49,20 @@ bool Camera::HandleEvent(Event* e)
 {
 	switch (e->type)
 	{
+	case ON_PANEL_FOCUS:
+	{
+		OnPanelFocus* Pf = dynamic_cast<OnPanelFocus*>(e);
+		if (Pf->id == eViewport)
+		{
+			cout << "viewpor focus: "<<Pf->focused<<endl;
+			onFocus = Pf->focused;
+		}
+	}
+		break;
 	case KEY_INPUT:
 	{
+		if (!onFocus)
+			break;
 		vec3 newPos(0, 0, 0);
 		KeyInput* ki = dynamic_cast<KeyInput*>(e);
 
@@ -69,6 +82,8 @@ bool Camera::HandleEvent(Event* e)
 		break;
 	case MOUSE_INPUT:
 	{
+		if (!onFocus)
+			break;
 		mouseLeft = false;
 		mouseRight = false;
 		MouseInput* mo = dynamic_cast<MouseInput*>(e);
@@ -84,6 +99,8 @@ bool Camera::HandleEvent(Event* e)
 		break;
 	case MOUSE_POSITION:
 	{
+		if (!onFocus)
+			break;
 		MousePosition* mo = dynamic_cast<MousePosition*>(e);
 		
 		if (mouseLeft)

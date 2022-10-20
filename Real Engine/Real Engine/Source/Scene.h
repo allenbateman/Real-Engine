@@ -18,32 +18,29 @@ class Scene : public Module
 public:
 
 
-	 bool Awake();
-	
+	bool Awake();
 
-	 bool Start();
-	
 
-	 bool PreUpdate();
-	
+	bool Start();
 
-	 bool Update(float dt);
-	
 
-	 bool PostUpdate();
-	
+	bool PreUpdate();
 
-	 bool CleanUp();
-	
-	 bool HandleEvent(Event* singleEvent);
-	
+
+	bool Update(float dt);
+
+
+	bool PostUpdate();
+
+
+	bool CleanUp();
+
+	bool HandleEvent(Event* singleEvent);
+
 	GameObject* CreateGameObject();
-		
+
 	list<GameObject*> gameObjects;
 
 	//list<System*> systems;
-
-
-	void LoadFile();
 };
 

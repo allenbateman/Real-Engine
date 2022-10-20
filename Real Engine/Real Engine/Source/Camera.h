@@ -55,4 +55,5 @@ private:
 
 	bool mouseLeft;
 	bool mouseRight;
+	bool onFocus;
 };

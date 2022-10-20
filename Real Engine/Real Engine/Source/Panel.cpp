@@ -52,8 +52,10 @@ bool Panel::OnHovered()
 		vMax.y += ImGui::GetWindowPos().y + borderOffset;
 
 		ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, borderColor, 0, 0, borderOffset);
+		app->eventSystem->PostEvent(new OnPanelFocus(id,true));
 		return true;
 	}
+	app->eventSystem->PostEvent(new OnPanelFocus(id, false));
 	return false;
 }
 

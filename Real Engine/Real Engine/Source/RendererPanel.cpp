@@ -4,6 +4,7 @@
 
 RendererPanel::RendererPanel(int _id,bool isActive) : Panel(id,active)
 {
+	id = _id;
 	name.Create("Render Settings");
 }
 
@@ -35,7 +36,6 @@ bool RendererPanel::Update()
 	ImGui::SetNextWindowSize(ImVec2{ 720,720 }, ImGuiCond_FirstUseEver);
 	if (ImGui::Begin(name.GetString(), &active))
 	{
-		ImGui::PopStyleVar();
 		OnHovered();
 		OnResize();
 		if (ImGui::MenuItem("Back culling", "", (BackCullFacing) != 1)) { BackCullFacing = !BackCullFacing;  BackCullFacing ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE); }
@@ -44,6 +44,7 @@ bool RendererPanel::Update()
 		if (ImGui::MenuItem("Color material", "", (ColorMaterial) != 1)) { ColorMaterial = !ColorMaterial;  ColorMaterial ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL); }
 	}
 	ImGui::End();
+	ImGui::PopStyleVar();
 	return true;
 }
 
