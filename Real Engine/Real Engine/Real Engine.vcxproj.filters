@@ -1,0 +1,228 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\Engine">
+      <UniqueIdentifier>{247b30f0-8223-4b56-98a9-599e213ac3c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Utils">
+      <UniqueIdentifier>{78cc8111-146a-4c30-bbc4-be9d0f459e9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\External">
+      <UniqueIdentifier>{4e7c7f26-4830-4e61-a3ca-1dba209b8477}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\External\ImGui">
+      <UniqueIdentifier>{17dc4e20-71f3-44f7-820f-328b238e09a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\Event System">
+      <UniqueIdentifier>{2a49d56c-6f91-4ef0-9f34-a0b7f6cdcf66}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\Event System\Event">
+      <UniqueIdentifier>{0b587513-9354-4210-8cc3-2fd31df9d016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\UI System">
+      <UniqueIdentifier>{a9dc5ece-616d-41d3-8516-5712e0699d21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\Enums">
+      <UniqueIdentifier>{789bb4cc-94cf-48df-ae4a-753452ea8016}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\UI System\Panels">
+      <UniqueIdentifier>{67fc6e2d-f53e-47d4-8ca6-528f1f43e29a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\Renderer">
+      <UniqueIdentifier>{6f74f3e0-d041-4c45-9d36-74f192c66560}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\Renderer\Shaders">
+      <UniqueIdentifier>{a0822f16-559b-4386-93fb-114c72ee86c7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Main.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Application.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Window.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Log.cpp">
+      <Filter>Resource Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Input.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui_demo.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui_draw.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui_tables.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\imgui_widgets.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\backends\imgui_impl_opengl3.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EventSystem.cpp">
+      <Filter>Resource Files\Engine\Event System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Renderer.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\UiSystem.cpp">
+      <Filter>Resource Files\Engine\UI System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Panel.cpp">
+      <Filter>Resource Files\Engine\UI System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Camera.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Color.cpp">
+      <Filter>Resource Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\glmath.cpp">
+      <Filter>Resource Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Timer.cpp">
+      <Filter>Resource Files\Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Viewport.cpp">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\FrameBuffer.cpp">
+      <Filter>Resource Files\Engine\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Component.cpp" />
+    <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\RendererPanel.cpp">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Inspector.cpp">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Module.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Application.h">
+      <Filter>Resource Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Window.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Log.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SString.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Defs.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imconfig.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imgui.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imgui_internal.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imstb_rectpack.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imstb_textedit.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\imstb_truetype.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\backends\imgui_impl_opengl3.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\backends\imgui_impl_glfw.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\External\ImGui\backends\imgui_impl_opengl3_loader.h">
+      <Filter>Resource Files\External\ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Event.h">
+      <Filter>Resource Files\Engine\Event System\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EventSystem.h">
+      <Filter>Resource Files\Engine\Event System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\UiSystem.h">
+      <Filter>Resource Files\Engine\UI System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Renderer.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Panel.h">
+      <Filter>Resource Files\Engine\UI System</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputEnums.h">
+      <Filter>Resource Files\Engine\Enums</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Events.h">
+      <Filter>Resource Files\Engine\Event System\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Camera.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Color.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\glmath.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Timer.h">
+      <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Viewport.h">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelEvents.h">
+      <Filter>Resource Files\Engine\Event System\Event</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FrameBuffer.h">
+      <Filter>Resource Files\Engine\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Component.h" />
+    <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\RendererPanel.h">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Inspector.h">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\PanelIDs.h">
+      <Filter>Resource Files\Engine\Enums</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\Shader.frag">
+      <Filter>Resource Files\Engine\Renderer\Shaders</Filter>
+    </None>
+  </ItemGroup>
+</Project>
