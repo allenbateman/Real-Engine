@@ -41,8 +41,7 @@ bool ObjectLoader::LoadObject(const char* file_path)
     else
     {
         std::cout << aiGetErrorString();
-        LOG("Error loading scene: ");
-        LOG(file_path);
+        LOG(aiGetErrorString());
     }
     return ret;
 }

@@ -51,7 +51,7 @@ bool Renderer::Awake()
 bool Renderer::Start()
 {
 
-	objLoader.LoadObject("C:/Users/allen/Documents/GitHub/Real-Engine/RealEngine/Output/Assets/BakerHouse.fbx");
+	objLoader.LoadObject("C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Output/Assets/BakerHouse.fbx");
 	return true;
 }
 
