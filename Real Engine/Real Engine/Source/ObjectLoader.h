@@ -6,6 +6,7 @@
 #include "assimp/postprocess.h"
 
 #include "Mesh.h"
+#include "Material.h"
 class ObjectLoader
 {
 public:
@@ -13,6 +14,10 @@ public:
 	~ObjectLoader();
 
 	bool LoadObject(const char* file_path);
-	Mesh meshTest;
+	void ProcessNode(aiNode* node, const aiScene* scene);
+	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+	void SetupMesh(const Mesh mesh);
+	std::vector<Mesh> meshes;
+
 };
 

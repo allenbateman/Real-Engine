@@ -51,7 +51,7 @@ bool Renderer::Awake()
 bool Renderer::Start()
 {
 
-	objLoader.LoadObject("C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Output/Assets/BakerHouse.fbx");
+	objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
 	return true;
 }
 
@@ -80,10 +80,11 @@ bool Renderer::PostUpdate()
 
 	//Render every thing here -------------------------------------------
 
-	//glBindBuffer(GL_ARRAY_BUFFER, objLoader.meshTest.id_vertex);
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(objLoader.meshTest.vertices), 0);
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(objLoader.meshTest.vertices), (const GLvoid*)12);
-	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(objLoader.meshTest.vertices), (const GLvoid*)20);
+	glBindBuffer(GL_ARRAY_BUFFER, objLoader.meshTest.id_vertex);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(objLoader.meshTest.vertices), 0);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(objLoader.meshTest.vertices), (const GLvoid*)12);
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(objLoader.meshTest.vertices), (const GLvoid*)20);
 
 	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, objLoader.meshTest.id_index);
 
@@ -92,16 +93,20 @@ bool Renderer::PostUpdate()
 	//if (MaterialIndex < m_Textures.size() && m_Textures[MaterialIndex]) {
 	//	m_Textures[MaterialIndex]->Bind(GL_TEXTURE0);
 	//}
+	glBegin(GL_TRIANGLES);
+	glBufferData(GL_ARRAY_BUFFER, objLoader.meshTest.num_vertices * sizeof(float*), &objLoader.meshTest.vertices[0], GL_STATIC_DRAW);
+	glDrawArrays(GL_TRIANGLES, objLoader.meshTest.vertices[0], objLoader.meshTest.num_vertices);
 
-	//glDrawElements(GL_TRIANGLES, objLoader.meshTest.num_index, GL_UNSIGNED_INT, 0);
+	glEnd();
 
+	//-----------------------
 	vec3 cubePos(0.0f, 0.0f, 0.0f);
 	DrawDirectCube(cubePos, 10.0f);
 
 	glLineWidth(2.0f);
 
 	glBegin(GL_LINES);
-	glColor3f(255, 255, 255);
+	glColor3f(150, 150, 150);
 
 	float d = 200.0f;
 
