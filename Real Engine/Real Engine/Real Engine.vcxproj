@@ -23,7 +23,7 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\Component.cpp" />
-    <ClCompile Include="Source\ComponentSystemHandeler.cpp" />
+    <ClCompile Include="Source\ComponentSystem.cpp" />
     <ClCompile Include="Source\EventSystem.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_opengl3.cpp" />
@@ -46,7 +46,9 @@
     <ClCompile Include="Source\Renderer.cpp" />
     <ClCompile Include="Source\RendererPanel.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
+    <ClCompile Include="Source\TextureLoader.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Transform.cpp" />
     <ClCompile Include="Source\UiSystem.cpp" />
@@ -58,7 +60,7 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
-    <ClInclude Include="Source\ComponentSystemHandeler.h" />
+    <ClInclude Include="Source\ComponentSystem.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\Events.h" />
@@ -89,16 +91,15 @@
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\RendererPanel.h" />
     <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\SString.h" />
     <ClInclude Include="Source\Texture.h" />
+    <ClInclude Include="Source\TextureLoader.h" />
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\UiSystem.h" />
     <ClInclude Include="Source\Viewport.h" />
     <ClInclude Include="Source\Window.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Source\Shader.frag" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -176,7 +177,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\ImGui;$(ProjectDir)Source\External\Glew\include\GL;$(ProjectDir)Source\External\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Stb;$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\ImGui;$(ProjectDir)Source\External\Glew\include\GL;$(ProjectDir)Source\External\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -193,7 +194,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\Glew\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Stb;$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\Glew\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -210,7 +211,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\Glew\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Stb;$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\Glew\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -227,7 +228,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\Glew\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Stb;$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\Glew\include\GL;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

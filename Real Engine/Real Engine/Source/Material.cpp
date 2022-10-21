@@ -1,13 +1,9 @@
 #include "Material.h"
 
-Material::Material()
+Material::Material(std::vector<Texture>& texture)
 {
 }
 
 Material::~Material()
-{
-}
-
-void Material::InitMaterial()
 {
 }

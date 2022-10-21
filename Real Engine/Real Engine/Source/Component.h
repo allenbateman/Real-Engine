@@ -1,6 +1,7 @@
 #pragma once
 #include "glmath.h"
 #include <iostream>
+#include <vector>
  enum ComponentType
 {
 	DEFAULT = 0,

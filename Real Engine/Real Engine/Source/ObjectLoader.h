@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 #include "Log.h"
 #include "assimp/cimport.h"
 #include "assimp/scene.h"
@@ -7,17 +6,22 @@
 
 #include "Mesh.h"
 #include "Material.h"
+#include "TextureLoader.h"
 class ObjectLoader
 {
 public:
 	ObjectLoader();
 	~ObjectLoader();
 
-	bool LoadObject(const char* file_path);
+	bool LoadObject(const std::string file_path);
 	void ProcessNode(aiNode* node, const aiScene* scene);
 	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
-	void SetupMesh(const Mesh mesh);
-	std::vector<Mesh> meshes;
+	Material ProcessMaterial(aiMesh* mesh, const aiScene* scene);
+	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
+	std::vector<Mesh> meshes;
+	std::vector<Material> materials;
+	std::string directory;
+	std::vector<Texture>loadedtextures;
 };
 

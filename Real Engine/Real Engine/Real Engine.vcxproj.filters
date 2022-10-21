@@ -47,6 +47,12 @@
     <Filter Include="Resource Files\Engine\Component Systems">
       <UniqueIdentifier>{f9124852-c67c-43a8-884b-d1b46b10e557}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Engine\Renderer\Shaders\Fragment">
+      <UniqueIdentifier>{067ff8f7-3901-406e-89e9-f2ea81eec16a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\Renderer\Shaders\Vertex">
+      <UniqueIdentifier>{056be5d7-0c4e-4499-8f3c-43ff65f71810}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -142,11 +148,17 @@
     <ClCompile Include="Source\Transform.cpp">
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ComponentSystemHandeler.cpp">
-      <Filter>Resource Files\Engine\Component Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\UiSystem.cpp">
       <Filter>Resource Files\Engine\UI System</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Shader.cpp">
+      <Filter>Resource Files\Engine\Renderer\Shaders</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentSystem.cpp">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\TextureLoader.cpp">
+      <Filter>Resource Files\Engine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -270,16 +282,17 @@
     <ClInclude Include="Source\Transform.h">
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ComponentSystemHandeler.h">
-      <Filter>Resource Files\Engine\Component Systems</Filter>
-    </ClInclude>
     <ClInclude Include="Source\UiSystem.h">
       <Filter>Resource Files\Engine\UI System</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Source\Shader.frag">
+    <ClInclude Include="Source\Shader.h">
       <Filter>Resource Files\Engine\Renderer\Shaders</Filter>
-    </None>
+    </ClInclude>
+    <ClInclude Include="Source\TextureLoader.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentSystem.h">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
