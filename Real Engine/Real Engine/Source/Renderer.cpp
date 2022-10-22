@@ -80,9 +80,8 @@ bool Renderer::PostUpdate()
 	
 	
 
+
 	//Render every thing here -------------------------------------------
-	for (int i = 0; i < objLoader.meshes.size(); i++)
-		objLoader.meshes[i].Draw(objLoader.materials[0]);
 	//-----------------------
 	vec3 cubePos(0.0f, 0.0f, 0.0f);
 	DrawDirectCube(cubePos, 10.0f);
@@ -103,6 +102,13 @@ bool Renderer::PostUpdate()
 	}
 
 	glEnd();
+
+	/*Shader shader("C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/testVertexShader.vs",
+		"C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/testFragShader.frag");
+	shader.Use();
+	*/
+	/*for (int i = 0; i < objLoader.meshes.size(); i++)
+		objLoader.meshes[i].Draw(shader, objLoader.materials[i]);*/
 	//Stop render  -------------------------------------------
 
 	//bind to the default renderer to render everything
@@ -155,8 +161,6 @@ void Renderer:: DrawDirectCube(vec3 position, float size)
 	glVertex3f(x, y, z);
 	glVertex3f(x + size, y, z);
 	glVertex3f(x + size, y + size, z);
-
-
 
 	//Right
 	glColor3f(255, 255, 0);
