@@ -101,6 +101,10 @@
     <ClInclude Include="Source\Viewport.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\testFragShader.frag" />
+    <None Include="Source\testVertexShader.vs" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>

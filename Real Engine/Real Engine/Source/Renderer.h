@@ -29,7 +29,7 @@ public:
 	bool HandleEvent(Event* e);
 
 	FrameBuffer buffer;
-
+	//Shader shader("C:/Users/allen/Documents/GitHub/Real-Engine/RealEngine/RealEngine/Source/testVertexShader.vs","C:/Users/allen/Documents/GitHub/Real-Engine/RealEngine/RealEngine/Source/testFragShader.frag");
 	ObjectLoader objLoader;
 	
 	mat3x3 NormalMatrix;

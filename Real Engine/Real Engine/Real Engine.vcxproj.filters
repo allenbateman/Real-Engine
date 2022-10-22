@@ -295,4 +295,12 @@
       <Filter>Resource Files\Engine\Component Systems</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Source\testVertexShader.vs">
+      <Filter>Resource Files\Engine\Renderer\Shaders\Vertex</Filter>
+    </None>
+    <None Include="Source\testFragShader.frag">
+      <Filter>Resource Files\Engine\Renderer\Shaders\Fragment</Filter>
+    </None>
+  </ItemGroup>
 </Project>

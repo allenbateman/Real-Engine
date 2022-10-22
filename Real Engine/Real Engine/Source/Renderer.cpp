@@ -77,9 +77,12 @@ bool Renderer::PostUpdate()
 {	
 	//bind renderer to the texture we want to render to 
 	glBindFramebuffer(GL_FRAMEBUFFER, buffer.FBO);
+	
+	
 
 	//Render every thing here -------------------------------------------
-
+	for (int i = 0; i < objLoader.meshes.size(); i++)
+		objLoader.meshes[i].Draw(objLoader.materials[0]);
 	//-----------------------
 	vec3 cubePos(0.0f, 0.0f, 0.0f);
 	DrawDirectCube(cubePos, 10.0f);

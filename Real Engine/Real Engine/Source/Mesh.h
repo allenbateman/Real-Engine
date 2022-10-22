@@ -19,7 +19,8 @@ public:
 	
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 	~Mesh();
-	void Draw(Shader& Shader, Material& mat);
+	void Draw(Material& mat);
+	//void Draw(Shader& Shader, Material& mat);
 	unsigned int GetVAO() { return VAO; }
 private:
 	void SetupMesh();
