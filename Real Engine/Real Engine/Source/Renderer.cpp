@@ -5,6 +5,7 @@
 #include "EventSystem.h"
 #include "Events.h"
 #include "Camera.h"
+#include "glmath.h" 
 
 
 Renderer::Renderer(bool isActive) : Module(isActive)
@@ -52,6 +53,10 @@ bool Renderer::Start()
 {
 
 	objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
+	defaultShader = new Shader("C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/default.vertex",
+		"C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/default.fragment");
+	
+	
 	return true;
 }
 
@@ -103,12 +108,30 @@ bool Renderer::PostUpdate()
 
 	glEnd();
 
-	/*Shader shader("C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/testVertexShader.vs",
-		"C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/testFragShader.frag");
-	shader.Use();
-	*/
-	/*for (int i = 0; i < objLoader.meshes.size(); i++)
-		objLoader.meshes[i].Draw(shader, objLoader.materials[i]);*/
+	//render house--------------------------------------------
+	//attach shader 
+	//set attributes for rendering the textures
+	defaultShader->Use();
+	float* projection = ProjectionMatrix.M;
+
+	float timeValue = glfwGetTime();
+	float resize = sin(timeValue) / 2.0f + 5.0f;//rescale xD
+	float* model;
+	mat4x4 pos = translate(-10, 0, 0);
+	mat4x4 size = scale(resize, resize, resize);
+	model = (pos * size).M;
+	float* view = app->camera->GetViewMatrix();
+	defaultShader->SetMat4("projection", projection);
+	defaultShader->SetMat4("model", model);
+	defaultShader->SetMat4("view", view);
+	
+	//render obj
+	for (int i = 0; i < objLoader.meshes.size(); i++)
+		objLoader.meshes[i].Draw(*defaultShader, objLoader.materials[i]);
+
+	//detach the shader to default so it doesnt affect other render process
+	defaultShader->StopUse();
+
 	//Stop render  -------------------------------------------
 
 	//bind to the default renderer to render everything

@@ -296,10 +296,10 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Source\testVertexShader.vs">
+    <None Include="Source\default.vertex">
       <Filter>Resource Files\Engine\Renderer\Shaders\Vertex</Filter>
     </None>
-    <None Include="Source\testFragShader.frag">
+    <None Include="Source\default.fragment">
       <Filter>Resource Files\Engine\Renderer\Shaders\Fragment</Filter>
     </None>
   </ItemGroup>

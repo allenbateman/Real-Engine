@@ -26,6 +26,7 @@ public:
 	void SetReference(vec3 myReference);
 
 	float* GetViewMatrix();
+	float* GetProjectionMatrix();
 
 private:
 	

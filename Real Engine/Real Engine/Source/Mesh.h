@@ -25,5 +25,6 @@ public:
 private:
 	void SetupMesh();
 	unsigned int VAO, VBO, EBO; // idex of the vertex array object in VRam
+
 };
 

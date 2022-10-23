@@ -54,7 +54,7 @@ bool Camera::HandleEvent(Event* e)
 		OnPanelFocus* Pf = dynamic_cast<OnPanelFocus*>(e);
 		if (Pf->id == eViewport)
 		{
-			cout << "viewpor focus: "<<Pf->focused<<endl;
+			//cout << "viewpor focus: "<<Pf->focused<<endl;
 			onFocus = Pf->focused;
 		}
 	}
@@ -250,6 +250,11 @@ void Camera::SetReference(vec3 myReference)
 float* Camera::GetViewMatrix()
 {
 	return &ViewMatrix;
+}
+
+float* Camera::GetProjectionMatrix()
+{
+	return nullptr;
 }
 
 

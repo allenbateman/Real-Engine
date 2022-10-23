@@ -89,8 +89,12 @@ Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     }
 
     //load material attached to the obj
-    if(mesh->mMaterialIndex >= 0)
-     materials.push_back(ProcessMaterial(mesh, scene));
+    if (mesh->mMaterialIndex >= 0)
+    {
+        materials.push_back(ProcessMaterial(mesh, scene));
+
+    }
+
 
     return Mesh(vertices, indices);
 }
@@ -131,6 +135,7 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
         {   // if texture hasn't been loaded already, load it
             Texture texture;
             texture.id = LoadTexture(directory + "/" + str.C_Str());
+            texture.path = directory + "/" + str.C_Str();
             texture.type = typeName;
             textures.push_back(texture);
             loadedtextures.push_back(texture); // add to loaded textures
