@@ -53,6 +53,7 @@ bool Renderer::Start()
 {
 
 	objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
+	//objLoader.LoadObject("../Output/Assets/warrior.FBX");
 	defaultShader = new Shader("C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/default.vertex",
 		"C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/default.fragment");
 	
@@ -127,7 +128,7 @@ bool Renderer::PostUpdate()
 	
 	//render obj
 	for (int i = 0; i < objLoader.meshes.size(); i++)
-		objLoader.meshes[i].Draw(*defaultShader, objLoader.materials[i]);
+		objLoader.meshes[i].Draw(*defaultShader, objLoader.materials[0]);
 
 	//detach the shader to default so it doesnt affect other render process
 	defaultShader->StopUse();

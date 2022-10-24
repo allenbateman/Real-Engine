@@ -8,12 +8,8 @@
 	MESH
 };
 
-class Component
+struct Component
 {
-public:
-	Component();
-	~Component();
-
 	ComponentType type;
 	int id;
 	bool active;
@@ -21,5 +17,4 @@ public:
 	virtual void Enable();
 	virtual void Update();
 	virtual void Disable();
-
 };

@@ -92,7 +92,6 @@ Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     if (mesh->mMaterialIndex >= 0)
     {
         materials.push_back(ProcessMaterial(mesh, scene));
-
     }
 
 

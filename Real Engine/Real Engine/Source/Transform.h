@@ -1,6 +1,6 @@
 #pragma once
 #include "Component.h"
-class Transform :  public Component
+struct Transform :  public Component
 {
 	mat4x4 transform; //Stores whole transformation of the object in a matrix
 	vec3 position; //Stores position x,y,z

@@ -23,7 +23,8 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\Component.cpp" />
-    <ClCompile Include="Source\ComponentSystem.cpp" />
+    <ClCompile Include="Source\ComponentArray.cpp" />
+    <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\EventSystem.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp" />
     <ClCompile Include="Source\External\ImGui\backends\imgui_impl_opengl3.cpp" />
@@ -60,8 +61,10 @@
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
-    <ClInclude Include="Source\ComponentSystem.h" />
+    <ClInclude Include="Source\ComponentArray.h" />
     <ClInclude Include="Source\Defs.h" />
+    <ClInclude Include="Source\Entity.h" />
+    <ClInclude Include="Source\EntityManager.h" />
     <ClInclude Include="Source\Event.h" />
     <ClInclude Include="Source\Events.h" />
     <ClInclude Include="Source\EventSystem.h" />

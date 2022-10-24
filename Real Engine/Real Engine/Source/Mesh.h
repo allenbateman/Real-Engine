@@ -22,6 +22,7 @@ public:
 	void Draw(Shader& shader ,Material& mat);
 	//void Draw(Shader& Shader, Material& mat);
 	unsigned int GetVAO() { return VAO; }
+	unsigned int MatId;
 private:
 	void SetupMesh();
 	unsigned int VAO, VBO, EBO; // idex of the vertex array object in VRam

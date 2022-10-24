@@ -11,9 +11,7 @@ class GameObject
 {
 public:
 	void Update();
-	void Destroy();
-	Component* CreateComponent(ComponentType type);
-	
+	void Destroy();	
 	int id;
 	bool active;
 	SString name;

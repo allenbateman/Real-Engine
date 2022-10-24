@@ -154,11 +154,14 @@
     <ClCompile Include="Source\Shader.cpp">
       <Filter>Resource Files\Engine\Renderer\Shaders</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ComponentSystem.cpp">
-      <Filter>Resource Files\Engine\Component Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\TextureLoader.cpp">
       <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\EntityManager.cpp">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ComponentArray.cpp">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -291,7 +294,13 @@
     <ClInclude Include="Source\TextureLoader.h">
       <Filter>Resource Files\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ComponentSystem.h">
+    <ClInclude Include="Source\EntityManager.h">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Entity.h">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ComponentArray.h">
       <Filter>Resource Files\Engine\Component Systems</Filter>
     </ClInclude>
   </ItemGroup>
