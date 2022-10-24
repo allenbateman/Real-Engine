@@ -4,9 +4,6 @@
 #include "SString.h"
 #include "Component.h"
 
-class Component;
-enum ComponentType;
-
 class GameObject
 {
 public:

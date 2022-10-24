@@ -1,4 +1,6 @@
-#include "EntityManager.h"
+#include "Entity.h"
+#include "Component.h"
+
 class ICOmponentArray {
 public:
 	virtual ~ICOmponentArray() = default;

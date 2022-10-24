@@ -2,11 +2,12 @@
 #include "glmath.h"
 #include <iostream>
 #include <vector>
- enum ComponentType
-{
-	DEFAULT = 0,
-	MESH
-};
+#include <bitset>
+#include <cstdint>
+
+using ComponentType = std::uint8_t;
+const ComponentType MAX_COMPONENTS = 32;
+using Signature = std::bitset<MAX_COMPONENTS>;
 
 struct Component
 {
