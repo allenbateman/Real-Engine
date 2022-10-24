@@ -61,20 +61,37 @@ bool Camera::HandleEvent(Event* e)
 		break;
 	case KEY_INPUT:
 	{
+
 		if (!onFocus)
+		{
+			altKey = false;
 			break;
+		}
+			
 		vec3 newPos(0, 0, 0);
 		KeyInput* ki = dynamic_cast<KeyInput*>(e);
 
-		if (ki->key == GLFW_KEY_F && ki->keyState == KEY_REPEAT)newPos -= Y * cameraSpeed;
-		if (ki->key == GLFW_KEY_R && ki->keyState == KEY_REPEAT)newPos += Y * cameraSpeed;
-		if (ki->key == GLFW_KEY_W && ki->keyState == KEY_REPEAT)newPos -= Z * cameraSpeed;
-		if (ki->key == GLFW_KEY_S && ki->keyState == KEY_REPEAT)newPos += Z * cameraSpeed;
-		if (ki->key == GLFW_KEY_A && ki->keyState == KEY_REPEAT)newPos -= X * cameraSpeed;
-		if (ki->key == GLFW_KEY_D && ki->keyState == KEY_REPEAT)newPos += X * cameraSpeed;
+		if (ki->key == GLFW_KEY_LEFT_ALT && ki->keyState == KEY_DOWN) altKey = true;
+		
+		if (mouseRight)
+		{
+			//if (ki->key == GLFW_KEY_F && ki->keyState == KEY_REPEAT)newPos -= Y * cameraSpeed;
+			//if (ki->key == GLFW_KEY_R && ki->keyState == KEY_REPEAT)newPos += Y * cameraSpeed;
+			if (ki->key == GLFW_KEY_W && ki->keyState == KEY_REPEAT)newPos -= Z * cameraSpeed;
+			if (ki->key == GLFW_KEY_S && ki->keyState == KEY_REPEAT)newPos += Z * cameraSpeed;
+			if (ki->key == GLFW_KEY_A && ki->keyState == KEY_REPEAT)newPos -= X * cameraSpeed;
+			if (ki->key == GLFW_KEY_D && ki->keyState == KEY_REPEAT)newPos += X * cameraSpeed;
+		}
+
+		if (ki->key == GLFW_KEY_LEFT_ALT && ki->keyState == KEY_UP) altKey = false;
+
+		
+		
 
 		if (ki->key == GLFW_KEY_T && ki->keyState == KEY_REPEAT) ResetCameraRotation();
 		if (ki->key == GLFW_KEY_G && ki->keyState == KEY_REPEAT) ResetCameraPosition();
+
+	
 
 
 		Move(newPos);
@@ -82,17 +99,24 @@ bool Camera::HandleEvent(Event* e)
 		break;
 	case MOUSE_INPUT:
 	{
-		if (!onFocus)
-			break;
-		mouseLeft = false;
+		//mouseLeft = false;
 		mouseRight = false;
+		if (!onFocus)
+		{
+			mouseRight = false;
+			break;
+		}
+			
+		
 		MouseInput* mo = dynamic_cast<MouseInput*>(e);
 
-		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseLeft = true;
+		//if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseLeft = true;
 		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_DOWN)mouseRight = true;
 
-		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_UP);
+		//if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_UP);
 		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_UP);
+
+		
 			
 	}
 
@@ -103,11 +127,11 @@ bool Camera::HandleEvent(Event* e)
 			break;
 		MousePosition* mo = dynamic_cast<MousePosition*>(e);
 		
-		if (mouseLeft)
+		if (mouseRight)
 		{
 
 			float rotationX = 0.0f;	
-			rotationX = mo->dx * rotationSpeed.x;
+			rotationX = mo->dx * -rotationSpeed.x;
 		
 			X = rotate(X, rotationX, vec3(0.0f, 1.0f, 0.0f));
 			Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
@@ -116,7 +140,7 @@ bool Camera::HandleEvent(Event* e)
 			
 			
 			float rotationY = 0.0f;
-			rotationY = mo->dy * rotationSpeed.y;
+			rotationY = mo->dy * -rotationSpeed.y;
 
 			
 			Y = rotate(Y, rotationY, X);
@@ -135,7 +159,7 @@ bool Camera::HandleEvent(Event* e)
 		}
 
 		
-		if (mouseRight)
+		if (altKey)
 		{
 			float rotationX = 0.0f;
 			rotationX = mo->dx * -rotationSpeed.x;

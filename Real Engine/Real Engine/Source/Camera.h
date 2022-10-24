@@ -54,6 +54,7 @@ private:
 
 	vec2 rotationSpeed{ 0.1f, 0.1f };
 
+	bool altKey;
 	bool mouseLeft;
 	bool mouseRight;
 	bool onFocus;
