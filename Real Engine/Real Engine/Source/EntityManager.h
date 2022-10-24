@@ -1,14 +1,11 @@
 #include "GameObject.h"
 #include "Entity.h"
 #include <queue>
-#include <bitset>
 #include <array>
 #include <assert.h>
 
 class EntityManager
 {
-
-
 public:
 	EntityManager();
 	Entity CreateEntity();
@@ -23,7 +20,5 @@ private:
 	std::array<Signature, MAX_ENTITIES> signatures{};
 	// Total living entities - used to keep limits on how many exist
 	uint32_t livingEntityCount{};
-
-
 };
 
