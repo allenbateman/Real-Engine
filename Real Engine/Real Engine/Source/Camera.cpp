@@ -15,6 +15,7 @@ Camera::Camera(bool isActive) : Module(isActive)
 
 	Position = vec3(0.0f, 5.0f, 30.0f);
 	Reference = vec3(0.0f, 5.0f, 0.0f);
+	target.position = Reference;
 	
 }
 
@@ -71,7 +72,7 @@ bool Camera::HandleEvent(Event* e)
 		vec3 newPos(0, 0, 0);
 		KeyInput* ki = dynamic_cast<KeyInput*>(e);
 		
-		//if (ki->key == GLFW_KEY_LEFT_ALT && ki->keyState == KEY_DOWN) altKey = true;
+		if (ki->keys[GLFW_KEY_LEFT_ALT] == KEY_DOWN) altKey = true;
 		
 		if (mouseRight)
 		{
@@ -88,13 +89,15 @@ bool Camera::HandleEvent(Event* e)
 			if (ki->keys[GLFW_KEY_D] == KEY_REPEAT)newPos += X * cameraSpeed * speedMulti;
 		}
 
-		/*if (ki->key == GLFW_KEY_LEFT_ALT && ki->keyState == KEY_UP) altKey = false;
+		if (ki->keys[GLFW_KEY_LEFT_ALT] == KEY_UP) altKey = false;
 
 		
 		
 
-		if (ki->key == GLFW_KEY_T && ki->keyState == KEY_REPEAT) ResetCameraRotation();
-		if (ki->key == GLFW_KEY_G && ki->keyState == KEY_REPEAT) ResetCameraPosition();*/
+		if (ki->keys[GLFW_KEY_T]== KEY_REPEAT) ResetCameraRotation();
+		if (ki->keys[GLFW_KEY_G]  == KEY_REPEAT) ResetCameraPosition();
+
+		if (ki->keys[GLFW_KEY_F] == KEY_DOWN) Focus(target);
 
 	
 
@@ -104,7 +107,7 @@ bool Camera::HandleEvent(Event* e)
 		break;
 	case MOUSE_INPUT:
 	{
-		//mouseLeft = false;
+		mouseLeft = false;
 		mouseRight = false;
 		if (!onFocus)
 		{
@@ -115,11 +118,11 @@ bool Camera::HandleEvent(Event* e)
 		
 		MouseInput* mo = dynamic_cast<MouseInput*>(e);
 
-		//if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseLeft = true;
+		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseLeft = true;
 		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_DOWN)mouseRight = true;
 
 		//if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_UP);
-		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_UP);
+		//if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_UP);
 
 		
 			
@@ -164,7 +167,7 @@ bool Camera::HandleEvent(Event* e)
 		}
 
 		
-		if (altKey)
+		if (altKey && mouseLeft)
 		{
 			float rotationX = 0.0f;
 			rotationX = mo->dx * -rotationSpeed.x;
@@ -271,9 +274,23 @@ void Camera::ResetCameraPosition()
 	Position = vec3(0.0f, 5.0f, 30.0f);
 	Reference = vec3(0.0f, 5.0f, 0.0f);
 }
-void Camera::SetReference(vec3 myReference)
+void Camera::SetTarget(Transform myTarget)
 {
-	Reference = myReference;
+	target = myTarget;
+}
+Transform Camera::GetTarget()
+{
+	return target;
+}
+void Camera::Focus(Transform target)
+{
+	
+	cout <<"1x: " << Position.x<<" y: " << Position.y <<" z: " << Position.z << endl;
+		LookAt(target.GetPosition());
+
+	Position = vec3(target.GetPosition().x, target.GetPosition().y + 5.0f, target.GetPosition().z - 10.0f);
+		cout << "2x: " << Position.x << " y: " << Position.y << " z: " << Position.z << endl;
+	CalculateViewMatrix();
 }
 // -----------------------------------------------------------------
 float* Camera::GetViewMatrix()

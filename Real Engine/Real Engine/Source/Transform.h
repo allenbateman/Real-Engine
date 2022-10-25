@@ -9,8 +9,8 @@ struct Transform :  public Component
 	vec3 forward; //stores normalized vector z
 	vec3 eulerAngles; //Stores rotation in euler angles x,y,z
 
-	vec3 GetEulerAngles();
-	vec3 GetPosition();
-	vec3 GetSize();
+	vec3 GetEulerAngles() {return eulerAngles;};
+	vec3 GetPosition() { return position; };
+	vec3 GetSize() { return scale; };
 };
 
