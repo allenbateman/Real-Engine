@@ -13,6 +13,8 @@ Shader::Shader(const char* vertexPath, const char* fragmentPath)
     try
     {
         // open files
+        std::cout << vertexPath<<std::endl;
+        std::cout << fragmentPath <<std::endl;
         vShaderFile.open(vertexPath);
         fShaderFile.open(fragmentPath);
         std::stringstream vShaderStream, fShaderStream;

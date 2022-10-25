@@ -8,6 +8,8 @@
 #include "glmath.h" 
 
 
+
+
 Renderer::Renderer(bool isActive) : Module(isActive)
 {
 
@@ -51,11 +53,12 @@ bool Renderer::Awake()
 
 bool Renderer::Start()
 {
-
-	objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
 	//objLoader.LoadObject("../Output/Assets/warrior.FBX");
-	defaultShader = new Shader("C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/default.vertex",
-		"C:/Users/allen/Documents/GitHub/Real-Engine/Real Engine/Real Engine/Source/default.fragment");
+	objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
+	const char *  vs = "../Real Engine/Source/default.vertex";
+	const char* fs = "../Real Engine/Source/default.fragment";
+
+	defaultShader = new Shader(vs, fs);
 	
 	
 	return true;

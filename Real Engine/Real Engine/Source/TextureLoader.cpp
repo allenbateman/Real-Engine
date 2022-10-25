@@ -4,10 +4,10 @@
 #include "External/Stb/stb_image.h"
 unsigned int LoadTexture(std::string file_path)
 {
-
+    //TODO check file path if its already loaded, the don,t flip 
+    stbi_set_flip_vertically_on_load(true);
     unsigned int texture;
     int width, height, nrChannels;
-
 
     glGenTextures(1, &texture);
     glBindTexture(GL_TEXTURE_2D, texture);

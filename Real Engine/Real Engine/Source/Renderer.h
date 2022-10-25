@@ -11,6 +11,8 @@ BEGIN_BITFLAGS(Flags)
 FLAG(r_BackCulling)
 END_BITFLAGS(Flags)
 
+namespace fs = std::experimental::filesystem;
+
 class Renderer : public Module
 {
 public:
