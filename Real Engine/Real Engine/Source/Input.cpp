@@ -49,6 +49,9 @@ bool Input::Start()
 	glfwSetWindowCloseCallback(app->window->window, windowCloseCallback);
 
 
+	subscribedEvents.push_back(EventType::KEY_INPUT);
+
+
 	return true;
 }
 
@@ -78,6 +81,8 @@ bool Input::PreUpdate()
 	{
 		windowCloseCallback(app->window->window);
 	}
+	keyEvent.keys = keyboard;
+	app->eventSystem->PostEvent(&keyEvent);
 
 	return true;
 }
@@ -136,10 +141,11 @@ void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 
 void Input::RetriveKeyCallBack(int key, int scancode, int action, int mods)
 {
-	keyEvent.key = key;
+	/*keyEvent.key = key;
 	keyEvent.scancode = scancode;
-	keyEvent.keyState = keyboard[key];
-	app->eventSystem->PostEvent(&keyEvent);
+	keyEvent.keyState = keyboard[key];*/
+	/*keyEvent.keys = keyboard;
+	app->eventSystem->PostEvent(&keyEvent);*/
 }
 
 void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int mods)

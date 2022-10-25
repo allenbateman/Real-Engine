@@ -36,7 +36,8 @@ private:
 public:
 	
 	vec3 X, Y, Z, Position, Reference;
-	float cameraSpeed = 2.5f;
+	float cameraSpeed = 1.0f;
+
 	
 private:
 	enum view
