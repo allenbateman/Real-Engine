@@ -70,26 +70,31 @@ bool Camera::HandleEvent(Event* e)
 			
 		vec3 newPos(0, 0, 0);
 		KeyInput* ki = dynamic_cast<KeyInput*>(e);
-
-		if (ki->key == GLFW_KEY_LEFT_ALT && ki->keyState == KEY_DOWN) altKey = true;
+		
+		//if (ki->key == GLFW_KEY_LEFT_ALT && ki->keyState == KEY_DOWN) altKey = true;
 		
 		if (mouseRight)
 		{
 			//if (ki->key == GLFW_KEY_F && ki->keyState == KEY_REPEAT)newPos -= Y * cameraSpeed;
 			//if (ki->key == GLFW_KEY_R && ki->keyState == KEY_REPEAT)newPos += Y * cameraSpeed;
-			if (ki->key == GLFW_KEY_W && ki->keyState == KEY_REPEAT)newPos -= Z * cameraSpeed;
-			if (ki->key == GLFW_KEY_S && ki->keyState == KEY_REPEAT)newPos += Z * cameraSpeed;
-			if (ki->key == GLFW_KEY_A && ki->keyState == KEY_REPEAT)newPos -= X * cameraSpeed;
-			if (ki->key == GLFW_KEY_D && ki->keyState == KEY_REPEAT)newPos += X * cameraSpeed;
+			
+			
+			int speedMulti = 1;
+			if (ki->keys[GLFW_KEY_LEFT_SHIFT] == KEY_REPEAT) speedMulti = 2;
+
+			if (ki->keys[GLFW_KEY_W] == KEY_REPEAT)newPos -= Z * cameraSpeed * speedMulti;
+			if (ki->keys[GLFW_KEY_S] == KEY_REPEAT)newPos += Z * cameraSpeed * speedMulti;
+			if (ki->keys[GLFW_KEY_A] == KEY_REPEAT)newPos -= X * cameraSpeed * speedMulti;
+			if (ki->keys[GLFW_KEY_D] == KEY_REPEAT)newPos += X * cameraSpeed * speedMulti;
 		}
 
-		if (ki->key == GLFW_KEY_LEFT_ALT && ki->keyState == KEY_UP) altKey = false;
+		/*if (ki->key == GLFW_KEY_LEFT_ALT && ki->keyState == KEY_UP) altKey = false;
 
 		
 		
 
 		if (ki->key == GLFW_KEY_T && ki->keyState == KEY_REPEAT) ResetCameraRotation();
-		if (ki->key == GLFW_KEY_G && ki->keyState == KEY_REPEAT) ResetCameraPosition();
+		if (ki->key == GLFW_KEY_G && ki->keyState == KEY_REPEAT) ResetCameraPosition();*/
 
 	
 

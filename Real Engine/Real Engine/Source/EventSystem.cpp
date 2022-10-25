@@ -72,29 +72,29 @@ void EventSystem::BroadcastEvents()
 
 
 
-	//if (eventList.empty())
-	//	return;
+	if (eventList.empty())
+		return;
 
-	//list<Event*>::iterator event1 = eventList.begin();
+	list<Event*>::iterator event1 = eventList.begin();
 
-	//if ((*event1) == nullptr)
-	//	return;
-	//
-	//for (list<Module*>::iterator currentModule = app->GetModuleList()->begin(); currentModule != app->GetModuleList()->end(); currentModule++)
-	//{
-	//	//check if module has any subscription
-	//	if (!(*currentModule)->subscribedEvents.empty())
-	//	{
-	//		//check for all subscriptions available and send the event of that sub type
-	//		if ((*currentModule)->subscribedEvents.front() == (*event1)->GetType())
-	//		{
-	//			//send event to be filtered by the module
-	//			(*currentModule)->HandleEvent(*event1);
-	//			//remove the event sent from list
-	//			eventList.remove(*event1);
-	//		}
-	//	}
-	//}
+	if ((*event1) == nullptr)
+		return;
+	
+	for (list<Module*>::iterator currentModule = app->GetModuleList()->begin(); currentModule != app->GetModuleList()->end(); currentModule++)
+	{
+		//check if module has any subscription
+		if (!(*currentModule)->subscribedEvents.empty())
+		{
+			//check for all subscriptions available and send the event of that sub type
+			if ((*currentModule)->subscribedEvents.front() == (*event1)->GetType())
+			{
+				//send event to be filtered by the module
+				(*currentModule)->HandleEvent(*event1);
+				//remove the event sent from list
+				eventList.remove(*event1);
+			}
+		}
+	}
 }
 
 void EventSystem::PrintMapping()
