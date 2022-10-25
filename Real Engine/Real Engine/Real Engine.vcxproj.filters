@@ -166,6 +166,12 @@
     <ClCompile Include="Source\ComponentManager.cpp">
       <Filter>Resource Files\Engine\Component Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Source\EntityComponentSystem.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SystemManager.cpp">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -307,6 +313,15 @@
       <Filter>Resource Files\Engine\Component Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\ComponentManager.h">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\EntityComponentSystem.h">
+      <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SystemManager.h">
+      <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\System.h">
       <Filter>Resource Files\Engine\Component Systems</Filter>
     </ClInclude>
   </ItemGroup>

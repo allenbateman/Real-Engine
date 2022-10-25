@@ -1,7 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "glmath.h"
-#include <iostream>
 #include "Shader.h"
 #include "Material.h"
 
