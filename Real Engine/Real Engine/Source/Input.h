@@ -30,6 +30,8 @@ public:
 	void RetriveMouseButtonCallBack(int button, int action, int mods);
 	static void MousePositionCallback(GLFWwindow* window, double xpos, double ypos);
 	void RetriveMousePositionCallBack(double xpos, double ypos,double dx, double dy);
+	static void MouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset);
+	void RetrieveMouseScrollCallback(double xOffset, double yOffset);
 	static void windowCloseCallback(GLFWwindow* window);
 	int GetKey(int key);
 
@@ -47,6 +49,8 @@ public:
 
 	MouseInput mouseButtonEvent;
 	MousePosition mousePositionEvent;
+	MouseScroll mouseScrollEvent;
+
 	KeyInput keyEvent;
 
 private:
@@ -59,5 +63,7 @@ private:
 	static int mouseY;
 	static int mouseDX;
 	static int mouseDY;
+	static int mouseScrollX;
+	static int mouseScrollY;
 };
 

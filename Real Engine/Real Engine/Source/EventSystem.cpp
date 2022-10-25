@@ -44,7 +44,7 @@ bool EventSystem::CleanUp()
 	return true;
 }
 
-void EventSystem::SubcribeModule(Module* _module, EventType _event)
+void EventSystem::SubscribeModule(Module* _module, EventType _event)
 {
 	obs[_module].push_back(_event);
 }

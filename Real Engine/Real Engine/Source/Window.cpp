@@ -53,8 +53,8 @@ bool Window::Awake()
 
 bool Window::Start()
 {
-	app->eventSystem->SubcribeModule(this, EventType::KEY_INPUT);
-	app->eventSystem->SubcribeModule(this, EventType::MOUSE_HOLE_MOUSE);
+	app->eventSystem->SubscribeModule(this, EventType::KEY_INPUT);
+	app->eventSystem->SubscribeModule(this, EventType::MOUSE_HOLE_MOUSE);
 	return true;
 }
 

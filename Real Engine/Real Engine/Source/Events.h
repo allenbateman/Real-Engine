@@ -43,6 +43,18 @@ struct MousePosition : Event
 	}
 
 };
+struct MouseScroll : Event
+{
+	MouseScroll() { type = EventType::MOUSE_SCROLL; }
+	~MouseScroll() {};
+
+	int dx = 0, dy = 0;
+
+	void DisplayData()
+	{
+		cout << "Mouse scroll x: " << dx << " y: " << dy << "\n";
+	}
+};
 
 struct  OnPanelResize : Event
 {

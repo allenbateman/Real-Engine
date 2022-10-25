@@ -47,7 +47,7 @@ bool Renderer::Awake()
 
 	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
 
-	app->eventSystem->SubcribeModule(this,PANEL_RESIZE);
+	app->eventSystem->SubscribeModule(this,PANEL_RESIZE);
 	return true;
 }
 
