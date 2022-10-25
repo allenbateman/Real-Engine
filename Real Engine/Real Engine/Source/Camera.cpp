@@ -30,10 +30,11 @@ bool Camera::Start()
 
 	freecam = false;
 
-	app->eventSystem->SubcribeModule(this, KEY_INPUT);
-	app->eventSystem->SubcribeModule(this, MOUSE_INPUT);
-	app->eventSystem->SubcribeModule(this, MOUSE_POSITION);
-	app->eventSystem->SubcribeModule(this, ON_PANEL_FOCUS);
+	app->eventSystem->SubscribeModule(this, KEY_INPUT);
+	app->eventSystem->SubscribeModule(this, MOUSE_INPUT);
+	app->eventSystem->SubscribeModule(this, MOUSE_POSITION);
+	app->eventSystem->SubscribeModule(this, MOUSE_SCROLL);
+	app->eventSystem->SubscribeModule(this, ON_PANEL_FOCUS);
 
 	return ret;
 }
@@ -76,9 +77,6 @@ bool Camera::HandleEvent(Event* e)
 		
 		if (mouseRight)
 		{
-			//if (ki->key == GLFW_KEY_F && ki->keyState == KEY_REPEAT)newPos -= Y * cameraSpeed;
-			//if (ki->key == GLFW_KEY_R && ki->keyState == KEY_REPEAT)newPos += Y * cameraSpeed;
-			
 			
 			int speedMulti = 1;
 			if (ki->keys[GLFW_KEY_LEFT_SHIFT] == KEY_REPEAT) speedMulti = 2;
@@ -91,16 +89,10 @@ bool Camera::HandleEvent(Event* e)
 
 		if (ki->keys[GLFW_KEY_LEFT_ALT] == KEY_UP) altKey = false;
 
-		
-		
-
 		if (ki->keys[GLFW_KEY_T]== KEY_REPEAT) ResetCameraRotation();
 		if (ki->keys[GLFW_KEY_G]  == KEY_REPEAT) ResetCameraPosition();
 
 		if (ki->keys[GLFW_KEY_F] == KEY_DOWN) Focus(target);
-
-	
-
 
 		Move(newPos);
 	}
@@ -115,17 +107,11 @@ bool Camera::HandleEvent(Event* e)
 			break;
 		}
 			
-		
 		MouseInput* mo = dynamic_cast<MouseInput*>(e);
 
 		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseLeft = true;
 		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_DOWN)mouseRight = true;
-
-		//if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_UP);
-		//if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_UP);
-
 		
-			
 	}
 
 		break;
@@ -145,12 +131,9 @@ bool Camera::HandleEvent(Event* e)
 			Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
 			Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
 			
-			
-			
 			float rotationY = 0.0f;
 			rotationY = mo->dy * -rotationSpeed.y;
 
-			
 			Y = rotate(Y, rotationY, X);
 			Z = rotate(Z, rotationY, X);
 
@@ -161,11 +144,8 @@ bool Camera::HandleEvent(Event* e)
 				Y = cross(Z, X);
 			}
 			
-
 			CalculateViewMatrix();
-
 		}
-
 		
 		if (altKey && mouseLeft)
 		{
@@ -178,11 +158,8 @@ bool Camera::HandleEvent(Event* e)
 			Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
 			Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
 
-
-
 			float rotationY = 0.0f;
 			rotationY = mo->dy * -rotationSpeed.y;
-
 
 			Y = rotate(Y, rotationY, X);
 			Z = rotate(Z, rotationY, X);
@@ -194,11 +171,19 @@ bool Camera::HandleEvent(Event* e)
 				Y = cross(Z, X);
 			}
 
-
 			Position = Reference + Z * length(Position);
 
 			CalculateViewMatrix();
 		}
+	}
+		break;
+	case MOUSE_SCROLL:
+	{
+		if (!onFocus)
+			break;
+		MouseScroll* ms = dynamic_cast<MouseScroll*>(e);
+
+		ms->DisplayData();
 	}
 		break;
 	default:

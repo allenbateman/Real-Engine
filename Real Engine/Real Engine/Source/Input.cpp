@@ -18,6 +18,9 @@ int Input::mouseY = 0;
 int Input::mouseDX = 0;
 int Input::mouseDY = 0;
 
+int Input::mouseScrollX = 0;
+int Input::mouseScrollY = 0;
+
 Input::Input(bool isActive) : Module(isActive)
 {
 	name.Create("Input");
@@ -47,6 +50,7 @@ bool Input::Start()
 	glfwSetMouseButtonCallback(app->window->window, MouseButtonCallback);
 	glfwSetCursorPosCallback(app->window->window, MousePositionCallback);
 	glfwSetWindowCloseCallback(app->window->window, windowCloseCallback);
+	glfwSetScrollCallback(app->window->window, MouseScrollCallback);
 
 
 	subscribedEvents.push_back(EventType::KEY_INPUT);
@@ -193,6 +197,20 @@ void Input::RetriveMousePositionCallBack(double xpos, double ypos, double dx, do
 	mousePositionEvent.dx = dx;
 	mousePositionEvent.dy = dy;
 	app->eventSystem->PostEvent(&mousePositionEvent);
+}
+
+void Input::MouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset)
+{
+	mouseScrollX = xOffset;
+	mouseScrollY = yOffset;
+	Input* input = app->input;
+	input->RetrieveMouseScrollCallback(mouseScrollX, mouseScrollY);
+}
+void Input::RetrieveMouseScrollCallback(double xOffset, double yOffset)
+{
+	mouseScrollEvent.dx = xOffset;
+	mouseScrollEvent.dy = yOffset;
+	app->eventSystem->PostEvent(&mouseScrollEvent);
 }
 
 void Input::windowCloseCallback(GLFWwindow* window)

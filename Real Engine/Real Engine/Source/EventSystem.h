@@ -20,7 +20,7 @@ public:
 	bool PostUpdate();
 	bool CleanUp();
 
-	void SubcribeModule(Module* _observer, EventType _event);
+	void SubscribeModule(Module* _observer, EventType _event);
 	void Unsubscribe(Module* _observer, Event* _event);
 
 	void PostEvent(Event* _event);
