@@ -3,6 +3,7 @@
 #include "External/MathGeoLib/MathGeoLib.h"
 #include "glmath.h"
 #include "Transform.h"
+#include "Events.h"
 
 
 class Camera : public Module
@@ -43,6 +44,8 @@ public:
 	Transform target;
 	
 	float cameraSpeed = 1.0f;
+
+	MouseScroll mouseScrollEvent;
 
 	
 private:

@@ -10,7 +10,8 @@ enum EventType {
 	KEY_INPUT,
 	MOUSE_HOLE_MOUSE,
 	PANEL_RESIZE,
-	ON_PANEL_FOCUS
+	ON_PANEL_FOCUS,
+	ON_FOV_CHANGE
 };
 
 class Event {
