@@ -94,7 +94,6 @@
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ObjectLoader.h" />
     <ClInclude Include="Source\Panel.h" />
-    <ClInclude Include="Source\PanelEvents.h" />
     <ClInclude Include="Source\PanelIDs.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\RendererPanel.h" />

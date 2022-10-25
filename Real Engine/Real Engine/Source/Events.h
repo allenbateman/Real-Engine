@@ -7,15 +7,8 @@ struct KeyInput : public Event
 {
 	KeyInput() {type = EventType::KEY_INPUT; };
 	~KeyInput() {};
-	//KeyState keyState = KEY_IDLE;
-	//int key = NULL;
 	KeyState* keys = NULL;
-	//int scancode = NULL;
-	/*void DisplayData() {
-		cout << "Key event: ";
-		cout << "Key pressed = " << key;
-		cout << " key state ="  << keyState << endl;
-	}*/
+
 };
 
 struct MouseInput : public Event
@@ -58,13 +51,16 @@ struct MouseScroll : Event
 
 struct  OnPanelResize : Event
 {
-	OnPanelResize(int _id, int _x, int _y) { id = _id; x = _x; y = _y; type = EventType::PANEL_RESIZE; };
-	~OnPanelResize() {};
+public:
+	OnPanelResize() {  type = EventType::PANEL_RESIZE; cout << "event panel resize  created\n";
+	};
+	~OnPanelResize() { cout << "event panel resize  destoryed\n"; };
 	int x, y,id;
 };
 
 struct OnPanelFocus :Event {
-	OnPanelFocus(int _id, bool isFocused) { id = _id; focused = isFocused; type = EventType::ON_PANEL_FOCUS; };
+public:
+	OnPanelFocus() {type = EventType::ON_PANEL_FOCUS; };
 	~OnPanelFocus() {};
 	int id;
 	bool focused = false;

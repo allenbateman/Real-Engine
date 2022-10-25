@@ -56,7 +56,6 @@ bool Camera::HandleEvent(Event* e)
 		OnPanelFocus* Pf = dynamic_cast<OnPanelFocus*>(e);
 		if (Pf->id == eViewport)
 		{
-			//cout << "viewpor focus: "<<Pf->focused<<endl;
 			onFocus = Pf->focused;
 		}
 	}
@@ -270,11 +269,9 @@ Transform Camera::GetTarget()
 void Camera::Focus(Transform target)
 {
 	
-	cout <<"1x: " << Position.x<<" y: " << Position.y <<" z: " << Position.z << endl;
-		LookAt(target.GetPosition());
-
+	LookAt(target.GetPosition());
 	Position = vec3(target.GetPosition().x, target.GetPosition().y + 5.0f, target.GetPosition().z - 10.0f);
-		cout << "2x: " << Position.x << " y: " << Position.y << " z: " << Position.z << endl;
+
 	CalculateViewMatrix();
 }
 // -----------------------------------------------------------------

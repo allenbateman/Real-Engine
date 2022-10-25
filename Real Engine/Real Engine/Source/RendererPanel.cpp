@@ -2,9 +2,8 @@
 #include "Application.h"
 #include "Renderer.h"
 
-RendererPanel::RendererPanel(int _id,bool isActive) : Panel(id,active)
+RendererPanel::RendererPanel(int _id,bool isActive) : Panel(_id, isActive)
 {
-	id = _id;
 	name.Create("Render Settings");
 }
 
@@ -50,5 +49,6 @@ bool RendererPanel::Update()
 
 bool RendererPanel::CleanUp()
 {
+	Panel::CleanUp();
 	return true;
 }

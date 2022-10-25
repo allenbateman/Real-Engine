@@ -23,7 +23,7 @@ class EventSystem;
 class UiSystem;
 class Renderer;
 class Camera;
-
+class EntityComponentSystem;
 
 class Application
 {
@@ -77,7 +77,7 @@ public:
 	UiSystem* uiSystem;
 	Renderer* renderer;
 	Camera* camera;
-
+	EntityComponentSystem* entityComponentSystem;
 	
 	bool exit = false;
 private:

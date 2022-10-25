@@ -48,6 +48,12 @@ bool UiSystem::Start()
 	return true;
 }
 
+bool UiSystem::PreUpdate()
+{
+	PrepareFrame();
+	return true;
+}
+
 void UiSystem::PrepareFrame()
 {
 	// feed inputs to dear imgui, start new frame
@@ -56,11 +62,6 @@ void UiSystem::PrepareFrame()
 	ImGui::NewFrame();
 }
 
-bool UiSystem::PreUpdate()
-{
-	PrepareFrame();
-	return true;
-}
 
 bool UiSystem::Update(float dt)
 {
@@ -72,6 +73,11 @@ bool UiSystem::Update(float dt)
 
 bool UiSystem::CleanUp()
 {
+    for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)
+    {
+        (*it)->CleanUp();
+    }
+
     LOG("Quitting ImGui subsystem");
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();

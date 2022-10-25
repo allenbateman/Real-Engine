@@ -3,9 +3,12 @@
 #include "EntityManager.h"
 #include "ComponentManager.h"
 #include "SystemManager.h"
-class EntityComponentSystem : Module
+class EntityComponentSystem : public Module
 {
 public :
+	EntityComponentSystem(bool active);
+	~EntityComponentSystem();
+
 	bool Awake();
 	bool Start();
 	bool PreUpdate();
@@ -24,7 +27,10 @@ public :
 	template<typename T>
 	void RemoveComponent(Entity entity);
 	template<typename T>
-	ComponentType GetComponentType();
+	T& GetComponent(Entity entity);
+	template<typename T>
+	T& GetComponentType(Entity entity);
+
 	
 	//System methods
 	template<typename T>
@@ -34,6 +40,8 @@ public :
 	
 	//Event methods
 
-
+private:
+	std::unique_ptr<ComponentManager> componentManager;
+	std::unique_ptr<EntityManager> entityManager;
+	std::unique_ptr<SystemManager> systemManager;
 };
-

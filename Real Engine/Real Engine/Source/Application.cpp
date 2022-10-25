@@ -7,6 +7,7 @@
 #include "UiSystem.h"
 #include "Renderer.h"
 #include "Camera.h"
+#include "EntityComponentSystem.h"
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
@@ -16,6 +17,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	window = new Window(true);
 	input = new Input(true);
 	eventSystem = new EventSystem(true);
+	entityComponentSystem = new EntityComponentSystem(true);
 	uiSystem = new UiSystem(true);
 	renderer = new Renderer(true);
 	camera = new Camera(true);
@@ -23,6 +25,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);
+	modules.push_back(entityComponentSystem);
 	modules.push_back(camera);
 
 

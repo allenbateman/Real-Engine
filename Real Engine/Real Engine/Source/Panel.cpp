@@ -2,10 +2,17 @@
 #include "Events.h"
 
 
+Panel::Panel()
+{
+
+}
+
 Panel::Panel(int _id, bool startActive)
 {
 	active = startActive;
 	id = _id;
+	ePanelResize.id = id;
+	ePanelFocus.id = id;
 }
 
 Panel::~Panel()
@@ -35,6 +42,9 @@ bool Panel::Update()
 
 bool Panel::CleanUp()
 {
+	ePanelFocus.~OnPanelFocus();
+	ePanelResize.~OnPanelResize();
+
 	return true;
 }
 
@@ -52,10 +62,12 @@ bool Panel::OnHovered()
 		vMax.y += ImGui::GetWindowPos().y + borderOffset;
 
 		ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, borderColor, 0, 0, borderOffset);
-		app->eventSystem->PostEvent(new OnPanelFocus(id,true));
+		ePanelFocus.focused = true;
+		app->eventSystem->PostEvent(&ePanelFocus);
 		return true;
 	}
-	app->eventSystem->PostEvent(new OnPanelFocus(id, false));
+	ePanelFocus.focused = false;
+	app->eventSystem->PostEvent(&ePanelFocus);
 	return false;
 }
 
@@ -65,7 +77,10 @@ bool Panel::OnResize()
 	if (LastSize.x != availableSize.x || LastSize.y != availableSize.y)
 	{
 		LastSize = availableSize;
-		BroadCastEvent(new OnPanelResize(id,availableSize.x, availableSize.y));
+		ePanelResize.x = LastSize.x;
+		ePanelResize.y = LastSize.y;
+
+		BroadCastEvent(&ePanelResize);
 		return true;
 	}
 	return false;

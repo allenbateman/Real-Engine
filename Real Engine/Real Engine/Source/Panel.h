@@ -3,6 +3,7 @@
 #include "SString.h"
 #include "Application.h"
 #include "EventSystem.h"
+#include "Events.h"
 
 #include "External/ImGui/imgui.h"
 #include "External/ImGui/backends/imgui_impl_glfw.h"
@@ -13,8 +14,9 @@
 class Panel
 {
 public:
+	Panel();
 	Panel(int _id, bool startActive);
-	~Panel();
+	virtual ~Panel();
 
 	//Begin end new windows
 	virtual void Begin();
@@ -40,6 +42,10 @@ public:
 	ImColor borderColor = { 125, 125, 125, 200 };
 	ImVec2 availableSize;
 	ImVec2 LastSize;
+
+	OnPanelResize ePanelResize;
+	OnPanelFocus ePanelFocus;
+	
 };
 
 

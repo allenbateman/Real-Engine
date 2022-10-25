@@ -19,7 +19,7 @@ public:
 	Event() {};
 	virtual ~Event() {};
 	EventType GetType() const { return type; };
-	EventType type;
+	EventType type = NONE;
 	void BaseDisplay() { DisplayData(); };
 	virtual void DisplayData() {};
 };

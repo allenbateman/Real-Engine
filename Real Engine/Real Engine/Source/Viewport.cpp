@@ -2,9 +2,8 @@
 #include "FrameBuffer.h"
 #include "EventSystem.h"
 
-Viewport::Viewport(int _id,bool isActive) : Panel(id,active)
+Viewport::Viewport(int _id,bool isActive) : Panel(_id,isActive)
 {
-	id = _id;
 	name.Create("Camera Viewport");
 }
 
@@ -48,5 +47,6 @@ bool Viewport::PostUpdate()
 
 bool Viewport::CleanUp()
 {
+	Panel::CleanUp();
 	return true;
 }
