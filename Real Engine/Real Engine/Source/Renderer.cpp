@@ -48,6 +48,8 @@ bool Renderer::Awake()
 	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
 
 	app->eventSystem->SubscribeModule(this,PANEL_RESIZE);
+	app->eventSystem->SubscribeModule(this, ON_PANEL_FOCUS);
+	app->eventSystem->SubscribeModule(this, MOUSE_SCROLL);
 	return true;
 }
 
@@ -60,7 +62,10 @@ bool Renderer::Start()
 
 	defaultShader = new Shader(vs, fs);
 	
-	
+	maxFieldOfView = 100.0f;
+	fieldOfView = 65.0f;
+	minFieldOfView = 50.0f;
+
 	return true;
 }
 
@@ -72,6 +77,7 @@ bool Renderer::PreUpdate()
 	buffer.ClearBuffer();
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(app->camera->GetViewMatrix());
+	
 
 	return true;
 }
@@ -160,13 +166,35 @@ void Renderer::OnResize(int xPos, int yPos, int width, int height)
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(60.0f, (float)width / (float)height, 0.125f, 512.0f);
+	ProjectionMatrix = perspective(this->fieldOfView, (float)width / (float)height, 0.125f, 512.0f);
 	glLoadMatrixf(&ProjectionMatrix);
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 }
+void Renderer::ChangeFieldOfView(float fieldOfView, int width, int height)
+{
 
+	float fieldOfViewValue = this->fieldOfView - fieldOfView;
+
+	if (minFieldOfView > fieldOfViewValue || fieldOfViewValue > maxFieldOfView) return;
+	
+	this->fieldOfView -= fieldOfView;
+	
+	//OnResize(0, 0, width, height);
+	buffer.GenerateBuffer(width, height);
+
+	glViewport(0.0f, 0.0f, width, height);
+
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	ProjectionMatrix = perspective(this->fieldOfView, width / height, 0.125f, 512.0f);
+	glLoadMatrixf(&ProjectionMatrix);
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+}
 void Renderer:: DrawDirectCube(vec3 position, float size)
 {
 
@@ -262,6 +290,28 @@ bool Renderer::HandleEvent(Event* e)
 			OnResize(0, 0, Pr->x, Pr->y);
 	}
 		break;
+	case ON_PANEL_FOCUS:
+	{
+		OnPanelFocus* Pf = dynamic_cast<OnPanelFocus*>(e);
+		if (Pf->id == eViewport)
+		{
+			
+			onFocus = Pf->focused;
+		}
+	}
+	break;
+	case MOUSE_SCROLL:
+	{
+		if (!onFocus)
+			break;
+		MouseScroll* ms = dynamic_cast<MouseScroll*>(e);
+
+		ChangeFieldOfView(ms->dy, app->window->GetWidth(), app->window->GetHeight());
+		ms->DisplayData();
+		
+
+	}
+	break;
 	default:
 		break;
 	}

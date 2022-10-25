@@ -33,7 +33,6 @@ bool Camera::Start()
 	app->eventSystem->SubscribeModule(this, KEY_INPUT);
 	app->eventSystem->SubscribeModule(this, MOUSE_INPUT);
 	app->eventSystem->SubscribeModule(this, MOUSE_POSITION);
-	app->eventSystem->SubscribeModule(this, MOUSE_SCROLL);
 	app->eventSystem->SubscribeModule(this, ON_PANEL_FOCUS);
 
 	return ret;
@@ -176,15 +175,7 @@ bool Camera::HandleEvent(Event* e)
 		}
 	}
 		break;
-	case MOUSE_SCROLL:
-	{
-		if (!onFocus)
-			break;
-		MouseScroll* ms = dynamic_cast<MouseScroll*>(e);
-
-		ms->DisplayData();
-	}
-		break;
+	
 	default:
 		break;
 	}

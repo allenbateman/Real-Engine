@@ -27,6 +27,7 @@ public:
 	bool CleanUp();
 
 	void OnResize(int xPos,int yPos, int width, int height);
+	void ChangeFieldOfView(float fieldOfView, int width, int height);
 	void DrawDirectCube(vec3 position, float size);
 	bool HandleEvent(Event* e);
 
@@ -37,7 +38,14 @@ public:
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
 
+	float fieldOfView;
+	float maxFieldOfView;
+	float minFieldOfView;
 
 	Shader* defaultShader;
+
+	bool onFocus;
+
+	//OnPanelResize panelResizeEvent;
 };
 

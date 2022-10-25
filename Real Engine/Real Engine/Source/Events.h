@@ -65,3 +65,11 @@ public:
 	int id;
 	bool focused = false;
 };
+
+struct OnFOVChange : Event
+{
+	OnFOVChange(float changeValue) { this->changeValue = changeValue; type = EventType::ON_FOV_CHANGE; };
+	~OnFOVChange() {};
+
+	float changeValue = 0;
+};
