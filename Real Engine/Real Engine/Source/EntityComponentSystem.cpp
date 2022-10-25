@@ -1,7 +1,13 @@
 #include "EntityComponentSystem.h"
+#include "Transform.h"
+#include "Material.h"
+#include "Mesh.h"
+#include "Camera.h"
 
 EntityComponentSystem::EntityComponentSystem(bool active) : Module(active)
 {
+	name.Create("Entity component system");
+	
 }
 
 EntityComponentSystem::~EntityComponentSystem()
@@ -10,6 +16,13 @@ EntityComponentSystem::~EntityComponentSystem()
 
 bool EntityComponentSystem::Awake()
 {
+	
+	componentManager = std::make_unique<ComponentManager>();
+	entityManager = std::make_unique<EntityManager>();
+	//mEventManager = std::make_unique<EventManager>();
+	systemManager = std::make_unique<SystemManager>();
+	RegisterComponent<Transform>();
+
 	return true;
 }
 
@@ -40,62 +53,12 @@ bool EntityComponentSystem::CleanUp()
 
 Entity EntityComponentSystem::CreateEntity()
 {
-	return Entity();
+	return entityManager->CreateEntity();
 }
 
 void EntityComponentSystem::DestroyEntity(Entity entity)
 {
+	entityManager->DestroyEntity(entity);
+	componentManager->EntityDestroyed(entity);
+	systemManager->EntityDestroyed(entity);
 }
-
-
-template<typename T>
-inline void EntityComponentSystem::RegisterComponent()
-{
-	componentManager->RegisterComponent<T>();
-}
-
-template<typename T>
-inline void EntityComponentSystem::AddComponent(Entity entity, T component)
-{
-	componentManager->AddComponent(entity, component);
-	auto signature = entityManager->GetSignature(entity);
-	signature.set(componentManager->GetComponentType<T>(), true);
-	entityManager->SetSignature(entity, signature);
-	systemManager->EntitySignatureChanged(entity, signature);
-}
-
-template<typename T>
-inline void EntityComponentSystem::RemoveComponent(Entity entity)
-{
-	componentManager->RemoveComponent<T>(entity);
-	auto signature = entityManager->GetSignature(entity);
-	signature.set(componentManager->GetComponentType<T>(), false);
-	entityManager->SetSignature(entity, signature);
-
-	systemManager->EntitySignatureChanged(entity, signature);
-}
-
-template<typename T>
-inline T& EntityComponentSystem::GetComponent(Entity entity)
-{
-	return componentManager->GetComponent<T>(entity);
-}
-
-template<typename T>
-inline T& EntityComponentSystem::GetComponentType(Entity entity)
-{
-	return componentManager->GetComponentType<T>(entity);
-}
-
-template<typename T>
-inline std::shared_ptr<T> EntityComponentSystem::RegisterSystem()
-{
-	return systemManager->RegisterSystem<T>();
-}
-
-template<typename T>
-inline void EntityComponentSystem::SetSystemSignature(Signature signature)
-{
-	systemManager->SetSignature<T>(signature);
-}
-

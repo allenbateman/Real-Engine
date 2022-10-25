@@ -295,7 +295,6 @@ bool Renderer::HandleEvent(Event* e)
 		OnPanelFocus* Pf = dynamic_cast<OnPanelFocus*>(e);
 		if (Pf->id == eViewport)
 		{
-			
 			onFocus = Pf->focused;
 		}
 	}

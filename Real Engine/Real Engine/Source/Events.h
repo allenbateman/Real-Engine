@@ -52,9 +52,8 @@ struct MouseScroll : Event
 struct  OnPanelResize : Event
 {
 public:
-	OnPanelResize() {  type = EventType::PANEL_RESIZE; cout << "event panel resize  created\n";
-	};
-	~OnPanelResize() { cout << "event panel resize  destoryed\n"; };
+	OnPanelResize() {  type = EventType::PANEL_RESIZE; };
+	~OnPanelResize() {};
 	int x, y,id;
 };
 

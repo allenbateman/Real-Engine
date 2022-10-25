@@ -1,15 +1,17 @@
+#pragma once
 #include "Entity.h"
 #include "Component.h"
+#include <array>
+#include <cassert>
 #include <unordered_map>
-#include <assert.h>
-class ICOmponentArray {
+class IComponentArray {
 public:
-	virtual ~ICOmponentArray() = default;
+	virtual ~IComponentArray() = default;
 	virtual void EntityDestroyed(Entity entity) = 0;
 };
 
 template<typename T>
-class ComponentArray : ICOmponentArray
+class ComponentArray : IComponentArray
 {
 public:
 	void InsertData(Entity entity, T component);
@@ -17,9 +19,9 @@ public:
 	T& GetData(Entity entity);
 	void EntityDestroyed(Entity entity) override;
 private:
-	std::array<T, MAX_ENTITIES> compoenentArray;
+	std::array<T, MAX_ENTITIES> compoenentArray{};
 	std::unordered_map <Entity, size_t> entityToIndexMap{};
-	std::unordered_map<size_t, Entity> indexToEntityMap{};
+	std::unordered_map <size_t, Entity> indexToEntityMap{};
 	size_t size{};
 };
 

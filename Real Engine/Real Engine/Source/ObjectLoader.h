@@ -24,5 +24,7 @@ public:
 	std::vector<Material> materials;
 	std::string directory;
 	std::vector<Texture>loadedtextures;
+
+
 };
 
