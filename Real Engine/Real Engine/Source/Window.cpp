@@ -141,6 +141,7 @@ bool Window::HandleEvent( Event* singleEvent)
 
 void Window::ResizeWindow(int newWidth, int newHeight)
 {
+	
 	glfwSetWindowSize(window, newWidth, newHeight);
 	glfwGetFramebufferSize(window, &width, &height);
 	width = newWidth;

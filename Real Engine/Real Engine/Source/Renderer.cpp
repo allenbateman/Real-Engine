@@ -157,6 +157,8 @@ bool Renderer::CleanUp()
 	return true;
 }
 
+static float aspect_ratio;
+
 void Renderer::OnResize(int xPos, int yPos, int width, int height)
 {
 	//resize the texture 
@@ -171,6 +173,8 @@ void Renderer::OnResize(int xPos, int yPos, int width, int height)
 
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+
+	aspect_ratio = width / height;
 }
 void Renderer::ChangeFieldOfView(float fieldOfView, int width, int height)
 {
@@ -188,7 +192,7 @@ void Renderer::ChangeFieldOfView(float fieldOfView, int width, int height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(this->fieldOfView, width / height, 0.125f, 512.0f);
+	ProjectionMatrix = perspective(this->fieldOfView, (float)width/ (float)height, 0.125f, 512.0f);
 	glLoadMatrixf(&ProjectionMatrix);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -304,8 +308,10 @@ bool Renderer::HandleEvent(Event* e)
 		if (!onFocus)
 			break;
 		MouseScroll* ms = dynamic_cast<MouseScroll*>(e);
-
-		ChangeFieldOfView(ms->dy, app->window->GetWidth(), app->window->GetHeight());
+		vec2 viewPortSize;
+		viewPortSize.x = app->uiSystem->GetPanelSize(eViewport).x;
+		viewPortSize.y = app->uiSystem->GetPanelSize(eViewport).y;
+		ChangeFieldOfView(ms->dy, viewPortSize.x, viewPortSize.y);
 		ms->DisplayData();
 		
 

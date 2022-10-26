@@ -33,6 +33,8 @@ public:
 
 	virtual void BroadCastEvent(Event* e);
 	virtual void HandleEvents(Event* e);
+
+	ImVec2 GetPanelSize();
 	SString name;
 	int id;
 	bool active;

@@ -95,3 +95,8 @@ void Panel::HandleEvents(Event* e)
 {
 }
 
+ImVec2 Panel::GetPanelSize()
+{
+	return LastSize;
+}
+

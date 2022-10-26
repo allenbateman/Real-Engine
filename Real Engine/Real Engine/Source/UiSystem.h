@@ -29,6 +29,8 @@ public:
 	void UpdatePanels();
 	void RenderUi();
 	void MainAppDockSpace(bool* p_open);
+
+	ImVec2 GetPanelSize(PanelID id);
 private:
 	vector<Panel*> panelList;
 

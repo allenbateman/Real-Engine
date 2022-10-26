@@ -224,3 +224,16 @@ void UiSystem::MainAppDockSpace(bool* p_open)
     // End the parent window that contains the Dockspace:
     ImGui::End();
 }
+
+ImVec2 UiSystem::GetPanelSize(PanelID id)
+{
+    for (int i = 0; i < panelList.size(); i++)
+    {
+        if (panelList.at(i)->id == id)
+        {
+            return panelList.at(i)->GetPanelSize();
+        }
+    }
+    cout << "Panel not found" << endl;
+    return ImVec2(0, 0);
+}
