@@ -11,7 +11,8 @@ enum EventType {
 	MOUSE_HOLE_MOUSE,
 	PANEL_RESIZE,
 	ON_PANEL_FOCUS,
-	ON_FOV_CHANGE
+	ON_FOV_CHANGE,
+	ON_FILE_DROP
 };
 
 class Event {

@@ -1,5 +1,7 @@
 #include "Module.h"	
 #include "SString.h"
+#include "Events.h"
+
 
 struct GLFWwindow;
 
@@ -37,10 +39,16 @@ class Window : public Module
 		virtual bool HandleEvent( Event* event);
 		void ResizeWindow(int newWidth, int newHeight);
 		
+		static void DropCallBack(GLFWwindow* window, int count, const char** paths);
+		void RetrieveDropCallBack(const char* path);
+		
 
 	public:
 		// The window we'll be rendering to
 		GLFWwindow* window;
+		OnFileDrop fileDropEvent;
+
+		static const char* filePath;
 	private:
 		SString title;
 		  int width;

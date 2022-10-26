@@ -72,3 +72,17 @@ struct OnFOVChange : Event
 
 	float changeValue = 0;
 };
+
+struct OnFileDrop : Event
+{
+	OnFileDrop() {  type = ON_FILE_DROP; }
+	~OnFileDrop() {};
+	
+	const char* path;
+
+	void Displaydata()
+	{
+		cout << "File dropped with path: " << endl;
+		cout << path << endl;
+	}
+};
