@@ -7,17 +7,23 @@
 class IComponentArray {
 public:
 	virtual ~IComponentArray() = default;
-	virtual void EntityDestroyed(Entity entity) = 0;
+	virtual void EntityDestroyed(Entity entity) {};
 };
 
 template<typename T>
-class ComponentArray : IComponentArray
+class ComponentArray : public IComponentArray
 {
 public:
 	void InsertData(Entity entity, T component);
 	void RemoveData(Entity entity);
 	T& GetData(Entity entity);
-	void EntityDestroyed(Entity entity) override;
+	void EntityDestroyed(Entity entity) override
+	{
+		//if (entityToIndexMap.find(entity) != entityToIndexMap.end())
+		//{
+		//	RemoveData(entity);
+		//}
+	}
 private:
 	std::array<T, MAX_ENTITIES> compoenentArray{};
 	std::unordered_map <Entity, size_t> entityToIndexMap{};

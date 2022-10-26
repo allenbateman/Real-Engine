@@ -39,12 +39,3 @@ inline T& ComponentArray<T>::GetData(Entity entity)
 
 	return ComponentArray[entityToIndexMap[entity]];
 }
-
-template<typename T>
-inline void ComponentArray<T>::EntityDestroyed(Entity entity)
-{
-	if (entityToIndexMap.find(entity) != entityToIndexMap.end())
-	{
-		RemoveData(entity);
-	}
-}

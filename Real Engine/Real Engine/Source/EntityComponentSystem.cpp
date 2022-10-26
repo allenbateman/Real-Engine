@@ -17,10 +17,12 @@ EntityComponentSystem::~EntityComponentSystem()
 bool EntityComponentSystem::Awake()
 {
 	
+	//init core
 	componentManager = std::make_unique<ComponentManager>();
 	entityManager = std::make_unique<EntityManager>();
-	//mEventManager = std::make_unique<EventManager>();
 	systemManager = std::make_unique<SystemManager>();
+
+	//register all components
 	RegisterComponent<Transform>();
 
 	return true;

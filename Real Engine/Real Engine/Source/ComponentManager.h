@@ -1,3 +1,4 @@
+#pragma once
 #include "ComponentArray.h"
 #include "Entity.h"
 #include "Component.h"
@@ -20,8 +21,11 @@ public:
 	T& GetComponent(Entity entity);
 	void EntityDestroyed(Entity entity);
 private:
+	//map of string pointer to a compoenent type
 	std::unordered_map<const char*, ComponentType> componentTypes{};
+	//map of string pointer to a compoenent array
 	std::unordered_map<const char*, std::shared_ptr<IComponentArray>> componentArrays{};
+
 	ComponentType nextComponentType{};
 
 	template<typename T>
@@ -37,7 +41,7 @@ inline void ComponentManager::RegisterComponent()
 	assert(componentTypes.find(typeName) == componentTypes.end() && "Registering component type more than once");
 
 	componentTypes.insert({ typeName, nextComponentType });
-	//componentArrays.insert({ typeName, std::make_shared<ComponentArray<T>>() });
+	componentArrays.insert({ typeName, std::make_shared<ComponentArray<T>>() });
 	nextComponentType++;
 }
 
@@ -60,7 +64,7 @@ template<typename T>
 inline void ComponentManager::RemoveComponent(Entity entity)
 {
 	// Remove a component from the array for an entity
-	GetComponentArray<T>()->GetData(entity);
+	GetComponentArray<T>()->RemoveData(entity);
 }
 template<typename T>
 T& ComponentManager::GetComponent(Entity entity)
