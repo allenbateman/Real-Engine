@@ -34,7 +34,7 @@ bool UiSystem::Start()
 	ImGui_ImplOpenGL3_Init("#version 410");
 
 	camViewport = new Viewport(eViewport,true);
-    mainRenderer = new RendererPanel(eRender_Settings,true);
+    mainRenderer = new RendererPanel(eRender_Settings,false);
     fpsGraph = new FPSGraph(eFPS_Graph, false);
 	panelList.push_back(camViewport);
     panelList.push_back(mainRenderer);

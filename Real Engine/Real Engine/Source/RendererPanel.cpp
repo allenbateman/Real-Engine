@@ -21,7 +21,6 @@ void RendererPanel::End()
 
 bool RendererPanel::Init()
 {
-	active = true;
 	window_flags = ImGuiConfigFlags_DockingEnable;
 	return true;
 }
