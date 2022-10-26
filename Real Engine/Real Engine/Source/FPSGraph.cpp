@@ -12,6 +12,7 @@ bool FPSGraph::Init()
 {
     window_flags = ImGuiWindowFlags_NoDocking;
     borderOffset = 0;
+   
     return true;
 }
 
@@ -35,6 +36,15 @@ bool FPSGraph::Update()
         OnHovered();
         OnResize();
         ImGui::Text("FPS: %f", averageFPS);    
+        
+        for (int i = 0; i < FPS_ON_PANEL - 1 ; i++)
+        {
+            lines[i] = lines[i + 1];
+        }
+        lines[FPS_ON_PANEL - 1] = averageFPS;
+        
+        ImGui::PlotHistogram("FPS Graph", lines, FPS_ON_PANEL, 0, 0, 0, 120, ImVec2(LastSize.x, LastSize.y - LastSize.y / 10));
+        
     }
     ImGui::End();
     ImGui::PopStyleVar();

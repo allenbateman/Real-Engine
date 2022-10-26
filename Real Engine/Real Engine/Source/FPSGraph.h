@@ -1,5 +1,6 @@
 #pragma once
 #include "Panel.h"
+#define FPS_ON_PANEL 120
 class FPSGraph : public Panel
 {
 	
@@ -15,6 +16,7 @@ class FPSGraph : public Panel
 	
 
 		float averageFPS;
+		float lines[FPS_ON_PANEL] = { 0 };
 
 
 };
