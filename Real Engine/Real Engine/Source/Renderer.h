@@ -41,6 +41,7 @@ public:
 	float fieldOfView;
 	float maxFieldOfView;
 	float minFieldOfView;
+	float zoomSpeed;
 
 	Shader* defaultShader;
 

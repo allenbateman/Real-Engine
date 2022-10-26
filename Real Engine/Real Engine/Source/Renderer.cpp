@@ -62,9 +62,10 @@ bool Renderer::Start()
 
 	defaultShader = new Shader(vs, fs);
 	
-	maxFieldOfView = 100.0f;
-	fieldOfView = 65.0f;
-	minFieldOfView = 50.0f;
+	maxFieldOfView = 120.0f;
+	fieldOfView = 60.0f;
+	minFieldOfView = 40.0f;
+	zoomSpeed = 4.0f;
 
 	return true;
 }
@@ -181,9 +182,14 @@ void Renderer::ChangeFieldOfView(float fieldOfView, int width, int height)
 
 	float fieldOfViewValue = this->fieldOfView - fieldOfView;
 
-	if (minFieldOfView > fieldOfViewValue || fieldOfViewValue > maxFieldOfView) return;
+	if (minFieldOfView > fieldOfViewValue || fieldOfViewValue > maxFieldOfView)
+	{
+		if (fieldOfViewValue > maxFieldOfView) this->fieldOfView = maxFieldOfView;
+		if (fieldOfViewValue < minFieldOfView) this->fieldOfView = minFieldOfView;
+		return;
+	}
 	
-	this->fieldOfView -= fieldOfView;
+	this->fieldOfView -= fieldOfView * zoomSpeed;
 	
 	//OnResize(0, 0, width, height);
 	buffer.GenerateBuffer(width, height);
