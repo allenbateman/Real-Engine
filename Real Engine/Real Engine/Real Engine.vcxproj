@@ -35,6 +35,7 @@
     <ClCompile Include="Source\External\ImGui\imgui_draw.cpp" />
     <ClCompile Include="Source\External\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Source\External\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\FPSGraph.cpp" />
     <ClCompile Include="Source\FrameBuffer.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
@@ -82,6 +83,7 @@
     <ClInclude Include="Source\External\ImGui\imstb_rectpack.h" />
     <ClInclude Include="Source\External\ImGui\imstb_textedit.h" />
     <ClInclude Include="Source\External\ImGui\imstb_truetype.h" />
+    <ClInclude Include="Source\FPSGraph.h" />
     <ClInclude Include="Source\FrameBuffer.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\glmath.h" />

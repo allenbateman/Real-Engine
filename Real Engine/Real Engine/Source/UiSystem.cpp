@@ -35,8 +35,10 @@ bool UiSystem::Start()
 
 	camViewport = new Viewport(eViewport,true);
     mainRenderer = new RendererPanel(eRender_Settings,true);
+    fpsGraph = new FPSGraph(eFPS_Graph, false);
 	panelList.push_back(camViewport);
     panelList.push_back(mainRenderer);
+    panelList.push_back(fpsGraph);
 
 	for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)
 	{
@@ -182,6 +184,8 @@ void UiSystem::MainAppDockSpace(bool* p_open)
 
     // Check if Docking is enabled:
     ImGuiIO& io = ImGui::GetIO();
+    
+    
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
     {
@@ -213,6 +217,11 @@ void UiSystem::MainAppDockSpace(bool* p_open)
                 ImGui::SetWindowFocus(mainRenderer->name.GetString());
             }
             ImGui::MenuItem("Inspector");
+            if(ImGui::MenuItem("FPS Graph"))
+            {
+                fpsGraph->active = true;
+                ImGui::SetWindowFocus(fpsGraph->name.GetString());
+            }
             ImGui::Separator();
 
  

@@ -8,6 +8,7 @@
 
 #include "Viewport.h"
 #include "RendererPanel.h"
+#include "FPSGraph.h"
 
 // Variables to configure the Dockspace example.
 static bool opt_fullscreen = true; // Is the Dockspace full-screen?
@@ -36,6 +37,7 @@ private:
 
 	Viewport* camViewport;
 	RendererPanel* mainRenderer;
+	FPSGraph* fpsGraph;
 
 	bool OpenMainWindow;
 	ImGuiIO* io = nullptr;

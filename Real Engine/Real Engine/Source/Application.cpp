@@ -12,7 +12,7 @@
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
 	appName.Create("Real Engine");
-	frames = 0;
+	frameCount = 0;
 
 	window = new Window(true);
 	input = new Input(true);
@@ -152,9 +152,7 @@ void Application::BroadcastEvents()
 
 void Application::PrepareUpdate()
 {
-	dt = (float) timer.Read();
-	timer.Start();
-
+	
 	BroadcastEvents();
 }
 

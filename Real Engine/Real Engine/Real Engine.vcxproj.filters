@@ -172,6 +172,9 @@
     <ClCompile Include="Source\SystemManager.cpp">
       <Filter>Resource Files\Engine\Component Systems</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FPSGraph.cpp">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -320,6 +323,9 @@
     </ClInclude>
     <ClInclude Include="Source\System.h">
       <Filter>Resource Files\Engine\Component Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FPSGraph.h">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

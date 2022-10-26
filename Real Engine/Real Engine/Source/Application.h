@@ -95,8 +95,8 @@ private:
 	bool loadGameRequested;
 	Timer	timer;
 	float	dt;
-
-	uint frames;
+	float timeCount;
+	
 	uint32 maxFrameRate = 0;
 	uint64 frameCount = 0;
 	uint32 framesPerSecond = 0;

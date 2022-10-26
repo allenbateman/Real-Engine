@@ -318,7 +318,7 @@ bool Renderer::HandleEvent(Event* e)
 		viewPortSize.x = app->uiSystem->GetPanelSize(eViewport).x;
 		viewPortSize.y = app->uiSystem->GetPanelSize(eViewport).y;
 		ChangeFieldOfView(ms->dy, viewPortSize.x, viewPortSize.y);
-		ms->DisplayData();
+		
 		
 
 	}
