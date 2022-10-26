@@ -14,7 +14,7 @@ public:
 	// mesh data
 	std::vector<Vertex>       vertices;
 	std::vector<unsigned int> indices;
-	
+	Mesh();
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 	~Mesh();
 	void Draw(Shader& shader ,Material& mat);

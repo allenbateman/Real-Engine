@@ -23,7 +23,6 @@
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\Component.cpp" />
-    <ClCompile Include="Source\ComponentArray.cpp" />
     <ClCompile Include="Source\ComponentManager.cpp" />
     <ClCompile Include="Source\EntityComponentSystem.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />

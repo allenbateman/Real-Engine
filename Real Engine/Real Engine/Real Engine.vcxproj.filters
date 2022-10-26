@@ -160,9 +160,6 @@
     <ClCompile Include="Source\EntityManager.cpp">
       <Filter>Resource Files\Engine\Component Systems</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ComponentArray.cpp">
-      <Filter>Resource Files\Engine\Component Systems</Filter>
-    </ClCompile>
     <ClCompile Include="Source\ComponentManager.cpp">
       <Filter>Resource Files\Engine\Component Systems</Filter>
     </ClCompile>

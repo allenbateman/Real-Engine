@@ -2,6 +2,10 @@
 #include "glew.h"
 #include "glfw3.h"
 
+Mesh::Mesh()
+{
+}
+
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
     this->vertices = vertices;

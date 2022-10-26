@@ -6,6 +6,7 @@
 class Material : public Component
 {
 public:
+	Material();
 	Material(std::vector<Texture>& texture);
 	~Material();
 	//sotres all texture maps diffuse,roughness etc
