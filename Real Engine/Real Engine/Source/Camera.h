@@ -10,7 +10,7 @@
 class Camera : public Module,public System
 {
 public:
-	Camera() {};
+	Camera();
 	Camera(bool isActive);
 	~Camera();
 
