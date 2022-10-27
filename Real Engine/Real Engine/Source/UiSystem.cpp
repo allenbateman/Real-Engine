@@ -80,7 +80,7 @@ bool UiSystem::CleanUp()
         (*it)->CleanUp();
     }
 
-    LOG("Quitting ImGui subsystem");
+  //  LOG("Quitting ImGui subsystem");
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();

@@ -40,9 +40,9 @@ bool Scene::CleanUp()
 	return true;
 }
 
-bool Scene::HandleEvent(Event* singleEvent)
+void Scene::HandleEvent(Event* singleEvent)
 {
-	return true;
+
 }
 
 GameObject* Scene::CreateGameObject()

@@ -11,33 +11,6 @@ EventSystem::~EventSystem()
 {
 }
 
-bool EventSystem::Awake()
-{
-	return true;
-}
-
-bool EventSystem::Start()
-{
-
-	return true;
-}
-
-bool EventSystem::PreUpdate()
-{
-
-	return true;
-}
-
-bool EventSystem::Update(float dt)
-{
-	return true;
-}
-
-bool EventSystem::PostUpdate()
-{
-	return true;
-}
-
 bool EventSystem::CleanUp()
 {
 	eventList.clear();
@@ -70,9 +43,6 @@ void EventSystem::PostEvent(Event* _event)
 
 void EventSystem::BroadcastEvents()
 {
-
-
-
 	if (eventList.empty())
 		return;
 

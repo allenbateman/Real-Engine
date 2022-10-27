@@ -39,7 +39,7 @@ class Window : public Module, public System
 
 		void SetFullScreen(bool fullScreen);
 		bool GetFullScreen();
-		virtual bool HandleEvent( Event* event);
+		virtual void HandleEvent( Event* event);
 		void ResizeWindow(int newWidth, int newHeight);
 		
 		static void DropCallBack(GLFWwindow* window, int count, const char** paths);

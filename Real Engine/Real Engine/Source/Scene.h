@@ -35,7 +35,7 @@ public:
 
 	bool CleanUp();
 
-	bool HandleEvent(Event* singleEvent);
+	void HandleEvent(Event* singleEvent);
 
 	GameObject* CreateGameObject();
 

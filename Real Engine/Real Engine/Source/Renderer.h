@@ -5,6 +5,7 @@
 #include "FrameBuffer.h"
 #include "External/bitflags/bitflags.hpp"
 #include "ObjectLoader.h"
+#include "Camera.h"
 
 #define MAX_LIGHTS 8
 
@@ -29,26 +30,19 @@ public:
 	bool CleanUp();
 
 	void OnResize(int xPos,int yPos, int width, int height);
-	void ChangeFieldOfView(float fieldOfView, int width, int height);
+	//void ChangeFieldOfView(float fieldOfView, int width, int height);
 	void DrawDirectCube(vec3 position, float size);
-	bool HandleEvent(Event* e);
+	void HandleEvent(Event* e);
+
+	Entity currentCamera;
 
 	FrameBuffer buffer;
-	//Shader shader("C:/Users/allen/Documents/GitHub/Real-Engine/RealEngine/RealEngine/Source/testVertexShader.vs","C:/Users/allen/Documents/GitHub/Real-Engine/RealEngine/RealEngine/Source/testFragShader.frag");
 	ObjectLoader objLoader;
-	
-	mat3x3 NormalMatrix;
-	mat4x4 ModelMatrix, ViewMatrix, ProjectionMatrix;
-
-	float fieldOfView;
-	float maxFieldOfView;
-	float minFieldOfView;
-	float zoomSpeed;
-
+	mat4x4 ProjectionMatrix;
 	Shader* defaultShader;
 
 	bool onFocus;
-
-	//OnPanelResize panelResizeEvent;
+private:
+	Camera camera;
 };
 

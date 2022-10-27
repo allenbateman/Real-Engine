@@ -15,11 +15,6 @@ public:
 	EventSystem(bool isActive);
 	~EventSystem();
 
-	bool Awake();
-	bool Start();
-	bool PreUpdate();
-	bool Update(float dt);
-	bool PostUpdate();
 	bool CleanUp();
 
 	void SubscribeModule(Module* _observer, EventType _event);
@@ -30,8 +25,15 @@ public:
 	void BroadcastEvents();
 	void PrintMapping();
 
+//--------------new
+
+	//void AddListener(EventType type, std::function<void(Event&)>const& listener);
+	//void SendEvent(Event& event);
+	//void SendEvent(EventType type);
+
 private:
 	std::map<Module*, vector<EventType>> obs;
+	//std::unordered_map<EventType, std::list<std::function<void(Event&)>>> listeners;
 	list<Event*> eventList;
 };
 

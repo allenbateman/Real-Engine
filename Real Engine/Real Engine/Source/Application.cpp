@@ -6,33 +6,51 @@
 #include "EventSystem.h"
 #include "UiSystem.h"
 #include "Renderer.h"
-#include "Camera.h"
+#include "CameraController.h"
+
+//include All components
+
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
 	appName.Create("Real Engine");
 	frameCount = 0;
 
+	entityComponentSystem.Init();
+
 	window = entityComponentSystem.RegisterSystem<Window>();
-	input =entityComponentSystem.RegisterSystem<Input>();
+	input = entityComponentSystem.RegisterSystem<Input>();
 	eventSystem = entityComponentSystem.RegisterSystem<EventSystem>();
 	uiSystem = entityComponentSystem.RegisterSystem<UiSystem>();
 	renderer = entityComponentSystem.RegisterSystem<Renderer>();
-	camera = entityComponentSystem.RegisterSystem<Camera>();
+	{
+		Signature signature;
+		signature.set(entityComponentSystem.GetComponentType<Transform>());
+		signature.set(entityComponentSystem.GetComponentType<Mesh>());
+		signature.set(entityComponentSystem.GetComponentType<Material>());
+		entityComponentSystem.SetSystemSignature<Renderer>(signature);
+	}
+	cameraController = entityComponentSystem.RegisterSystem<CameraController>();
+	{
+		Signature signature;
+		signature.set(entityComponentSystem.GetComponentType<Transform>());
+		signature.set(entityComponentSystem.GetComponentType<Camera>());
+		entityComponentSystem.SetSystemSignature<CameraController>(signature);
+	}
+	
+	auto e = entityComponentSystem.CreateEntity();
+
+	entityComponentSystem.AddComponent(e, Transform{ });
+	entityComponentSystem.AddComponent(e, Mesh{ });
 
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);
-	modules.push_back(camera);
-
-
+	modules.push_back(cameraController);
 	//last
-	// 
-	//renderer
 	modules.push_back(uiSystem);
 	modules.push_back(eventSystem);
 	modules.push_back(renderer);
-
 }
 
 Application::~Application()
@@ -86,7 +104,6 @@ bool Application::Update()
 		ret = PostUpdate();
 
 	FinishUpdate();
-	return ret;
 
 	return ret;
 }

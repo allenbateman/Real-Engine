@@ -8,13 +8,8 @@ public :
 	EntityComponentSystem();
 	~EntityComponentSystem();
 
-	bool Awake();
-	bool Start();
-	bool PreUpdate();
-	bool Update();
-	bool PostUpdate();
-	bool CleanUp();
-
+	void Init();
+	void SetSignatures();
 	// Entity methods
 	Entity CreateEntity();
 	void DestroyEntity(Entity entity);
@@ -29,6 +24,8 @@ public :
 	T& GetComponent(Entity entity);
 	template<typename T>
 	T& GetComponentType(Entity entity);
+	template<typename T>
+	std::uint8_t GetComponentType();
 
 	
 	//System methods
@@ -36,9 +33,6 @@ public :
 	std::shared_ptr<T> RegisterSystem();
 	template<typename T>
 	void SetSystemSignature(Signature signature);
-	
-	//Event methods
-
 private:
 	std::unique_ptr<ComponentManager> componentManager;
 	std::unique_ptr<EntityManager> entityManager;
@@ -83,6 +77,12 @@ template<typename T>
 inline T& EntityComponentSystem::GetComponentType(Entity entity)
 {
 	return componentManager->GetComponentType<T>(entity);
+}
+
+template<typename T>
+inline std::uint8_t EntityComponentSystem::GetComponentType()
+{
+	return componentManager->GetComponentType<T>();
 }
 
 template<typename T>

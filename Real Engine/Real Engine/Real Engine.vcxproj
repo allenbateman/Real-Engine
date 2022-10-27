@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Source\Application.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\CameraController.cpp" />
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\ComponentManager.cpp" />
@@ -62,6 +63,7 @@
   <ItemGroup>
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\CameraController.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentArray.h" />

@@ -52,10 +52,7 @@ bool Input::Start()
 	glfwSetWindowCloseCallback(app->window->window, windowCloseCallback);
 	glfwSetScrollCallback(app->window->window, MouseScrollCallback);
 
-
 	subscribedEvents.push_back(EventType::KEY_INPUT);
-
-
 	return true;
 }
 

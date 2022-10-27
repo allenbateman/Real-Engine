@@ -4,7 +4,6 @@
 #include "UiSystem.h"
 #include "EventSystem.h"
 #include "Events.h"
-#include "Camera.h"
 #include "glmath.h" 
 
 
@@ -43,13 +42,13 @@ bool Renderer::Awake()
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
 
-	OnResize(0,0,app->window->GetWidth(), app->window->GetHeight());
-
-	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
 
 	app->eventSystem->SubscribeModule(this,PANEL_RESIZE);
 	app->eventSystem->SubscribeModule(this, ON_PANEL_FOCUS);
 	app->eventSystem->SubscribeModule(this, MOUSE_SCROLL);
+
+
+
 	return true;
 }
 
@@ -61,11 +60,15 @@ bool Renderer::Start()
 	const char* fs = "../Real Engine/Source/default.fragment";
 
 	defaultShader = new Shader(vs, fs);
-	
-	maxFieldOfView = 120.0f;
-	fieldOfView = 60.0f;
-	minFieldOfView = 40.0f;
-	zoomSpeed = 4.0f;
+
+	currentCamera = app->entityComponentSystem.CreateEntity();
+	app->entityComponentSystem.AddComponent(currentCamera, Transform{});
+	app->entityComponentSystem.AddComponent(currentCamera, Camera());
+	camera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
+	camera.Start();
+
+	OnResize(0, 0, app->window->GetWidth(), app->window->GetHeight());
+	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
 
 	return true;
 }
@@ -77,8 +80,6 @@ bool Renderer::PreUpdate()
 	app->window->Clear();
 	buffer.ClearBuffer();
 	glMatrixMode(GL_MODELVIEW);
-	glLoadMatrixf(app->camera->GetViewMatrix());
-	
 
 	return true;
 }
@@ -91,6 +92,9 @@ bool Renderer::Update()
 
 bool Renderer::PostUpdate()
 {	
+	//calcualte view mtarix 
+	camera.CalculateViewMatrix();
+	glLoadMatrixf(camera.GetViewMatrix());
 	//bind renderer to the texture we want to render to (Frame buffer object)
 	glBindFramebuffer(GL_FRAMEBUFFER, buffer.FBO);
 
@@ -128,7 +132,7 @@ bool Renderer::PostUpdate()
 	mat4x4 pos = translate(-10, 0, 0);
 	mat4x4 size = scale(resize, resize, resize);
 	model = (pos * size).M;
-	float* view = app->camera->GetViewMatrix();
+	float* view = camera.GetViewMatrix();
 	defaultShader->SetMat4("projection", projection);
 	defaultShader->SetMat4("model", model);
 	defaultShader->SetMat4("view", view);
@@ -166,7 +170,7 @@ void Renderer::OnResize(int xPos, int yPos, int width, int height)
 	
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	ProjectionMatrix = perspective(this->fieldOfView, (float)width / (float)height, 0.125f, 512.0f);
+	ProjectionMatrix = perspective(camera.GetFieldOfView(), (float)width / (float)height, 0.125f, 512.0f);
 	glLoadMatrixf(&ProjectionMatrix);
 
 	glMatrixMode(GL_MODELVIEW);
@@ -174,35 +178,36 @@ void Renderer::OnResize(int xPos, int yPos, int width, int height)
 
 	aspect_ratio = width / height;
 }
-void Renderer::ChangeFieldOfView(float fieldOfView, int width, int height)
+
+void Renderer::HandleEvent(Event* e)
 {
 
-	float fieldOfViewValue = this->fieldOfView - fieldOfView;
-
-	if (minFieldOfView > fieldOfViewValue || fieldOfViewValue > maxFieldOfView)
+	switch (e->type)
 	{
-		if (fieldOfViewValue > maxFieldOfView) this->fieldOfView = maxFieldOfView;
-		if (fieldOfViewValue < minFieldOfView) this->fieldOfView = minFieldOfView;
-		return;
+	case PANEL_RESIZE:
+	{
+		OnPanelResize* Pr = dynamic_cast<OnPanelResize*>(e);
+		if(Pr->id == eViewport)
+			OnResize(0, 0, Pr->x, Pr->y);
 	}
-	
-	this->fieldOfView -= fieldOfView * zoomSpeed;
-	
-	//OnResize(0, 0, width, height);
-	buffer.GenerateBuffer(width, height);
-
-	glViewport(0.0f, 0.0f, width, height);
-
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	ProjectionMatrix = perspective(this->fieldOfView, (float)width/ (float)height, 0.125f, 512.0f);
-	glLoadMatrixf(&ProjectionMatrix);
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
+		break;
+	case ON_PANEL_FOCUS:
+	{
+		OnPanelFocus* Pf = dynamic_cast<OnPanelFocus*>(e);
+		if (Pf->id == eViewport)
+		{
+			auto& camera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
+			camera.SetFocus(Pf->focused);
+			//app->entityComponentSystem.GetComponent<Camera>(currentCamera).SetFocus(Pf->focused);
+		}
+	}
+	break;
+	default:
+		break;
+	}
 }
-void Renderer:: DrawDirectCube(vec3 position, float size)
+
+void Renderer::DrawDirectCube(vec3 position, float size)
 {
 
 	float x = position.x;
@@ -211,8 +216,8 @@ void Renderer:: DrawDirectCube(vec3 position, float size)
 
 	glLineWidth(1.0f);
 	glBegin(GL_TRIANGLES);
-	
-	
+
+
 	//Front
 	glColor3f(255, 0, 0);
 
@@ -253,7 +258,7 @@ void Renderer:: DrawDirectCube(vec3 position, float size)
 	glVertex3f(x, y + size, z + size);
 	glVertex3f(x, y, z + size);
 
-	
+
 	glVertex3f(x, y, z + size);
 	glVertex3f(x + size, y, z + size);
 	glVertex3f(x, y + size, z + size);
@@ -267,7 +272,7 @@ void Renderer:: DrawDirectCube(vec3 position, float size)
 
 	glVertex3f(x, y, z);
 	glVertex3f(x, y, z + size);
-	glVertex3f(x , y + size, z + size);
+	glVertex3f(x, y + size, z + size);
 
 	//Bottom
 	glColor3f(100, 100, 255);
@@ -283,45 +288,4 @@ void Renderer:: DrawDirectCube(vec3 position, float size)
 
 
 	glEnd();
-}
-
-bool Renderer::HandleEvent(Event* e)
-{
-
-	switch (e->type)
-	{
-	case PANEL_RESIZE:
-	{
-		OnPanelResize* Pr = dynamic_cast<OnPanelResize*>(e);
-		if(Pr->id == eViewport)
-			OnResize(0, 0, Pr->x, Pr->y);
-	}
-		break;
-	case ON_PANEL_FOCUS:
-	{
-		OnPanelFocus* Pf = dynamic_cast<OnPanelFocus*>(e);
-		if (Pf->id == eViewport)
-		{
-			onFocus = Pf->focused;
-		}
-	}
-	break;
-	case MOUSE_SCROLL:
-	{
-		if (!onFocus)
-			break;
-		MouseScroll* ms = dynamic_cast<MouseScroll*>(e);
-		vec2 viewPortSize;
-		viewPortSize.x = app->uiSystem->GetPanelSize(eViewport).x;
-		viewPortSize.y = app->uiSystem->GetPanelSize(eViewport).y;
-		ChangeFieldOfView(ms->dy, viewPortSize.x, viewPortSize.y);
-		
-		
-
-	}
-	break;
-	default:
-		break;
-	}
-	return false;
 }

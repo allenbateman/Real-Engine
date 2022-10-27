@@ -119,7 +119,7 @@ bool Window::GetFullScreen()
 	return fullScreen;
 }
 
-bool Window::HandleEvent( Event* singleEvent) 
+void Window::HandleEvent( Event* singleEvent) 
 {
 
 	switch (singleEvent->type)
@@ -136,8 +136,6 @@ bool Window::HandleEvent( Event* singleEvent)
 		default:
 			break;
 	}
-
-	return false;
 }
 
 void Window::ResizeWindow(int newWidth, int newHeight)

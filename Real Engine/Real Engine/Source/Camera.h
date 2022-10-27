@@ -7,7 +7,7 @@
 #include "Events.h"
 
 
-class Camera : public Module,public System
+class Camera
 {
 public:
 	Camera();
@@ -15,15 +15,13 @@ public:
 	~Camera();
 
 	bool Start();
-	bool Update(float dt);
-	bool CleanUp();
 
-	bool HandleEvent(Event* e);
+	bool CleanUp();
 
 	void Look(const vec3 &Position, const vec3 &Reference, bool RotateAroundReference = false);
 	void LookAt(const vec3 &Spot);
 	void Move(const vec3 &Movement);
-	
+	void ChangeFieldOfView(float fieldOfView, int width, int height);
 
 	void ResetCameraRotation();
 	void ResetCameraPosition();
@@ -33,23 +31,23 @@ public:
 	Transform GetTarget();
 
 	float* GetViewMatrix();
-	float* GetProjectionMatrix();
-
-private:
-	
-	void DebugMode(float dt);
+	float GetFieldOfView() { return fieldOfView; };
 	void CalculateViewMatrix();
+
+	void SetFocus(bool focus) { onFocus = focus; };
+	bool GetFocus() { return onFocus; };
 
 public:
 	
+	Transform transform;
 	vec3 X, Y, Z, Position, Reference;
 	Transform target;
-	
 	float cameraSpeed = 1.0f;
-
 	MouseScroll mouseScrollEvent;
-
-	
+	bool altKey;
+	bool mouseLeft;
+	bool mouseRight;
+	vec2 rotationSpeed{ 0.1f, 0.1f };
 private:
 	enum view
 	{
@@ -59,15 +57,15 @@ private:
 		right
 
 	};
+	mat3x3 NormalMatrix;
+	mat4x4 ModelMatrix, ViewMatrix, ViewMatrixInverse;
+
+	float fieldOfView;
+	float maxFieldOfView;
+	float minFieldOfView;
+	float zoomSpeed;
 
 	view cview = normal;
-	mat4x4 ViewMatrix, ViewMatrixInverse;
 	bool freecam;
-
-	vec2 rotationSpeed{ 0.1f, 0.1f };
-
-	bool altKey;
-	bool mouseLeft;
-	bool mouseRight;
 	bool onFocus;
 };

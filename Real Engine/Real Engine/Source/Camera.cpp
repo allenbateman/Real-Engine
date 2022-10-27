@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "EventSystem.h"
 #include "PanelIDs.h"
+#include "UiSystem.h"
 
 Camera::Camera()
 {
@@ -16,20 +17,13 @@ Camera::Camera()
 	Position = vec3(0.0f, 5.0f, 30.0f);
 	Reference = vec3(0.0f, 5.0f, 0.0f);
 	target.position = Reference;
-}
 
-Camera::Camera(bool isActive) : Module(isActive)
-{
-	CalculateViewMatrix();
+	freecam = false;
+	maxFieldOfView = 120.0f;
+	fieldOfView = 60.0f;
+	minFieldOfView = 40.0f;
+	zoomSpeed = 4.0f;
 
-	X = vec3(1.0f, 0.0f, 0.0f);
-	Y = vec3(0.0f, 1.0f, 0.0f);
-	Z = vec3(0.0f, 0.0f, 1.0f);
-
-	Position = vec3(0.0f, 5.0f, 30.0f);
-	Reference = vec3(0.0f, 5.0f, 0.0f);
-	target.position = Reference;
-	
 }
 
 Camera::~Camera()
@@ -42,165 +36,16 @@ bool Camera::Start()
 	bool ret = true;
 
 	freecam = false;
-
-	app->eventSystem->SubscribeModule(this, KEY_INPUT);
-	app->eventSystem->SubscribeModule(this, MOUSE_INPUT);
-	app->eventSystem->SubscribeModule(this, MOUSE_POSITION);
-	app->eventSystem->SubscribeModule(this, ON_PANEL_FOCUS);
-
+	maxFieldOfView = 120.0f;
+	fieldOfView = 60.0f;
+	minFieldOfView = 40.0f;
+	zoomSpeed = 4.0f;
 	return ret;
 }
 
 // -----------------------------------------------------------------
 bool Camera::CleanUp()
 {
-	
-
-	return true;
-}
-
-bool Camera::HandleEvent(Event* e)
-{
-	switch (e->type)
-	{
-	case ON_PANEL_FOCUS:
-	{
-		OnPanelFocus* Pf = dynamic_cast<OnPanelFocus*>(e);
-		if (Pf->id == eViewport)
-		{
-			onFocus = Pf->focused;
-		}
-	}
-		break;
-	case KEY_INPUT:
-	{
-
-		if (!onFocus)
-		{
-			altKey = false;
-			break;
-		}
-			
-		vec3 newPos(0, 0, 0);
-		KeyInput* ki = dynamic_cast<KeyInput*>(e);
-		
-		if (ki->keys[GLFW_KEY_LEFT_ALT] == KEY_DOWN) altKey = true;
-		
-		if (mouseRight)
-		{
-			
-			int speedMulti = 1;
-			if (ki->keys[GLFW_KEY_LEFT_SHIFT] == KEY_REPEAT) speedMulti = 2;
-
-			if (ki->keys[GLFW_KEY_W] == KEY_REPEAT)newPos -= Z * cameraSpeed * speedMulti;
-			if (ki->keys[GLFW_KEY_S] == KEY_REPEAT)newPos += Z * cameraSpeed * speedMulti;
-			if (ki->keys[GLFW_KEY_A] == KEY_REPEAT)newPos -= X * cameraSpeed * speedMulti;
-			if (ki->keys[GLFW_KEY_D] == KEY_REPEAT)newPos += X * cameraSpeed * speedMulti;
-		}
-
-		if (ki->keys[GLFW_KEY_LEFT_ALT] == KEY_UP) altKey = false;
-
-		if (ki->keys[GLFW_KEY_T]== KEY_REPEAT) ResetCameraRotation();
-		if (ki->keys[GLFW_KEY_G]  == KEY_REPEAT) ResetCameraPosition();
-
-		if (ki->keys[GLFW_KEY_F] == KEY_DOWN) Focus(target);
-
-		Move(newPos);
-	}
-		break;
-	case MOUSE_INPUT:
-	{
-		mouseLeft = false;
-		mouseRight = false;
-		if (!onFocus)
-		{
-			mouseRight = false;
-			break;
-		}
-			
-		MouseInput* mo = dynamic_cast<MouseInput*>(e);
-
-		if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)mouseLeft = true;
-		if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_DOWN)mouseRight = true;
-		
-	}
-
-		break;
-	case MOUSE_POSITION:
-	{
-		if (!onFocus)
-			break;
-		MousePosition* mo = dynamic_cast<MousePosition*>(e);
-		
-		if (mouseRight)
-		{
-
-			float rotationX = 0.0f;	
-			rotationX = mo->dx * -rotationSpeed.x;
-		
-			X = rotate(X, rotationX, vec3(0.0f, 1.0f, 0.0f));
-			Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
-			Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
-			
-			float rotationY = 0.0f;
-			rotationY = mo->dy * -rotationSpeed.y;
-
-			Y = rotate(Y, rotationY, X);
-			Z = rotate(Z, rotationY, X);
-
-			if (Y.y < 0.0f)
-			{
-				if (Z.y > 0.0f) Z.y = 1.0f;
-				if (Z.y > 0.0f) Z.y = -1.0f;
-				Y = cross(Z, X);
-			}
-			
-			CalculateViewMatrix();
-		}
-		
-		if (altKey && mouseLeft)
-		{
-			float rotationX = 0.0f;
-			rotationX = mo->dx * -rotationSpeed.x;
-
-			Position -= Reference;
-
-			X = rotate(X, rotationX, vec3(0.0f, 1.0f, 0.0f));
-			Y = rotate(Y, rotationX, vec3(0.0f, 1.0f, 0.0f));
-			Z = rotate(Z, rotationX, vec3(0.0f, 1.0f, 0.0f));
-
-			float rotationY = 0.0f;
-			rotationY = mo->dy * -rotationSpeed.y;
-
-			Y = rotate(Y, rotationY, X);
-			Z = rotate(Z, rotationY, X);
-
-			if (Y.y < 0.0f)
-			{
-				if (Z.y > 0.0f) Z.y = 1.0f;
-				if (Z.y > 0.0f) Z.y = -1.0f;
-				Y = cross(Z, X);
-			}
-
-			Position = Reference + Z * length(Position);
-
-			CalculateViewMatrix();
-		}
-	}
-		break;
-	
-	default:
-		break;
-	}
-	return true;
-}
-
-// -----------------------------------------------------------------
-bool Camera::Update(float dt)
-{
-	
-	// Recalculate matrix -------------
-	CalculateViewMatrix();
 	
 
 	return true;
@@ -233,8 +78,6 @@ void Camera::LookAt( const vec3 &Spot)
 	Z = normalize(Position - Reference);
 	X = normalize(cross(vec3(0.0f, 1.0f, 0.0f), Z));
 	Y = cross(Z, X);
-	
-	
 
 	CalculateViewMatrix();
 }
@@ -247,6 +90,20 @@ void Camera::Move(const vec3 &Movement)
 	Reference += Movement;
 
 	CalculateViewMatrix();
+}
+
+void Camera::ChangeFieldOfView(float fov, int width, int height)
+{
+	float fieldOfViewValue = fieldOfView - fov;
+
+	if (minFieldOfView > fieldOfViewValue || fieldOfViewValue > maxFieldOfView)
+	{
+		if (fieldOfViewValue > maxFieldOfView) fieldOfView = maxFieldOfView;
+		if (fieldOfViewValue < minFieldOfView) fieldOfView = minFieldOfView;
+		return;
+	}
+
+	fieldOfView -= fov * zoomSpeed;
 }
 
 void Camera::ResetCameraRotation()
@@ -282,19 +139,6 @@ void Camera::Focus(Transform target)
 float* Camera::GetViewMatrix()
 {
 	return &ViewMatrix;
-}
-
-float* Camera::GetProjectionMatrix()
-{
-	return nullptr;
-}
-
-
-
-void Camera::DebugMode(float dt)
-{
-	
-	
 }
 
 // -----------------------------------------------------------------

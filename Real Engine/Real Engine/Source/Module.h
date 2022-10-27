@@ -69,9 +69,8 @@ public:
 		}
 	}
 
-	virtual bool HandleEvent(Event* singleEvent)
+	virtual void HandleEvent(Event* singleEvent)
 	{
-		return true; 
 	}
 
 public:

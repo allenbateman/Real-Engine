@@ -23,7 +23,7 @@ class Input;
 class EventSystem;
 class UiSystem;
 class Renderer;
-class Camera;
+class CameraController;
 
 class Application
 {
@@ -52,8 +52,6 @@ public:
 	list<shared_ptr<Module>>* GetModuleList() ;
 
 	void BroadcastEvents();
-
-
 private:
 
 	// Call modules iteration
@@ -62,8 +60,6 @@ private:
 	bool PreUpdate();
 	bool DoUpdate();
 	bool PostUpdate();
-
-
 	// Load / Save
 	bool LoadGame();
 	bool SaveGame() const;
@@ -76,11 +72,8 @@ public:
 	shared_ptr<EventSystem> eventSystem;
 	shared_ptr<UiSystem> uiSystem;
 	shared_ptr<Renderer> renderer;
-	shared_ptr<Camera> camera;
-	
+	shared_ptr<CameraController> cameraController;
 
-//	shared_ptr<Camera> camSys;
-	
 	bool exit = false;
 private:
 
