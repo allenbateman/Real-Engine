@@ -13,6 +13,7 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include "EntityComponentSystem.h"
 
 using namespace std;
 
@@ -23,7 +24,6 @@ class EventSystem;
 class UiSystem;
 class Renderer;
 class Camera;
-class EntityComponentSystem;
 
 class Application
 {
@@ -37,7 +37,7 @@ public:
 	bool CleanUp();
 
 	// Add a new module to handle
-	void AddModule(Module* module);
+	void AddModule(shared_ptr<Module> module);
 
 	// Exposing some properties for reading
 	int GetArgc() const;
@@ -49,7 +49,7 @@ public:
 	void LoadGameRequest();
 	void SaveGameRequest() const;
 
-	list<Module*>* GetModuleList() ;
+	list<shared_ptr<Module>>* GetModuleList() ;
 
 	void BroadcastEvents();
 
@@ -69,15 +69,17 @@ private:
 	bool SaveGame() const;
 
 public:
-
+	EntityComponentSystem entityComponentSystem;
 	// Modules
-	Window *window;
-	Input *input;
-	EventSystem* eventSystem;
-	UiSystem* uiSystem;
-	Renderer* renderer;
-	Camera* camera;
-	EntityComponentSystem* entityComponentSystem;
+	shared_ptr<Window> window;
+	shared_ptr<Input> input;
+	shared_ptr<EventSystem> eventSystem;
+	shared_ptr<UiSystem> uiSystem;
+	shared_ptr<Renderer> renderer;
+	shared_ptr<Camera> camera;
+	
+
+//	shared_ptr<Camera> camSys;
 	
 	bool exit = false;
 private:
@@ -89,7 +91,7 @@ private:
 	SString title;
 	SString organization;
 
-	list <Module*> modules;
+	list <shared_ptr<Module>> modules;
 
 	mutable bool saveGameRequested;
 	bool loadGameRequested;

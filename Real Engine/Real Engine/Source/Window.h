@@ -1,14 +1,17 @@
 #include "Module.h"	
+#include "System.h"
 #include "SString.h"
 #include "Events.h"
 
 
+
 struct GLFWwindow;
 
-class Window : public Module
+class Window : public Module, public System
 {
 	public:
 
+		Window() {};
 		Window(bool isActive);
 		virtual ~Window();
 		bool Awake();

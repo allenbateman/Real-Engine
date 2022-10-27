@@ -91,11 +91,8 @@ bool Renderer::Update()
 
 bool Renderer::PostUpdate()
 {	
-	//bind renderer to the texture we want to render to 
+	//bind renderer to the texture we want to render to (Frame buffer object)
 	glBindFramebuffer(GL_FRAMEBUFFER, buffer.FBO);
-	
-	
-
 
 	//Render every thing here -------------------------------------------
 	//-----------------------

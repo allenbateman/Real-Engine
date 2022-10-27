@@ -44,13 +44,14 @@ bool EventSystem::CleanUp()
 	return true;
 }
 
-void EventSystem::SubscribeModule(Module* _module, EventType _event)
+void EventSystem::SubscribeModule(Module*_module, EventType _event)
 {
 	obs[_module].push_back(_event);
 }
 
-void EventSystem::Unsubscribe(Module* _module, Event* _event)
+void EventSystem::Unsubscribe(Module* _module)
 {
+	obs.erase(_module);
 }
 
 void EventSystem::PostEvent(Event* _event)
@@ -80,7 +81,7 @@ void EventSystem::BroadcastEvents()
 	if ((*event1) == nullptr)
 		return;
 	
-	for (list<Module*>::iterator currentModule = app->GetModuleList()->begin(); currentModule != app->GetModuleList()->end(); currentModule++)
+	for (list<shared_ptr<Module>>::iterator currentModule = app->GetModuleList()->begin(); currentModule != app->GetModuleList()->end(); currentModule++)
 	{
 		//check if module has any subscription
 		if (!(*currentModule)->subscribedEvents.empty())

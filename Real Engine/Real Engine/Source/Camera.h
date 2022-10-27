@@ -1,14 +1,16 @@
 #pragma once
 #include "Module.h"
+#include "System.h"
 #include "External/MathGeoLib/MathGeoLib.h"
 #include "glmath.h"
 #include "Transform.h"
 #include "Events.h"
 
 
-class Camera : public Module
+class Camera : public Module,public System
 {
 public:
+	Camera() {};
 	Camera(bool isActive);
 	~Camera();
 

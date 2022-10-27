@@ -3,11 +3,14 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Camera.h"
+#include "Application.h"
 
-EntityComponentSystem::EntityComponentSystem(bool active) : Module(active)
+EntityComponentSystem::EntityComponentSystem()
 {
-	name.Create("Entity component system");
-	
+	//init core
+	componentManager = std::make_unique<ComponentManager>();
+	entityManager = std::make_unique<EntityManager>();
+	systemManager = std::make_unique<SystemManager>();
 }
 
 EntityComponentSystem::~EntityComponentSystem()
@@ -17,10 +20,7 @@ EntityComponentSystem::~EntityComponentSystem()
 bool EntityComponentSystem::Awake()
 {
 
-	//init core
-	componentManager = std::make_unique<ComponentManager>();
-	entityManager = std::make_unique<EntityManager>();
-	systemManager = std::make_unique<SystemManager>();
+
 
 	//register all components
 	RegisterComponent<Transform>();
@@ -50,6 +50,8 @@ bool EntityComponentSystem::Awake()
 
 bool EntityComponentSystem::Start()
 {
+
+
 	return true;
 }
 

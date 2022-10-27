@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "System.h"
 #include "glmath.h"
 #include "FrameBuffer.h"
 #include "External/bitflags/bitflags.hpp"
@@ -13,9 +14,10 @@ END_BITFLAGS(Flags)
 
 namespace fs = std::experimental::filesystem;
 
-class Renderer : public Module
+class Renderer : public Module, public System
 {
 public:
+	Renderer() {};
 	Renderer(bool isActive);
 	~Renderer();
 

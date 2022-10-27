@@ -1,12 +1,11 @@
 #pragma once
-#include "Module.h"
 #include "EntityManager.h"
 #include "ComponentManager.h"
 #include "SystemManager.h"
-class EntityComponentSystem : public Module
-{
+class EntityComponentSystem {
 public :
-	EntityComponentSystem(bool active);
+
+	EntityComponentSystem();
 	~EntityComponentSystem();
 
 	bool Awake();

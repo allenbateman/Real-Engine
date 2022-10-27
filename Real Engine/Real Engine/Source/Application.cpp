@@ -7,25 +7,22 @@
 #include "UiSystem.h"
 #include "Renderer.h"
 #include "Camera.h"
-#include "EntityComponentSystem.h"
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
 {
 	appName.Create("Real Engine");
 	frameCount = 0;
 
-	window = new Window(true);
-	input = new Input(true);
-	eventSystem = new EventSystem(true);
-	entityComponentSystem = new EntityComponentSystem(true);
-	uiSystem = new UiSystem(true);
-	renderer = new Renderer(true);
-	camera = new Camera(true);
+	window = entityComponentSystem.RegisterSystem<Window>();
+	input =entityComponentSystem.RegisterSystem<Input>();
+	eventSystem = entityComponentSystem.RegisterSystem<EventSystem>();
+	uiSystem = entityComponentSystem.RegisterSystem<UiSystem>();
+	renderer = entityComponentSystem.RegisterSystem<Renderer>();
+	camera = entityComponentSystem.RegisterSystem<Camera>();
 
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);
-	modules.push_back(entityComponentSystem);
 	modules.push_back(camera);
 
 
@@ -47,7 +44,7 @@ bool Application::Awake()
 {
 	bool ret = true;
 	
-	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 		(*current)->Awake();
 	}
@@ -60,7 +57,7 @@ bool Application::Start()
 {
 	bool ret = true;
 
-	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 		ret = (*current)->Start();
 	}
@@ -98,7 +95,7 @@ bool Application::CleanUp()
 {
 	bool ret = true;
 
-	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 		(*current)->CleanUp();
 	}
@@ -106,7 +103,7 @@ bool Application::CleanUp()
 	return ret;
 }
 
-void Application::AddModule(Module* module)
+void Application::AddModule(shared_ptr<Module> module)
 {
 	module->Init();
 	modules.push_back(module);
@@ -140,7 +137,7 @@ void Application::SaveGameRequest() const
 {
 }
 
-list<Module*>* Application::GetModuleList() 
+list<shared_ptr<Module>>* Application::GetModuleList()
 {
 	return &modules;
 }
@@ -164,7 +161,7 @@ bool Application::PreUpdate()
 {
 	bool ret = true;
 
-	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 	//  set Debug mode
 	//	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
@@ -185,7 +182,7 @@ bool Application::DoUpdate()
 	//calculate frame rate
 
 
-	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 		if ((*current)->active == false)
 			continue;
@@ -200,7 +197,7 @@ bool Application::PostUpdate()
 {
 	bool ret = true;
 
-	for (list<Module*>::iterator current = modules.begin(); current != modules.end(); current++)
+	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 		if ((*current)->active == false)
 			continue;

@@ -11,6 +11,7 @@ class Application;
 class Module
 { 
 public:
+	Module() { active = true; };
 	Module(bool isActive) : active(isActive) {}
 
 	void Init() {}

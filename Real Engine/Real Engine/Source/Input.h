@@ -1,5 +1,6 @@
 #pragma once
 #include "Module.h"
+#include "System.h"
 #include "InputEnums.h"
 #include "Events.h"
 #define MAX_KEYS 300
@@ -13,10 +14,11 @@ enum EventWindow
 	WE_COUNT
 };
 
-class Input : public Module
+class Input : public Module, public System
 {
 
 public:
+	Input() {};
 	Input(bool isActive);
 	virtual ~Input();
 	bool Awake();

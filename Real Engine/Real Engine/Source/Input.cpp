@@ -139,7 +139,7 @@ void Input::KeyCallback(GLFWwindow* window, int key, int scancode, int action, i
 			keyboard[key] = KeyState::KEY_IDLE;
 			break;
 		}	
-		Input* input = app->input;
+		shared_ptr<Input> input = app->input;
 		input->RetriveKeyCallBack(key, scancode, action, mods);
 }
 
@@ -169,7 +169,7 @@ void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int 
 		mouseButtons[button] = KeyState::KEY_IDLE;
 		break;
 	}
-	Input* input = app->input;
+	shared_ptr<Input>  input = app->input;
 	input->RetriveMouseButtonCallBack(button, action, mods);
 }
 
@@ -186,7 +186,7 @@ void Input::MousePositionCallback(GLFWwindow* window, double xpos, double ypos)
 	if(mouseY != 0) mouseDY = ypos - mouseY;
 	mouseX = xpos;
 	mouseY = ypos;
-	Input* input = app->input;
+	shared_ptr<Input>  input = app->input;
 	input->RetriveMousePositionCallBack(xpos,ypos, mouseDX, mouseDY);
 }
 
@@ -203,7 +203,7 @@ void Input::MouseScrollCallback(GLFWwindow* window, double xOffset, double yOffs
 {
 	mouseScrollX = xOffset;
 	mouseScrollY = yOffset;
-	Input* input = app->input;
+	shared_ptr<Input>  input = app->input;
 	input->RetrieveMouseScrollCallback(mouseScrollX, mouseScrollY);
 }
 void Input::RetrieveMouseScrollCallback(double xOffset, double yOffset)

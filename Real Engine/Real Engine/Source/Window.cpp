@@ -54,8 +54,8 @@ bool Window::Awake()
 bool Window::Start()
 {
 	glfwSetDropCallback(window, DropCallBack);
-	app->eventSystem->SubscribeModule(this, EventType::KEY_INPUT);
-	app->eventSystem->SubscribeModule(this, EventType::MOUSE_HOLE_MOUSE);
+	//app->eventSystem->SubscribeModule(this, EventType::KEY_INPUT);
+	//app->eventSystem->SubscribeModule(this, EventType::MOUSE_HOLE_MOUSE);
 	return true;
 }
 
@@ -154,7 +154,7 @@ void Window::DropCallBack(GLFWwindow* window, int count, const char** paths)
 	
 	for (int i = 0; i < count; i++)
 	{
-		Window* window = app->window;
+		shared_ptr<Window> window = app->window;
 		window->RetrieveDropCallBack(paths[i]);
 	}
 }
