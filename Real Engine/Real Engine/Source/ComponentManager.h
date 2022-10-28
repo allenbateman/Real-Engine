@@ -20,6 +20,10 @@ public:
 	template<typename T>
 	T& GetComponent(Entity entity);
 	void EntityDestroyed(Entity entity);
+
+	template<typename T>
+	bool EntityHasComponent(Entity entity);
+	
 private:
 	//map of string pointer to a compoenent type
 	std::unordered_map<const char*, ComponentType> componentTypes{};
@@ -32,7 +36,6 @@ private:
 	std::shared_ptr<ComponentArray<T>> GetComponentArray();
 
 };
-
 
 template<typename T>
 inline void ComponentManager::RegisterComponent()
@@ -71,6 +74,12 @@ T& ComponentManager::GetComponent(Entity entity)
 {
 	// Get a reference to a component from the array for an entity
 	return GetComponentArray<T>()->GetData(entity);
+}
+
+template<typename T>
+inline bool ComponentManager::EntityHasComponent(Entity entity)
+{
+	return GetComponentArray<T>()->HasData(entity);
 }
 
 template<typename T>

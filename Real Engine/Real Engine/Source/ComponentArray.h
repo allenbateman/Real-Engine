@@ -14,6 +14,8 @@ template<typename T>
 class ComponentArray : public IComponentArray
 {
 public:
+	bool HasData(Entity entity);
+
 	void InsertData(Entity entity, T component);
 	T& GetData(Entity entity);
 	void RemoveData(Entity entity)
@@ -51,6 +53,12 @@ private:
 };
 
 template<typename T>
+inline bool ComponentArray<T>::HasData(Entity entity)
+{
+	return (entityToIndexMap.find(entity) != entityToIndexMap.end()) ?  true :  false;
+}
+
+template<typename T>
 inline void ComponentArray<T>::InsertData(Entity entity, T component)
 {
 	assert(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component addded to same entity more than once.");
@@ -65,7 +73,7 @@ template<typename T>
 inline T& ComponentArray<T>::GetData(Entity entity)
 {
 	assert(entityToIndexMap.find(entity) != entityToIndexMap.end() && "Retriving non-existing component.");
-
+	
 	return componentArray[entityToIndexMap[entity]];
 }
 

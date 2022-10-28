@@ -41,7 +41,6 @@ void CameraController::HandleEvent(Event* e)
 	{
 		auto& transform = app->entityComponentSystem.GetComponent<Transform>(ent);
 		auto& camera = app->entityComponentSystem.GetComponent<Camera>(ent);
-		camera.Position += vec3{ 1,0,0 };
 		switch (e->type)
 		{
 		case KEY_INPUT:
@@ -73,7 +72,7 @@ void CameraController::HandleEvent(Event* e)
 			if (ki->keys[GLFW_KEY_LEFT_ALT] == KEY_UP) camera.altKey = false;
 
 			if (ki->keys[GLFW_KEY_T] == KEY_REPEAT) camera.ResetCameraRotation();
-			if (ki->keys[GLFW_KEY_G] == KEY_REPEAT) camera.ResetCameraPosition();
+			if (ki->keys[GLFW_KEY_G] == KEY_REPEAT)	camera.ResetCameraPosition();
 
 			if (ki->keys[GLFW_KEY_F] == KEY_DOWN) camera.Focus(camera.target);
 
@@ -165,10 +164,7 @@ void CameraController::HandleEvent(Event* e)
 			if (!camera.GetFocus())
 				break;
 			MouseScroll* ms = dynamic_cast<MouseScroll*>(e);
-			vec2 viewPortSize;
-			viewPortSize.x = app->uiSystem->GetPanelSize(eViewport).x;
-			viewPortSize.y = app->uiSystem->GetPanelSize(eViewport).y;
-			camera.ChangeFieldOfView(ms->dy, viewPortSize.x, viewPortSize.y);
+			camera.ChangeFieldOfView(ms->dy);
 		}break;
 
 		default:

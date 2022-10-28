@@ -18,13 +18,10 @@ public:
 	Panel(int _id, bool startActive);
 	virtual ~Panel();
 
-	//Begin end new windows
-	virtual void Begin();
-	virtual void End();
 	// start panel
-	virtual bool Init();
+	virtual void Init();
 	//update panel
-	virtual bool Update();
+	virtual void Update();
 	//clean panel
 	virtual bool CleanUp();
 

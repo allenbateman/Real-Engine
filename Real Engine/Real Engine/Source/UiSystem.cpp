@@ -36,9 +36,15 @@ bool UiSystem::Start()
 	camViewport = new Viewport(eViewport,true);
     mainRenderer = new RendererPanel(eRender_Settings,false);
     fpsGraph = new FPSGraph(eFPS_Graph, false);
+    inspector = new Inspector(eInspector, true);
+    herarchyPanel = new SceneHerarchyPanel(eSceneHerarchy, true);
 	panelList.push_back(camViewport);
     panelList.push_back(mainRenderer);
     panelList.push_back(fpsGraph);
+    panelList.push_back(inspector);
+    panelList.push_back(herarchyPanel);
+
+    herarchyPanel->inspector = inspector;
 
 	for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)
 	{
@@ -216,7 +222,11 @@ void UiSystem::MainAppDockSpace(bool* p_open)
                 mainRenderer->active = true;
                 ImGui::SetWindowFocus(mainRenderer->name.GetString());
             }
-            ImGui::MenuItem("Inspector");
+            if(ImGui::MenuItem("Inspector"))
+            {
+                inspector->active = true;
+                ImGui::SetWindowFocus(inspector->name.GetString());
+            }
             if(ImGui::MenuItem("FPS Graph"))
             {
                 fpsGraph->active = true;

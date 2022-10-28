@@ -44,8 +44,3 @@ void Scene::HandleEvent(Event* singleEvent)
 {
 
 }
-
-GameObject* Scene::CreateGameObject()
-{
-	return nullptr;
-}

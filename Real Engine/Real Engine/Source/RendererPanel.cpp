@@ -19,16 +19,15 @@ void RendererPanel::End()
 {
 }
 
-bool RendererPanel::Init()
+void RendererPanel::Init()
 {
 	window_flags = ImGuiConfigFlags_DockingEnable;
-	return true;
 }
 
-bool RendererPanel::Update()
+void RendererPanel::Update()
 {
 	if (!active)
-		return false;
+		return;
 
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(2.0f, 2.0f));
 	ImGui::SetNextWindowSize(ImVec2{ 720,720 }, ImGuiCond_FirstUseEver);
@@ -43,7 +42,6 @@ bool RendererPanel::Update()
 	}
 	ImGui::End();
 	ImGui::PopStyleVar();
-	return true;
 }
 
 bool RendererPanel::CleanUp()

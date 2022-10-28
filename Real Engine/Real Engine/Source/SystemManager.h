@@ -37,5 +37,5 @@ inline void SystemManager::SetSignature(Signature signature)
 
 	assert(systems.find(typeName) != systems.end() && "System used before registered.");
 
-	signatures.insert({ typeName,signature });
+	signatures.insert({ typeName,signature});
 }

@@ -5,7 +5,7 @@
 #include "EventSystem.h"
 #include "Events.h"
 #include "glmath.h" 
-
+#include "Tag.h"
 
 
 
@@ -46,9 +46,7 @@ bool Renderer::Awake()
 	app->eventSystem->SubscribeModule(this,PANEL_RESIZE);
 	app->eventSystem->SubscribeModule(this, ON_PANEL_FOCUS);
 	app->eventSystem->SubscribeModule(this, MOUSE_SCROLL);
-
-
-
+	app->eventSystem->SubscribeModule(this, ON_FOV_CHANGE);
 	return true;
 }
 
@@ -64,6 +62,7 @@ bool Renderer::Start()
 	currentCamera = app->entityComponentSystem.CreateEntity();
 	app->entityComponentSystem.AddComponent(currentCamera, Transform{});
 	app->entityComponentSystem.AddComponent(currentCamera, Camera());
+	app->entityComponentSystem.AddComponent(currentCamera, TagComponent{"Camera"});
 	camera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
 	camera.Start();
 
@@ -93,6 +92,8 @@ bool Renderer::Update()
 bool Renderer::PostUpdate()
 {	
 	//calcualte view mtarix 
+
+	camera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
 	camera.CalculateViewMatrix();
 	glLoadMatrixf(camera.GetViewMatrix());
 	//bind renderer to the texture we want to render to (Frame buffer object)
@@ -189,6 +190,8 @@ void Renderer::HandleEvent(Event* e)
 		OnPanelResize* Pr = dynamic_cast<OnPanelResize*>(e);
 		if(Pr->id == eViewport)
 			OnResize(0, 0, Pr->x, Pr->y);
+		lastSize.x = Pr->x;
+		lastSize.y = Pr->y;
 	}
 		break;
 	case ON_PANEL_FOCUS:
@@ -198,8 +201,25 @@ void Renderer::HandleEvent(Event* e)
 		{
 			auto& camera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
 			camera.SetFocus(Pf->focused);
-			//app->entityComponentSystem.GetComponent<Camera>(currentCamera).SetFocus(Pf->focused);
 		}
+	}
+	break;
+	case MOUSE_SCROLL:
+	{
+		OnResize(0, 0, lastSize.x, lastSize.y);
+	}
+	break;
+	case ON_FOV_CHANGE:
+	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
+		ProjectionMatrix = perspective(camera.GetFieldOfView(), (float)lastSize.x / (float)lastSize.y, 0.125f, 512.0f);
+		glLoadMatrixf(&ProjectionMatrix);
+
+		glMatrixMode(GL_MODELVIEW);
+		glLoadIdentity();
+
+		aspect_ratio = lastSize.x / lastSize.y;
 	}
 	break;
 	default:

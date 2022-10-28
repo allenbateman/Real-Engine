@@ -67,6 +67,7 @@ public:
 
 struct OnFOVChange : Event
 {
+	OnFOVChange() { type = EventType::ON_FOV_CHANGE; };
 	OnFOVChange(float changeValue) { this->changeValue = changeValue; type = EventType::ON_FOV_CHANGE; };
 	~OnFOVChange() {};
 

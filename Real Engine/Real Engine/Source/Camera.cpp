@@ -46,8 +46,6 @@ bool Camera::Start()
 // -----------------------------------------------------------------
 bool Camera::CleanUp()
 {
-	
-
 	return true;
 }
 
@@ -88,11 +86,10 @@ void Camera::Move(const vec3 &Movement)
 {
 	Position += Movement;
 	Reference += Movement;
-
 	CalculateViewMatrix();
 }
 
-void Camera::ChangeFieldOfView(float fov, int width, int height)
+void Camera::ChangeFieldOfView(float fov)
 {
 	float fieldOfViewValue = fieldOfView - fov;
 

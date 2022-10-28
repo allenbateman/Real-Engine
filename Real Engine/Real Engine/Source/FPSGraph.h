@@ -8,10 +8,8 @@ class FPSGraph : public Panel
 
 		FPSGraph(int _id, bool isActive);
 		~FPSGraph();
-		bool Init();
-		bool PreUpdate();
-		bool Update();
-		bool PostUpdate();
+		void Init();
+		void Update();
 		bool CleanUp();
 	
 

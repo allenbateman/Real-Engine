@@ -11,16 +11,15 @@ Viewport::~Viewport()
 {
 }
 
-bool Viewport::Init()
+void Viewport::Init()
 {
 
 	active = true;
 	window_flags = ImGuiWindowFlags_NoDocking;
 	borderOffset = 0;
-	return true;
 }
 
-bool Viewport::Update()
+void Viewport::Update()
 {
 	// render your GUI
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
@@ -36,13 +35,6 @@ bool Viewport::Update()
 	}
 	ImGui::End();
 	ImGui::PopStyleVar();
-
-	return true;
-}
-
-bool Viewport::PostUpdate()
-{
-	return true;
 }
 
 bool Viewport::CleanUp()

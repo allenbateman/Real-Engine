@@ -12,7 +12,7 @@ public:
 	void DestroyEntity(Entity entity);
 	void SetSignature(Entity entity, Signature signature);
 	Signature GetSignature(Entity entity);
-
+	uint32_t GetEntities() { return livingEntityCount; };
 private:
 	// Queue of unused entity IDs
 	std::queue<Entity> availableEntities{};

@@ -14,30 +14,15 @@ Panel::Panel(int _id, bool startActive)
 	ePanelResize.id = id;
 	ePanelFocus.id = id;
 }
-
 Panel::~Panel()
 {
 }
 
-void Panel::Begin()
-{
-	ImGui_ImplOpenGL3_NewFrame();
-	ImGui_ImplGlfw_NewFrame();
-	ImGui::NewFrame();
-
-}
-
-void Panel::End()
+void Panel::Init()
 {
 }
-
-bool Panel::Init()
+void Panel::Update()
 {
-	return true;
-}
-bool Panel::Update()
-{
-	return true;
 }
 
 bool Panel::CleanUp()

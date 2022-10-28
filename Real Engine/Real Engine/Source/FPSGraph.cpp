@@ -8,24 +8,15 @@ FPSGraph::~FPSGraph()
 {
 }
 
-bool FPSGraph::Init()
+void FPSGraph::Init()
 {
     window_flags = ImGuiWindowFlags_NoDocking;
     borderOffset = 0;
-   
-    return true;
 }
-
-bool FPSGraph::PreUpdate()
-{
-   
-    return true;
-}
-
-bool FPSGraph::Update()
+void FPSGraph::Update()
 {
     if (!active)
-        return false;
+        return;
 
     averageFPS = ImGui::GetIO().Framerate;
     ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
@@ -48,15 +39,7 @@ bool FPSGraph::Update()
     }
     ImGui::End();
     ImGui::PopStyleVar();
-    return true;
 }
-
-bool FPSGraph::PostUpdate()
-{
-    
-    return true;
-}
-
 bool FPSGraph::CleanUp()
 {
     return true;

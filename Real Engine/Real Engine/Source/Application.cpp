@@ -7,6 +7,7 @@
 #include "UiSystem.h"
 #include "Renderer.h"
 #include "CameraController.h"
+#include "Tag.h"
 
 //include All components
 
@@ -42,6 +43,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	entityComponentSystem.AddComponent(e, Transform{ });
 	entityComponentSystem.AddComponent(e, Mesh{ });
+	entityComponentSystem.AddComponent(e, TagComponent{"Drawable"});
 
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);

@@ -41,6 +41,9 @@ public:
 	mat4x4 ProjectionMatrix;
 	Shader* defaultShader;
 
+	//last renderer resize;
+	vec2 lastSize;
+
 	bool onFocus;
 private:
 	Camera camera;

@@ -2,6 +2,7 @@
 #include "EntityManager.h"
 #include "ComponentManager.h"
 #include "SystemManager.h"
+#include <unordered_map>
 class EntityComponentSystem {
 public :
 
@@ -13,6 +14,9 @@ public :
 	// Entity methods
 	Entity CreateEntity();
 	void DestroyEntity(Entity entity);
+	Signature GetEntitySignature(Entity entity);
+	std::uint32_t GetEntities();
+
 	// Component methods
 	template<typename T>
 	void RegisterComponent();
@@ -27,18 +31,20 @@ public :
 	template<typename T>
 	std::uint8_t GetComponentType();
 
-	
 	//System methods
 	template<typename T>
 	std::shared_ptr<T> RegisterSystem();
 	template<typename T>
 	void SetSystemSignature(Signature signature);
+
+
+	template<typename T>
+	bool HasComponent(Entity entity);
 private:
 	std::unique_ptr<ComponentManager> componentManager;
 	std::unique_ptr<EntityManager> entityManager;
 	std::unique_ptr<SystemManager> systemManager;
 };
-
 
 template<typename T>
 inline void EntityComponentSystem::RegisterComponent()
@@ -95,5 +101,11 @@ template<typename T>
 inline void EntityComponentSystem::SetSystemSignature(Signature signature)
 {
 	systemManager->SetSignature<T>(signature);
+}
+
+template<typename T>
+inline bool EntityComponentSystem::HasComponent(Entity entity)
+{
+	return componentManager->EntityHasComponent<T>(entity);
 }
 

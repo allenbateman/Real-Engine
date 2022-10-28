@@ -8,8 +8,8 @@ public:
 
 	void Begin();
 	void End();
-	bool Init();
-	bool Update();
+	void Init();
+	void Update();
 	bool CleanUp();
 
 	bool BackCullFacing = true;

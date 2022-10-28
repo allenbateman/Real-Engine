@@ -7,9 +7,8 @@ public:
 
 	Viewport(int _id,bool isActive);
 	~Viewport();
-	bool Init();
-	bool Update();
-	bool PostUpdate();
+	void Init();
+	void Update();
 	bool CleanUp();
 };
 
