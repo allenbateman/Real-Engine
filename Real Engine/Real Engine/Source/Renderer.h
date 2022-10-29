@@ -4,7 +4,7 @@
 #include "glmath.h"
 #include "FrameBuffer.h"
 #include "External/bitflags/bitflags.hpp"
-#include "ObjectLoader.h"
+#include "Shader.h"
 #include "Camera.h"
 
 #define MAX_LIGHTS 8
@@ -12,8 +12,6 @@
 BEGIN_BITFLAGS(Flags)
 FLAG(r_BackCulling)
 END_BITFLAGS(Flags)
-
-namespace fs = std::experimental::filesystem;
 
 class Renderer : public Module, public System
 {
@@ -37,7 +35,6 @@ public:
 	Entity currentCamera;
 
 	FrameBuffer buffer;
-	ObjectLoader objLoader;
 	mat4x4 ProjectionMatrix;
 	Shader* defaultShader;
 
@@ -46,6 +43,7 @@ public:
 
 	bool onFocus;
 private:
+	//refernce of the current camera camera
 	Camera camera;
 };
 

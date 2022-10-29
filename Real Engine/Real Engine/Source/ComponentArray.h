@@ -61,7 +61,7 @@ inline bool ComponentArray<T>::HasData(Entity entity)
 template<typename T>
 inline void ComponentArray<T>::InsertData(Entity entity, T component)
 {
-	assert(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component addded to same entity more than once.");
+//	assert(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component added to same entity more than once.");
 	size_t newIndex = size;
 	entityToIndexMap[entity] = newIndex;
 	indexToEntityMap[newIndex] = entity;

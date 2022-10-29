@@ -3,10 +3,10 @@
 #include "assimp/cimport.h"
 #include "assimp/scene.h"
 #include "assimp/postprocess.h"
-
 #include "Mesh.h"
 #include "Material.h"
 #include "TextureLoader.h"
+#include "Entity.h"
 
 class ObjectLoader
 {
@@ -24,7 +24,7 @@ public:
 	std::vector<Material> materials;
 	std::string directory;
 	std::vector<Texture>loadedtextures;
-
-
+	Entity newEntity;
+	std::string fileName;
 };
 

@@ -181,6 +181,9 @@
     <ClCompile Include="Source\SceneHerarchyPanel.cpp">
       <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\SceneManager.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -341,6 +344,9 @@
     </ClInclude>
     <ClInclude Include="Tag.h">
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneManager.h">
+      <Filter>Resource Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -23,6 +23,15 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	input = entityComponentSystem.RegisterSystem<Input>();
 	eventSystem = entityComponentSystem.RegisterSystem<EventSystem>();
 	uiSystem = entityComponentSystem.RegisterSystem<UiSystem>();
+
+	cameraController = entityComponentSystem.RegisterSystem<CameraController>();
+	{
+		Signature signature;
+		signature.set(entityComponentSystem.GetComponentType<Transform>());
+		signature.set(entityComponentSystem.GetComponentType<Camera>());
+		entityComponentSystem.SetSystemSignature<CameraController>(signature);
+	}
+
 	renderer = entityComponentSystem.RegisterSystem<Renderer>();
 	{
 		Signature signature;
@@ -31,20 +40,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 		signature.set(entityComponentSystem.GetComponentType<Material>());
 		entityComponentSystem.SetSystemSignature<Renderer>(signature);
 	}
-	cameraController = entityComponentSystem.RegisterSystem<CameraController>();
-	{
-		Signature signature;
-		signature.set(entityComponentSystem.GetComponentType<Transform>());
-		signature.set(entityComponentSystem.GetComponentType<Camera>());
-		entityComponentSystem.SetSystemSignature<CameraController>(signature);
-	}
-	
-	auto e = entityComponentSystem.CreateEntity();
-
-	entityComponentSystem.AddComponent(e, Transform{ });
-	entityComponentSystem.AddComponent(e, Mesh{ });
-	entityComponentSystem.AddComponent(e, TagComponent{"Drawable"});
-
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);
@@ -53,6 +48,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	modules.push_back(uiSystem);
 	modules.push_back(eventSystem);
 	modules.push_back(renderer);
+	
 }
 
 Application::~Application()
@@ -77,13 +73,13 @@ bool Application::Start()
 {
 	bool ret = true;
 
+	//load house  TODO move to scene
+	objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
+
 	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 		ret = (*current)->Start();
 	}
-
-	eventSystem->PrintMapping();
-
 	return ret;
 }
 
@@ -182,10 +178,6 @@ bool Application::PreUpdate()
 
 	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
-	//  set Debug mode
-	//	if (input->GetKey(SDL_SCANCODE_F9) == KEY_DOWN)
-	//		current->data->DEBUG = !item->data->DEBUG;
-
 		if ((*current)->active == false)
 			continue;
 

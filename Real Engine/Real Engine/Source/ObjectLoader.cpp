@@ -1,7 +1,10 @@
 #include "ObjectLoader.h"
+#include "Application.h"
+#include "EntityComponentSystem.h"
 #include "glew.h"
 #include "glfw3.h"
-
+#include "Transform.h"
+#include "Tag.h"
 ObjectLoader::ObjectLoader()
 {
 }
@@ -17,7 +20,16 @@ bool ObjectLoader::LoadObject(const std::string file_path)
 
     if (scene != nullptr && scene->HasMeshes())
     {
+
         directory = file_path.substr(0, file_path.find_last_of('/'));
+
+        std::size_t from = file_path.find_last_of('/');
+        std::size_t to = file_path.find_last_of('.');
+        fileName = file_path.substr(from+1,to);
+        newEntity = app->entityComponentSystem.CreateEntity();
+        app->entityComponentSystem.AddComponent(newEntity, Transform{});
+        app->entityComponentSystem.AddComponent(newEntity, TagComponent{fileName });
+
         ProcessNode(scene->mRootNode, scene);
         aiReleaseImport(scene);
     }
@@ -41,6 +53,9 @@ void ObjectLoader::ProcessNode(aiNode* node, const aiScene* scene)
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
+        newEntity = app->entityComponentSystem.CreateEntity();
+        app->entityComponentSystem.AddComponent(newEntity, TagComponent{ fileName + std::to_string(i) });
+        app->entityComponentSystem.AddComponent(newEntity, Transform{});
         ProcessNode(node->mChildren[i], scene);
     }
 }
@@ -94,7 +109,7 @@ Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         materials.push_back(ProcessMaterial(mesh, scene));
     }
 
-
+    app->entityComponentSystem.AddComponent(newEntity, Mesh(vertices, indices));
     return Mesh(vertices, indices);
 }
 
@@ -109,6 +124,8 @@ Material ObjectLoader::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
     std::vector<Texture> specularMaps = loadMaterialTextures(material,
         aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+    app->entityComponentSystem.AddComponent(newEntity,Material(textures));
     return Material(textures);
 
 }

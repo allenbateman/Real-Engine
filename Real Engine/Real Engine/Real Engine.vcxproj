@@ -51,6 +51,7 @@
     <ClCompile Include="Source\RendererPanel.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\SceneHerarchyPanel.cpp" />
+    <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\SystemManager.cpp" />
     <ClCompile Include="Source\Texture.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="Source\RendererPanel.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneHerarchyPanel.h" />
+    <ClInclude Include="Source\SceneManager.h" />
     <ClInclude Include="Source\Shader.h" />
     <ClInclude Include="Source\SString.h" />
     <ClInclude Include="Source\System.h" />

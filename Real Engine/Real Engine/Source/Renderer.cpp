@@ -52,8 +52,6 @@ bool Renderer::Awake()
 
 bool Renderer::Start()
 {
-	//objLoader.LoadObject("../Output/Assets/warrior.FBX");
-	objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
 	const char *  vs = "../Real Engine/Source/default.vertex";
 	const char* fs = "../Real Engine/Source/default.fragment";
 
@@ -121,26 +119,33 @@ bool Renderer::PostUpdate()
 
 	glEnd();
 
-	//render house--------------------------------------------
-	//attach shader 
-	//set attributes for rendering the textures
-	defaultShader->Use();
-	float* projection = ProjectionMatrix.M;
+	//render Every Go
+	for (auto& ent : entities)
+	{
+		auto& transform = app->entityComponentSystem.GetComponent<Transform>(ent);
+		auto& mesh = app->entityComponentSystem.GetComponent<Mesh>(ent);
+		auto& material = app->entityComponentSystem.GetComponent<Material>(ent);
 
-	float timeValue = glfwGetTime();
-	float resize = sin(timeValue) / 2.0f + 5.0f;//rescale xD
-	float* model;
-	mat4x4 pos = translate(-10, 0, 0);
-	mat4x4 size = scale(resize, resize, resize);
-	model = (pos * size).M;
-	float* view = camera.GetViewMatrix();
-	defaultShader->SetMat4("projection", projection);
-	defaultShader->SetMat4("model", model);
-	defaultShader->SetMat4("view", view);
-	
-	//render obj
-	for (int i = 0; i < objLoader.meshes.size(); i++)
-		objLoader.meshes[i].Draw(*defaultShader, objLoader.materials[0]);
+		//attach shader 
+		//set attributes for rendering the textures
+		defaultShader->Use();
+		float* projection = ProjectionMatrix.M;
+		float* model;
+		mat4x4 pos = translate(transform.position.x, transform.position.y, transform.position.z);
+		mat4x4 rotationX = rotate(transform.rotation.x,transform.right);
+		mat4x4 rotationY = rotate(transform.rotation.y,transform.up);
+		mat4x4 rotationZ = rotate(transform.rotation.z,transform.forward);
+		mat4x4 rotation = (rotationX * rotationY * rotationZ);
+		mat4x4 size = scale(transform.scale.x, transform.scale.y, transform.scale.z);
+		model = (pos * size * rotation).M;
+		float* view = camera.GetViewMatrix();
+		defaultShader->SetMat4("projection", projection);
+		defaultShader->SetMat4("model", model);
+		defaultShader->SetMat4("view", view);
+		//render obj
+		mesh.Draw(*defaultShader, material);
+
+	}
 
 	//detach the shader to default so it doesnt affect other render process
 	defaultShader->StopUse();

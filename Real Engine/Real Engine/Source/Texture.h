@@ -1,7 +1,7 @@
 #pragma once
 #include"Component.h"
 #include<string>
-struct Texture : Component
+struct Texture
 {
 	//all the data is actually stored in the ram with opengl, so here we just 
 	//need to store the reference to that texture in the ram
