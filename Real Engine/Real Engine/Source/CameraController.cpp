@@ -30,7 +30,6 @@ bool CameraController::Update(float dt)
 	{
 		auto& transform = app->entityComponentSystem.GetComponent<Transform>(ent);
 		auto& camera = app->entityComponentSystem.GetComponent<Camera>(ent);
-
 	}
 	return true;
 }

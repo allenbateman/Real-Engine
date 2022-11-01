@@ -19,10 +19,16 @@ public:
 	void RemoveComponent(Entity entity);
 	template<typename T>
 	T& GetComponent(Entity entity);
+
 	void EntityDestroyed(Entity entity);
 
 	template<typename T>
 	bool EntityHasComponent(Entity entity);
+
+	template<typename T>
+	void Debug() {
+		GetComponentArray<T>()->DebugMaps();
+	};
 	
 private:
 	//map of string pointer to a compoenent type

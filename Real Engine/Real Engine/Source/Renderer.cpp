@@ -58,9 +58,9 @@ bool Renderer::Start()
 	defaultShader = new Shader(vs, fs);
 
 	currentCamera = app->entityComponentSystem.CreateEntity();
+	app->entityComponentSystem.AddComponent(currentCamera, TagComponent{ "Camera" });
 	app->entityComponentSystem.AddComponent(currentCamera, Transform{});
 	app->entityComponentSystem.AddComponent(currentCamera, Camera());
-	app->entityComponentSystem.AddComponent(currentCamera, TagComponent{"Camera"});
 	camera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
 	camera.Start();
 

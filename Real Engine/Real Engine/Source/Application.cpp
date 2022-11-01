@@ -23,10 +23,16 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	input = entityComponentSystem.RegisterSystem<Input>();
 	eventSystem = entityComponentSystem.RegisterSystem<EventSystem>();
 	uiSystem = entityComponentSystem.RegisterSystem<UiSystem>();
+	{
+		Signature signature;
+		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
+		entityComponentSystem.SetSystemSignature<UiSystem>(signature);
+	}
 
 	cameraController = entityComponentSystem.RegisterSystem<CameraController>();
 	{
 		Signature signature;
+		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
 		signature.set(entityComponentSystem.GetComponentType<Transform>());
 		signature.set(entityComponentSystem.GetComponentType<Camera>());
 		entityComponentSystem.SetSystemSignature<CameraController>(signature);
@@ -35,6 +41,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	renderer = entityComponentSystem.RegisterSystem<Renderer>();
 	{
 		Signature signature;
+		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
 		signature.set(entityComponentSystem.GetComponentType<Transform>());
 		signature.set(entityComponentSystem.GetComponentType<Mesh>());
 		signature.set(entityComponentSystem.GetComponentType<Material>());
@@ -102,6 +109,11 @@ bool Application::Update()
 		ret = PostUpdate();
 
 	FinishUpdate();
+
+	if (input->GetKey(GLFW_KEY_P) == KEY_DOWN)
+	{
+		entityComponentSystem.DebugComponentList<TagComponent>();
+	}
 
 	return ret;
 }

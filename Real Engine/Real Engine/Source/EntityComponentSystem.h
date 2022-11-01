@@ -37,9 +37,12 @@ public :
 	template<typename T>
 	void SetSystemSignature(Signature signature);
 
-
 	template<typename T>
 	bool HasComponent(Entity entity);
+
+	template<typename T>
+	void DebugComponentList();
+
 private:
 	std::unique_ptr<ComponentManager> componentManager;
 	std::unique_ptr<EntityManager> entityManager;
@@ -101,6 +104,12 @@ template<typename T>
 inline void EntityComponentSystem::SetSystemSignature(Signature signature)
 {
 	systemManager->SetSignature<T>(signature);
+}
+
+template<typename T>
+inline void EntityComponentSystem::DebugComponentList()
+{
+	componentManager->Debug<T>();
 }
 
 template<typename T>

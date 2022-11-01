@@ -11,5 +11,7 @@ public:
 	void DrawEntityNode(Entity entity);
 	Entity entitySelectionContext;
 	Inspector* inspector;
+	bool DeletedEntity = false;
+	Entity toDelete;
 };
 

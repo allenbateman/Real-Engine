@@ -1,5 +1,6 @@
 #include "SceneHerarchyPanel.h"
 #include "Application.h"
+#include "UiSystem.h"
 #include "Transform.h"
 #include "Tag.h"
 SceneHerarchyPanel::SceneHerarchyPanel(int _id, bool active)
@@ -17,15 +18,19 @@ void SceneHerarchyPanel::Init()
 
 void SceneHerarchyPanel::Update()
 {
+	DeletedEntity = false;
+
 	ImGui::Begin("Herarchy");
-	
-	Entity entities = app->entityComponentSystem.GetEntities();
-	ComponentType ct = 1;
-	for(Entity i = 0; i < entities; i++)
+	for(auto& i : app->uiSystem->entities)
 	{
 		DrawEntityNode(i);
 	}
 	ImGui::End();
+	//wait until all data updated to delete
+	if (DeletedEntity)
+	{
+		app->entityComponentSystem.DestroyEntity(toDelete);
+	}
 }
 
 void SceneHerarchyPanel::DrawEntityNode(Entity entity)
@@ -37,6 +42,15 @@ void SceneHerarchyPanel::DrawEntityNode(Entity entity)
 	{
 		entitySelectionContext = entity;
 		inspector->context = entitySelectionContext;
+	}
+	if (ImGui::BeginPopupContextItem())
+	{
+		if (ImGui::MenuItem("Delete Entity"))
+		{
+			DeletedEntity = true;
+			toDelete = entity;
+		}
+		ImGui::EndPopup();
 	}
 	if (opened)
 	{

@@ -22,11 +22,12 @@ EntityComponentSystem::~EntityComponentSystem()
 void EntityComponentSystem::Init()
 {
 	//register all components
+	RegisterComponent<TagComponent>();
 	RegisterComponent<Transform>();
 	RegisterComponent<Mesh>();
 	RegisterComponent<Material>();
 	RegisterComponent<Camera>();
-	RegisterComponent<TagComponent>();
+
 }
 
 void EntityComponentSystem::SetSignatures()
