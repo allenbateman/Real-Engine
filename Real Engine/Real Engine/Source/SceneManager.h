@@ -1,9 +1,11 @@
 #pragma once
 #include "Module.h"
+#include "System.h"
 #include "ObjectLoader.h"
-class SceneManager : public Module
+class SceneManager : public Module, public System
 {
-	SceneManager(bool isActive);
+public:
+	SceneManager() {};
 	~SceneManager();
 
 	bool Awake();

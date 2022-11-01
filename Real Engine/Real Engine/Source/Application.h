@@ -3,7 +3,7 @@
 
 
 #include "glew.h"
-#include "glfw3.h"
+#include "GLFW/glfw3.h"
 
 #include "Log.h"
 #include "Defs.h"
@@ -25,6 +25,7 @@ class EventSystem;
 class UiSystem;
 class Renderer;
 class CameraController;
+class SceneManager;
 
 class Application
 {
@@ -74,6 +75,7 @@ public:
 	shared_ptr<UiSystem> uiSystem;
 	shared_ptr<Renderer> renderer;
 	shared_ptr<CameraController> cameraController;
+	shared_ptr<SceneManager> sceneManager;
 	ObjectLoader objLoader;;
 	bool exit = false;
 private:

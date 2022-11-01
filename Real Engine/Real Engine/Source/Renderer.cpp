@@ -52,8 +52,8 @@ bool Renderer::Awake()
 
 bool Renderer::Start()
 {
-	const char *  vs = "../Real Engine/Source/default.vertex";
-	const char* fs = "../Real Engine/Source/default.fragment";
+	const char *  vs = "./Output/Assets/Shaders/default.vertex";
+	const char* fs = "./Output/Assets/Shaders/default.fragment";
 
 	defaultShader = new Shader(vs, fs);
 
@@ -99,8 +99,8 @@ bool Renderer::PostUpdate()
 
 	//Render every thing here -------------------------------------------
 	//-----------------------
-	vec3 cubePos(0.0f, 0.0f, 0.0f);
-	DrawDirectCube(cubePos, 10.0f);
+	//vec3 cubePos(0.0f, 0.0f, 0.0f);
+	//DrawDirectCube(cubePos, 10.0f);
 
 	glLineWidth(2.0f);
 

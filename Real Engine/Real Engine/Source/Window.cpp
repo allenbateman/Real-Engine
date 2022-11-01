@@ -54,8 +54,6 @@ bool Window::Awake()
 bool Window::Start()
 {
 	glfwSetDropCallback(window, DropCallBack);
-	//app->eventSystem->SubscribeModule(this, EventType::KEY_INPUT);
-	//app->eventSystem->SubscribeModule(this, EventType::MOUSE_HOLE_MOUSE);
 	return true;
 }
 

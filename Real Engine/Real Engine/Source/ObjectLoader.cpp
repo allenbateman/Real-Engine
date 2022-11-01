@@ -2,7 +2,7 @@
 #include "Application.h"
 #include "EntityComponentSystem.h"
 #include "glew.h"
-#include "glfw3.h"
+#include "GLFW/glfw3.h"
 #include "Transform.h"
 #include "Tag.h"
 ObjectLoader::ObjectLoader()

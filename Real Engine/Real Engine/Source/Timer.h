@@ -2,7 +2,7 @@
 #define __TIMER_H__
 
 #include "glew.h"
-#include "glfw3.h"
+#include "GLFW/glfw3.h"
 
 class Timer
 {

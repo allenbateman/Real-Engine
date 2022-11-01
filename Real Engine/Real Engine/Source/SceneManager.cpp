@@ -1,37 +1,38 @@
 #include "SceneManager.h"
 
+
 SceneManager::~SceneManager()
 {
 }
 
 bool SceneManager::Awake()
 {
-	return false;
+	return true;
 }
 
 bool SceneManager::Start()
 {
-	return false;
+	return true;
 }
 
 bool SceneManager::Updte()
 {
-	return false;
+	return true;
 }
 
 bool SceneManager::PreUpdate()
 {
-	return false;
+	return true;
 }
 
 bool SceneManager::PostUpdate()
 {
-	return false;
+	return true;
 }
 
 bool SceneManager::CleanUp()
 {
-	return false;
+	return true;
 }
 
 void SceneManager::HandleEvent(Event* e)

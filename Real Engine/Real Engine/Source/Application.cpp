@@ -7,6 +7,7 @@
 #include "UiSystem.h"
 #include "Renderer.h"
 #include "CameraController.h"
+#include "SceneManager.h"
 #include "Tag.h"
 
 //include All components
@@ -22,6 +23,12 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	window = entityComponentSystem.RegisterSystem<Window>();
 	input = entityComponentSystem.RegisterSystem<Input>();
 	eventSystem = entityComponentSystem.RegisterSystem<EventSystem>();
+	sceneManager = entityComponentSystem.RegisterSystem<SceneManager>();
+	{
+		Signature signature;
+		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
+		entityComponentSystem.SetSystemSignature<SceneManager>(signature);
+	}
 	uiSystem = entityComponentSystem.RegisterSystem<UiSystem>();
 	{
 		Signature signature;
@@ -51,6 +58,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	modules.push_back(window);
 	modules.push_back(input);
 	modules.push_back(cameraController);
+	modules.push_back(sceneManager);
 	//last
 	modules.push_back(uiSystem);
 	modules.push_back(eventSystem);
@@ -81,7 +89,7 @@ bool Application::Start()
 	bool ret = true;
 
 	//load house  TODO move to scene
-	objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
+	objLoader.LoadObject("./Output/Assets/BakerHouse.fbx");
 
 	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{

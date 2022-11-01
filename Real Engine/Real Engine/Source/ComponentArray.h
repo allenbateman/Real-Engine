@@ -85,9 +85,6 @@ inline void ComponentArray<T>::InsertData(Entity entity, T component)
 	indexToEntityMap[newIndex] = entity;
 	componentArray[newIndex] = component;
 	size++;
-	
-
-	std::cout << "Added component to entity: "<<entity << std::endl;
 }
 
 template<typename T>

@@ -65,8 +65,6 @@ void Inspector::DrawComponents(Entity entity)
 
 			ImGui::TreePop();
 		}
-
-
 	}
 	if (app->entityComponentSystem.HasComponent<Camera>(entity))
 	{
@@ -95,5 +93,15 @@ void Inspector::DrawComponents(Entity entity)
 			ImGui::TreePop();
 		}
 	}
+	if (app->entityComponentSystem.HasComponent<Material>(entity))
+	{
+		if (ImGui::TreeNodeEx((void*)typeid(Material).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material"))
+		{
+			auto& material = app->entityComponentSystem.GetComponent<Material>(entity);
+			ImGui::Image((ImTextureID)material.textures.at(0).id, ImVec2{ 250,250 });
 
+
+			ImGui::TreePop();
+		}
+	}
 }
