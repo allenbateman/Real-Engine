@@ -26,7 +26,7 @@ bool ObjectLoader::LoadObject(const std::string file_path)
         std::size_t from = file_path.find_last_of('/');
         std::size_t to = file_path.find_last_of('.');
         fileName = file_path.substr(from+1,to);
-        newEntity = app->entityComponentSystem.CreateEntity();
+        newGameObject.id = app->entityComponentSystem.CreateEntity();
         app->entityComponentSystem.AddComponent(newEntity, TagComponent{ fileName });
         app->entityComponentSystem.AddComponent(newEntity, Transform{});        
 

@@ -3,14 +3,35 @@
 #include <list>
 #include "SString.h"
 #include "Component.h"
-
+#include "Entity.h"
+#include "Tag.h"
+#include "Application.h"
 class GameObject
 {
 public:
-	void Update();
-	void Destroy();	
-	int id;
 	bool active;
-	SString name;
-	std::list<Component*> components;
+	Entity id = -1; // id of the game object
+	GameObject* parent;
+	std::vector<GameObject*> childs;
+
+	template<typename T>
+	T& GetComponent();
+
+	template<typename T>
+	void AddComponent(T component);
+	GameObject* FindChild(Entity id);
+
+	void Destroy();
 };
+
+template<typename T>
+inline T& GameObject::GetComponent()
+{
+	app->entityComponentSystem.GetComponent<T>(id);
+}
+
+template<typename T>
+inline void GameObject::AddComponent(T component)
+{
+	app->entityComponentSystem.AddComponent(id, component);
+}

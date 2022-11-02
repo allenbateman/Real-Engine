@@ -10,7 +10,6 @@ using Signature = std::bitset<MAX_COMPONENTS>;
 
 struct Component
 {
-	ComponentType type;
 	int id;
 	bool active;
 };

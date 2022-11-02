@@ -12,9 +12,9 @@ public:
 	//sotres all texture maps diffuse,roughness etc
 	std::vector<Texture> textures;
 
-	vec3 ambient;
-	vec3 diffuse;
-	vec3 specular;
+	std::vector < Texture> diffuse;
+	std::vector < Texture> ambient;
+	std::vector < Texture> specular;
 	float shininess;
 };
 

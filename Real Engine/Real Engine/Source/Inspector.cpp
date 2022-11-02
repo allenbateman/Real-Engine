@@ -98,9 +98,23 @@ void Inspector::DrawComponents(Entity entity)
 		if (ImGui::TreeNodeEx((void*)typeid(Material).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Material"))
 		{
 			auto& material = app->entityComponentSystem.GetComponent<Material>(entity);
-			ImGui::Image((ImTextureID)material.textures.at(0).id, ImVec2{ 250,250 });
+			unsigned int diffuseNr = 1;
+			unsigned int specularNr = 1;
+			for (unsigned int i = 0; i < material.textures.size(); i++) 
+			{
 
+				std::string number;
 
+				std::string name = material.textures[i].type;
+				if (name == "texture_diffuse")
+					number = std::to_string(diffuseNr++);
+				else if (name == "texture_specular")
+					number = std::to_string(specularNr++);
+
+				ImGui::Text((name + number).c_str());
+				ImGui::Image((ImTextureID)material.textures.at(i).id, ImVec2{ 250,250 });			
+			}
+		
 			ImGui::TreePop();
 		}
 	}

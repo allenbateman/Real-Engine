@@ -4,7 +4,7 @@
 #include <iostream>
 #include "Entity.h"
 
-class Scene : public Module
+class Scene
 {
 public:
 

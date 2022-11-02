@@ -7,6 +7,7 @@
 #include "Material.h"
 #include "TextureLoader.h"
 #include "Entity.h"
+#include "GameObject.h"
 
 class ObjectLoader
 {
@@ -25,6 +26,8 @@ public:
 	std::string directory;
 	std::vector<Texture>loadedtextures;
 	Entity newEntity;
+	GameObject newGameObject;
+
 	std::string fileName;
 };
 

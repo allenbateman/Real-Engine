@@ -52,8 +52,8 @@ bool Renderer::Awake()
 
 bool Renderer::Start()
 {
-	const char *  vs = "./Output/Assets/Shaders/default.vertex";
-	const char* fs = "./Output/Assets/Shaders/default.fragment";
+	const char *  vs = "../Output/Assets/Shaders/default.vertex";
+	const char* fs = "../Output/Assets/Shaders/default.fragment";
 
 	defaultShader = new Shader(vs, fs);
 
