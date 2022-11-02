@@ -2,7 +2,6 @@
 #include "Component.h"
 struct Transform
 {
-	
 	vec3 position{0,0,0}; //Stores position x,y,z
 	vec4 rotation{0,0,0}; //Quaternion that stores rotation x,y,z,w
 	vec3 scale{1,1,1};	   //Stores scale x,y,z

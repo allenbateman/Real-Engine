@@ -1,6 +1,9 @@
 #include "Viewport.h"
+
+#include "Application.h"
 #include "FrameBuffer.h"
 #include "EventSystem.h"
+
 
 Viewport::Viewport(int _id,bool isActive) : Panel(_id,isActive)
 {

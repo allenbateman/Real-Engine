@@ -1,5 +1,6 @@
 #include "Panel.h"
 #include "Events.h"
+#include "Application.h"
 
 
 Panel::Panel()

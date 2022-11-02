@@ -1,10 +1,7 @@
 #pragma once
 #include "Event.h"
-#include "SString.h"
-#include "Application.h"
 #include "EventSystem.h"
 #include "Events.h"
-
 #include "External/ImGui/imgui.h"
 #include "External/ImGui/backends/imgui_impl_glfw.h"
 #include "External/ImGui/backends/imgui_impl_opengl3.h"

@@ -16,6 +16,10 @@ bool Scene::Start()
 	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
 	aiAttachLogStream(&stream);
 
+
+	//load house  TODO move to scene
+	//objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
+
 	return true;
 }
 

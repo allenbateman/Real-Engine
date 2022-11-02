@@ -1,8 +1,14 @@
 #include "Inspector.h"
+
+#include "glmath.h"
+#include "Application.h"
+
 #include "Tag.h"
 #include "Camera.h"
 #include "Transform.h"
-#include "glmath.h"
+#include "Mesh.h"
+#include "Material.h"
+
 
 
 Inspector::Inspector(int _id, bool active) : Panel(_id, active)

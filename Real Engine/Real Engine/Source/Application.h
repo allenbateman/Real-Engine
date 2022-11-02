@@ -14,7 +14,7 @@
 #include <vector>
 #include <cstdlib>
 #include "EntityComponentSystem.h"
-#include "ObjectLoader.h"
+
 
 using namespace std;
 
@@ -76,7 +76,7 @@ public:
 	shared_ptr<Renderer> renderer;
 	shared_ptr<CameraController> cameraController;
 	shared_ptr<SceneManager> sceneManager;
-	ObjectLoader objLoader;;
+	//ObjectLoader objLoader;
 	bool exit = false;
 private:
 

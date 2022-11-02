@@ -88,9 +88,6 @@ bool Application::Start()
 {
 	bool ret = true;
 
-	//load house  TODO move to scene
-	objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
-
 	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 		ret = (*current)->Start();

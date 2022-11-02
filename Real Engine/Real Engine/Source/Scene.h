@@ -2,7 +2,7 @@
 #include "Module.h"
 #include "Application.h"
 #include <iostream>
-#include "Entity.h"
+#include "GameObject.h"
 
 class Scene
 {
@@ -17,6 +17,7 @@ public:
 	bool CleanUp();
 	void HandleEvent(Event* singleEvent);
 
-	Entity entitySelectionContext;
+	void CreateGameObject();
+	std::vector <GameObject> gameObejects;
 };
 

@@ -1,5 +1,5 @@
 #include "ObjectLoader.h"
-#include "Application.h"
+
 #include "EntityComponentSystem.h"
 #include "glew.h"
 #include "GLFW/glfw3.h"
@@ -26,9 +26,10 @@ bool ObjectLoader::LoadObject(const std::string file_path)
         std::size_t from = file_path.find_last_of('/');
         std::size_t to = file_path.find_last_of('.');
         fileName = file_path.substr(from+1,to);
-        newGameObject.id = app->entityComponentSystem.CreateEntity();
-        app->entityComponentSystem.AddComponent(newEntity, TagComponent{ fileName });
-        app->entityComponentSystem.AddComponent(newEntity, Transform{});        
+        //newGameObject.id = app->entityComponentSystem.CreateEntity();
+    //    newEntity = app->entityComponentSystem.CreateEntity();
+      //  app->entityComponentSystem.AddComponent(newEntity, TagComponent{ fileName });
+      //  app->entityComponentSystem.AddComponent(newEntity, Transform{});        
 
         ProcessNode(scene->mRootNode, scene);
         aiReleaseImport(scene);
@@ -53,9 +54,9 @@ void ObjectLoader::ProcessNode(aiNode* node, const aiScene* scene)
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        newEntity = app->entityComponentSystem.CreateEntity();
-        app->entityComponentSystem.AddComponent(newEntity, TagComponent{ fileName + std::to_string(i) });
-        app->entityComponentSystem.AddComponent(newEntity, Transform{});
+      //  newEntity = app->entityComponentSystem.CreateEntity();
+     //   app->entityComponentSystem.AddComponent(newEntity, TagComponent{ fileName + std::to_string(i) });
+      //  app->entityComponentSystem.AddComponent(newEntity, Transform{});
         ProcessNode(node->mChildren[i], scene);
     }
 }
@@ -109,7 +110,7 @@ Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         materials.push_back(ProcessMaterial(mesh, scene));
     }
 
-    app->entityComponentSystem.AddComponent(newEntity, Mesh(vertices, indices));
+  //  app->entityComponentSystem.AddComponent(newEntity, Mesh(vertices, indices));
     return Mesh(vertices, indices);
 }
 

@@ -1,16 +1,27 @@
 #pragma once
 #include <iostream>
 #include <list>
-#include "SString.h"
+#include <string>
+
+
+#include "Application.h"
 #include "Component.h"
 #include "Entity.h"
 #include "Tag.h"
-#include "Application.h"
+#include "Transform.h"
+
+
+
+
 class GameObject
 {
 public:
+	GameObject();
+	GameObject(std::string name);
+	~GameObject();
 	bool active;
 	Entity id = -1; // id of the game object
+	std::string name;
 	GameObject* parent;
 	std::vector<GameObject*> childs;
 
@@ -19,6 +30,7 @@ public:
 
 	template<typename T>
 	void AddComponent(T component);
+
 	GameObject* FindChild(Entity id);
 
 	void Destroy();

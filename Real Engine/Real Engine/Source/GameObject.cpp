@@ -1,5 +1,25 @@
 #include "GameObject.h"
 
+GameObject::GameObject()
+{
+	id = app->entityComponentSystem.CreateEntity();
+	AddComponent(TagComponent{});
+	AddComponent(Transform{});
+	name = "Game object";
+}
+
+GameObject::GameObject(std::string name)
+{
+	id = app->entityComponentSystem.CreateEntity();
+	AddComponent(TagComponent{});
+	AddComponent(Transform{});
+	this->name = name;
+}
+
+GameObject::~GameObject()
+{
+}
+
 GameObject* GameObject::FindChild(Entity id)
 {
 	for (auto& child : childs)

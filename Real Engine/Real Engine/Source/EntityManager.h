@@ -1,4 +1,5 @@
-#include "GameObject.h"
+#pragma once
+#include "Component.h"
 #include "Entity.h"
 #include <queue>
 #include <array>

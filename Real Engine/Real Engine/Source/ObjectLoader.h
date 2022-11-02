@@ -26,7 +26,6 @@ public:
 	std::string directory;
 	std::vector<Texture>loadedtextures;
 	Entity newEntity;
-	GameObject newGameObject;
 
 	std::string fileName;
 };
