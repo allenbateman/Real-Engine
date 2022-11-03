@@ -15,18 +15,14 @@ public:
 	ObjectLoader();
 	~ObjectLoader();
 
-	bool LoadObject(const std::string file_path);
-	void ProcessNode(aiNode* node, const aiScene* scene);
-	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+	GameObject* LoadObject(const std::string file_path);
+	void ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo);
+	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go);
 	Material ProcessMaterial(aiMesh* mesh, const aiScene* scene);
 	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
-	std::vector<Mesh> meshes;
-	std::vector<Material> materials;
 	std::string directory;
-	std::vector<Texture>loadedtextures;
-	Entity newEntity;
-
 	std::string fileName;
+	std::vector<Texture>loadedtextures;
 };
 

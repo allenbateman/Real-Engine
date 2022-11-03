@@ -13,7 +13,9 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
 
-	sceneList.push_back(sampleScene);
+	sampleScene = new Scene();
+	sampleScene->Start();
+	sceneList.push_back(*sampleScene);
 
 	return true;
 }
@@ -31,7 +33,6 @@ bool SceneManager::PreUpdate()
 
 bool SceneManager::PostUpdate()
 {
-	currentSecene.PostUpdate();
 	return true;
 }
 
@@ -46,7 +47,6 @@ bool SceneManager::CleanUp()
 
 void SceneManager::HandleEvent(Event* e)
 {
-	currentSecene.HandleEvent(e);
 }
 
 bool SceneManager::ChangeScene(Scene newScene)

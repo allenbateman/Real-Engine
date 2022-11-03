@@ -13,10 +13,12 @@ ObjectLoader::~ObjectLoader()
 {
 }
 
-bool ObjectLoader::LoadObject(const std::string file_path)
+GameObject* ObjectLoader::LoadObject(const std::string file_path) 
 {
     bool ret = true;
     const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+
+    GameObject* newGameObject = nullptr;
 
     if (scene != nullptr && scene->HasMeshes())
     {
@@ -26,42 +28,43 @@ bool ObjectLoader::LoadObject(const std::string file_path)
         std::size_t from = file_path.find_last_of('/');
         std::size_t to = file_path.find_last_of('.');
         fileName = file_path.substr(from+1,to);
-        //newGameObject.id = app->entityComponentSystem.CreateEntity();
-    //    newEntity = app->entityComponentSystem.CreateEntity();
-      //  app->entityComponentSystem.AddComponent(newEntity, TagComponent{ fileName });
-      //  app->entityComponentSystem.AddComponent(newEntity, Transform{});        
 
-        ProcessNode(scene->mRootNode, scene);
+        newGameObject = new GameObject(fileName);
+
+        ProcessNode(scene->mRootNode, scene, *newGameObject);
         aiReleaseImport(scene);
     }
     else
     {
         std::cout << aiGetErrorString();
         LOG(aiGetErrorString());
-        ret = false;
     }
-    return ret;
+    return newGameObject;
 }
 
-void ObjectLoader::ProcessNode(aiNode* node, const aiScene* scene)
+void ObjectLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo)
 {
+
+
+
     // process all the node's meshes (if any)
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshes.push_back(ProcessMesh(mesh, scene));
+        //meshes.push_back(ProcessMesh(mesh, scene, parentGo));
+        parentGo.AddComponent(ProcessMesh(mesh, scene, parentGo));
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-      //  newEntity = app->entityComponentSystem.CreateEntity();
-     //   app->entityComponentSystem.AddComponent(newEntity, TagComponent{ fileName + std::to_string(i) });
-      //  app->entityComponentSystem.AddComponent(newEntity, Transform{});
-        ProcessNode(node->mChildren[i], scene);
+        GameObject* childGo = new GameObject(fileName + std::to_string(i));
+
+        parentGo.childs.push_back(childGo);
+        ProcessNode(node->mChildren[i], scene, *childGo);
     }
 }
 
-Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go)
 {
 
     //temporary varaibles to store the mesh data
@@ -107,10 +110,9 @@ Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene)
     //load material attached to the obj
     if (mesh->mMaterialIndex >= 0)
     {
-        materials.push_back(ProcessMaterial(mesh, scene));
+        go.AddComponent(ProcessMaterial(mesh, scene));
     }
 
-  //  app->entityComponentSystem.AddComponent(newEntity, Mesh(vertices, indices));
     return Mesh(vertices, indices);
 }
 
@@ -126,7 +128,6 @@ Material ObjectLoader::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
         aiTextureType_SPECULAR, "texture_specular");
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
-    app->entityComponentSystem.AddComponent(newEntity,Material(textures));
     return Material(textures);
 
 }

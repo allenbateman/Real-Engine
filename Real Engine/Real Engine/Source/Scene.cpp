@@ -18,7 +18,8 @@ bool Scene::Start()
 
 
 	//load house  TODO move to scene
-	//objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
+	auto obj = objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
+	gameObejects.push_back(*obj);
 
 	return true;
 }
@@ -47,4 +48,8 @@ bool Scene::CleanUp()
 void Scene::HandleEvent(Event* singleEvent)
 {
 
+}
+
+void Scene::CreateGameObject()
+{
 }

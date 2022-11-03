@@ -3,7 +3,7 @@
 #include "Application.h"
 #include <iostream>
 #include "GameObject.h"
-
+#include "ObjectLoader.h"
 class Scene
 {
 public:
@@ -19,5 +19,6 @@ public:
 
 	void CreateGameObject();
 	std::vector <GameObject> gameObejects;
+	ObjectLoader objLoader;
 };
 

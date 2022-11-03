@@ -11,7 +11,7 @@ GameObject::GameObject()
 GameObject::GameObject(std::string name)
 {
 	id = app->entityComponentSystem.CreateEntity();
-	AddComponent(TagComponent{});
+	AddComponent(TagComponent{ name });
 	AddComponent(Transform{});
 	this->name = name;
 }
@@ -34,4 +34,5 @@ GameObject* GameObject::FindChild(Entity id)
 void GameObject::Destroy()
 {
 	//if has childs destroy them too
+	app->entityComponentSystem.DestroyEntity(id);
 }

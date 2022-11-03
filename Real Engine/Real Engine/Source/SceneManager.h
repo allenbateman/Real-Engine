@@ -17,12 +17,9 @@ public:
 	bool CleanUp();
 	void HandleEvent(Event* e);
 
-	Scene sampleScene;
+	Scene* sampleScene;
 
 	std::vector<Scene> sceneList;
-
-	Scene currentSecene;
-
 	bool ChangeScene(Scene newScene);
 
 };

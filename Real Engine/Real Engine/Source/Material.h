@@ -11,10 +11,5 @@ public:
 	~Material();
 	//sotres all texture maps diffuse,roughness etc
 	std::vector<Texture> textures;
-
-	std::vector < Texture> diffuse;
-	std::vector < Texture> ambient;
-	std::vector < Texture> specular;
-	float shininess;
 };
 
