@@ -1,10 +1,9 @@
 #include "ObjectLoader.h"
-
 #include "EntityComponentSystem.h"
 #include "glew.h"
 #include "GLFW/glfw3.h"
-#include "Transform.h"
-#include "Tag.h"
+
+
 ObjectLoader::ObjectLoader()
 {
 }
@@ -44,14 +43,10 @@ GameObject* ObjectLoader::LoadObject(const std::string file_path)
 
 void ObjectLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo)
 {
-
-
-
     // process all the node's meshes (if any)
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        //meshes.push_back(ProcessMesh(mesh, scene, parentGo));
         parentGo.AddComponent(ProcessMesh(mesh, scene, parentGo));
     }
     // then do the same for each of its children

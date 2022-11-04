@@ -3,17 +3,17 @@
 GameObject::GameObject()
 {
 	id = app->entityComponentSystem.CreateEntity();
-	AddComponent(TagComponent{});
-	AddComponent(Transform{});
 	name = "Game object";
+	//app->entityComponentSystem.AddComponent(id, Transform{});
+	//app->entityComponentSystem.AddComponent(id, TagComponent{ "Empty gameObject" });
 }
 
 GameObject::GameObject(std::string name)
 {
 	id = app->entityComponentSystem.CreateEntity();
-	AddComponent(TagComponent{ name });
-	AddComponent(Transform{});
 	this->name = name;
+	//app->entityComponentSystem.AddComponent(id, Transform{});
+	//app->entityComponentSystem.AddComponent(id, TagComponent{ name });
 }
 
 GameObject::~GameObject()

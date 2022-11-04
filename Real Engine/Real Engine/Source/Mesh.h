@@ -8,7 +8,7 @@ struct Vertex {
 	vec3 Normal;
 	vec2 TexCoords;
 };
-class Mesh
+class Mesh : public  Component
 {
 public:
 	// mesh data

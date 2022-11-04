@@ -3,15 +3,8 @@
 #include <list>
 #include <string>
 
-
 #include "Application.h"
-#include "Component.h"
 #include "Entity.h"
-#include "Tag.h"
-#include "Transform.h"
-
-
-
 
 class GameObject
 {

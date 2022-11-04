@@ -3,7 +3,7 @@
 #include "Texture.h"
 
 
-class Material
+class Material : public  Component
 {
 public:
 	Material();

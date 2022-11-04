@@ -8,9 +8,10 @@
 #include "Renderer.h"
 #include "CameraController.h"
 #include "SceneManager.h"
-#include "Tag.h"
 
 //include All components
+#include "Tag.h"
+
 
 
 Application::Application(int argc, char* args[]) : argc(argc), args(args)
