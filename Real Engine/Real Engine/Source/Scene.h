@@ -1,24 +1,22 @@
 #pragma once
-#include "Module.h"
-#include "Application.h"
 #include <iostream>
-#include "GameObject.h"
 #include "ObjectLoader.h"
+#include "GameObject.h"
+
 class Scene
 {
 public:
 
-
-	bool Awake();
-	bool Start();
-	bool PreUpdate();
-	bool Update(float dt);
-	bool PostUpdate();
-	bool CleanUp();
-	void HandleEvent(Event* singleEvent);
-
+	void Init();
+	void Enable();
+	void Disable();
 	void CreateGameObject();
-	std::vector <GameObject> gameObejects;
+	void LoadGameObject(const std::string file_path);
 	ObjectLoader objLoader;
+	std::vector <GameObject> gameObejects;
+	
+	//Scene properties
+	unsigned int id;
+	std::string name;
 };
 

@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "UiSystem.h"
 #include "Tag.h"
+#include "SceneManager.h"
 SceneHerarchyPanel::SceneHerarchyPanel(int _id, bool active)
 {
 }
@@ -20,9 +21,9 @@ void SceneHerarchyPanel::Update()
 	DeletedEntity = false;
 
 	ImGui::Begin("Herarchy");
-	for(auto& i : app->uiSystem->entities)
+	for(auto& go : app->sceneManager->currentScene->gameObejects)
 	{
-		DrawEntityNode(i);
+		DrawEntityNode(go.id);
 	}
 	ImGui::End();
 	//wait until all data updated to delete

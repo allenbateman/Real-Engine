@@ -1,55 +1,32 @@
 #include "Scene.h"
-
-#include "assimp/cimport.h"
-#include "assimp/scene.h"
-#include "assimp/postprocess.h"
-
-
-bool Scene::Awake()
+void Scene::Init()
 {
-	return true;
+
 }
 
-bool Scene::Start()
+void Scene::Enable()
 {
-	struct aiLogStream stream;
-	stream = aiGetPredefinedLogStream(aiDefaultLogStream_DEBUGGER, nullptr);
-	aiAttachLogStream(&stream);
-
-
-	//load house  TODO move to scene
-	auto obj = objLoader.LoadObject("../Output/Assets/BakerHouse.fbx");
-	gameObejects.push_back(*obj);
-
-	return true;
 }
 
-bool Scene::PreUpdate()
+void Scene::Disable()
 {
-	return true;
-}
-
-bool Scene::Update(float dt)
-{
-	return true;
-}
-
-bool Scene::PostUpdate()
-{
-	return true;
-}
-
-bool Scene::CleanUp()
-{
-	aiDetachAllLogStreams();
-	return true;
-}
-
-void Scene::HandleEvent(Event* singleEvent)
-{
-
 }
 
 void Scene::CreateGameObject()
 {
+
+	GameObject goToAdd;
+
+
+	gameObejects.push_back(goToAdd);
+}
+
+void Scene::LoadGameObject(const std::string file_path)
+{
+	std::vector<GameObject*> obj = objLoader.LoadObject(file_path);
+
+	for (auto ob : obj)
+		gameObejects.push_back(*ob);
+
+	//gameObejects.insert(std::end(gameObejects), std::begin(obj), std::end(obj));
 }

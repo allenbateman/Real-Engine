@@ -2,7 +2,7 @@
 #include "EntityComponentSystem.h"
 #include "glew.h"
 #include "GLFW/glfw3.h"
-
+#include "Transform.h"
 
 ObjectLoader::ObjectLoader()
 {
@@ -12,12 +12,14 @@ ObjectLoader::~ObjectLoader()
 {
 }
 
-GameObject* ObjectLoader::LoadObject(const std::string file_path) 
+vector<GameObject*>  ObjectLoader::LoadObject(const std::string file_path)
 {
     bool ret = true;
     const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 
     GameObject* newGameObject = nullptr;
+
+    std::vector<GameObject*> result;
 
     if (scene != nullptr && scene->HasMeshes())
     {
@@ -29,19 +31,20 @@ GameObject* ObjectLoader::LoadObject(const std::string file_path)
         fileName = file_path.substr(from+1,to);
 
         newGameObject = new GameObject(fileName);
-
-        ProcessNode(scene->mRootNode, scene, *newGameObject);
+        ProcessNode(scene->mRootNode, scene, *newGameObject, result);
+        result.push_back(newGameObject);
         aiReleaseImport(scene);
+
     }
     else
     {
         std::cout << aiGetErrorString();
         LOG(aiGetErrorString());
     }
-    return newGameObject;
+    return  result;
 }
 
-void ObjectLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo)
+void ObjectLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo, std::vector<GameObject*>& result)
 {
     // process all the node's meshes (if any)
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
@@ -53,9 +56,11 @@ void ObjectLoader::ProcessNode(aiNode* node, const aiScene* scene, GameObject pa
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
         GameObject* childGo = new GameObject(fileName + std::to_string(i));
+        childGo->GetComponent<Transform>().parent = &parentGo.GetComponent<Transform>();
+        parentGo.GetComponent<Transform>().childs.push_back(&childGo->GetComponent<Transform>());
+        ProcessNode(node->mChildren[i], scene, *childGo, result);
 
-        parentGo.childs.push_back(childGo);
-        ProcessNode(node->mChildren[i], scene, *childGo);
+       result.push_back(childGo);
     }
 }
 

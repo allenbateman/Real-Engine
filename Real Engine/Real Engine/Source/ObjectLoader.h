@@ -9,14 +9,16 @@
 #include "Entity.h"
 #include "GameObject.h"
 
+class GameObject;
+
 class ObjectLoader
 {
 public:
 	ObjectLoader();
 	~ObjectLoader();
 
-	GameObject* LoadObject(const std::string file_path);
-	void ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo);
+	vector<GameObject*> LoadObject(const std::string file_path);
+	void ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo, std::vector<GameObject*>& result);
 	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go);
 	Material ProcessMaterial(aiMesh* mesh, const aiScene* scene);
 	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);

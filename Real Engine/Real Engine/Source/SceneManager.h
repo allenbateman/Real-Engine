@@ -3,6 +3,8 @@
 #include "System.h"
 #include "ObjectLoader.h"
 #include "Scene.h"
+
+#define MAX_SCENES 25
 class SceneManager : public Module, public System
 {
 public:
@@ -17,10 +19,17 @@ public:
 	bool CleanUp();
 	void HandleEvent(Event* e);
 
-	Scene* sampleScene;
+	unsigned int sceneCount;
+
+	Scene* currentScene;
 
 	std::vector<Scene> sceneList;
 	bool ChangeScene(Scene newScene);
+	Scene* CreateScene(std::string name);
 
+	//GetScene by id
+	Scene& GetScene(unsigned int id);
+	//Get Scene by name
+	Scene& GetScene(std::string name);
 };
 

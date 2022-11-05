@@ -13,9 +13,10 @@ bool SceneManager::Awake()
 bool SceneManager::Start()
 {
 
-	sampleScene = new Scene();
-	sampleScene->Start();
-	sceneList.push_back(*sampleScene);
+	Scene* sampleScene = CreateScene("Sample Scene");
+	sampleScene->LoadGameObject("../Output/Assets/BakerHouse.fbx");
+
+	currentScene = sampleScene;
 
 	return true;
 }
@@ -38,10 +39,6 @@ bool SceneManager::PostUpdate()
 
 bool SceneManager::CleanUp()
 {
-	for (auto& scene : sceneList)
-	{
-		scene.CleanUp();
-	}
 	return true;
 }
 
@@ -52,4 +49,43 @@ void SceneManager::HandleEvent(Event* e)
 bool SceneManager::ChangeScene(Scene newScene)
 {
 	return false;
+}
+
+Scene* SceneManager::CreateScene(std::string name)
+{
+	if (sceneCount < MAX_SCENES)
+	{
+
+		cout << "Max scene reached";
+		return nullptr;
+	}
+	else {
+		Scene* newScene = new Scene();
+		newScene->name = name;
+		newScene->id = sceneCount;
+
+		sceneList.push_back(*newScene);
+
+		return newScene;
+	}
+}
+
+Scene& SceneManager::GetScene(unsigned int id)
+{
+	for (auto& scene : sceneList)
+	{
+		if (scene.id == id)
+			return scene;
+	}
+	cout << "Scene " << id  << " not found!";
+}
+
+Scene& SceneManager::GetScene(std::string name)
+{
+	for (auto& scene : sceneList)
+	{
+		if (scene.name == name)
+			return scene;
+	}
+	cout << "Scene "<<name << " not found!";
 }
