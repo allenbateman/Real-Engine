@@ -20,10 +20,13 @@ void SceneHerarchyPanel::Update()
 {
 	DeletedEntity = false;
 
-	ImGui::Begin("Herarchy");
-	for(auto& go : app->sceneManager->currentScene->gameObejects)
+	ImGui::Begin("Hierarchy");
+
+	std::vector<GameObject> gameObjects = app->sceneManager->currentScene->gameObejects;
+
+	for(auto& go : gameObjects)
 	{
-		DrawEntityNode(go.id);
+		DrawGONode(go);
 	}
 	ImGui::End();
 	//wait until all data updated to delete
@@ -33,15 +36,35 @@ void SceneHerarchyPanel::Update()
 	}
 }
 
-void SceneHerarchyPanel::DrawEntityNode(Entity entity)
+void SceneHerarchyPanel::DrawGONode(GameObject go)
 {
+	Entity entity = go.id;
+
 	auto& tagComponent = app->entityComponentSystem.GetComponent<TagComponent>(entity);
 	ImGuiTreeNodeFlags flags = ((entitySelectionContext == entity) ? ImGuiTreeNodeFlags_OpenOnArrow : 0) | ImGuiTreeNodeFlags_Selected;
 	bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tagComponent.c_str());
+	
+	
+	
 	if (ImGui::IsItemClicked())
 	{
 		entitySelectionContext = entity;
 		inspector->context = entitySelectionContext;
+	}
+	if (ImGui::BeginDragDropSource()) {
+		ImGui::SetDragDropPayload(payloadDragDrop, &entity, sizeof(entity));
+		ImGui::Text(go.name.c_str());
+		ImGui::EndDragDropSource();
+	}
+	if (ImGui::BeginDragDropTarget()) {
+		const ImGuiPayload* obj = ImGui::AcceptDragDropPayload(payloadDragDrop);
+		if (obj != nullptr)
+		{
+			
+			std::cout << "Drop recived from: "<< obj->Data;
+		}
+
+		ImGui::EndDragDropTarget();
 	}
 	if (ImGui::BeginPopupContextItem())
 	{
@@ -56,4 +79,7 @@ void SceneHerarchyPanel::DrawEntityNode(Entity entity)
 	{
 		ImGui::TreePop();
 	}
+
+
+
 }
