@@ -3,6 +3,7 @@
 #include "UiSystem.h"
 #include "Tag.h"
 #include "SceneManager.h"
+#include "Transform.h"
 SceneHerarchyPanel::SceneHerarchyPanel(int _id, bool active)
 {
 }
@@ -38,13 +39,13 @@ void SceneHerarchyPanel::Update()
 
 void SceneHerarchyPanel::DrawGONode(GameObject go)
 {
+	Transform* t = go.GetComponent<Transform>().parent;
+	
 	Entity entity = go.id;
 
 	auto& tagComponent = app->entityComponentSystem.GetComponent<TagComponent>(entity);
 	ImGuiTreeNodeFlags flags = ((entitySelectionContext == entity) ? ImGuiTreeNodeFlags_OpenOnArrow : 0) | ImGuiTreeNodeFlags_Selected;
 	bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tagComponent.c_str());
-	
-	
 	
 	if (ImGui::IsItemClicked())
 	{
@@ -52,7 +53,7 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 		inspector->context = entitySelectionContext;
 	}
 	if (ImGui::BeginDragDropSource()) {
-		ImGui::SetDragDropPayload(payloadDragDrop, &entity, sizeof(entity));
+		ImGui::SetDragDropPayload(payloadDragDrop, &go, sizeof(GameObject));
 		ImGui::Text(go.name.c_str());
 		ImGui::EndDragDropSource();
 	}
@@ -60,10 +61,25 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 		const ImGuiPayload* obj = ImGui::AcceptDragDropPayload(payloadDragDrop);
 		if (obj != nullptr)
 		{
-			
-			std::cout << "Drop recived from: "<< obj->Data;
-		}
+			//get go dragged to the new parent
+			GameObject drop = *(const GameObject*)obj->Data;
+			//other parent 
+			GameObject myparent = *go.GetComponent<Transform>().parent->owner;
 
+			//check that that the dragged obj os not the parent of the target
+			if (myparent != drop)
+			{
+				// add droped go as a child of the target go
+				if (go.GetComponent<Transform>().AddChild(&drop.GetComponent<Transform>()))
+				{
+					//get dragged parent and remove dragged go as child
+					Transform* p = drop.GetComponent<Transform>().parent;
+					p->RemoveChild(drop.GetComponent<Transform>());
+					//Set droped go new parent
+					drop.GetComponent<Transform>().SetParent(&go.GetComponent<Transform>());
+				}
+			}
+		}
 		ImGui::EndDragDropTarget();
 	}
 	if (ImGui::BeginPopupContextItem())
@@ -77,9 +93,15 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 	}
 	if (opened)
 	{
+		if (go.GetComponent<Transform>().childs.size() > 0)
+		{
+			vector<Transform*> childs = go.GetComponent<Transform>().childs;
+
+			for (Transform* i : childs)
+			{
+				DrawGONode(*i->owner);
+			}		
+		}
 		ImGui::TreePop();
 	}
-
-
-
 }

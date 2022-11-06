@@ -21,7 +21,7 @@ void Scene::CreateGameObject()
 void Scene::LoadGameObject(const std::string file_path)
 {
 	std::vector<GameObject*> obj = objLoader.LoadObject(file_path);
-
-	for (auto ob : obj)
-		gameObejects.push_back(*ob);
+	gameObejects.push_back(*obj.back());
+	//for (auto ob : obj)
+	//	gameObejects.push_back(*ob);
 }

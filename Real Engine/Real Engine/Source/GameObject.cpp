@@ -7,15 +7,20 @@ GameObject::GameObject()
 {
 	id = app->entityComponentSystem.CreateEntity();
 	name = "Game object";
-	app->entityComponentSystem.AddComponent(id, Transform{});
+	Transform t;
+	t.owner = this;
+	app->entityComponentSystem.AddComponent(id, t);
 	app->entityComponentSystem.AddComponent(id, TagComponent{ "Empty gameObject" });
 	active = true;
+
 }
 
 GameObject::GameObject(std::string name)
 {
 	id = app->entityComponentSystem.CreateEntity();
-	app->entityComponentSystem.AddComponent(id, Transform{});
+	Transform t;
+	t.owner = this;
+	app->entityComponentSystem.AddComponent(id, t);
 	app->entityComponentSystem.AddComponent(id, TagComponent{ name });
 	this->name = name;
 	active = true;
@@ -25,13 +30,14 @@ GameObject::~GameObject()
 {
 }
 
-GameObject* GameObject::FindChild(Entity id)
+GameObject* GameObject::FindChild(const GameObject toFind)
 {
-	//for (auto& child : childs)
-	//{
-	//	if (child->id == id)
-	//		return child; 
-	//}
+	vector<Transform*> childs = GetComponent<Transform>().childs;
+	for (auto& child : childs )
+	{
+		if (child->owner->id == toFind.id)
+			return child->owner; 
+	}
 
 	return nullptr;
 }

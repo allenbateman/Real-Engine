@@ -23,7 +23,6 @@ vector<GameObject*>  ObjectLoader::LoadObject(const std::string file_path)
 
     if (scene != nullptr && scene->HasMeshes())
     {
-
         directory = file_path.substr(0, file_path.find_last_of('/'));
 
         std::size_t from = file_path.find_last_of('/');

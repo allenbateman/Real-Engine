@@ -6,6 +6,8 @@
 #include "Application.h"
 #include "Entity.h"
 
+struct Transform;
+
 class GameObject
 {
 public:
@@ -16,13 +18,19 @@ public:
 	T& GetComponent();
 	template<typename T>
 	void AddComponent(T component);
-	GameObject* FindChild(Entity id);
+	GameObject* FindChild(const GameObject toFind);
 	void Destroy();
 
 
 	bool active;
 	Entity id = -1; // id of the game object
 	std::string name;
+
+
+	bool operator != (GameObject other)
+	{
+		return (id != other.id);
+	}
 
 };
 

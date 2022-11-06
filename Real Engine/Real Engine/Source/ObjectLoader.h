@@ -9,8 +9,6 @@
 #include "Entity.h"
 #include "GameObject.h"
 
-class GameObject;
-
 class ObjectLoader
 {
 public:
