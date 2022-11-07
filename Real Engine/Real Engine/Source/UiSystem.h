@@ -35,6 +35,8 @@ public:
 	void RenderUi();
 	void MainAppDockSpace(bool* p_open);
 
+	void SetStyle();
+
 	ImVec2 GetPanelSize(PanelID id);
 private:
 	vector<Panel*> panelList;
