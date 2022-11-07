@@ -23,12 +23,10 @@ void SceneHerarchyPanel::Update()
 
 	ImGui::Begin("Hierarchy");
 
-	std::vector<GameObject> gameObjects = app->sceneManager->currentScene->gameObejects;
+	Scene* currentScene = app->sceneManager->currentScene;
+	std::vector<GameObject> gameObjects = currentScene->gameObejects;
+	DrawGONode(currentScene->origin);
 
-	for(auto& go : gameObjects)
-	{
-		DrawGONode(go);
-	}
 	ImGui::End();
 	//wait until all data updated to delete
 	if (DeletedEntity)
@@ -62,7 +60,7 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 		if (obj != nullptr)
 		{
 			//get go dragged to the new parent
-			GameObject drop = *(const GameObject*)obj->Data;
+			GameObject drop = *(const GameObject*)obj->Data; 
 			//other parent 
 			GameObject myparent = *go.GetComponent<Transform>().parent->owner;
 

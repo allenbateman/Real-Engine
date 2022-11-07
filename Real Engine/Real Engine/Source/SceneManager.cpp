@@ -1,4 +1,5 @@
 #include "SceneManager.h"
+#include"Tag.h"
 
 
 SceneManager::~SceneManager()
@@ -60,12 +61,12 @@ Scene* SceneManager::CreateScene(std::string name)
 		return nullptr;
 	}
 	else {
-		Scene* newScene = new Scene();
-		newScene->name = name;
+		Scene* newScene = new Scene(name.c_str());
 		newScene->id = sceneCount;
+		newScene->origin.GetComponent<TagComponent>() = name.c_str();
 
 		sceneList.push_back(*newScene);
-
+		sceneCount++;
 		return newScene;
 	}
 }

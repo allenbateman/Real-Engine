@@ -22,7 +22,6 @@ public:
 	unsigned int sceneCount;
 
 	Scene* currentScene;
-
 	std::vector<Scene> sceneList;
 	bool ChangeScene(Scene newScene);
 	Scene* CreateScene(std::string name);
