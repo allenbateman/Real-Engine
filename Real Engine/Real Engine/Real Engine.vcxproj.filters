@@ -184,6 +184,9 @@
     <ClCompile Include="Source\SceneManager.cpp">
       <Filter>Resource Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Importer.cpp">
+      <Filter>Resource Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -347,6 +350,9 @@
     </ClInclude>
     <ClInclude Include="Source\Tag.h">
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Importer.h">
+      <Filter>Resource Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
