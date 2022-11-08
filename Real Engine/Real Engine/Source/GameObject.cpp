@@ -42,8 +42,29 @@ GameObject* GameObject::FindChild(const GameObject toFind)
 	return nullptr;
 }
 
+GameObject* GameObject::FindChild(const Entity toFind)
+{
+	vector<Transform*> childs = GetComponent<Transform>().childs;
+	for (auto& child : childs)
+	{
+		if (child->owner->id == toFind)
+			return child->owner;
+	}
+
+	return nullptr;
+}
+
 void GameObject::Destroy()
 {
 	//if has childs destroy them too
+	vector<Transform*> childs = GetComponent<Transform>().childs;
+	for (auto& child : childs)
+	{
+		child->owner->Destroy();
+	}
+	Transform* tParent = GetComponent<Transform>().parent;
+	tParent->RemoveChild(GetComponent<Transform>());
+
+	this->~GameObject();
 	app->entityComponentSystem.DestroyEntity(id);
 }

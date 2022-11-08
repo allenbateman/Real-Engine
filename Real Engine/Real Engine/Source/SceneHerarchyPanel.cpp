@@ -31,7 +31,7 @@ void SceneHerarchyPanel::Update()
 	//wait until all data updated to delete
 	if (DeletedEntity)
 	{
-		app->entityComponentSystem.DestroyEntity(toDelete);
+		currentScene->RemoveEntity(toDelete);
 	}
 }
 
@@ -61,11 +61,11 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 		{
 			//get go dragged to the new parent
 			GameObject drop = *(const GameObject*)obj->Data; 
-			//other parent 
-			GameObject myparent = *go.GetComponent<Transform>().parent->owner;
+			
 
-			//check that that the dragged obj os not the parent of the target
-			if (myparent != drop)
+			//check that the parent is the scene root
+			Transform* tScene = go.GetComponent<Transform>().parent;
+			if (tScene == nullptr)
 			{
 				// add droped go as a child of the target go
 				if (go.GetComponent<Transform>().AddChild(&drop.GetComponent<Transform>()))
@@ -77,6 +77,28 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 					drop.GetComponent<Transform>().SetParent(&go.GetComponent<Transform>());
 				}
 			}
+			else
+			{
+				//other parent 
+				GameObject myparent = *go.GetComponent<Transform>().parent->owner;
+
+				//check that that the dragged obj os not the parent of the target
+				if (myparent != drop)
+				{
+					// add droped go as a child of the target go
+					if (go.GetComponent<Transform>().AddChild(&drop.GetComponent<Transform>()))
+					{
+						//get dragged parent and remove dragged go as child
+						Transform* p = drop.GetComponent<Transform>().parent;
+						p->RemoveChild(drop.GetComponent<Transform>());
+						//Set droped go new parent
+						drop.GetComponent<Transform>().SetParent(&go.GetComponent<Transform>());
+					}
+				}
+			}
+			
+
+
 		}
 		ImGui::EndDragDropTarget();
 	}

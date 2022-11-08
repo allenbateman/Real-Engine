@@ -19,6 +19,9 @@ public:
 	template<typename T>
 	void AddComponent(T component);
 	GameObject* FindChild(const GameObject toFind);
+	GameObject* FindChild(const Entity toFind);
+	void RemoveChild(Entity childToRemove);
+
 	void Destroy();
 
 

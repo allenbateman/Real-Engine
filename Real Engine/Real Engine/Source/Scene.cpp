@@ -39,3 +39,18 @@ void Scene::LoadGameObject(const std::string file_path)
 	//for (auto ob : obj)
 	//	gameObejects.push_back(*ob);
 }
+
+void Scene::RemoveEntity(Entity id)
+{
+	for (auto& go : gameObejects)
+	{
+		if (go.id == id)
+			go.Destroy();
+		else
+		{
+			GameObject* toDestroy =	go.FindChild(id);
+			if (toDestroy != nullptr)
+				toDestroy->Destroy();
+		}
+	}
+}
