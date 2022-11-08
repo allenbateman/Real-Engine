@@ -42,8 +42,13 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 	Entity entity = go.id;
 
 	auto& tagComponent = app->entityComponentSystem.GetComponent<TagComponent>(entity);
-	ImGuiTreeNodeFlags flags = ((entitySelectionContext == entity) ? ImGuiTreeNodeFlags_OpenOnArrow : 0) | ImGuiTreeNodeFlags_Selected;
+	ImGuiTreeNodeFlags flags = ((entitySelectionContext == entity) ? ImGuiTreeNodeFlags_OpenOnArrow : 0) |((entity == 0) ? 0: ImGuiTreeNodeFlags_Selected );
+	
+	if (entity == 0)
+		ImGui::SetNextItemOpen(true);
+	
 	bool opened = ImGui::TreeNodeEx((void*)(uint64_t)(uint32_t)entity, flags, tagComponent.c_str());
+
 	
 	if (ImGui::IsItemClicked())
 	{
