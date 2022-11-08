@@ -39,6 +39,7 @@
     <ClCompile Include="Source\FrameBuffer.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
+    <ClCompile Include="Source\Importer.cpp" />
     <ClCompile Include="Source\Input.cpp" />
     <ClCompile Include="Source\Inspector.cpp" />
     <ClCompile Include="Source\Log.cpp" />
@@ -90,6 +91,7 @@
     <ClInclude Include="Source\FrameBuffer.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\glmath.h" />
+    <ClInclude Include="Source\Importer.h" />
     <ClInclude Include="Source\Input.h" />
     <ClInclude Include="Source\InputEnums.h" />
     <ClInclude Include="Source\Inspector.h" />
@@ -178,7 +180,7 @@
     <LinkIncremental>true</LinkIncremental>
     <OutDir>$(SolutionDir)Build\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)Build\$(Configuration)\Obj\</IntDir>
-    <IncludePath>Source\External\Glfw\include;Source\External\Glew\include;$(IncludePath)</IncludePath>
+    <IncludePath>Source\External\Glfw\include;Source\External\Glew\include;Source\External\DevIL\include;$(IncludePath)</IncludePath>
     <LibraryPath>Source\External\Glfw\lib-vc2019;Source\External\Glew\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -198,12 +200,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Stb;$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\ImGui;$(ProjectDir)Source\External\Glew\include\GL;$(ProjectDir)Source\External\Assimp\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)Source\External\Stb;$(ProjectDir)Source\External\Glew\include;$(ProjectDir)Source\External\Glfw\include\GLFW;$(ProjectDir)Source\External\ImGui;$(ProjectDir)Source\External\Glew\include\GL;$(ProjectDir)Source\External\Assimp\include;$(ProjectDir)Source\External\DevIL\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\Glew\lib\Release\Win32;Source\External\Glfw\lib-vc2019;Source\External\Glew\lib\Release\x64;$(ProjectDir)Source\External\Assimp\lib\Debug;$(ProjectDir)Source\External\Assimp\lib\Release;Source\External\Assimp\\lib\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\Glew\lib\Release\Win32;Source\External\Glfw\lib-vc2019;Source\External\Glew\lib\Release\x64;$(ProjectDir)Source\External\Assimp\lib\Debug;$(ProjectDir)Source\External\Assimp\lib\Release;Source\External\Assimp\\lib\Debug;Source\External\DevIL\lib\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>assimp-vc142-mtd.lib;glfw3.lib;glew32s.lib;opengl32.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
