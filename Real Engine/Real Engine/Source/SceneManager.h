@@ -25,6 +25,7 @@ public:
 	std::vector<Scene> sceneList;
 	bool ChangeScene(Scene newScene);
 	Scene* CreateScene(std::string name);
+	ObjectLoader objLoader;
 
 	//GetScene by id
 	Scene& GetScene(unsigned int id);

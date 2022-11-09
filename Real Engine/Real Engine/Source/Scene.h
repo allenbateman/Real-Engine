@@ -15,7 +15,6 @@ public:
 	void CreateGameObject();
 	void LoadGameObject(const std::string file_path);
 	void RemoveEntity(Entity id);
-	ObjectLoader objLoader;
 	std::vector <GameObject> gameObejects;
 	GameObject origin;
 	//Scene properties

@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "SceneManager.h"
 Scene::Scene()
 {
 }
@@ -30,7 +31,8 @@ void Scene::CreateGameObject()
 
 void Scene::LoadGameObject(const std::string file_path)
 {
-	std::vector<GameObject*> obj = objLoader.LoadObject(file_path);
+	
+	std::vector<GameObject*> obj = app->sceneManager->objLoader.LoadObject(file_path);
 
 	GameObject* go = obj.back();
 	origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());

@@ -151,11 +151,20 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
         if (!skip)
         {   // if texture hasn't been loaded already, load it
             Texture texture;
+          
+            //guradar file en local //descargas -> assets/texture
+
+            //new path .../assets/textures
+            //if loaded load
+            //else NO CARGA ERROR LOAD TEXTURE OBJ LOADER
+            //cargar textura vram --
             texture.id = LoadTexture(directory + "/" + str.C_Str());
+
             texture.path = directory + "/" + str.C_Str();
             texture.type = typeName;
             textures.push_back(texture);
             loadedtextures.push_back(texture); // add to loaded textures
+            
         }
     }
     return textures;
