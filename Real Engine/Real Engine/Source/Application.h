@@ -2,8 +2,8 @@
 #define __APPLICATION_H__
 
 
-#include "glew.h"
-#include "GLFW/glfw3.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #include "Log.h"
 #include "Defs.h"

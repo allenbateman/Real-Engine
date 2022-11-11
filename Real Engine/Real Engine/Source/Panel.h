@@ -2,9 +2,9 @@
 #include "Event.h"
 #include "EventSystem.h"
 #include "Events.h"
-#include "External/ImGui/imgui.h"
-#include "External/ImGui/backends/imgui_impl_glfw.h"
-#include "External/ImGui/backends/imgui_impl_opengl3.h"
+#include <ImGui/imgui.h>
+#include <ImGui/backends/imgui_impl_glfw.h>
+#include <ImGui/backends/imgui_impl_opengl3.h>
 
 
 
@@ -41,6 +41,8 @@ public:
 
 	OnPanelResize ePanelResize;
 	OnPanelFocus ePanelFocus;
+
+	int scrollDisplacement = 0;
 	
 };
 

@@ -1,9 +1,9 @@
 #include "ObjectLoader.h"
 #include "EntityComponentSystem.h"
-#include "glew.h"
-#include "GLFW/glfw3.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 #include "Transform.h"
-
+#include <stdio.h>
 ObjectLoader::ObjectLoader()
 {
 }
@@ -16,18 +16,28 @@ vector<GameObject*>  ObjectLoader::LoadObject(const std::string file_path)
 {
     bool ret = true;
     const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-
     GameObject* newGameObject = nullptr;
 
     std::vector<GameObject*> result;
 
     if (scene != nullptr && scene->HasMeshes())
     {
-        directory = file_path.substr(0, file_path.find_last_of('/'));
-
+        directory = file_path.substr(0, file_path.find_last_of('/')); 
         std::size_t from = file_path.find_last_of('/');
         std::size_t to = file_path.find_last_of('.');
         fileName = file_path.substr(from+1,to);
+
+        //std::string newPathFolder = "../Output/Assets/Obj/";
+        //std::string newPath = newPathFolder + fileName;
+        //if (rename(file_path.c_str(), newPath.c_str()))
+        //{
+        //    cout << "File moved from: " << file_path << " to " << newPath.c_str()<< endl;
+        //}
+        //else
+        //{
+        //    cout << "Could not move file: " << fileName << endl;
+        //}
+
 
         newGameObject = new GameObject(fileName);
         ProcessNode(scene->mRootNode, scene, *newGameObject, result);

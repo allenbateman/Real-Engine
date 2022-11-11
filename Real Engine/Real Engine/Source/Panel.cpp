@@ -41,11 +41,11 @@ bool Panel::OnHovered()
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
 		ImVec2 vMin = ImGui::GetWindowContentRegionMin();
 		ImVec2 vMax = ImGui::GetWindowContentRegionMax();
-
 		vMin.x += ImGui::GetWindowPos().x - borderOffset;
-		vMin.y += ImGui::GetWindowPos().y - borderOffset;
+		//vMin.y += ImGui::GetWindowPos().y - borderOffset;
 		vMax.x += ImGui::GetWindowPos().x + borderOffset;
 		vMax.y += ImGui::GetWindowPos().y + borderOffset;
+
 
 		ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, borderColor, 0, 0, borderOffset);
 		ePanelFocus.focused = true;
@@ -79,6 +79,17 @@ void Panel::BroadCastEvent(Event* e)
 
 void Panel::HandleEvents(Event* e)
 {
+	switch (e->type)
+	{
+	case MOUSE_SCROLL:
+	{
+		MouseScroll* ms = dynamic_cast<MouseScroll*>(e);
+		scrollDisplacement += ms->dy;
+	}	
+	break;
+	default:
+		break;
+	}
 }
 
 ImVec2 Panel::GetPanelSize()

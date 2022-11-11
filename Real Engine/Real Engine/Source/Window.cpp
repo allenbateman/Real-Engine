@@ -120,20 +120,6 @@ bool Window::GetFullScreen()
 void Window::HandleEvent( Event* singleEvent) 
 {
 
-	switch (singleEvent->type)
-	{
-		case NONE:
-		{
-		}break;
-		case KEY_INPUT:
-			singleEvent->DisplayData();
-			break;
-		case MOUSE_HOLE_MOUSE:
-			singleEvent->DisplayData();
-			break;
-		default:
-			break;
-	}
 }
 
 void Window::ResizeWindow(int newWidth, int newHeight)

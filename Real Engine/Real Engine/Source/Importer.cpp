@@ -1,7 +1,10 @@
 #include "Importer.h"
-#include "ObjectLoader.h"
-#include "SceneManager.h"
-
+#include "EntityComponentSystem.h"
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+#include "Transform.h"
+#include <iostream>
+#include <filesystem>
 Importer::Importer()
 {
 }
@@ -10,55 +13,168 @@ Importer::~Importer()
 {
 }
 
-void Importer::ImportMaterial(const aiMaterial* material, Material* ourMaterial)
+void Importer::OnDrop(const std::string file_path)
 {
-	//Transform aiMaterial into a custom material
-	// ourMaterial->textures = material->textures
-	
-	
+    const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+
+  
 }
 
-uint64 Importer::SaveMaterial(const Material* ourMaterial, char** fileBuffer)
+vector<GameObject*>  Importer::LoadObject(const std::string file_path)
 {
+    bool ret = true;
+    const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+    system("move file_path ./assets/obj ");
+    GameObject* newGameObject = nullptr;
 
-	//app->sceneManager->objLoader.loadedtextures;
-	//
-	//ILuint size;
-	//ILubyte* data;
-	//ilSetInteger(IL_DXTC_FORMAT, IL_DXT5);// To pick a specific DXT compression use
-	//size = ilSaveL(IL_DDS, nullptr, 0); // Get the size of the data buffer
-	//if (size > 0) {
-	//	data = new ILubyte[size]; // allocate data buffer
-	//	if (ilSaveL(IL_DDS, data, size) > 0) // Save to buffer with the ilSaveIL function
-	//		*fileBuffer = (char*)data;
-	//		RELEASE_ARRAY(data);
-	//}
-	return uint64();
+    std::vector<GameObject*> result;
+
+    if (scene != nullptr && scene->HasMeshes())
+    {
+        directory = file_path.substr(0, file_path.find_last_of('/'));
+
+        std::size_t from = file_path.find_last_of('/');
+        std::size_t to = file_path.find_last_of('.');
+        fileName = file_path.substr(from + 1, to);
+
+        newGameObject = new GameObject(fileName);
+        ProcessNode(scene->mRootNode, scene, *newGameObject, result);
+        result.push_back(newGameObject);
+        aiReleaseImport(scene);
+
+    }
+    else
+    {
+        std::cout << aiGetErrorString();
+        LOG(aiGetErrorString());
+    }
+    return  result;
 }
 
-void Importer::LoadMaterial(const char** fileBuffer, Material* ourMaterial)
+void Importer::ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo, std::vector<GameObject*>& result)
 {
+    // process all the node's meshes (if any)
+    for (unsigned int i = 0; i < node->mNumMeshes; i++)
+    {
+        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+        parentGo.AddComponent(ProcessMesh(mesh, scene, parentGo));
+    }
+    // then do the same for each of its children
+    for (unsigned int i = 0; i < node->mNumChildren; i++)
+    {
+        GameObject* childGo = new GameObject(fileName + std::to_string(i));
+        childGo->GetComponent<Transform>().parent = &parentGo.GetComponent<Transform>();
+        parentGo.GetComponent<Transform>().childs.push_back(&childGo->GetComponent<Transform>());
+        ProcessNode(node->mChildren[i], scene, *childGo, result);
+
+        result.push_back(childGo);
+    }
 }
 
-uint64 Importer::SaveMesh(Mesh mesh)
+Mesh Importer::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go)
 {
-	// amount of indices / vertices / colors / normals / texture_coords / AABB
-	int numIndices = mesh.indices.size();
-	int numVertices = mesh.vertices.size();
+
+    //temporary varaibles to store the mesh data
+    std::vector<Vertex> vertices;
+    std::vector<unsigned int> indices;
+    std::vector<Texture> textures;
+
+    for (unsigned int vi = 0; vi < mesh->mNumVertices; vi++)
+    {
+        Vertex vertex;
+        vec3 vector;
+        vector.x = mesh->mVertices[vi].x;
+        vector.y = mesh->mVertices[vi].y;
+        vector.z = mesh->mVertices[vi].z;
+        vertex.Position = vector;
+
+        vector.x = mesh->mNormals[vi].x;
+        vector.y = mesh->mNormals[vi].y;
+        vector.z = mesh->mNormals[vi].z;
+        vertex.Normal = vector;
 
 
-	uint ranges[2] = { numIndices,  numVertices };
-	
-	uint size = sizeof(ranges) + sizeof(uint) * numIndices + sizeof(float) * numVertices * 3;
-	char* fileBuffer = new char[size]; // Allocate
-	char* cursor = fileBuffer;
-	uint bytes = sizeof(ranges); // First store ranges
-	memcpy(cursor, ranges, bytes);
-	cursor += bytes;
-	// Store indices
-	bytes = sizeof(uint) * numIndices;
-	memcpy(cursor, (void*)numIndices, bytes);
-	cursor += bytes;
+        if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+        {
+            vec2 vec;
+            vec.x = mesh->mTextureCoords[0][vi].x;
+            vec.y = mesh->mTextureCoords[0][vi].y;
+            vertex.TexCoords = vec;
+        }
+        else
+            vertex.TexCoords = vec2(0.0f, 0.0f);
 
-	return uint64();
+        vertices.push_back(vertex);
+    }
+
+    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+    {
+        aiFace face = mesh->mFaces[i];
+        for (unsigned int j = 0; j < face.mNumIndices; j++)
+            indices.push_back(face.mIndices[j]);
+    }
+
+    //load material attached to the obj
+    if (mesh->mMaterialIndex >= 0)
+    {
+        go.AddComponent(ProcessMaterial(mesh, scene));
+    }
+
+    return Mesh(vertices, indices);
 }
+
+Material Importer::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
+{
+
+    std::vector<Texture> textures;
+    aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+    std::vector<Texture> diffuseMaps = loadMaterialTextures(material,
+        aiTextureType_DIFFUSE, "texture_diffuse");
+    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    std::vector<Texture> specularMaps = loadMaterialTextures(material,
+        aiTextureType_SPECULAR, "texture_specular");
+    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+    return Material(textures);
+
+}
+
+std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
+{
+    std::vector<Texture> textures;
+    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+    {
+        aiString str;
+        mat->GetTexture(type, i, &str);
+        bool skip = false;
+        for (unsigned int j = 0; j < loadedtextures.size(); j++)
+        {
+            if (std::strcmp(loadedtextures[j].path.data(), str.C_Str()) == 0)
+            {
+                textures.push_back(loadedtextures[j]);
+                skip = true;
+                break;
+            }
+        }
+        if (!skip)
+        {   // if texture hasn't been loaded already, load it
+            Texture texture;
+
+            //guradar file en local //descargas -> assets/texture
+
+            //new path .../assets/textures
+            //if loaded load
+            //else NO CARGA ERROR LOAD TEXTURE OBJ LOADER
+            //cargar textura vram --
+            texture.id = LoadTexture(directory + "/" + str.C_Str());
+
+            texture.path = directory + "/" + str.C_Str();
+            texture.type = typeName;
+            textures.push_back(texture);
+            loadedtextures.push_back(texture); // add to loaded textures
+        }
+    }
+    return textures;
+}
+
+

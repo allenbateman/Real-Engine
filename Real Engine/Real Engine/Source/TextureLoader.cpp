@@ -1,10 +1,10 @@
 #include "TextureLoader.h"
 #include "Log.h"
 #define STB_IMAGE_IMPLEMENTATION
-#include "External/Stb/stb_image.h"
+#include <Stb/stb_image.h>
 unsigned int LoadTexture(std::string file_path)//data
 {
-    //TODO check file path if its already loaded, the don,t flip 
+    //TODO check file path if its already flipped, the don,t flip 
     stbi_set_flip_vertically_on_load(true);
     unsigned int texture;
     int width, height, nrChannels;
@@ -17,15 +17,7 @@ unsigned int LoadTexture(std::string file_path)//data
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     // load and generate the texture
-    
-    
     unsigned char* data = stbi_load(file_path.c_str(), &width, &height, &nrChannels, 0);
-    
-
-
-   
-    
-
 
     if (data)
     {

@@ -12,6 +12,7 @@
 #include "FPSGraph.h"
 #include "Inspector.h"
 #include "SceneHerarchyPanel.h"
+#include "FileExplorer.h"
 
 // Variables to configure the Dockspace example.
 static bool opt_fullscreen = true; // Is the Dockspace full-screen?
@@ -29,12 +30,13 @@ public:
 	bool PreUpdate();
 	bool Update(float dt);
 	bool CleanUp();
+	void HandleEvent(Event* event);
 
 	void PrepareFrame();
 	void UpdatePanels();
 	void RenderUi();
 	void MainAppDockSpace(bool* p_open);
-
+	
 	void SetStyle();
 
 	ImVec2 GetPanelSize(PanelID id);
@@ -46,6 +48,7 @@ private:
 	FPSGraph* fpsGraph;
 	Inspector* inspector;
 	SceneHerarchyPanel* herarchyPanel;
+	FileExplorer* fileExplorer;
 
 	bool OpenMainWindow;
 	ImGuiIO* io = nullptr;

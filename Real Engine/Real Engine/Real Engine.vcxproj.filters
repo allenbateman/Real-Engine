@@ -73,27 +73,6 @@
     <ClCompile Include="Source\Input.cpp">
       <Filter>Resource Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\External\ImGui\imgui.cpp">
-      <Filter>Resource Files\External\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGui\imgui_demo.cpp">
-      <Filter>Resource Files\External\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGui\imgui_draw.cpp">
-      <Filter>Resource Files\External\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGui\imgui_tables.cpp">
-      <Filter>Resource Files\External\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGui\imgui_widgets.cpp">
-      <Filter>Resource Files\External\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGui\backends\imgui_impl_opengl3.cpp">
-      <Filter>Resource Files\External\ImGui</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\External\ImGui\backends\imgui_impl_glfw.cpp">
-      <Filter>Resource Files\External\ImGui</Filter>
-    </ClCompile>
     <ClCompile Include="Source\EventSystem.cpp">
       <Filter>Resource Files\Engine\Event System</Filter>
     </ClCompile>
@@ -187,6 +166,16 @@
     <ClCompile Include="Source\Importer.cpp">
       <Filter>Resource Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Source\FileExplorer.cpp">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\External\include\ImGui\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Source\External\include\ImGui\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Source\External\include\ImGui\imgui.cpp" />
+    <ClCompile Include="Source\External\include\ImGui\imgui_demo.cpp" />
+    <ClCompile Include="Source\External\include\ImGui\imgui_draw.cpp" />
+    <ClCompile Include="Source\External\include\ImGui\imgui_tables.cpp" />
+    <ClCompile Include="Source\External\include\ImGui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -353,6 +342,9 @@
     </ClInclude>
     <ClInclude Include="Source\Importer.h">
       <Filter>Resource Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\FileExplorer.h">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

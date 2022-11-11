@@ -34,7 +34,10 @@ public:
 	{
 		return (id != other.id);
 	}
-
+	bool operator == (GameObject other)
+	{
+		return (id != other.id);
+	}
 };
 
 template<typename T>

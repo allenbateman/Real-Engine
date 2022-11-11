@@ -1,8 +1,8 @@
 #pragma once
 #include "Log.h"
-#include "assimp/cimport.h"
-#include "assimp/scene.h"
-#include "assimp/postprocess.h"
+#include <assimp/cimport.h>
+#include <assimp/scene.h>
+#include <assimp/postprocess.h>
 #include "Mesh.h"
 #include "Material.h"
 #include "TextureLoader.h"
