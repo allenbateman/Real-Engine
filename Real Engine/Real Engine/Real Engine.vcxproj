@@ -92,6 +92,7 @@
     <ClInclude Include="Source\FPSGraph.h" />
     <ClInclude Include="Source\FrameBuffer.h" />
     <ClInclude Include="Source\GameObject.h" />
+    <ClInclude Include="Source\GameObjectTypes.h" />
     <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Importer.h" />
     <ClInclude Include="Source\Input.h" />

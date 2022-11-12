@@ -2,6 +2,7 @@
 
 #include "Event.h"
 #include "InputEnums.h"
+#include "GameObjectTypes.h"
 
 struct KeyInput : public Event
 {
@@ -86,4 +87,12 @@ struct OnFileDrop : Event
 		cout << "File dropped with path: " << endl;
 		cout << path << endl;
 	}
+};
+
+struct OnGameObjectCreation : Event
+{
+	OnGameObjectCreation() { type = ON_GO_CREATION; }
+	~OnGameObjectCreation() {};
+
+	gameObjectType goType;
 };

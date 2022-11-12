@@ -1,5 +1,6 @@
 #include "SceneManager.h"
 #include"Tag.h"
+#include "Events.h"
 
 
 SceneManager::~SceneManager()
@@ -45,6 +46,15 @@ bool SceneManager::CleanUp()
 
 void SceneManager::HandleEvent(Event* e)
 {
+	switch (e->type)
+	{
+	case ON_FILE_DROP:
+	{
+
+	}break;
+	default:
+		break;
+	}
 }
 
 bool SceneManager::ChangeScene(Scene newScene)

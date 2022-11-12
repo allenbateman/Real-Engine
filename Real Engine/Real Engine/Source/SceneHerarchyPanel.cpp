@@ -4,6 +4,8 @@
 #include "Tag.h"
 #include "SceneManager.h"
 #include "Transform.h"
+#include "ImGui/imgui_internal.h"
+
 SceneHerarchyPanel::SceneHerarchyPanel(int _id, bool active)
 {
 }
@@ -26,6 +28,27 @@ void SceneHerarchyPanel::Update()
 	Scene* currentScene = app->sceneManager->currentScene;
 	std::vector<GameObject> gameObjects = currentScene->gameObejects;
 	DrawGONode(currentScene->origin);
+
+	if (ImGui::IsMouseClicked(1))
+	{
+		
+		/*ImGui::ImGuiState& g = *GImGui;
+		if (g.OpenedPopupStack.size() > 0)
+			g.OpenedPopupStack.pop_back();*/
+		
+			if (ImGui::BeginPopupContextItem())
+			{
+				if (ImGui::MenuItem("Create"))
+				{
+					cout << "Created popoup menu" << endl;
+				}
+				ImGui::EndPopup();
+			}
+		
+		//ImGui::OpenPopup("test");
+
+		
+	}
 
 	ImGui::End();
 	//wait until all data updated to delete

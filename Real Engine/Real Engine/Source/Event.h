@@ -13,6 +13,7 @@ enum EventType {
 	ON_PANEL_FOCUS,
 	ON_FOV_CHANGE,
 	ON_FILE_DROP,
+	ON_GO_CREATION,
 };
 
 class Event {

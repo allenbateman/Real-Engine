@@ -346,6 +346,9 @@
     <ClInclude Include="Source\FileExplorer.h">
       <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="Source\GameObjectTypes.h">
+      <Filter>Resource Files\Engine\Enums</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Source\default.vertex">
