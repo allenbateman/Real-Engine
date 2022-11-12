@@ -1,12 +1,16 @@
 #include "FileExplorer.h"
+#include "TextureLoader.h"
 
 
-
-//extern const fs::path assetPath = "Assets";
+extern const fs::path assetPath = "../Output/Assets";
 
 FileExplorer::FileExplorer(int _id, bool isActive) : Panel(_id, isActive)
 {
 	name.Create("File Explorer");
+	directoryIcon = LoadTexture("../Output/SystemFiles/directoryIcon.png");
+	fileIcon = LoadTexture("../Output/SystemFiles/fileIcon.png");
+	
+	currentDirectory = assetPath;
 }
 
 FileExplorer::~FileExplorer()
@@ -21,13 +25,13 @@ void FileExplorer::Update()
 {
 	ImGui::Begin("Files");
 
-	//if (currentDirectory != fs::path(assetPath))
-	//{
-	//	if (ImGui::Button("<-"))
-	//	{
-	//		currentDirectory = currentDirectory.parent_path();
-	//	}
-	//}
+	if (currentDirectory != fs::path(assetPath))
+	{
+		if (ImGui::Button("<-"))
+		{
+			currentDirectory = currentDirectory.parent_path();
+		}
+	}
 
 	static float padding = 16.0f;
 	static float thumbnailSize = 128.0f;
@@ -40,15 +44,16 @@ void FileExplorer::Update()
 
 	ImGui::Columns(columnCount, 0, false);
 
-	//for (auto& directoryEntry : fs::directory_iterator(currentDirectory))
-	//{
-		/*const auto& path = directoryEntry.path();
+	for (auto& directoryEntry : fs::directory_iterator(currentDirectory))
+	{
+
+		const auto& path = directoryEntry.path();
 		std::string filenameString = path.filename().string();
 
 		ImGui::PushID(filenameString.c_str());
-		Texture* icon = directoryEntry.is_directory() ? directoryIcon : fileIcon;
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-		ImGui::ImageButton((ImTextureID)icon->id, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+		int icon = directoryEntry.is_directory() ? directoryIcon : fileIcon;
+		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 1));
+		ImGui::ImageButton((ImTextureID)icon, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 
 		if (ImGui::BeginDragDropSource())
 		{
@@ -69,8 +74,8 @@ void FileExplorer::Update()
 
 		ImGui::NextColumn();
 
-		ImGui::PopID();*/
-	//}
+		ImGui::PopID();
+	}
 
 	ImGui::Columns(1);
 

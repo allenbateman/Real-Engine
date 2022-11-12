@@ -2,8 +2,9 @@
 #include "Panel.h"
 #include "Texture.h"
 #include <iostream>
-//#include <boost/filesystem.hpp>
+#include <filesystem>
 
+namespace fs = std::filesystem;
 
 class FileExplorer :  public Panel
 {
@@ -14,8 +15,8 @@ public :
 	void Update();
 	bool CleanUp();
 private:
-	Texture directoryIcon;
-	Texture fileIcon;
-
+	int directoryIcon;
+	int fileIcon;
+	fs::path currentDirectory;
 };
 

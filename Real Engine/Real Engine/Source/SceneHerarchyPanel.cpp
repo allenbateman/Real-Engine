@@ -24,27 +24,17 @@ void SceneHerarchyPanel::Update()
 	DeletedEntity = false;
 
 	ImGui::Begin("Hierarchy");
+	ImGui::PushItemFlag(ImGuiItemFlags_SelectableDontClosePopup, true);
 
-	/*if (ImGui::MenuItem("Create New Game Object"))
+	if (ImGui::BeginPopupContextWindow())
 	{
-		cout << "Popup created" << endl;
-	}*/
 
-	if (ImGui::IsMouseClicked(1))
-	{
-		
-		if (ImGui::BeginPopupContextItem())
-		{
-		
-			if (ImGui::MenuItem("Create New Game Object"))
-			{
-				cout << "Popup created" << endl;
-			}
-
-			ImGui::EndPopup();
-		
-		}
+		ImGui::MenuItem("Create");
+			
+		ImGui::EndPopup();
 	}
+	ImGui::PopItemFlag();
+
 
 	Scene* currentScene = app->sceneManager->currentScene;
 	std::vector<GameObject> gameObjects = currentScene->gameObejects;
