@@ -25,30 +25,32 @@ void SceneHerarchyPanel::Update()
 
 	ImGui::Begin("Hierarchy");
 
-	Scene* currentScene = app->sceneManager->currentScene;
-	std::vector<GameObject> gameObjects = currentScene->gameObejects;
-	DrawGONode(currentScene->origin);
+	/*if (ImGui::MenuItem("Create New Game Object"))
+	{
+		cout << "Popup created" << endl;
+	}*/
 
 	if (ImGui::IsMouseClicked(1))
 	{
 		
-		/*ImGui::ImGuiState& g = *GImGui;
-		if (g.OpenedPopupStack.size() > 0)
-			g.OpenedPopupStack.pop_back();*/
+		if (ImGui::BeginPopupContextItem())
+		{
 		
-			if (ImGui::BeginPopupContextItem())
+			if (ImGui::MenuItem("Create New Game Object"))
 			{
-				if (ImGui::MenuItem("Create"))
-				{
-					cout << "Created popoup menu" << endl;
-				}
-				ImGui::EndPopup();
+				cout << "Popup created" << endl;
 			}
-		
-		//ImGui::OpenPopup("test");
 
+			ImGui::EndPopup();
 		
+		}
 	}
+
+	Scene* currentScene = app->sceneManager->currentScene;
+	std::vector<GameObject> gameObjects = currentScene->gameObejects;
+	DrawGONode(currentScene->origin);
+
+	
 
 	ImGui::End();
 	//wait until all data updated to delete
@@ -137,6 +139,7 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 			DeletedEntity = true;
 			toDelete = entity;
 		}
+		
 		ImGui::EndPopup();
 	}
 	if (opened)
