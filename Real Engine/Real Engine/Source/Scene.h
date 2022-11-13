@@ -3,6 +3,8 @@
 #include "ObjectLoader.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "GameObjectTypes.h"
+
 class Scene
 {
 public:
@@ -12,7 +14,7 @@ public:
 	void Init();
 	void Enable();
 	void Disable();
-	void CreateGameObject();
+	void CreateGameObject(gameObjectType goType);
 	void LoadGameObject(const std::string file_path);
 	void RemoveEntity(Entity id);
 	std::vector <GameObject> gameObejects;

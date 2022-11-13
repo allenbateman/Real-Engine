@@ -5,6 +5,7 @@
 #include "SceneManager.h"
 #include "Transform.h"
 #include "ImGui/imgui_internal.h"
+#include "EventSystem.h"
 
 SceneHerarchyPanel::SceneHerarchyPanel(int _id, bool active)
 {
@@ -29,7 +30,18 @@ void SceneHerarchyPanel::Update()
 	if (ImGui::BeginPopupContextWindow())
 	{
 
-		ImGui::MenuItem("Create");
+		if (ImGui::MenuItem("Create"))
+		{
+			
+			//Create Empty
+			goCreationEvent.goType = gameObjectType::EMPTY;
+			app->eventSystem->PostEvent(&goCreationEvent);
+		
+				
+				
+			
+			
+		}
 			
 		ImGui::EndPopup();
 	}

@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 #include"Tag.h"
 #include "Events.h"
+#include "EventSystem.h"
 
 
 SceneManager::~SceneManager()
@@ -19,6 +20,8 @@ bool SceneManager::Start()
 	sampleScene->LoadGameObject("../Output/Assets/BakerHouse.fbx");
 
 	currentScene = sampleScene;
+
+	app->eventSystem->SubscribeModule(this, ON_GO_CREATION);
 
 	return true;
 }
@@ -48,9 +51,16 @@ void SceneManager::HandleEvent(Event* e)
 {
 	switch (e->type)
 	{
-	case ON_FILE_DROP:
+	case ON_GO_CREATION:
 	{
+		OnGameObjectCreation* go = dynamic_cast<OnGameObjectCreation*>(e);
 
+		switch (go->goType)
+		{
+		case gameObjectType::EMPTY: currentScene->CreateGameObject(go->goType); break;
+		default:
+			break;
+		}
 	}break;
 	default:
 		break;

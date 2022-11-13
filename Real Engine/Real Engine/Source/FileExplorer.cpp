@@ -7,8 +7,8 @@ extern const fs::path assetPath = "../Output/Assets";
 FileExplorer::FileExplorer(int _id, bool isActive) : Panel(_id, isActive)
 {
 	name.Create("File Explorer");
-	directoryIcon = LoadTexture("../Output/SystemFiles/directoryIcon.png");
-	fileIcon = LoadTexture("../Output/SystemFiles/fileIcon.png");
+	//directoryIcon = LoadTexture("../Output/SystemFiles/directoryIcon.png");
+	//fileIcon = LoadTexture("../Output/SystemFiles/fileIcon.png");
 	
 	currentDirectory = assetPath;
 }

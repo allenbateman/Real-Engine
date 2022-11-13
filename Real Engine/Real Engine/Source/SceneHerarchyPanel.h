@@ -1,6 +1,7 @@
 #pragma once
 #include "Panel.h"
 #include "Inspector.h"
+#include "Events.h"
 class GameObject;
 class SceneHerarchyPanel :  public Panel
 {
@@ -14,6 +15,8 @@ public:
 	Inspector* inspector;
 	bool DeletedEntity = false;
 	Entity toDelete;
+
+	OnGameObjectCreation goCreationEvent;
 
 private:
 	

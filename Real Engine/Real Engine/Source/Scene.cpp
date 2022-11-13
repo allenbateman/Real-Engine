@@ -1,5 +1,6 @@
 #include "Scene.h"
 #include "SceneManager.h"
+
 Scene::Scene()
 {
 }
@@ -23,10 +24,23 @@ void Scene::Disable()
 {
 }
 
-void Scene::CreateGameObject()
+void Scene::CreateGameObject(gameObjectType goType)
 {
-	GameObject goToAdd;
-	gameObejects.push_back(goToAdd);
+	switch (goType)
+	{
+	case EMPTY: 
+	{
+		GameObject* go = new GameObject;
+		go->name = "Empty Object";
+
+		origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
+		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
+		gameObejects.push_back(*go);
+	}break;
+	default:
+		break;
+	}
+	
 }
 
 void Scene::LoadGameObject(const std::string file_path)

@@ -92,6 +92,8 @@ struct OnFileDrop : Event
 struct OnGameObjectCreation : Event
 {
 	OnGameObjectCreation() { type = ON_GO_CREATION; }
+	OnGameObjectCreation(gameObjectType goType) { this->goType = goType; type = ON_GO_CREATION; }
+
 	~OnGameObjectCreation() {};
 
 	gameObjectType goType;
