@@ -30,11 +30,22 @@ void Scene::CreateGameObject(gameObjectType goType)
 	{
 	case EMPTY: 
 	{
-		GameObject* go = new GameObject;
-		go->name = "Empty Object";
+		GameObject* go = new GameObject("Empty Object");
+		
 
 		origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
 		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
+		gameObejects.push_back(*go);
+	}break;
+
+	case CUBE:
+	{
+		GameObject* go = new GameObject("Cube");
+
+
+		origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
+		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
+		//go->AddComponent < Mesh(primitive.vertices,primitive.indices) > ()
 		gameObejects.push_back(*go);
 	}break;
 	default:
