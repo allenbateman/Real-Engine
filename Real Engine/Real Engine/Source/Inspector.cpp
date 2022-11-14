@@ -61,8 +61,13 @@ void Inspector::DrawComponents(Entity entity)
 		if (ImGui::TreeNodeEx((void*)typeid(Transform).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Transform"))
 		{
 			auto& transform = app->entityComponentSystem.GetComponent<Transform>(entity);
-		
-			vec3 pos = transform.Position();
+			
+			vec3 pos;
+			if(transform.parent->parent == nullptr)
+				pos = transform.Position();
+			else			
+				pos = transform.LocalPosition();
+			
 	
 			
 			float* p[] = {&pos.x,&pos.y,&pos.z };
@@ -70,12 +75,15 @@ void Inspector::DrawComponents(Entity entity)
 			float* s[] = { &transform.scale.x,&transform.scale.y,&transform.scale.z };
 			
 
-			if (ImGui::DragFloat3("Position", (*p), 0.1f));
+			if (ImGui::DragFloat3("Position", (*p), 0.1f))
+			{
+				transform.Translate(pos.x, pos.y, pos.z);
+			}
 			if (ImGui::DragFloat3("Rotation", (*r), 0.1f));
 			if (ImGui::DragFloat3("Scale", (*s), 0.1f));
 			
 
-			transform.Translate(pos.x, pos.y, pos.z);
+
 
 			ImGui::TreePop();
 		}

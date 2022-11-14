@@ -135,7 +135,7 @@ bool Renderer::PostUpdate()
 		defaultShader->Use();
 		float* projection = ProjectionMatrix.M;
 		float* model;
-		mat4x4 pos = translate(transform.Position().x, transform.Position().y, transform.Position().z);
+		mat4x4 pos = translate(transform.position.x, transform.position.y, transform.position.z);
 		mat4x4 rotationX = rotate(transform.rotation.x,transform.right);
 		mat4x4 rotationY = rotate(transform.rotation.y,transform.up);
 		mat4x4 rotationZ = rotate(transform.rotation.z,transform.forward);

@@ -16,9 +16,10 @@ struct Transform : public  Component
 	vec4 rotation{ 0,0,0,0 };	//Quaternion that stores rotation x,y,z,w
 	vec3 scale{ 1,1,1 };	    //Stores scale x,y,z
 
-	mat4x4 transform;		//Stores transformation of the object in a matrix from parent reference
+	mat4x4 localMatrix;		//Stores transformation of the object in a matrix from parent reference
 	mat4x4 worldMatrix;		//Stores transformation of the object in a matrix from world reference
 
+	mat4x4 worldToLocal;
 
 	vec3 forward{0,0,1};	//stores normalized vector z
 	vec3 up{0,1,0};			//stores normalized vector z
@@ -33,6 +34,11 @@ struct Transform : public  Component
 
 	GameObject* owner = nullptr;
 
+	void CalcualteWorldMatrix()
+	{
+		worldMatrix = parent->worldMatrix * localMatrix;
+	}
+
 
 	void SetParent(Transform* newParent)
 	{
@@ -41,6 +47,7 @@ struct Transform : public  Component
 			if (c != newParent)
 			{
 				parent = newParent;
+				localPosition = position - parent->Position();
 				return;
 			}
 		}
@@ -79,25 +86,32 @@ struct Transform : public  Component
 	}
 	void Translate(float x, float y, float z) {
 
-		for (auto &c : childs)
+		//means the root is origin
+		//move world pos
+		if (parent->parent == nullptr)
 		{
-			c->Translate(position.x + x, position.y + y, position.z + z);
+			position.x = x;
+			position.y = y;
+			position.z = z;
 		}
+		//move local
+		else{
 
-		transform.translate(x, y, z);
+			position = parent->position + localPosition;
+		}
+		//move all childs
+		for (auto& c : childs)
+		{
+			c->Translate(x, y, z);
+		}
 	}
-
 	vec3 Position()
 	{
-		transform = transform * parent->transform;
-
-		return transform.translation();
+		return position;
 	}
-
-	//vec3 Rotation()
-	//{
-	//	return localMatrix.rotario
-	//}
-
+	vec3 LocalPosition()
+	{
+		return localPosition;
+	}
 };
 
