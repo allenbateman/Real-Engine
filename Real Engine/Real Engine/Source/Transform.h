@@ -84,5 +84,24 @@ struct Transform : public  Component
 		}
 	}
 
+	void Translate(float x, float y, float z) {
+		float mx = parent->position.x + x;
+		float my = parent->position.x + y;
+		float mz = parent->position.x + z;
+		localMatrix.translate(mx, my, mz);
+	}
+
+	vec3 Position()
+	{
+		localMatrix * parent->worldMatrix;
+
+		return localMatrix.translation();
+	}
+
+	//vec3 Rotation()
+	//{
+	//	return localMatrix.rotario
+	//}
+
 };
 
