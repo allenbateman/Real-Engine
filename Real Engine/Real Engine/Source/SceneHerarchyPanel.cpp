@@ -27,25 +27,56 @@ void SceneHerarchyPanel::Update()
 	ImGui::Begin("Hierarchy");
 	ImGui::PushItemFlag(ImGuiItemFlags_SelectableDontClosePopup, true);
 
-	if (ImGui::BeginPopupContextWindow())
-	{
+	//if (ImGui::BeginPopupContextWindow())
+	//{
 
-		if (ImGui::MenuItem("Create"))
+	//	if (ImGui::MenuItem("Create"))
+	//	{
+	//		//Create Empty
+	//		goCreationEvent.goType = gameObjectType::EMPTY;
+	//		app->eventSystem->PostEvent(&goCreationEvent);
+	//		
+	//	
+	//	}
+	//		
+	//	ImGui::EndPopup();
+	//}
+	//ImGui::PopItemFlag();
+
+	if (ImGui::BeginPopupContextWindow())
 		{
-			
-			//Create Empty
-			goCreationEvent.goType = gameObjectType::EMPTY;
-			app->eventSystem->PostEvent(&goCreationEvent);
-		
+
+			if (ImGui::BeginMenu("Create"))
+			{
+
+				if (ImGui::MenuItem("Empty"))
+				{
+					goCreationEvent.goType = gameObjectType::EMPTY;
+					app->eventSystem->PostEvent(&goCreationEvent);
+				}
+
+				if (ImGui::MenuItem("Cube"))
+				{
+					goCreationEvent.goType = gameObjectType::CUBE;
+					app->eventSystem->PostEvent(&goCreationEvent);
+				}
+
+				if (ImGui::MenuItem("Sphere"))
+				{
+					goCreationEvent.goType = gameObjectType::SPHERE;
+					app->eventSystem->PostEvent(&goCreationEvent);
+				}
 				
 				
-			
-			
+
+
+
+				ImGui::EndMenu();
+			}
+				
+			ImGui::EndPopup();
 		}
-			
-		ImGui::EndPopup();
-	}
-	ImGui::PopItemFlag();
+		ImGui::PopItemFlag();
 
 
 	Scene* currentScene = app->sceneManager->currentScene;
