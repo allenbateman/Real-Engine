@@ -127,8 +127,8 @@ Transform Camera::GetTarget()
 void Camera::Focus(Transform target)
 {
 	
-	LookAt(target.GetPosition());
-	Position = vec3(target.GetPosition().x, target.GetPosition().y + 5.0f, target.GetPosition().z - 10.0f);
+	LookAt(target.position);
+	Position = vec3(target.position.x, target.position.y + 5.0f, target.position.z - 10.0f);
 
 	CalculateViewMatrix();
 }
