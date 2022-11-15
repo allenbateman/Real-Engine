@@ -8,9 +8,9 @@ struct Transform : public  Component
 
 	//properties
 
-	vec3 localPosition{0,0,0};
-	vec4 localRotation{0,0,0,0};
-	vec3 localScale{0,0,0};
+	vec3 localPosition{ 0,0,0 };
+	vec4 localRotation{ 0,0,0,0 };
+	vec3 localScale{ 0,0,0 };
 
 	vec3 position{ 0,0,0 };		//Stores position x,y,z
 	vec4 rotation{ 0,0,0,0 };	//Quaternion that stores rotation x,y,z,w
@@ -21,9 +21,9 @@ struct Transform : public  Component
 
 	mat4x4 worldToLocal;
 
-	vec3 forward{0,0,1};	//stores normalized vector z
-	vec3 up{0,1,0};			//stores normalized vector z
-	vec3 right{1,0,0};		//stores normalized vector z
+	vec3 forward{ 0,0,1 };	//stores normalized vector z
+	vec3 up{ 0,1,0 };			//stores normalized vector z
+	vec3 right{ 1,0,0 };		//stores normalized vector z
 
 	vec3 eulerAngles;		//Stores rotation in euler angles x,y,z
 	vec3 localEulerAngles;
@@ -46,12 +46,19 @@ struct Transform : public  Component
 		{
 			if (c != newParent)
 			{
+
 				parent = newParent;
-				localPosition = position - parent->Position();
+				//recalculate 
+				localMatrix = parent->localMatrix.inverse() * worldMatrix;
+				localPosition = localMatrix.translation();
 				return;
 			}
 		}
 		parent = newParent;
+		//recalculate 
+		localMatrix = parent->localMatrix.inverse() * worldMatrix;
+		parent->localPosition;
+		localPosition = localMatrix.translation();
 	}
 
 	bool AddChild(Transform* child)
@@ -81,37 +88,48 @@ struct Transform : public  Component
 				childs.erase(it);
 				break;
 			}
-
 		}
 	}
+
+
 	void Translate(float x, float y, float z) {
 
 		//means the root is origin
 		//move world pos
-		if (parent->parent == nullptr)
-		{
-			position.x = x;
-			position.y = y;
-			position.z = z;
-		}
-		//move local
-		else{
+		mat4x4 tmp = localMatrix;
 
-			position = parent->position + localPosition;
-		}
+		//apply changes
+		localMatrix.translate(x, y, z);
+		localPosition = localMatrix.translation();
+
+		worldMatrix = parent->worldMatrix * localMatrix;
+		position = worldMatrix.translation();
+		//world parent to propagate to the childs
+		mat4x4 wpt =  tmp * worldMatrix;
+
 		//move all childs
 		for (auto& c : childs)
 		{
-			c->Translate(x, y, z);
+			c->PropagateTransform(wpt);
 		}
+
+		worldMatrix = wpt;
 	}
 	vec3 Position()
 	{
-		return position;
+		return worldMatrix.translation();
 	}
 	vec3 LocalPosition()
 	{
-		return localPosition;
+		//this dosent work we dont know why
+		return localMatrix.translation();
+
+	}
+
+	void PropagateTransform(mat4x4 T)
+	{
+		worldMatrix = T * localMatrix;
+		position = worldMatrix.translation();
 	}
 };
 

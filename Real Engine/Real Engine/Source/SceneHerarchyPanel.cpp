@@ -27,22 +27,6 @@ void SceneHerarchyPanel::Update()
 	ImGui::Begin("Hierarchy");
 	ImGui::PushItemFlag(ImGuiItemFlags_SelectableDontClosePopup, true);
 
-	//if (ImGui::BeginPopupContextWindow())
-	//{
-
-	//	if (ImGui::MenuItem("Create"))
-	//	{
-	//		//Create Empty
-	//		goCreationEvent.goType = gameObjectType::EMPTY;
-	//		app->eventSystem->PostEvent(&goCreationEvent);
-	//		
-	//	
-	//	}
-	//		
-	//	ImGui::EndPopup();
-	//}
-	//ImGui::PopItemFlag();
-
 	if (ImGui::BeginPopupContextWindow())
 		{
 
@@ -66,10 +50,6 @@ void SceneHerarchyPanel::Update()
 					goCreationEvent.goType = gameObjectType::SPHERE;
 					app->eventSystem->PostEvent(&goCreationEvent);
 				}
-				
-				
-
-
 
 				ImGui::EndMenu();
 			}
@@ -96,6 +76,7 @@ void SceneHerarchyPanel::Update()
 void SceneHerarchyPanel::DrawGONode(GameObject go)
 {
 	Transform* t = go.GetComponent<Transform>().parent;
+	Transform test = go.GetComponent<Transform>();
 	
 	Entity entity = go.id;
 
