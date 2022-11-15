@@ -6,14 +6,39 @@
 
 struct Cube
 {
-    Vertex vertex0;
-    std::vector<Vertex> vertices;
-    std::vector<unsigned int> indices;
+    
+      std::vector<Vertex> vertices;
+      Vertex tempVertex[8];
+    //std::vector<unsigned int> indices;
     std::vector<Texture> textures;
 
-    Vertex vertex;
-    vec3 vector;
 
+    Cube()
+    {
+        /*Vertex v;
+        vertices.push_back(v);*/
+        
+        vertices.push_back(tempVertex[0]);
+        vertices.push_back(tempVertex[1]);
+        vertices.push_back(tempVertex[2]);
+        vertices.push_back(tempVertex[3]);
+        vertices.push_back(tempVertex[4]);
+        vertices.push_back(tempVertex[5]);
+        vertices.push_back(tempVertex[6]);
+        vertices.push_back(tempVertex[7]);
+        
+
+        vertices[0].Position = (-1, -1, 0.5);
+        vertices[1].Position = (1, -1, 0.5);
+        vertices[2].Position = (-1, 1, 0.5);
+        vertices[3].Position = (1, 1, 0.5);
+        vertices[4].Position = (-1, -1, -0.5);
+        vertices[5].Position = (1, -1, -0.5);
+        vertices[6].Position = (-1, 1, -0.5);
+        vertices[7].Position = (1, 1, -0.5);
+       
+        
+    }
     
     std::vector<unsigned int> indices
     {
@@ -41,38 +66,27 @@ struct Cube
         4, 6, 7,
         4, 5, 7
 
-
-
     };
 
-    
+    /*std::vector<Vertex> vertices{
+        
+       vertices[0],
+       vertices[1],
+       vertices[2],
+       vertices[3],
+       vertices[4],
+       vertices[5],
+       vertices[6],
+       vertices[7],
 
+    };*/
 
-
-
-    //vector.x = mesh->mVertices[vi].x;
-    //vector.y = mesh->mVertices[vi].y;
-    //vector.z = mesh->mVertices[vi].z;
-    //vertex.Position = vector;
-    //
-    //vector.x = mesh->mNormals[vi].x;
-    //vector.y = mesh->mNormals[vi].y;
-    //vector.z = mesh->mNormals[vi].z;
-    //vertex.Normal = vector;
-
-
-    std::vector<Vertex> vertices{
-        //-1, -1,  0.5, //0
-        // 1, -1,  0.5, //1
-        //-1,  1,  0.5, //2
-        // 1,  1,  0.5, //3
-        //-1, -1, -0.5, //4
-        // 1, -1, -0.5, //5
-        //-1,  1, -0.5, //6
-        // 1,  1, -0.5  //7
-        vertex, vertex0
-
-
-
-    };
+        //(-1, -1,  0.5), //0
+        // (1, -1,  0.5), //1
+        //(-1,  1,  0.5), //2
+        // (1,  1,  0.5), //3
+        //(-1, -1, -0.5), //4
+        // (1, -1, -0.5), //5
+        //(-1,  1, -0.5), //6
+        // (1,  1, -0.5),  //7
 };

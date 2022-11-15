@@ -105,6 +105,7 @@
     <ClInclude Include="Source\ObjectLoader.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelIDs.h" />
+    <ClInclude Include="Source\Primitives.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\RendererPanel.h" />
     <ClInclude Include="Source\Scene.h" />
