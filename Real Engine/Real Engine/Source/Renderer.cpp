@@ -10,6 +10,7 @@
 #include "Mesh.h" 
 #include "Material.h" 
 #include "Tag.h"
+#include "GL/glew.h"
 
 
 
@@ -149,6 +150,8 @@ bool Renderer::PostUpdate()
 		//render obj
 		mesh.Draw(*defaultShader, material);
 
+		cout << glewGetErrorString(glGetError()) << endl;
+		
 	}
 
 	//detach the shader to default so it doesnt affect other render process
