@@ -1,4 +1,5 @@
 #pragma once
+
 #include "Panel.h"
 class AboutPanel : public Panel
 {
@@ -9,5 +10,8 @@ public:
 	void Init();
 	void Update();
 	bool CleanUp();
+
+	bool opened = false;
+	string githubWebPage = "https://github.com/allenbateman/Real-Engine";
 };
 
