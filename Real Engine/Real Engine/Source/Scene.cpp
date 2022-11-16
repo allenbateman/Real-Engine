@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Primitives.h"
 
+
 Scene::Scene()
 {
 }
@@ -45,11 +46,14 @@ void Scene::CreateGameObject(gameObjectType goType)
 
 		Cube cubeInfo;
 		Mesh cubeMesh (cubeInfo.vertices, cubeInfo.indices);
+		Material cubeMaterial;
+		cubeMaterial.textures.push_back(app->sceneManager->objLoader.loadedtextures[0]);
 
 		origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
 		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
 		//go->AddComponent < Mesh(primitive.vertices, primitive.indices) >();
 		go->AddComponent<Mesh>(cubeMesh);
+		go->AddComponent<Material>(cubeMaterial);
 		gameObejects.push_back(*go);
 	}break;
 	default:

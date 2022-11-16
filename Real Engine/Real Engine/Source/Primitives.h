@@ -3,154 +3,166 @@
 #include <vector>
 #include "Mesh.h"
 
-const static std::vector<GLfloat> vert =
+const static std::vector<vec3> vert =
 {
-            -0.5f,0.5f,-0.5f,
-            -0.5f,-0.5f,-0.5f,
-            0.5f,-0.5f,-0.5f,
-            0.5f,0.5f,-0.5f,
+            //Back
+            (-0.5f,0.5f,-0.5f),
+            (-0.5f,-0.5f,-0.5f),
+            (0.5f,-0.5f,-0.5f),
+            (0.5f,0.5f,-0.5f),
 
-            -0.5f,0.5f,0.5f,
-            -0.5f,-0.5f,0.5f,
-            0.5f,-0.5f,0.5f,
-            0.5f,0.5f,0.5f,
+            //Front
+            (-0.5f,0.5f,0.5f),
+            (-0.5f,-0.5f,0.5f),
+            (0.5f,-0.5f,0.5f),
+            (0.5f,0.5f,0.5f),
 
-            0.5f,0.5f,-0.5f,
-            0.5f,-0.5f,-0.5f,
-            0.5f,-0.5f,0.5f,
-            0.5f,0.5f,0.5f,
+            //Right
+            (0.5f,0.5f,-0.5f),
+            (0.5f,-0.5f,-0.5f),
+            (0.5f,-0.5f,0.5f),
+            (0.5f,0.5f,0.5f),
 
-            -0.5f,0.5f,-0.5f,
-            -0.5f,-0.5f,-0.5f,
-            -0.5f,-0.5f,0.5f,
-            -0.5f,0.5f,0.5f,
+            //Left
+            (-0.5f,0.5f,-0.5f),
+            (-0.5f,-0.5f,-0.5f),
+            (-0.5f,-0.5f,0.5f),
+            (-0.5f,0.5f,0.5f),
 
-            -0.5f,0.5f,0.5f,
-            -0.5f,0.5f,-0.5f,
-            0.5f,0.5f,-0.5f,
-            0.5f,0.5f,0.5f,
+            //Top
+            (-0.5f,0.5f,0.5f),
+            (-0.5f,0.5f,-0.5f),
+            (0.5f,0.5f,-0.5f),
+           (0.5f,0.5f,0.5f),
 
-            -0.5f,-0.5f,0.5f,
-            -0.5f,-0.5f,-0.5f,
-            0.5f,-0.5f,-0.5f,
-            0.5f,-0.5f,0.5f
+           //Bottom
+            (-0.5f,-0.5f,0.5f),
+            (-0.5f,-0.5f,-0.5f),
+            (0.5f,-0.5f,-0.5f),
+            (0.5f,-0.5f,0.5f)
+            
+            
 };
-const static std::vector<GLuint> ind =
-{
-            0,1,3,
-            3,1,2,
-            4,5,7,
-            7,5,6,
-            8,9,11,
-            11,9,10,
-            12,13,15,
-            15,13,14,
-            16,17,19,
-            19,17,18,
-            20,21,23,
-            23,21,22
-};
+//const static std::vector<GLuint> ind =
+//{
+//            0,1,3,
+//            3,1,2,
+//            4,5,7,
+//            7,5,6,
+//            8,9,11,
+//            11,9,10,
+//            12,13,15,
+//            15,13,14,
+//            16,17,19,
+//            19,17,18,
+//            20,21,23,
+//            23,21,22
+//};
 
-const static std::vector<GLuint> texCords =
-{
-            0,0,
-            0,1,
-            1,1,
-            1,0,
-            0,0,
-            0,1,
-            1,1,
-            1,0,
-            0,0,
-            0,1,
-            1,1,
-            1,0,
-            0,0,
-            0,1,
-            1,1,
-            1,0,
-            0,0,
-            0,1,
-            1,1,
-            1,0,
-            0,0,
-            0,1,
-            1,1,
-            1,0
-};
+//const static std::vector<GLuint> texCords =
+//{
+//            0,0,
+//            0,1,
+//            1,1,
+//            1,0,
+//            0,0,
+//            0,1,
+//            1,1,
+//            1,0,
+//            0,0,
+//            0,1,
+//            1,1,
+//            1,0,
+//            0,0,
+//            0,1,
+//            1,1,
+//            1,0,
+//            0,0,
+//            0,1,
+//            1,1,
+//            1,0,
+//            0,0,
+//            0,1,
+//            1,1,
+//            1,0
+//};
 struct Cube
 {
     
-      std::vector<Vertex> vertices;
-      Vertex tempVertex[8];
-    //std::vector<unsigned int> indices;
+    std::vector<Vertex> vertices;
+    Vertex tempVertex[24];
     std::vector<Texture> textures;
 
 
     Cube()
     {
-        /*Vertex v;
-        vertices.push_back(v);*/
-        
-        vertices.push_back(tempVertex[0]);
-        vertices.push_back(tempVertex[1]);
-        vertices.push_back(tempVertex[2]);
-        vertices.push_back(tempVertex[3]);
-        vertices.push_back(tempVertex[4]);
-        vertices.push_back(tempVertex[5]);
-        vertices.push_back(tempVertex[6]);
-        vertices.push_back(tempVertex[7]);
-        
-
-        /*vertices[0].Position = (-1, -1, 0.5);
-        vertices[1].Position = (1, -1, 0.5);
-        vertices[2].Position = (-1, 1, 0.5);
-        vertices[3].Position = (1, 1, 0.5);
-        vertices[4].Position = (-1, -1, -0.5);
-        vertices[5].Position = (1, -1, -0.5);
-        vertices[6].Position = (-1, 1, -0.5);
-        vertices[7].Position = (1, 1, -0.5);*/
-       
-        for (int i = 0; i < 8; i++)
+        for (int i = 0; i < 24; i++)
         {
-            vertices[i].Position = (vert[i*3], vert[i*3 + 1], vert[i*3 + 2]);
+            vertices.push_back(tempVertex[i]);
+        }
+        
+       
+        for (int i = 0; i < 24; i++)
+        {
+            vertices[i].Position = vert[i];
         }
        
-       /* Vector3f normals[6] =
+      
+         vec3 normals[6] =
         {
-            Vector3f(0, 0, 1),
-            Vector3f(1, 0, 0),
-            Vector3f(0, 0, -1),
-            Vector3f(-1, 0, 0),
-            Vector3f(0, 1, 0),
-            Vector3f(0, -1, 0)
-        };*/
-       /* float normalBuffer[18 * 6];
-        for (int i = 0; i < 36; i++) {
-            normalBuffer[i * 3 + 0] = normals[indices[i / 6]].x;
-            normalBuffer[i * 3 + 1] = normals[indices[i / 6]].y;
-            normalBuffer[i * 3 + 2] = normals[indices[i / 6]].z;
+           (0,0,-1),//Back
+           (0,0,1), //Front
+           (1,0,0), //Right
+           (-1,0,0),//Left
+           (0,1,0), //Top
+           (0,-1,0) //Bottom
 
-
-       vertices[0].Normal = */
-
-
-
-        /*Vector2f texCoords[4] =
+        };
+         
+         
+        
+        for (int i = 0; i < 6; i++)
         {
-            Vector2f(0, 0),
-            Vector2f(1, 0),
-            Vector2f(1, 1),
-            Vector2f(0, 1)
-        };*/
+            vertices[i * 4 + 0].Normal = normals[i];
+            vertices[i * 4 + 1].Normal = normals[i];
+            vertices[i * 4 + 2].Normal = normals[i];
+            vertices[i * 4 + 3].Normal = normals[i];
+
+        }
+        
+        vec2 texCoords[4] =
+        {
+            (0, 0),
+            (1, 0),
+            (1, 1),
+            (0, 1)
+        };
+       
         /*int texInds[6] = { 0, 1, 3, 3, 1, 2 };
         float textureBuffer[12 * 6];
         for (int i = 0; i < 36; i++) {
-            vertices[i * 2 + 0].TexCoords = texCords[texInds[i % 4]];
-            textureBuffer[i * 2 + 1] = texCoords[texInds[i % 4]].y;*/
+            textureBuffer[i * 2 + 0] = texCoords[texInds[i % 4]].x;
+            textureBuffer[i * 2 + 1] = texCoords[texInds[i % 4]].y;
+        }
+        for (int i = 0; i < 36; i++)
+        {
+            vertices[i/ 6].TexCoords.x = textureBuffer[i * 2 + 0];
+            vertices[i / 6].TexCoords.x = textureBuffer[i * 2 + 1];
+        }*/
+        for (int i = 0; i < 24; i++ )
+        {
+            vertices[i].TexCoords = texCoords[i % 4];
+        }
+
 
     }
+    ~Cube()
+    {
+        vertices.clear();
+    }
         /*vertices[0].TexCoords = texCords[texInds[0]]*/
+
+
     
     const  std::vector<unsigned int> indices 
     {
