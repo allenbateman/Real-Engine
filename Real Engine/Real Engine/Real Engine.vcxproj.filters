@@ -176,6 +176,9 @@
     <ClCompile Include="Source\External\include\ImGui\imgui_draw.cpp" />
     <ClCompile Include="Source\External\include\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Source\External\include\ImGui\imgui_widgets.cpp" />
+    <ClCompile Include="Source\AboutPanel.cpp">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -351,6 +354,9 @@
     </ClInclude>
     <ClInclude Include="Source\Primitives.h">
       <Filter>Resource Files\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\AboutPanel.h">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

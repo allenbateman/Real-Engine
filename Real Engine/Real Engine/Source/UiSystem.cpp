@@ -40,6 +40,7 @@ bool UiSystem::Start()
     inspector = new Inspector(eInspector, true);
     herarchyPanel = new SceneHerarchyPanel(eSceneHerarchy, true);
     fileExplorer = new FileExplorer(eFileExplorer, true);
+    aboutPanel = new AboutPanel(eAbout, true);
 
 	panelList.push_back(camViewport);
     panelList.push_back(mainRenderer);
@@ -47,6 +48,7 @@ bool UiSystem::Start()
     panelList.push_back(inspector);
     panelList.push_back(herarchyPanel);
     panelList.push_back(fileExplorer);
+    panelList.push_back(aboutPanel);
 
     herarchyPanel->inspector = inspector;
 
@@ -246,6 +248,11 @@ void UiSystem::MainAppDockSpace(bool* p_open)
             {
                 fpsGraph->active = true;
                 ImGui::SetWindowFocus(fpsGraph->name.GetString());
+            }
+            if (ImGui::MenuItem("About"))
+            {
+                aboutPanel->active = true;
+                ImGui::SetWindowFocus(aboutPanel->name.GetString());
             }
             ImGui::Separator();
 

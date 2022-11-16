@@ -13,6 +13,7 @@
 #include "Inspector.h"
 #include "SceneHerarchyPanel.h"
 #include "FileExplorer.h"
+#include "AboutPanel.h"
 
 // Variables to configure the Dockspace example.
 static bool opt_fullscreen = true; // Is the Dockspace full-screen?
@@ -49,6 +50,7 @@ private:
 	Inspector* inspector;
 	SceneHerarchyPanel* herarchyPanel;
 	FileExplorer* fileExplorer;
+	AboutPanel* aboutPanel;
 
 	bool OpenMainWindow;
 	ImGuiIO* io = nullptr;

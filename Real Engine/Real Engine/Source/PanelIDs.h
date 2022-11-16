@@ -6,5 +6,6 @@ enum PanelID {
 	eFPS_Graph = 3,
 	eInspector= 4,
 	eSceneHerarchy = 5,
-	eFileExplorer = 6
+	eFileExplorer = 6,
+	eAbout = 7,
 };
