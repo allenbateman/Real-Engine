@@ -4,6 +4,7 @@
 
 Mesh::Mesh()
 {
+    
 }
 
 Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
@@ -15,6 +16,7 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 
 Mesh::~Mesh()
 {
+    
 }
 
 void Mesh::Draw(Shader& shader, Material& mat)

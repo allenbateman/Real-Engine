@@ -110,12 +110,12 @@ struct Cube
       
          vec3 normals[6] =
         {
-           (0,0,-1),//Back
-           (0,0,1), //Front
-           (1,0,0), //Right
-           (-1,0,0),//Left
-           (0,1,0), //Top
-           (0,-1,0) //Bottom
+           vec3 (0,0,-1),//Back
+           vec3(0,0,1), //Front
+            vec3(1,0,0), //Right
+            vec3(-1,0,0),//Left
+            vec3(0,1,0), //Top
+            vec3(0,-1,0) //Bottom
 
         };
          
@@ -132,10 +132,10 @@ struct Cube
         
         vec2 texCoords[4] =
         {
-            (0, 0),
-            (1, 0),
-            (1, 1),
-            (0, 1)
+            vec2(0, 0),
+            vec2(1, 0),
+            vec2(1, 1),
+            vec2(0, 1)
         };
        
         /*int texInds[6] = { 0, 1, 3, 3, 1, 2 };
@@ -149,9 +149,13 @@ struct Cube
             vertices[i/ 6].TexCoords.x = textureBuffer[i * 2 + 0];
             vertices[i / 6].TexCoords.x = textureBuffer[i * 2 + 1];
         }*/
+        int counter = 0;
         for (int i = 0; i < 24; i++ )
         {
-            vertices[i].TexCoords = texCoords[i % 4];
+            vertices[i].TexCoords = texCoords[counter];
+            if (counter >= 3) counter = 0;
+            else counter++;
+            
         }
 
 

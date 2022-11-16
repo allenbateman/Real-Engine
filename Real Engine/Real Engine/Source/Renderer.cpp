@@ -150,7 +150,7 @@ bool Renderer::PostUpdate()
 		//render obj
 		mesh.Draw(*defaultShader, material);
 
-		cout << glewGetErrorString(glGetError()) << endl;
+		
 		
 	}
 
