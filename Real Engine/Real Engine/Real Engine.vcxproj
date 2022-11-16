@@ -211,8 +211,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\lib\assimp\Release;$(ProjectDir)Source/External/lib/Glfw/lib-vc2022;$(ProjectDir)Source/External/lib/Glfw/lib-vc2019;$(ProjectDir)Source/External/lib/assimp/Debug;$(ProjectDir)Source/External/lib/Glew/Release/Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;glew32.lib;glew32s.lib;opengl32.lib;assimp-vc142-mt.lib;assimp-vc142-mtd.lib;glfw3.lib;glew32s.lib;opengl32.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\lib\assimp\Release;$(ProjectDir)Source/External/lib/Glfw/lib-vc2022;$(ProjectDir)Source/External/lib/Glfw/lib-vc2019;$(ProjectDir)Source/External/lib/assimp/Debug;$(ProjectDir)Source/External/lib/Glew/Release/Win32;$(ProjectDir)Source/External/lib/Devil/libx86/Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;glew32s.lib;opengl32.lib;assimp-vc142-mt.lib;DevIL.lib;assimp-vc142-mtd.lib;glfw3.lib;glew32s.lib;opengl32.lib;glew32.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -249,8 +249,8 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>glfw3.lib;glew32.lib;glew32s.lib;opengl32.lib;assimp-vc142-mt.lib;glfw3.lib;glew32s.lib;opengl32.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies);%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\lib\assimp\Release;$(ProjectDir)Source/External/lib/Glfw/lib-vc2022;$(ProjectDir)Source/External/lib/Glfw/lib-vc2019;$(ProjectDir)Source/External/lib/assimp/Debug;$(ProjectDir)Source/External/lib/Glew/Release/Win32;$(ProjectDir)Source\External\Glfw\lib-vc2019;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\arm64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;glew32.lib;glew32s.lib;opengl32.lib;assimp-vc142-mt.lib;DevIL.lib;glfw3.lib;glew32s.lib;opengl32.lib;opengl32.lib;glew32.lib;%(AdditionalDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)Source\External\lib\assimp\Release;$(ProjectDir)Source/External/lib/Glfw/lib-vc2022;$(ProjectDir)Source/External/lib/Glfw/lib-vc2019;$(ProjectDir)Source/External/lib/assimp/Debug;$(ProjectDir)Source/External/lib/Glew/Release/Win32;$(ProjectDir)Source/External/lib/Devil/libx86/Release;$(ProjectDir)Source\External\Glfw\lib-vc2019;C:\Program Files (x86)\Windows Kits\10\Lib\10.0.22000.0\um\arm64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
