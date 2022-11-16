@@ -62,9 +62,13 @@ void GameObject::Destroy()
 	{
 		child->owner->Destroy();
 	}
+
+	//remove go from its parent child list
 	Transform* tParent = GetComponent<Transform>().parent;
 	tParent->RemoveChild(GetComponent<Transform>());
 
-	this->~GameObject();
+	// remove entity from ECS
 	app->entityComponentSystem.DestroyEntity(id);
+	//destroy go
+	this->~GameObject();
 }

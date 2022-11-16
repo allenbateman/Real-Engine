@@ -158,8 +158,11 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
 
             string s = (directory)+"/" + str.C_Str();
 
-            ilSave(IL_DDS, s.c_str()); // Get the size of the data buffer
-
+            if (ilSave(IL_DDS, s.c_str())) // Get the size of the data buffer
+                cout << "saved file with devil\n";
+            else
+                cout << "could not save file with devil \n";
+                
             texture.path = directory + "/" + str.C_Str();
             texture.type = typeName;
             textures.push_back(texture);
