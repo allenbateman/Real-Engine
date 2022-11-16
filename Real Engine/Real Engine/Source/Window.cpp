@@ -144,7 +144,8 @@ void Window::DropCallBack(GLFWwindow* window, int count, const char** paths)
 void Window::RetrieveDropCallBack(const char* path)
 {
 	fileDropEvent.path = path;
+	fileDropEvent.Displaydata();
 	app->eventSystem->PostEvent(&fileDropEvent);
 
-	fileDropEvent.Displaydata();
+
 }

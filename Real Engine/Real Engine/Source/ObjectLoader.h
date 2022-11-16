@@ -8,7 +8,7 @@
 #include "TextureLoader.h"
 #include "Entity.h"
 #include "GameObject.h"
-
+#include <DevIL/il.h>
 class ObjectLoader
 {
 public:

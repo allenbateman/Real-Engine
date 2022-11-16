@@ -8,6 +8,7 @@
 #include "Renderer.h"
 #include "CameraController.h"
 #include "SceneManager.h"
+#include "Importer.h"
 
 //include All components
 #include "Tag.h"
@@ -21,22 +22,20 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 
 	entityComponentSystem.Init();
 
+	//Register every system to the application
 	window = entityComponentSystem.RegisterSystem<Window>();
 	input = entityComponentSystem.RegisterSystem<Input>();
 	eventSystem = entityComponentSystem.RegisterSystem<EventSystem>();
+	importer = entityComponentSystem.RegisterSystem<Importer>();
+	uiSystem = entityComponentSystem.RegisterSystem<UiSystem>();
+	//If a system has to handle  Entities
+	//Set signature of the components it will handle
 	sceneManager = entityComponentSystem.RegisterSystem<SceneManager>();
 	{
 		Signature signature;
 		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
 		entityComponentSystem.SetSystemSignature<SceneManager>(signature);
 	}
-	uiSystem = entityComponentSystem.RegisterSystem<UiSystem>();
-	{
-		Signature signature;
-		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
-		entityComponentSystem.SetSystemSignature<UiSystem>(signature);
-	}
-
 	cameraController = entityComponentSystem.RegisterSystem<CameraController>();
 	{
 		Signature signature;
@@ -45,7 +44,6 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 		signature.set(entityComponentSystem.GetComponentType<Camera>());
 		entityComponentSystem.SetSystemSignature<CameraController>(signature);
 	}
-
 	renderer = entityComponentSystem.RegisterSystem<Renderer>();
 	{
 		Signature signature;
@@ -58,6 +56,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);
+	modules.push_back(importer);
 	modules.push_back(cameraController);
 	modules.push_back(sceneManager);
 	//last
@@ -154,12 +153,12 @@ const char* Application::GetArgv(int index) const
 
 const char* Application::GetTitle() const
 {
-	return nullptr;
+	return "Real Engine";
 }
 
 const char* Application::GetOrganization() const
 {
-	return nullptr;
+	return "UPC Tech school";
 }
 
 void Application::LoadGameRequest()

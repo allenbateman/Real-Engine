@@ -10,25 +10,19 @@
 #include "Entity.h"
 #include "GameObject.h"
 
+static const char* Library = "Library";
 
-
-namespace MaterialImporter {
-	void Import();
-	bool Save();
-	bool Load();
-};
-namespace MeshImporter {
-	void Import();
-	bool Save();
-	bool Load();
-};
-
-class Importer
+class Importer : public Module , public System
 {
 public:
 	Importer();
+	Importer(bool isActive);
 	~Importer();
-	
+
+	bool Awake();
+	bool Start();
+	void HandleEvent(Event* e);
+
 	// when dropping anything on the app 
 	// read file type and store it,
 	// if dropped on scene and its a FBX load as obj
@@ -37,11 +31,16 @@ public:
 	// Change file format to own file format
 	// Save file
 
+
+	bool SaveObject();
 	bool SaveMaterial();
 	bool SaveMesh();
 
-	bool LoadMesh();
-	bool LoadMaterial();
+	GameObject LoadObjet();
+	Mesh LoadMesh();
+	Material LoadMaterial();
+
+	bool ProcessFile(const std::string file_path);
 
 
 
@@ -56,3 +55,14 @@ public:
 	std::vector<Texture>loadedtextures;
 
 };
+
+namespace MaterialImporter {
+	void Load();
+	void Save();
+	void Import(const aiMaterial* material, Material* ourMaterial);
+}
+namespace MeshImporter {
+	void Load();
+	void Save();
+	void Import();
+}

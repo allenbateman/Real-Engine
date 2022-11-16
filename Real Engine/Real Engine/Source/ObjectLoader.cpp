@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 #include "Transform.h"
 #include <stdio.h>
+
+
 ObjectLoader::ObjectLoader()
 {
 }
@@ -27,22 +29,13 @@ vector<GameObject*>  ObjectLoader::LoadObject(const std::string file_path)
         std::size_t to = file_path.find_last_of('.');
         fileName = file_path.substr(from+1,to);
 
-        //std::string newPathFolder = "../Output/Assets/Obj/";
-        //std::string newPath = newPathFolder + fileName;
-        //if (rename(file_path.c_str(), newPath.c_str()))
-        //{
-        //    cout << "File moved from: " << file_path << " to " << newPath.c_str()<< endl;
-        //}
-        //else
-        //{
-        //    cout << "Could not move file: " << fileName << endl;
-        //}
-
-
         newGameObject = new GameObject(fileName);
         ProcessNode(scene->mRootNode, scene, *newGameObject, result);
         result.push_back(newGameObject);
         aiReleaseImport(scene);
+
+
+
 
     }
     else
@@ -127,7 +120,6 @@ Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go
 
 Material ObjectLoader::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
 {
-
     std::vector<Texture> textures;
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
     std::vector<Texture> diffuseMaps = loadMaterialTextures(material,
@@ -138,7 +130,6 @@ Material ObjectLoader::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
     return Material(textures);
-
 }
 
 std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
@@ -159,17 +150,19 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
             }
         }
         if (!skip)
-        {   // if texture hasn't been loaded already, load it
+        {   
+            // if texture hasn't been loaded already, load it
             Texture texture;
-          
-            //guradar file en local //descargas -> assets/texture
-
-            //new path .../assets/textures
-            //if loaded load
-            //else NO CARGA ERROR LOAD TEXTURE OBJ LOADER
-            //cargar textura vram --
+  
             texture.id = LoadTexture(directory + "/" + str.C_Str());
 
+            string s = (directory)+"/" + str.C_Str();
+
+            if (ilSave(IL_DDS, s.c_str())) // Get the size of the data buffer
+                cout << "saved file with devil\n";
+            else
+                cout << "could not save file with devil \n";
+                
             texture.path = directory + "/" + str.C_Str();
             texture.type = typeName;
             textures.push_back(texture);

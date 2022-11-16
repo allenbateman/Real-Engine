@@ -77,15 +77,27 @@ void Scene::LoadGameObject(const std::string file_path)
 
 void Scene::RemoveEntity(Entity id)
 {
+	//if its a root go find it and destroy it
 	for (auto& go : gameObejects)
 	{
 		if (go.id == id)
-			go.Destroy();
-		else
 		{
-			GameObject* toDestroy =	go.FindChild(id);
-			if (toDestroy != nullptr)
-				toDestroy->Destroy();
+			go.Destroy();
+			return;
+		}
+
+
+	}
+	//if its a child of a root 
+	// for each root find the child
+	for (auto& go : gameObejects)
+	{
+		GameObject* toDestroy = go.FindChild(id);
+		if (toDestroy != nullptr)
+		{
+			toDestroy->Destroy();
+			return;
 		}
 	}
+
 }

@@ -140,9 +140,6 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 					}
 				}
 			}
-			
-
-
 		}
 		ImGui::EndDragDropTarget();
 	}

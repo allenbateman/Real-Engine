@@ -5,7 +5,13 @@
 #include "Transform.h"
 #include <iostream>
 #include <filesystem>
+#include "EventSystem.h"
+#include "Events.h"
 Importer::Importer()
+{
+}
+
+Importer::Importer(bool isActive) : Module(isActive)
 {
 }
 
@@ -13,20 +19,79 @@ Importer::~Importer()
 {
 }
 
+bool Importer::Awake()
+{
+    return true;
+}
+
+bool Importer::Start()
+{
+
+    app->eventSystem->SubscribeModule(this, ON_FILE_DROP);
+    return true;
+}
+
+void Importer::HandleEvent(Event* e)
+{
+    switch (e->type)
+    {
+    case ON_FILE_DROP:
+    {
+        OnFileDrop* drop = dynamic_cast<OnFileDrop*>(e);
+        OnDrop(drop->path);
+    }
+    break;
+    default:
+        break;
+    }
+
+}
+
 void Importer::OnDrop(const std::string file_path)
 {
+  
+    //move new file to assets
+    //then, load this file into our file format into library
+
+    bool moved = false;
+
+
+
+    directory = file_path.substr(0, file_path.find_last_of('/'));
+    std::size_t from = file_path.find_last_of('/\\');
+    std::size_t to = file_path.find_last_of('.');
+    fileName = file_path.substr(from + 1, ' ');
+    std::string newPathFolder = "../Output/Assets/";
+    std::string newPath = newPathFolder + fileName;
+    if (rename(file_path.c_str(), newPath.c_str()))
+    {
+        cout << "Could not move file: " << fileName << endl;      
+    }
+    else
+    {
+        cout << "File moved from: " << file_path << " to " << newPath.c_str() << endl;
+        moved = true;
+    }
+
+    if (moved)
+    {
+        ProcessFile(newPath);
+    }
+}
+
+bool Importer::ProcessFile(const std::string file_path)
+{
+    bool ret = true;
     const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 
-  
+    return ret;
 }
 
 vector<GameObject*>  Importer::LoadObject(const std::string file_path)
 {
     bool ret = true;
     const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-    system("move file_path ./assets/obj ");
     GameObject* newGameObject = nullptr;
-
     std::vector<GameObject*> result;
 
     if (scene != nullptr && scene->HasMeshes())
@@ -177,4 +242,27 @@ std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureTy
     return textures;
 }
 
+void MaterialImporter::Load()
+{
+}
 
+void MaterialImporter::Save()
+{
+}
+
+void MaterialImporter::Import(const aiMaterial* material, Material* ourMaterial)
+{
+
+}
+
+void MeshImporter::Load()
+{
+}
+
+void MeshImporter::Save()
+{
+}
+
+void MeshImporter::Import()
+{
+}
