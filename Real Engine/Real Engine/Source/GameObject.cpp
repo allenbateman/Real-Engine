@@ -1,6 +1,7 @@
 #include "GameObject.h"
 #include "Tag.h"
 #include "Transform.h"
+#include "Mesh.h"
 
 
 GameObject::GameObject()
@@ -49,6 +50,8 @@ GameObject* GameObject::FindChild(const Entity toFind)
 	{
 		if (child->owner->id == toFind)
 			return child->owner;
+		else
+			return child->owner->FindChild(toFind);
 	}
 
 	return nullptr;
@@ -66,7 +69,13 @@ void GameObject::Destroy()
 	//remove go from its parent child list
 	Transform* tParent = GetComponent<Transform>().parent;
 	tParent->RemoveChild(GetComponent<Transform>());
+	//now remove all the components
 
+	if (HasComponent<Mesh>())
+	{
+		Mesh m = GetComponent<Mesh>();
+		m.~Mesh();
+	}
 	// remove entity from ECS
 	app->entityComponentSystem.DestroyEntity(id);
 	//destroy go

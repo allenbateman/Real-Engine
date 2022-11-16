@@ -85,8 +85,6 @@ void Scene::RemoveEntity(Entity id)
 			go.Destroy();
 			return;
 		}
-
-
 	}
 	//if its a child of a root 
 	// for each root find the child

@@ -21,7 +21,8 @@ public:
 	GameObject* FindChild(const GameObject toFind);
 	GameObject* FindChild(const Entity toFind);
 	void RemoveChild(Entity childToRemove);
-
+	template<typename T>
+	bool HasComponent();
 	void Destroy();
 
 
@@ -50,4 +51,10 @@ template<typename T>
 inline void GameObject::AddComponent(T component)
 {
 	app->entityComponentSystem.AddComponent(id, component);
+}
+
+template<typename T>
+inline bool GameObject::HasComponent()
+{
+	return	app->entityComponentSystem.HasComponent<T>(id);
 }

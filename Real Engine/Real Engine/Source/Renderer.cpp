@@ -148,10 +148,7 @@ bool Renderer::PostUpdate()
 		defaultShader->SetMat4("model", model);
 		defaultShader->SetMat4("view", view);
 		//render obj
-		mesh.Draw(*defaultShader, material);
-
-		
-		
+		mesh.Draw(*defaultShader, material);	
 	}
 
 	//detach the shader to default so it doesnt affect other render process
