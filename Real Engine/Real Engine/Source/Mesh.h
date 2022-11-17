@@ -7,6 +7,7 @@ struct Vertex {
 	vec3 Position;
 	vec3 Normal;
 	vec2 TexCoords;
+	vec4 Color;
 };
 class Mesh : public  Component
 {

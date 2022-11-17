@@ -5,9 +5,11 @@
 #include "Transform.h"
 #include <stdio.h>
 
-
+//https://openil.sourceforge.net/docs/DevIL%20Manual.pdf
 ObjectLoader::ObjectLoader()
 {
+    ilInit();
+    cout << "Initialized devIl lib";
 }
 
 ObjectLoader::~ObjectLoader()
@@ -33,10 +35,6 @@ vector<GameObject*>  ObjectLoader::LoadObject(const std::string file_path)
         ProcessNode(scene->mRootNode, scene, *newGameObject, result);
         result.push_back(newGameObject);
         aiReleaseImport(scene);
-
-
-
-
     }
     else
     {
@@ -87,7 +85,13 @@ Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go
         vector.y = mesh->mNormals[vi].y;
         vector.z = mesh->mNormals[vi].z;
         vertex.Normal = vector;
-        
+
+        vec4 color;
+        color.x = 255;
+        color.y = 0;
+        color.z = 0;
+        color.w = 255;
+        vertex.Color = color;
 
         if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
         {
@@ -140,9 +144,12 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
         aiString str;
         mat->GetTexture(type, i, &str);
         bool skip = false;
+
+        string filepath = directory + "/" + str.C_Str();
+
         for (unsigned int j = 0; j < loadedtextures.size(); j++)
         {
-            if (std::strcmp(loadedtextures[j].path.data(), str.C_Str()) == 0)
+            if (std::strcmp(loadedtextures[j].path.data(), filepath.c_str()) == 0)
             {
                 textures.push_back(loadedtextures[j]);
                 skip = true;
@@ -152,18 +159,32 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
         if (!skip)
         {   
             // if texture hasn't been loaded already, load it
-            Texture texture;
-  
-            texture.id = LoadTexture(directory + "/" + str.C_Str());
 
-            string s = (directory)+"/" + str.C_Str();
+            // import image and store it in our file format
 
-            if (ilSave(IL_DDS, s.c_str())) // Get the size of the data buffer
+          
+            if (ilLoadImage(filepath.c_str()))
+            {
+                cout << "Texture: "<< str.C_Str() << " loaded with devIL"<<endl;
+            }
+            else {
+                cout << "Image not loaded with devIL" << endl;
+            }
+
+
+
+        //    char* fileName = string.substr(0, file_path.find_last_of('/'));
+            if (ilSave(IL_DDS, "../Output/Assets/savedFromDevil.dds"))
                 cout << "saved file with devil\n";
             else
                 cout << "could not save file with devil \n";
+
+            //this creates a texture and load it to the GPU
+
+            Texture texture;
+            texture.id = LoadTexture(filepath);
                 
-            texture.path = directory + "/" + str.C_Str();
+            texture.path = filepath;
             texture.type = typeName;
             textures.push_back(texture);
             loadedtextures.push_back(texture); // add to loaded textures

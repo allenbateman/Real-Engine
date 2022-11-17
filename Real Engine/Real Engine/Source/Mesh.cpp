@@ -16,7 +16,9 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 
 Mesh::~Mesh()
 {
-    
+    //glDeleteFramebuffers(1, &VAO);
+    //glDeleteFramebuffers(1, &VBO);
+    //glDeleteFramebuffers(1, &EBO); 
 }
 
 void Mesh::Draw(Shader& shader, Material& mat)
@@ -69,6 +71,9 @@ void Mesh::SetupMesh()
     // vertex texture coords
     glEnableVertexAttribArray(2);
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, TexCoords));
+    // vertex color
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, Color));
     
     glBindVertexArray(0);
 }

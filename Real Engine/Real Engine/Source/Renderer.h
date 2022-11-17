@@ -37,6 +37,7 @@ public:
 	FrameBuffer buffer;
 	mat4x4 ProjectionMatrix;
 	Shader* defaultShader;
+	Shader* colorShader;
 
 	//last renderer resize;
 	vec2 lastSize;

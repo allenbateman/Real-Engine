@@ -62,6 +62,12 @@ bool Renderer::Start()
 
 	defaultShader = new Shader(vs, fs);
 
+	/*vs = "../Output/Assets/Shaders/color.vertex";
+	fs = "../Output/Assets/Shaders/color.fragment";
+	colorShader = new Shader(vs, fs);*/
+
+
+
 	currentCamera = app->entityComponentSystem.CreateEntity();
 	app->entityComponentSystem.AddComponent(currentCamera, TagComponent{ "Camera" });
 	app->entityComponentSystem.AddComponent(currentCamera, Transform{});
@@ -102,11 +108,6 @@ bool Renderer::PostUpdate()
 	//bind renderer to the texture we want to render to (Frame buffer object)
 	glBindFramebuffer(GL_FRAMEBUFFER, buffer.FBO);
 
-	//Render every thing here -------------------------------------------
-	//-----------------------
-	//vec3 cubePos(0.0f, 0.0f, 0.0f);
-	//DrawDirectCube(cubePos, 10.0f);
-
 	glLineWidth(2.0f);
 
 	glBegin(GL_LINES);
@@ -133,6 +134,7 @@ bool Renderer::PostUpdate()
 
 		//attach shader 
 		//set attributes for rendering the textures
+		//colorShader->Use();
 		defaultShader->Use();
 		float* projection = ProjectionMatrix.M;
 		float* model;
