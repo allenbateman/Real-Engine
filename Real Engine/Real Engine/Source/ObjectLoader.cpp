@@ -6,6 +6,9 @@
 #include <stdio.h>
 
 //https://openil.sourceforge.net/docs/DevIL%20Manual.pdf
+
+static const char* LibraryDir = "../Output/Library/";
+
 ObjectLoader::ObjectLoader()
 {
     ilInit();
@@ -146,6 +149,7 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
         bool skip = false;
 
         string filepath = directory + "/" + str.C_Str();
+        string filename = str.C_Str();
 
         for (unsigned int j = 0; j < loadedtextures.size(); j++)
         {
@@ -172,15 +176,20 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
             }
 
 
+            //for textures
+            string fileName = filename.substr(0, filename.find_last_of('.'));
+            cout << fileName<<endl;
+            string storePath = LibraryDir + fileName +".dds";
+            cout << storePath << endl;
 
-        //    char* fileName = string.substr(0, file_path.find_last_of('/'));
-            if (ilSave(IL_DDS, "../Output/Assets/savedFromDevil.dds"))
+            if (ilSave(IL_DDS, storePath.c_str()))
                 cout << "saved file with devil\n";
             else
                 cout << "could not save file with devil \n";
 
             //this creates a texture and load it to the GPU
-
+            //Load texture from library folder
+            //create index for it
             Texture texture;
             texture.id = LoadTexture(filepath);
                 
