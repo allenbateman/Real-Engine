@@ -95,7 +95,7 @@ bool  Importer::ImportFile(const std::string file_path)
         std::size_t from = file_path.find_last_of('/');
         std::size_t to = file_path.find_last_of('.');
         fileName = file_path.substr(from + 1, to);
-
+        fileName = fileName.substr(0, fileName.find_last_of('.'));
         vector<Mesh> meshes;
 
         ProcessNode(scene->mRootNode, scene, &meshes);
@@ -116,8 +116,7 @@ bool  Importer::ImportFile(const std::string file_path)
 
 void Importer::ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes)
 {
-    // process all the node's meshes (if any)
-  
+    // process all the node's meshes (if any)  
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
@@ -132,7 +131,6 @@ void Importer::ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* mes
 
 Mesh Importer::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
-
     //temporary varaibles to store the mesh data
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
@@ -172,8 +170,6 @@ Mesh Importer::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
-
-    
 
     //load material attached to the obj
     if (mesh->mMaterialIndex >= 0)
@@ -221,8 +217,7 @@ std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureTy
             }
         }
         if (!skip)
-        {   // if texture hasn't been loaded already, load it
-            Texture texture;
+        {   
 
 
             if (ilLoadImage(filepath.c_str()))
@@ -233,6 +228,8 @@ std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureTy
                 cout << "Image not loaded with devIL" << endl;
             }
 
+            // if texture hasn't been loaded already, load it
+            Texture texture;
 
             //for textures
             string fileName = filename.substr(0, filename.find_last_of('.'));
