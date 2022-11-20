@@ -11,13 +11,14 @@ struct Vertex {
 };
 class Mesh : public  Component
 {
-public:
-	// mesh data
-	std::vector<Vertex>       vertices;
-	std::vector<unsigned int> indices;
+public:	
 	Mesh();
 	Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices);
 	~Mesh();
+	// mesh data
+	std::vector<Vertex>       vertices;
+	std::vector<unsigned int> indices;
+
 	void Draw(Shader& shader ,Material& mat);
 	//void Draw(Shader& Shader, Material& mat);
 	unsigned int GetVAO() { return VAO; }

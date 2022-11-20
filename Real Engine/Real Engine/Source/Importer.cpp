@@ -53,46 +53,40 @@ void Importer::OnDrop(const std::string file_path)
     //move new file to assets
     //then, load this file into our file format into library
 
-    bool moved = false;
-
-
-
     directory = file_path.substr(0, file_path.find_last_of('/'));
     std::size_t from = file_path.find_last_of('/\\');
     std::size_t to = file_path.find_last_of('.');
     fileName = file_path.substr(from + 1, ' ');
     std::string newPathFolder = "../Output/Assets/";
     std::string newPath = newPathFolder + fileName;
+
+    //store new file to assets
     if (rename(file_path.c_str(), newPath.c_str()))
     {
-        cout << "Could not move file: " << fileName << endl;      
+        cout << "Could not move file: " << fileName << endl;   
+        return;
     }
     else
     {
         cout << "File moved from: " << file_path << " to " << newPath.c_str() << endl;
-        moved = true;
     }
 
-    if (moved)
-    {
-        ProcessFile(newPath);
-    }
+    //check file type
+
+    //now store all data in our file format
+    ImportFile(newPath);
 }
 
 bool Importer::ProcessFile(const std::string file_path)
 {
     bool ret = true;
-    const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
 
     return ret;
 }
-
-vector<GameObject*>  Importer::LoadObject(const std::string file_path)
+bool  Importer::ImportFile(const std::string file_path)
 {
     bool ret = true;
     const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-    GameObject* newGameObject = nullptr;
-    std::vector<GameObject*> result;
 
     if (scene != nullptr && scene->HasMeshes())
     {
@@ -102,9 +96,12 @@ vector<GameObject*>  Importer::LoadObject(const std::string file_path)
         std::size_t to = file_path.find_last_of('.');
         fileName = file_path.substr(from + 1, to);
 
-        newGameObject = new GameObject(fileName);
-        ProcessNode(scene->mRootNode, scene, *newGameObject, result);
-        result.push_back(newGameObject);
+        vector<Mesh> meshes;
+
+        ProcessNode(scene->mRootNode, scene, &meshes);
+
+        MeshImporter::Import(meshes,LibraryDir + fileName + ".mesh");
+
         aiReleaseImport(scene);
 
     }
@@ -112,31 +109,28 @@ vector<GameObject*>  Importer::LoadObject(const std::string file_path)
     {
         std::cout << aiGetErrorString();
         LOG(aiGetErrorString());
+        ret = false;
     }
-    return  result;
+    return  ret;
 }
 
-void Importer::ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo, std::vector<GameObject*>& result)
+void Importer::ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes)
 {
     // process all the node's meshes (if any)
+  
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        parentGo.AddComponent(ProcessMesh(mesh, scene, parentGo));
+        meshes->push_back(ProcessMesh(mesh, scene));
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        GameObject* childGo = new GameObject(fileName + std::to_string(i));
-        childGo->GetComponent<Transform>().parent = &parentGo.GetComponent<Transform>();
-        parentGo.GetComponent<Transform>().childs.push_back(&childGo->GetComponent<Transform>());
-        ProcessNode(node->mChildren[i], scene, *childGo, result);
-
-        result.push_back(childGo);
+        ProcessNode(node->mChildren[i], scene, meshes);
     }
 }
 
-Mesh Importer::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go)
+Mesh Importer::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
 
     //temporary varaibles to store the mesh data
@@ -179,10 +173,12 @@ Mesh Importer::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go)
             indices.push_back(face.mIndices[j]);
     }
 
+    
+
     //load material attached to the obj
     if (mesh->mMaterialIndex >= 0)
     {
-        go.AddComponent(ProcessMaterial(mesh, scene));
+       ProcessMaterial(mesh, scene);
     }
 
     return Mesh(vertices, indices);
@@ -201,7 +197,6 @@ Material Importer::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
     textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 
     return Material(textures);
-
 }
 
 std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
@@ -211,6 +206,10 @@ std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureTy
     {
         aiString str;
         mat->GetTexture(type, i, &str);
+
+        string filepath = directory + "/" + str.C_Str();
+        string filename = str.C_Str();      
+    
         bool skip = false;
         for (unsigned int j = 0; j < loadedtextures.size(); j++)
         {
@@ -225,12 +224,28 @@ std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureTy
         {   // if texture hasn't been loaded already, load it
             Texture texture;
 
-            //guradar file en local //descargas -> assets/texture
 
-            //new path .../assets/textures
-            //if loaded load
-            //else NO CARGA ERROR LOAD TEXTURE OBJ LOADER
-            //cargar textura vram --
+            if (ilLoadImage(filepath.c_str()))
+            {
+                cout << "Texture: " << str.C_Str() << " loaded with devIL" << endl;
+            }
+            else {
+                cout << "Image not loaded with devIL" << endl;
+            }
+
+
+            //for textures
+            string fileName = filename.substr(0, filename.find_last_of('.'));
+            cout << fileName << endl;
+            string storePath = LibraryDir + fileName + ".dds";
+            cout << storePath << endl;
+
+            if (ilSave(IL_DDS, storePath.c_str()))
+                cout << "saved file with devil\n";
+            else
+                cout << "could not save file with devil \n";
+
+
             texture.id = LoadTexture(directory + "/" + str.C_Str());
 
             texture.path = directory + "/" + str.C_Str();
@@ -259,10 +274,43 @@ void MeshImporter::Load()
 {
 }
 
-void MeshImporter::Save()
+void MeshImporter::Save(const Mesh mesh, const std::string& filename)
 {
+
+
+
 }
 
-void MeshImporter::Import()
+std::ostream& operator <<(std::ostream& out, const Mesh& mesh)
 {
+    for (const auto& v : mesh.vertices)
+    {
+        out << v.Position.x << ',' << v.Position.x << ',' << v.Position.x << 'p';
+        out << v.Normal.x << ',' << v.Normal.y << ',' << v.Normal.z << 'n';
+        out << v.TexCoords.x << ',' << v.TexCoords.y << 't';
+        out << v.Color.x << ',' << v.Color.y << ',' << v.Color.z << ',' << v.Color.w << 'c';
+    }
+
+    for (const auto& i : mesh.indices)
+    {
+        out << i;
+    }
+    out << 'i';
+    return out;
 }
+
+void MeshImporter::Import(const vector<Mesh> meshes, const std::string& filename)
+{
+    std::ofstream out(filename);
+    if (out.is_open())
+    {
+        for(const auto& m : meshes)
+            out << m << '\n';
+    }
+    else {
+        cout << "Error importing mesh: " + filename;
+    }
+
+}
+
+

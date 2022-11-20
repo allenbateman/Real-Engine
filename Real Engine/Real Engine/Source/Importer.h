@@ -10,7 +10,7 @@
 #include "Entity.h"
 #include "GameObject.h"
 
-static const char* Library = "Library";
+static const char* LibraryDir = "../Output/Library/";
 
 class Importer : public Module , public System
 {
@@ -44,15 +44,16 @@ public:
 
 
 
-	vector<GameObject*> LoadObject(const std::string file_path);
-	void ProcessNode(aiNode* node, const aiScene* scene, GameObject parentGo, std::vector<GameObject*>& result);
-	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go);
+	bool ImportFile(const std::string file_path);
+	void ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes);
+	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
 	Material ProcessMaterial(aiMesh* mesh, const aiScene* scene);
 	std::vector<Texture> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 
 	std::string directory;
 	std::string fileName;
 	std::vector<Texture>loadedtextures;
+
 
 };
 
@@ -63,6 +64,7 @@ namespace MaterialImporter {
 }
 namespace MeshImporter {
 	void Load();
-	void Save();
-	void Import();
+	void Save(const Mesh mesh, const std::string& filename);
+	void Import(const vector<Mesh> meshes, const std::string& filename);
 }
+
