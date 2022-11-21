@@ -2,6 +2,8 @@
 
 EntityManager::EntityManager()
 {
+	std::cout << "Starting Entity Manager\n";
+
 	for (Entity entity = 0; entity < MAX_ENTITIES; entity++)
 	{
 		availableEntities.push(entity);

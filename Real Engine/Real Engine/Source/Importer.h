@@ -11,6 +11,11 @@
 #include "GameObject.h"
 
 static const char* LibraryDir = "../Output/Library/";
+enum FileType {
+	FBX,
+	IMAGE,
+
+};
 
 class Importer : public Module , public System
 {

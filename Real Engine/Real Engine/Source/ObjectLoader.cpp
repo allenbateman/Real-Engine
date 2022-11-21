@@ -11,8 +11,6 @@ static const char* LibraryDir = "../Output/Library/";
 
 ObjectLoader::ObjectLoader()
 {
-    ilInit();
-    cout << "Initialized devIl lib";
 }
 
 ObjectLoader::~ObjectLoader()

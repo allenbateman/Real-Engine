@@ -10,6 +10,7 @@ Scene::Scene(const char* name)
 {
 	this->name = name;
 	origin.name = name;
+	cout << "Creating new scene: " << name << "\n";
 }
 Scene::~Scene()
 {

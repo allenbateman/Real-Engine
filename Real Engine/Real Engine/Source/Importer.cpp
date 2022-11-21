@@ -21,6 +21,11 @@ Importer::~Importer()
 
 bool Importer::Awake()
 {
+    cout << "Starting Importer\n";
+
+    ilInit();
+    cout << "Initialized devIl lib\n";
+
     return true;
 }
 
@@ -68,7 +73,7 @@ void Importer::OnDrop(const std::string file_path)
     }
     else
     {
-        cout << "File moved from: " << file_path << " to " << newPath.c_str() << endl;
+        cout << "File moved from: " << file_path << "\n to \n" << newPath.c_str() << endl;
     }
 
     //check file type

@@ -10,6 +10,7 @@ SceneManager::~SceneManager()
 
 bool SceneManager::Awake()
 {
+	cout << "Starting Scene Manager\n";
 	return true;
 }
 

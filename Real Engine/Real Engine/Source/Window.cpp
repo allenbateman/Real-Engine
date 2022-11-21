@@ -10,6 +10,8 @@ Window::Window(bool isActive) : Module(isActive)
 {
 	window = NULL;
 	name.Create("Window");
+
+	cout << "Stating Window Module\n";
 }
 
 // Destructor
