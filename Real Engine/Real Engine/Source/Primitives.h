@@ -90,54 +90,75 @@ struct Cube
 {
     
     std::vector<Vertex> vertices;
-    Vertex tempVertex[24];
+    Vertex tempVertex[8];
     std::vector<Texture> textures;
 
 
     Cube()
     {
-        for (int i = 0; i < 24; i++)
+        for (int i = 0; i < 8; i++)
         {
             vertices.push_back(tempVertex[i]);
         }
         
-       
-        for (int i = 0; i < 24; i++)
+        vertices[0].Position = (-1.0f, 1.0f, -1.0f);
+        vertices[1].Position = (-1.0f, -1.0f, -1.0f);
+        vertices[2].Position = (1.0f, -1.0f, -1.0f);
+        vertices[3].Position = (1.0f, 1.0f, -1.0f);
+
+        vertices[4].Position = (-1.0f, 1.0f, 1.0f);
+        vertices[5].Position = (-1.0f, -1.0f, 1.0f);
+        vertices[0].Position = (1.0f, -1.0f, 1.0f);
+        vertices[0].Position = (1.0f, 1.0f, 1.0f);
+
+        vec4 ColorBuffer = (150, 200, 190, 255);
+        for (int i = 0; i < 8; i++)
         {
-            vertices[i].Position = vert[i];
+            //vertices[i].Color = (255 - (20 * i), i * 20, 255 - (20 * i), 255);
+            vertices[i].Color.r = 255;
+            vertices[i].Color.g = 0;
+            vertices[i].Color.b = 0;
+            vertices[i].Color.a = 255;
         }
+       
+        //for (int i = 0; i < 24; i++)
+        //{
+        //    vertices[i].Position = vert[i];
+        //}
        
       
-         vec3 normals[6] =
-        {
-           vec3 (0,0,-1),//Back
-           vec3(0,0,1), //Front
-            vec3(1,0,0), //Right
-            vec3(-1,0,0),//Left
-            vec3(0,1,0), //Top
-            vec3(0,-1,0) //Bottom
+        // vec3 normals[6] =
+        //{
+        //   vec3 (0,0,-1),//Back
+        //   vec3(0,0,1), //Front
+        //    vec3(1,0,0), //Right
+        //    vec3(-1,0,0),//Left
+        //    vec3(0,1,0), //Top
+        //    vec3(0,-1,0) //Bottom
 
-        };
-         
-         
-        
-        for (int i = 0; i < 6; i++)
-        {
-            vertices[i * 4 + 0].Normal = normals[i];
-            vertices[i * 4 + 1].Normal = normals[i];
-            vertices[i * 4 + 2].Normal = normals[i];
-            vertices[i * 4 + 3].Normal = normals[i];
+        //};
+        // 
+        // 
+        //
+        //for (int i = 0; i < 6; i++)
+        //{
+        //    vertices[i * 4 + 0].Normal = normals[i];
+        //    vertices[i * 4 + 1].Normal = normals[i];
+        //    vertices[i * 4 + 2].Normal = normals[i];
+        //    vertices[i * 4 + 3].Normal = normals[i];
 
-        }
-        
-        vec2 texCoords[4] =
-        {
-            vec2(0, 0),
-            vec2(1, 0),
-            vec2(1, 1),
-            vec2(0, 1)
-        };
+        //}
+        //
+        //vec2 texCoords[4] =
+        //{
+        //    vec2(0, 0),
+        //    vec2(1, 0),
+        //    vec2(1, 1),
+        //    vec2(0, 1)
+        //};
        
+
+
         /*int texInds[6] = { 0, 1, 3, 3, 1, 2 };
         float textureBuffer[12 * 6];
         for (int i = 0; i < 36; i++) {
@@ -149,14 +170,15 @@ struct Cube
             vertices[i/ 6].TexCoords.x = textureBuffer[i * 2 + 0];
             vertices[i / 6].TexCoords.x = textureBuffer[i * 2 + 1];
         }*/
-        int counter = 0;
+
+        /*int counter = 0;
         for (int i = 0; i < 24; i++ )
         {
             vertices[i].TexCoords = texCoords[counter];
             if (counter >= 3) counter = 0;
             else counter++;
             
-        }
+        }*/
 
 
     }
@@ -167,8 +189,29 @@ struct Cube
         /*vertices[0].TexCoords = texCords[texInds[0]]*/
 
 
-    
-    const  std::vector<unsigned int> indices 
+    const  std::vector<unsigned int> indices
+    {
+        //Back
+                0,1,2,
+                2,1,3,
+        //Bottom
+                1,2,6,
+                6,1,5,
+        //Left
+                4,0,1,
+                1,0,5,
+        //Right
+                3,7,6,
+                6,7,2,
+        //Top
+                0,4,7,
+                7,3,4,
+        //Front
+                4,5,6,
+                6,7,5
+
+    };
+    /*const  std::vector<unsigned int> indices 
     {
                 0,1,3,
                 3,1,2,
@@ -182,7 +225,7 @@ struct Cube
                 19,17,18,
                 20,21,23,
                 23,21,22
-    };
+    };*/
     //std::vector<unsigned int> indices
     //{
     //    //Top
