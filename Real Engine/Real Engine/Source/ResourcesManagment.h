@@ -3,7 +3,7 @@
 #include "Module.h"
 #include "System.h"
 #include <iostream>
-#include <unordered_map>
+#include <map>
 #include "Entity.h"
 #include "Resource.h"
 
@@ -18,18 +18,18 @@ public:
 	ResourcesManagment();
 	~ResourcesManagment();
 	
-	//Subscribe entity to mesh
-	int SubscribeEntityToMesh(const char* file_name, Entity ent);
-	//Get a loaded mesh ID (VAO) id
-	int  GetLoadedMesh(const char* file_name);
-	//load mesh
-	bool AddLoadedMesh(const char* file_name, unsigned int id);
+	UID Find(const char* file_in_assets) const;
+	UID ImportFile(const char* new_file_in_assets);
+	UID GenerateNewUID();
+
+	const Resource* RequestResource(UID uid) const;
+	Resource* RequestResource(UID uid);
+	void ReleaseResource(UID uid);
 
 private:
-	//Mesh to entity
-	std::unordered_map<unsigned int, std::vector<Entity>> subscribedMesh{};
-	//Filename to loaded id
-	std::unordered_map<const char*, unsigned int> loadedMesh{};
+	Resource* CreateNewResource(const char* assetsFile, Resource::Type type);
+	Resource::Type FilterFile(const char* file_path);
+	std::map<UID, Resource*> resources;
 
 };
 

@@ -82,12 +82,6 @@ void Importer::OnDrop(const std::string file_path)
     ImportFile(newPath);
 }
 
-bool Importer::ProcessFile(const std::string file_path)
-{
-    bool ret = true;
-
-    return ret;
-}
 bool  Importer::ImportFile(const std::string file_path)
 {
     bool ret = true;

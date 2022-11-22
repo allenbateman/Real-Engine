@@ -28,13 +28,13 @@ public:
 
 //--------------new
 
-	//void AddListener(EventType type, std::function<void(Event&)>const& listener);
+	void AddListener(EventType type, std::function<void(Event&)> listener);
 	//void SendEvent(Event& event);
 	//void SendEvent(EventType type);
 
 private:
 	std::map<Module*, vector<EventType>> obs;
-	//std::unordered_map<EventType, std::list<std::function<void(Event&)>>> listeners;
+	std::map<EventType, std::list<std::function<void(Event&)>>> listeners{ };
 	list<Event*> eventList;
 };
 

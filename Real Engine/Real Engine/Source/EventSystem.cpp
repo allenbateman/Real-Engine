@@ -80,3 +80,7 @@ void EventSystem::PrintMapping()
 			 cout<<(*e);
 	}*/
 }
+
+void EventSystem::AddListener(EventType type, std::function<void(Event&)> listener)
+{	
+}

@@ -5,17 +5,16 @@ using UID = unsigned int;
 
 class Resource
 {
+public:
 	enum Type {
-		UNKOWN,
+		UNKNOWN,
 		Texture,
 		Mesh,
 		Shader,
 		Scene,
-		GameObject
+		GameObject,
+		Fbx
 	};
-
-
-public:
 	Resource(UID id, Resource::Type type);
 	~Resource();
 	Resource::Type GetType(UID id);

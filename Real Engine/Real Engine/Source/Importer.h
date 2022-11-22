@@ -11,11 +11,11 @@
 #include "GameObject.h"
 
 static const char* LibraryDir = "../Output/Library/";
-enum FileType {
-	FBX,
-	IMAGE,
 
-};
+/*
+	Importer will import any type of files
+	From assets folder or drag dropped files
+*/
 
 class Importer : public Module , public System
 {
@@ -32,22 +32,6 @@ public:
 	// read file type and store it,
 	// if dropped on scene and its a FBX load as obj
 	void OnDrop(const std::string file_path);
-
-	// Change file format to own file format
-	// Save file
-
-
-	bool SaveObject();
-	bool SaveMaterial();
-	bool SaveMesh();
-
-	GameObject LoadObjet();
-	Mesh LoadMesh();
-	Material LoadMaterial();
-
-	bool ProcessFile(const std::string file_path);
-
-
 
 	bool ImportFile(const std::string file_path);
 	void ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes);
