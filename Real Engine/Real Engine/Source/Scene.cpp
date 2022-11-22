@@ -54,7 +54,7 @@ void Scene::CreateGameObject(gameObjectType goType)
 		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
 		//go->AddComponent < Mesh(primitive.vertices, primitive.indices) >();
 		go->AddComponent<Mesh>(cubeMesh);
-		//go->AddComponent<Material>(cubeMaterial);
+		go->AddComponent<Material>(cubeMaterial);
 		gameObejects.push_back(*go);
 	}break;
 	default:

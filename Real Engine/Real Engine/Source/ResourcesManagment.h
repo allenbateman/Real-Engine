@@ -5,6 +5,7 @@
 #include <iostream>
 #include <unordered_map>
 #include "Entity.h"
+#include "Resource.h"
 
 struct LoadedFile {
 	std::string name;

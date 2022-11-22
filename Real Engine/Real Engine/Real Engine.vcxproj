@@ -52,6 +52,7 @@
     <ClCompile Include="Source\Panel.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
     <ClCompile Include="Source\RendererPanel.cpp" />
+    <ClCompile Include="Source\Resource.cpp" />
     <ClCompile Include="Source\ResourcesManagment.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\SceneHerarchyPanel.cpp" />
@@ -111,6 +112,7 @@
     <ClInclude Include="Source\Primitives.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\RendererPanel.h" />
+    <ClInclude Include="Source\Resource.h" />
     <ClInclude Include="Source\ResourcesManagment.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneHerarchyPanel.h" />

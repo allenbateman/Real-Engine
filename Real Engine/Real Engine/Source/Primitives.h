@@ -89,6 +89,19 @@ const static std::vector<vec3> vert =
 struct Cube
 {
     
+    const std::vector<vec3> pos =
+    {
+       vec3 (-1.0f, 1.0f, -1.0f),
+       vec3(-1.0f, -1.0f, -1.0f),
+       vec3(1.0f, -1.0f, -1.0f ),
+       vec3(1.0f, 1.0f, -1.0f  ),
+
+       vec3(-1.0f, 1.0f, 1.0f  ),
+       vec3(-1.0f, -1.0f, 1.0f ),
+       vec3(1.0f, -1.0f, 1.0f  ),
+       vec3( 1.0f, 1.0f, 1.0f  )
+    };
+
     std::vector<Vertex> vertices;
     Vertex tempVertex[8];
     std::vector<Texture> textures;
@@ -101,17 +114,12 @@ struct Cube
             vertices.push_back(tempVertex[i]);
         }
         
-        vertices[0].Position = (-1.0f, 1.0f, -1.0f);
-        vertices[1].Position = (-1.0f, -1.0f, -1.0f);
-        vertices[2].Position = (1.0f, -1.0f, -1.0f);
-        vertices[3].Position = (1.0f, 1.0f, -1.0f);
-
-        vertices[4].Position = (-1.0f, 1.0f, 1.0f);
-        vertices[5].Position = (-1.0f, -1.0f, 1.0f);
-        vertices[0].Position = (1.0f, -1.0f, 1.0f);
-        vertices[0].Position = (1.0f, 1.0f, 1.0f);
-
-        vec4 ColorBuffer = (150, 200, 190, 255);
+        for (int i = 0; i < 8; i++)
+        {
+            vertices[i].Position.x = pos[i].x;
+            vertices[i].Position.y = pos[i].y;
+            vertices[i].Position.z = pos[i].z;
+        }
         for (int i = 0; i < 8; i++)
         {
             //vertices[i].Color = (255 - (20 * i), i * 20, 255 - (20 * i), 255);

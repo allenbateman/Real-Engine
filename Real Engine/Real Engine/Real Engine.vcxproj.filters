@@ -56,6 +56,12 @@
     <Filter Include="Resource Files\Engine\Controllers">
       <UniqueIdentifier>{6876c37d-6bac-4482-80e8-be4fc128db30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Engine\Resources">
+      <UniqueIdentifier>{e20f7291-f812-4bd4-b468-d8361ffe38a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Engine\Resources\Types">
+      <UniqueIdentifier>{746a67f2-41c8-4a52-b4d0-6ae8076491b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Main.cpp">
@@ -112,9 +118,6 @@
     <ClCompile Include="Source\Component.cpp">
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ObjectLoader.cpp">
-      <Filter>Resource Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Material.cpp">
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
     </ClCompile>
@@ -160,9 +163,6 @@
     <ClCompile Include="Source\SceneManager.cpp">
       <Filter>Resource Files\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Importer.cpp">
-      <Filter>Resource Files\Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Source\FileExplorer.cpp">
       <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClCompile>
@@ -180,7 +180,16 @@
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
     </ClCompile>
     <ClCompile Include="Source\ResourcesManagment.cpp">
-      <Filter>Resource Files\Engine</Filter>
+      <Filter>Resource Files\Engine\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ObjectLoader.cpp">
+      <Filter>Resource Files\Engine\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Importer.cpp">
+      <Filter>Resource Files\Engine\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Resource.cpp">
+      <Filter>Resource Files\Engine\Resources\Types</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -283,9 +292,6 @@
     <ClInclude Include="Source\Component.h">
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ObjectLoader.h">
-      <Filter>Resource Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Source\Material.h">
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
     </ClInclude>
@@ -343,9 +349,6 @@
     <ClInclude Include="Source\Tag.h">
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Importer.h">
-      <Filter>Resource Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Source\FileExplorer.h">
       <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClInclude>
@@ -362,7 +365,16 @@
       <Filter>Resource Files\Engine\GameObjects\Components</Filter>
     </ClInclude>
     <ClInclude Include="Source\ResourcesManagment.h">
-      <Filter>Resource Files\Engine</Filter>
+      <Filter>Resource Files\Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ObjectLoader.h">
+      <Filter>Resource Files\Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Importer.h">
+      <Filter>Resource Files\Engine\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Resource.h">
+      <Filter>Resource Files\Engine\Resources\Types</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
