@@ -88,10 +88,10 @@ Mesh ObjectLoader::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject go
         vertex.Normal = vector;
 
         vec4 color;
-        color.x = 255;
-        color.y = 0;
-        color.z = 0;
-        color.w = 255;
+        color.r = 0;
+        color.g = 0;
+        color.b = 0;
+        color.a = 0;
         vertex.Color = color;
 
         if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
