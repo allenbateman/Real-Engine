@@ -36,6 +36,7 @@ protected:
 	std::string	 librayFile;
 	UID uid = 0;
 	Type type = Type::UNKNOWN;
+
 	unsigned int referenceCount = 0;
 };
 

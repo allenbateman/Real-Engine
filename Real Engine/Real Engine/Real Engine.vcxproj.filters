@@ -199,6 +199,8 @@
     </ClCompile>
     <ClCompile Include="Source\MD5.cpp">
       <Filter>Resource Files\Utils</Filter>
+    <ClCompile Include="Source\ConsolePanel.cpp">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -393,6 +395,8 @@
     </ClInclude>
     <ClInclude Include="Source\MD5.h">
       <Filter>Resource Files\Utils</Filter>
+    <ClInclude Include="Source\ConsolePanel.h">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

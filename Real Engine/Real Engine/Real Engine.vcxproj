@@ -26,6 +26,7 @@
     <ClCompile Include="Source\Color.cpp" />
     <ClCompile Include="Source\Component.cpp" />
     <ClCompile Include="Source\ComponentManager.cpp" />
+    <ClCompile Include="Source\ConsolePanel.cpp" />
     <ClCompile Include="Source\EntityComponentSystem.cpp" />
     <ClCompile Include="Source\EntityManager.cpp" />
     <ClCompile Include="Source\EventSystem.cpp" />
@@ -79,6 +80,7 @@
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentArray.h" />
     <ClInclude Include="Source\ComponentManager.h" />
+    <ClInclude Include="Source\ConsolePanel.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityComponentSystem.h" />

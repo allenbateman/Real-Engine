@@ -8,4 +8,5 @@ enum PanelID {
 	eSceneHerarchy = 5,
 	eFileExplorer = 6,
 	eAbout = 7,
+	eConsole = 8,
 };
