@@ -1,7 +1,8 @@
 #include "Resource.h"
 
-Resource::Resource(UID id, Resource::Type type)
+Resource::Resource(UID id)
 {
+    uid = id;
 }
 
 Resource::~Resource()
@@ -10,12 +11,12 @@ Resource::~Resource()
 
 Resource::Type Resource::GetType(UID id)
 {
-    return Resource::Type();
+    return type;
 }
 
 UID Resource::GetID() const
 {
-    return UID();
+    return uid;
 }
 
 const char* Resource::GetAssetFile() const

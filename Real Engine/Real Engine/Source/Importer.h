@@ -9,6 +9,7 @@
 #include "TextureLoader.h"
 #include "Entity.h"
 #include "GameObject.h"
+#include "Resource.h"
 
 static const char* LibraryDir = "../Output/Library/";
 
@@ -33,6 +34,8 @@ public:
 	// if dropped on scene and its a FBX load as obj
 	void OnDrop(const std::string file_path);
 
+	Resource::Type FilterFile(const std::string file_path);
+
 	bool ImportFile(const std::string file_path);
 	void ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes);
 	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
@@ -55,5 +58,11 @@ namespace MeshImporter {
 	void Load();
 	void Save(const Mesh mesh, const std::string& filename);
 	void Import(const vector<Mesh> meshes, const std::string& filename);
+}
+namespace FbxImporter {
+	void Import(const std::string& filename);
+	void ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes);
+	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+	Material ProcessMaterial(aiMesh* mesh, const aiScene* scene);
 }
 

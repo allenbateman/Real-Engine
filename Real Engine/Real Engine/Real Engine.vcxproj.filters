@@ -191,6 +191,15 @@
     <ClCompile Include="Source\Resource.cpp">
       <Filter>Resource Files\Engine\Resources\Types</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ResourceMesh.cpp">
+      <Filter>Resource Files\Engine\Resources\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResourceTexture.cpp">
+      <Filter>Resource Files\Engine\Resources\Types</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\MD5.cpp">
+      <Filter>Resource Files\Utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -375,6 +384,15 @@
     </ClInclude>
     <ClInclude Include="Source\Resource.h">
       <Filter>Resource Files\Engine\Resources\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceMesh.h">
+      <Filter>Resource Files\Engine\Resources\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceTexture.h">
+      <Filter>Resource Files\Engine\Resources\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\MD5.h">
+      <Filter>Resource Files\Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
