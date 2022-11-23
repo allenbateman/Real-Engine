@@ -27,6 +27,7 @@ class Renderer;
 class CameraController;
 class SceneManager;
 class Importer;
+class ResourceManagement;
 
 class Application
 {
@@ -78,7 +79,8 @@ public:
 	shared_ptr<CameraController> cameraController;
 	shared_ptr<SceneManager> sceneManager;
 	shared_ptr<Importer> importer;
-	//ObjectLoader objLoader;
+	shared_ptr<ResourceManagement> resourceManager;
+
 	bool exit = false;
 private:
 

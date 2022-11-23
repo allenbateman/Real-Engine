@@ -43,7 +43,7 @@ void Importer::HandleEvent(Event* e)
     case ON_FILE_DROP:
     {
         OnFileDrop* drop = dynamic_cast<OnFileDrop*>(e);
-        OnDrop(drop->path);
+     //   OnDrop(drop->path);
     }
     break;
     default:
@@ -77,9 +77,41 @@ void Importer::OnDrop(const std::string file_path)
     }
 
     //check file type
-
+    if (FilterFile(file_path) == Resource::Type::UNKNOWN)
+        return;
     //now store all data in our file format
     ImportFile(newPath);
+}
+
+Resource::Type Importer::FilterFile(const std::string file_path)
+{
+    std::filesystem::path filePath = file_path;
+    Resource::Type type = Resource::Type::UNKNOWN;
+    if (filePath.extension() == ".fbx") // Heed the dot.
+    {
+        std::cout << filePath.stem() << " is a valid type.\n";
+        type = Resource::Type::Fbx;
+    }
+    else if (filePath.extension() == ".dds")
+    {
+        std::cout << filePath.stem() << " is a valid type.\n";
+        type = Resource::Type::Texture;
+    }
+    else if (filePath.extension() == ".png")
+    {
+        std::cout << filePath.stem() << " is a valid type.\n";
+        type = Resource::Type::Texture;
+    }
+    else if (filePath.extension() == ".jpg")
+    {
+        std::cout << filePath.stem() << " is a valid type.\n";
+        type = Resource::Type::Texture;
+    }
+    else {
+        std::cout << "unknown file type";
+        type = Resource::Type::UNKNOWN;
+    }
+    return type;
 }
 
 bool  Importer::ImportFile(const std::string file_path)

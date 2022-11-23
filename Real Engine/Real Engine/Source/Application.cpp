@@ -9,6 +9,7 @@
 #include "CameraController.h"
 #include "SceneManager.h"
 #include "Importer.h"
+#include "ResourcesManagment.h"
 
 //include All components
 #include "Tag.h"
@@ -27,6 +28,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	input = entityComponentSystem.RegisterSystem<Input>();
 	eventSystem = entityComponentSystem.RegisterSystem<EventSystem>();
 	importer = entityComponentSystem.RegisterSystem<Importer>();
+	//resourceManager = entityComponentSystem.RegisterSystem<ResourceManagement>();
 	uiSystem = entityComponentSystem.RegisterSystem<UiSystem>();
 	//If a system has to handle  Entities
 	//Set signature of the components it will handle
@@ -57,6 +59,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	modules.push_back(window);
 	modules.push_back(input);
 	modules.push_back(importer);
+	//modules.push_back(resourceManager);
 	modules.push_back(cameraController);
 	modules.push_back(sceneManager);
 	//last

@@ -1,7 +1,7 @@
 #pragma once
 #include<iostream>
 
-using UID = unsigned int;
+using UID = std::string;
 
 class Resource
 {
@@ -15,7 +15,7 @@ public:
 		GameObject,
 		Fbx
 	};
-	Resource(UID id, Resource::Type type);
+	Resource(UID id);
 	~Resource();
 	Resource::Type GetType(UID id);
 	UID GetID()const;
@@ -35,7 +35,8 @@ protected:
 	std::string  assetsFile;
 	std::string	 librayFile;
 	UID uid = 0;
-	//Type type = UNKOWN;
+	Type type = Type::UNKNOWN;
+
 	unsigned int referenceCount = 0;
 };
 
