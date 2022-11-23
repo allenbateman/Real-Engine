@@ -62,6 +62,7 @@ void SceneManager::HandleEvent(Event* e)
 		{
 		case gameObjectType::EMPTY: currentScene->CreateGameObject(go->goType); break;
 		case gameObjectType::CUBE: currentScene->CreateGameObject(go->goType); break;
+		case gameObjectType::SPHERE: currentScene->CreateGameObject(go->goType); break;
 		default:
 			break;
 		}

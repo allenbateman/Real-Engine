@@ -35,7 +35,7 @@ protected:
 	std::string  assetsFile;
 	std::string	 librayFile;
 	UID uid = 0;
-	Type type = UNKOWN;
+	//Type type = UNKOWN;
 	unsigned int referenceCount = 0;
 };
 
