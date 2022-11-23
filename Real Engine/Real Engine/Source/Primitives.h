@@ -79,3 +79,79 @@ struct Cube
     };
     
 };
+
+struct Sphere
+{
+    std::vector<Vertex> vertices;
+    Vertex tempVertex[8];
+    std::vector<Texture> textures;
+    std::vector<unsigned int> indices;
+
+    double latitudeBands = 30;
+    double longitudeBands = 30;
+    double radius = 2;
+
+    ~Sphere()
+    {
+        vertices.clear();
+    }
+    Sphere()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            //vertices.push_back(tempVertex[i]);
+        }
+
+        for (double latNumber = 0; latNumber <= latitudeBands; latNumber++) {
+            double theta = latNumber * M_PI / latitudeBands;
+            double sinTheta = sin(theta);
+            double cosTheta = cos(theta);
+
+            for (double longNumber = 0; longNumber <= longitudeBands; longNumber++) {
+                double phi = longNumber * 2 * M_PI / longitudeBands;
+                double sinPhi = sin(phi);
+                double cosPhi = cos(phi);
+
+                Vertex vs[3];
+                vs[0].Normal = cosPhi * sinTheta;   // x
+                vs[1].Normal = cosTheta;            // y
+                vs[2].Normal = sinPhi * sinTheta;   // z
+                vs[0].TexCoords = 1 - (longNumber / longitudeBands); // u
+                vs[1].TexCoords = 1 - (latNumber / latitudeBands);   // v
+                vs[0].Position = radius * vs[0].Normal;
+                vs[1].Position = radius * vs[1].Normal;
+                vs[2].Position = radius * vs[2].Normal;
+                vs[0].Color.r = 255;
+                vs[0].Color.a = 255;
+                vs[1].Color.r = 255;
+                vs[1].Color.a = 255;
+                vs[2].Color.r = 255;
+                vs[2].Color.a = 255;
+
+                vertices.push_back(vs[0]);
+                vertices.push_back(vs[1]);
+                vertices.push_back(vs[2]);
+            }
+
+            for (int latNumber = 0; latNumber < latitudeBands; latNumber++) {
+                for (int longNumber = 0; longNumber < longitudeBands; longNumber++) {
+                    int first = (latNumber * (longitudeBands + 1)) + longNumber;
+                    int second = first + longitudeBands + 1;
+
+                    
+                    indices.push_back(first);
+                    indices.push_back(second);
+                    indices.push_back(first + 1);
+
+                    indices.push_back(second);
+                    indices.push_back(second + 1);
+                    indices.push_back(first + 1);
+
+                }
+            }
+
+
+        }
+    }
+   
+};

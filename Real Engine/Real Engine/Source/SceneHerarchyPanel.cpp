@@ -38,7 +38,7 @@ void SceneHerarchyPanel::Update()
 				{
 					goCreationEvent.goType = gameObjectType::EMPTY;
 					app->eventSystem->PostEvent(&goCreationEvent);
-					
+					Debug::Log("Empty Created");					
 				}
 
 				if (ImGui::MenuItem("Cube"))
@@ -52,6 +52,7 @@ void SceneHerarchyPanel::Update()
 				{
 					goCreationEvent.goType = gameObjectType::SPHERE;
 					app->eventSystem->PostEvent(&goCreationEvent);
+					Debug::Log("Sphere Created");
 				}
 
 				ImGui::EndMenu();
