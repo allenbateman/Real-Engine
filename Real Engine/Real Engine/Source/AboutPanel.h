@@ -1,7 +1,5 @@
 #pragma once
 
-
-
 #include "Panel.h"
 class AboutPanel : public Panel
 {

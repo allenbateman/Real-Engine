@@ -191,6 +191,9 @@
     <ClCompile Include="Source\Resource.cpp">
       <Filter>Resource Files\Engine\Resources\Types</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ConsolePanel.cpp">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Module.h">
@@ -375,6 +378,9 @@
     </ClInclude>
     <ClInclude Include="Source\Resource.h">
       <Filter>Resource Files\Engine\Resources\Types</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ConsolePanel.h">
+      <Filter>Resource Files\Engine\UI System\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

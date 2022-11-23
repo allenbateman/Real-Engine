@@ -41,6 +41,7 @@ bool UiSystem::Start()
     herarchyPanel = new SceneHerarchyPanel(eSceneHerarchy, true);
     fileExplorer = new FileExplorer(eFileExplorer, true);
     aboutPanel = new AboutPanel(eAbout, true);
+    consolePanel = new ConsolePanel(eConsole, true);
 
 	panelList.push_back(camViewport);
     panelList.push_back(mainRenderer);
@@ -49,6 +50,7 @@ bool UiSystem::Start()
     panelList.push_back(herarchyPanel);
     panelList.push_back(fileExplorer);
     panelList.push_back(aboutPanel);
+    panelList.push_back(consolePanel);
 
     herarchyPanel->inspector = inspector;
 
@@ -254,6 +256,12 @@ void UiSystem::MainAppDockSpace(bool* p_open)
                 aboutPanel->active = true;
                 ImGui::SetWindowFocus(aboutPanel->name.GetString());
             }
+            if (ImGui::MenuItem("Console"))
+            {
+                consolePanel->active = true;
+                ImGui::SetWindowFocus(consolePanel->name.GetString());
+
+            }
             ImGui::Separator();
 
  
@@ -333,4 +341,23 @@ ImVec2 UiSystem::GetPanelSize(PanelID id)
     }
     cout << "Panel not found" << endl;
     return ImVec2(0, 0);
+}
+
+void Debug::Log(const string text)
+{
+    string log = "[LOG]: " + text + "\n";
+    app->uiSystem->GetConsole()->AddLog(log.c_str());
+}
+
+void Debug::Warning(const string text)
+{
+    string warning = "[WARNING]: " + text + "\n";
+    app->uiSystem->GetConsole()->AddLog(warning.c_str());
+   
+}
+
+void Debug::Error(const string text)
+{
+    string error = "[ERROR]: " + text + "\n";
+    app->uiSystem->GetConsole()->AddLog(error.c_str());
 }

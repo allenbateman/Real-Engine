@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "ImGui/imgui_internal.h"
 #include "EventSystem.h"
+#include "ConsolePanel.h"
 
 SceneHerarchyPanel::SceneHerarchyPanel(int _id, bool active)
 {
@@ -37,12 +38,14 @@ void SceneHerarchyPanel::Update()
 				{
 					goCreationEvent.goType = gameObjectType::EMPTY;
 					app->eventSystem->PostEvent(&goCreationEvent);
+					
 				}
 
 				if (ImGui::MenuItem("Cube"))
 				{
 					goCreationEvent.goType = gameObjectType::CUBE;
 					app->eventSystem->PostEvent(&goCreationEvent);
+					Debug::Log("Cube Created");
 				}
 
 				if (ImGui::MenuItem("Sphere"))

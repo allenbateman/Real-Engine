@@ -14,6 +14,7 @@
 #include "SceneHerarchyPanel.h"
 #include "FileExplorer.h"
 #include "AboutPanel.h"
+#include "ConsolePanel.h"
 
 // Variables to configure the Dockspace example.
 static bool opt_fullscreen = true; // Is the Dockspace full-screen?
@@ -41,6 +42,7 @@ public:
 	void SetStyle();
 
 	ImVec2 GetPanelSize(PanelID id);
+	ConsolePanel* GetConsole() { return consolePanel; }
 private:
 	vector<Panel*> panelList;
 
@@ -51,7 +53,16 @@ private:
 	SceneHerarchyPanel* herarchyPanel;
 	FileExplorer* fileExplorer;
 	AboutPanel* aboutPanel;
+	ConsolePanel* consolePanel;
 
 	bool OpenMainWindow;
 	ImGuiIO* io = nullptr;
+
 };
+
+namespace Debug {
+
+	 void Log(const string text);
+	 void Warning(const string text);
+	 void Error(const string text);
+}
