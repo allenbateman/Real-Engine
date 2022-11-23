@@ -138,10 +138,6 @@
     <ClInclude Include="Source\Viewport.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="Source\default.fragment" />
-    <None Include="Source\default.vertex" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
