@@ -1,7 +1,11 @@
 #pragma once
 #include <iostream>
 #include <vector>
+#include <math.h>
 #include "Mesh.h"
+
+
+
 
 
 struct Cube
@@ -87,9 +91,11 @@ struct Sphere
     std::vector<Texture> textures;
     std::vector<unsigned int> indices;
 
-    double latitudeBands = 30;
-    double longitudeBands = 30;
+    double lats = 100;
+    double longs = 100;
     double radius = 2;
+
+      
 
     ~Sphere()
     {
@@ -97,58 +103,51 @@ struct Sphere
     }
     Sphere()
     {
-        for (int i = 0; i < 8; i++)
-        {
-            //vertices.push_back(tempVertex[i]);
-        }
+        int i, j;
+        int indicator = 0;
+        Vertex vert;
+        vert.Color.r = 255;
+        vert.Color.a = 255;
+        
+        for (i = 0; i <= lats; i++) {
+            double lat0 = M_PI * (-0.5 + (double)(i - 1) / lats);            
+            double z0 = sin(lat0);
+            double zr0 = cos(lat0);
 
-        for (double latNumber = 0; latNumber <= latitudeBands; latNumber++) {
-            double theta = latNumber * M_PI / latitudeBands;
-            double sinTheta = sin(theta);
-            double cosTheta = cos(theta);
+            double lat1 = M_PI * (-0.5 + (double)i / lats);
+            double z1 = sin(lat1);
+            double zr1 = cos(lat1);
 
-            for (double longNumber = 0; longNumber <= longitudeBands; longNumber++) {
-                double phi = longNumber * 2 * M_PI / longitudeBands;
-                double sinPhi = sin(phi);
-                double cosPhi = cos(phi);
+            for (j = 0; j <= longs; j++) {
+                double lng = 2 * M_PI * (double)(j - 1) / longs;              
+                double x = cos(lng);
+                double y = sin(lng);
 
-                Vertex vs[3];
-                vs[0].Normal = cosPhi * sinTheta;   // x
-                vs[1].Normal = cosTheta;            // y
-                vs[2].Normal = sinPhi * sinTheta;   // z
-                vs[0].TexCoords = 1 - (longNumber / longitudeBands); // u
-                vs[1].TexCoords = 1 - (latNumber / latitudeBands);   // v
-                vs[0].Position = radius * vs[0].Normal;
-                vs[1].Position = radius * vs[1].Normal;
-                vs[2].Position = radius * vs[2].Normal;
-                vs[0].Color.r = 255;
-                vs[0].Color.a = 255;
-                vs[1].Color.r = 255;
-                vs[1].Color.a = 255;
-                vs[2].Color.r = 255;
-                vs[2].Color.a = 255;
+                
 
-                vertices.push_back(vs[0]);
-                vertices.push_back(vs[1]);
-                vertices.push_back(vs[2]);
+                vert.Position.x = x * zr0;
+                vert.Position.y = y * zr0;
+                vert.Position.z = z0;
+
+                vertices.push_back(vert);
+
+                /*vertices.push_back(x * zr0);
+                vertices.push_back(y * zr0);
+                vertices.push_back(z0);*/
+                indices.push_back(indicator);
+                indicator++;
+
+                vert.Position.x = x * zr1;
+                vert.Position.y = y * zr1;
+                vert.Position.z = z1;
+                vertices.push_back(vert);
+                /*vertices.push_back(x * zr1);
+                vertices.push_back(y * zr1);
+                vertices.push_back(z1);*/
+                indices.push_back(indicator);
+                indicator++;
             }
-
-            for (int latNumber = 0; latNumber < latitudeBands; latNumber++) {
-                for (int longNumber = 0; longNumber < longitudeBands; longNumber++) {
-                    int first = (latNumber * (longitudeBands + 1)) + longNumber;
-                    int second = first + longitudeBands + 1;
-
-                    
-                    indices.push_back(first);
-                    indices.push_back(second);
-                    indices.push_back(first + 1);
-
-                    indices.push_back(second);
-                    indices.push_back(second + 1);
-                    indices.push_back(first + 1);
-
-                }
-            }
+            //indices.push_back(GL_PRIMITIVE_RESTART_FIXED_INDEX);
 
 
         }
