@@ -51,6 +51,7 @@ void ConsolePanel::Update()
         else
         {
             ImGui::TextUnformatted(buffer.begin());
+            
         }
 
         if (scrollToBottom)
