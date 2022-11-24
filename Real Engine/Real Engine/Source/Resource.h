@@ -31,10 +31,12 @@ public:
 	virtual void Load()const;
 	virtual void UnLoad()const;
 
+	void SetAssetPath(std::string  assets_path) { assetsPath = assets_path; };
+	void SetLibraryPath(std::string  library_path) { librayPath = library_path; };
 protected:
-	std::string  assetsFile;
-	std::string	 librayFile;
-	UID uid = 0;
+	std::string  assetsPath;
+	std::string	 librayPath;
+	UID uid;
 	Type type = Type::UNKNOWN;
 
 	unsigned int referenceCount = 0;

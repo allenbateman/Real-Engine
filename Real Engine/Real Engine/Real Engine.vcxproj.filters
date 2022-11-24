@@ -103,7 +103,7 @@
     <ClCompile Include="Source\Renderer.cpp">
       <Filter>Engine\Core\Render</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ResourcesManagment.cpp">
+    <ClCompile Include="Source\ResourcesManagement.cpp">
       <Filter>Engine\Core\Files system</Filter>
     </ClCompile>
     <ClCompile Include="Source\TextureLoader.cpp">
@@ -153,6 +153,9 @@
     </ClCompile>
     <ClCompile Include="Source\CameraController.cpp">
       <Filter>Engine\Core\Controllers</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResourceFbx.cpp">
+      <Filter>Engine\Core\Files system\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -285,7 +288,7 @@
     <ClInclude Include="Source\Renderer.h">
       <Filter>Engine\Core\Render</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ResourcesManagment.h">
+    <ClInclude Include="Source\ResourcesManagement.h">
       <Filter>Engine\Core\Files system</Filter>
     </ClInclude>
     <ClInclude Include="Source\TextureLoader.h">
@@ -350,6 +353,9 @@
     </ClInclude>
     <ClInclude Include="Source\CameraController.h">
       <Filter>Engine\Core\Controllers</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceFbx.h">
+      <Filter>Engine\Core\Files system\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

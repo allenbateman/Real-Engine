@@ -8,11 +8,12 @@
 #include "Importer.h"
 
 //static const char* LibraryDir = "../Output/Library/";
-class ResourcesManagment : public Module, public System
+class ResourcesManagement : public Module, public System
 {
 public:
-	ResourcesManagment(bool isActive);
-	~ResourcesManagment();
+	ResourcesManagement(bool isActive);
+	ResourcesManagement();
+	~ResourcesManagement();
 
 	bool Awake();
 	bool Start();
@@ -21,7 +22,6 @@ public:
 	
 	UID Find(const char* file_in_assets) const;
 	UID ImportFile(const string assetsFile, Resource::Type type);
-	UID GenerateNewUID();
 
 	const Resource* RequestResource(UID uid) const;
 	Resource* RequestResource(UID uid);
@@ -29,8 +29,8 @@ public:
 
 private:
 	Resource* CreateNewResource(const string assetsFile, Resource::Type type);
-	std::string MoveToAssets(const string diskPath);
-	std::string GenerateLibraryPath(const string assetsFile);
+	std::string* MoveToAssets(const string diskPath);
+	std::string GenLibraryPath(const string assetsFile);
 	Resource::Type FilterFile(const char* file_path);
 	std::map<UID, Resource*> resources{};
 

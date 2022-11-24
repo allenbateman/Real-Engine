@@ -9,7 +9,7 @@
 #include "CameraController.h"
 #include "SceneManager.h"
 #include "Importer.h"
-#include "ResourcesManagment.h"
+#include "ResourcesManagement.h"
 
 //include All components
 #include "Tag.h"
@@ -24,12 +24,12 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	entityComponentSystem.Init();
 
 	//Register every system to the application
-	window = entityComponentSystem.RegisterSystem<Window>();
-	input = entityComponentSystem.RegisterSystem<Input>();
-	eventSystem = entityComponentSystem.RegisterSystem<EventSystem>();
-	importer = entityComponentSystem.RegisterSystem<Importer>();
-	//resourceManager = entityComponentSystem.RegisterSystem<ResourceManagement>();
-	uiSystem = entityComponentSystem.RegisterSystem<UiSystem>();
+	window = std::make_shared<Window>();
+	input = std::make_shared<Input>();
+	eventSystem = std::make_shared<EventSystem>();
+	importer = std::make_shared<Importer>();
+	resourceManager = std::make_shared<ResourcesManagement>();
+	uiSystem = std::make_shared<UiSystem>();
 	//If a system has to handle  Entities
 	//Set signature of the components it will handle
 	sceneManager = entityComponentSystem.RegisterSystem<SceneManager>();
@@ -59,7 +59,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	modules.push_back(window);
 	modules.push_back(input);
 	modules.push_back(importer);
-	//modules.push_back(resourceManager);
+	modules.push_back(resourceManager);
 	modules.push_back(cameraController);
 	modules.push_back(sceneManager);
 	//last
