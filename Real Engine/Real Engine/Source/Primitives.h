@@ -4,10 +4,6 @@
 #include <math.h>
 #include "Mesh.h"
 
-
-
-
-
 struct Cube
 {
     
@@ -57,8 +53,6 @@ struct Cube
         vertices.clear();
     }
         
-
-
     const  std::vector<unsigned int> indices
     {
       //Back
@@ -95,61 +89,51 @@ struct Sphere
     double longs = 100;
     double radius = 2;
 
-      
-
     ~Sphere()
     {
         vertices.clear();
     }
     Sphere()
     {
-        int i, j;
-        int indicator = 0;
-        Vertex vert;
-        vert.Color.r = 255;
-        vert.Color.a = 255;
         
-        for (i = 0; i <= lats; i++) {
-            double lat0 = M_PI * (-0.5 + (double)(i - 1) / lats);            
-            double z0 = sin(lat0);
-            double zr0 = cos(lat0);
+        for (int i = 0; i <= lats; ++i) {
 
-            double lat1 = M_PI * (-0.5 + (double)i / lats);
-            double z1 = sin(lat1);
-            double zr1 = cos(lat1);
+            float V = i / (float)lats;
+            float phi = V * M_PI;
 
-            for (j = 0; j <= longs; j++) {
-                double lng = 2 * M_PI * (double)(j - 1) / longs;              
-                double x = cos(lng);
-                double y = sin(lng);
+           
+            for (int j = 0; j <= longs; ++j) {
 
+                float U = j / (float)longs;
+                float theta = U * (M_PI* 2);
                 
+                float x = cosf(theta) * sinf(phi);
+                float y = cosf(phi);
+                float z = sinf(theta) * sinf(phi);
 
-                vert.Position.x = x * zr0;
-                vert.Position.y = y * zr0;
-                vert.Position.z = z0;
+                Vertex vert;
+                vert.Color.r = 255;
+                vert.Color.g = 0;
+                vert.Color.b = 155;
+                vert.Color.a = 255;
 
+                vert.Position.x = x;
+                vert.Position.y = y;
+                vert.Position.z = z;
+                vert.Position* radius;
                 vertices.push_back(vert);
-
-                /*vertices.push_back(x * zr0);
-                vertices.push_back(y * zr0);
-                vertices.push_back(z0);*/
-                indices.push_back(indicator);
-                indicator++;
-
-                vert.Position.x = x * zr1;
-                vert.Position.y = y * zr1;
-                vert.Position.z = z1;
-                vertices.push_back(vert);
-                /*vertices.push_back(x * zr1);
-                vertices.push_back(y * zr1);
-                vertices.push_back(z1);*/
-                indices.push_back(indicator);
-                indicator++;
             }
-            //indices.push_back(GL_PRIMITIVE_RESTART_FIXED_INDEX);
+        }
+      
+        for (int i = 0; i < longs * lats + longs; ++i) {
 
+            indices.push_back(i);
+            indices.push_back(i + longs + 1);
+            indices.push_back(i + longs);
 
+            indices.push_back(i + longs + 1);
+            indices.push_back(i);
+            indices.push_back(i + 1);
         }
     }
    
