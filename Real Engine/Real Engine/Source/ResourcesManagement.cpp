@@ -146,6 +146,7 @@ std::string ResourcesManagement::GenLibraryPath(const string assets_path)
     std::string fileName = assets_path.substr(from + 1, ' ');
     std::string newPathFolder = "../Output/Library/";
     std::string* newPath = new std::string(newPathFolder + fileName);
+    return *newPath;
     //store new file to assets
     if (rename(assets_path.c_str(), newPath->c_str()))
     {
