@@ -51,7 +51,6 @@ struct Transform : public  Component
 				//recalculate 
 				localMatrix = parent->localMatrix.inverse() * worldMatrix;
 				localPosition = localMatrix.translation();
-				return;
 			}
 		}
 		parent = newParent;
@@ -121,15 +120,18 @@ struct Transform : public  Component
 	}
 	vec3 LocalPosition()
 	{
-		//this dosent work we dont know why
 		return localMatrix.translation();
-
 	}
 
 	void PropagateTransform(mat4x4 T)
 	{
 		worldMatrix = T * localMatrix;
 		position = worldMatrix.translation();
+
+		for (auto& c : childs)
+		{
+			c->PropagateTransform(worldMatrix);
+		}
 	}
 };
 

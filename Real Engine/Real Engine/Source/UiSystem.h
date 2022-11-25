@@ -21,7 +21,7 @@ static bool opt_fullscreen = true; // Is the Dockspace full-screen?
 static bool opt_padding = false; // Is there padding (a blank space) between the window edge and the Dockspace?
 static ImGuiDockNodeFlags dockspace_flags = ImGuiDockNodeFlags_None; // Config flags for the Dockspace
 
-class UiSystem :  public Module, public System
+class UiSystem :  public Module
 {
 public:
 	UiSystem() {};

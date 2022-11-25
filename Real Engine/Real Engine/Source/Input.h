@@ -14,7 +14,7 @@ enum EventWindow
 	WE_COUNT
 };
 
-class Input : public Module, public System
+class Input : public Module
 {
 
 public:

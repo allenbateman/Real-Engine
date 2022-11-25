@@ -18,7 +18,7 @@ static const char* LibraryDir = "../Output/Library/";
 	From assets folder or drag dropped files
 */
 
-class Importer : public Module , public System
+class Importer : public Module
 {
 public:
 	Importer();

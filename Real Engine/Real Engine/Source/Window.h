@@ -7,7 +7,7 @@
 
 struct GLFWwindow;
 
-class Window : public Module, public System
+class Window : public Module
 {
 	public:
 

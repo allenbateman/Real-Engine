@@ -8,7 +8,7 @@
 #include "Importer.h"
 
 //static const char* LibraryDir = "../Output/Library/";
-class ResourcesManagement : public Module, public System
+class ResourcesManagement : public Module
 {
 public:
 	ResourcesManagement(bool isActive);

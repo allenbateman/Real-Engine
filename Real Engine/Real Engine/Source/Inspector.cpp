@@ -9,6 +9,7 @@
 #include "Mesh.h"
 #include "Material.h"
 
+#include "GameObject.h"
 
 
 Inspector::Inspector(int _id, bool active) : Panel(_id, active)
@@ -64,7 +65,7 @@ void Inspector::DrawComponents(Entity entity)
 			
 			vec3 pos = transform.LocalPosition();
 				
-			float* p[] = {&pos.x,&pos.y,&pos.z };
+			float* p[] = { &pos.x,&pos.y,&pos.z };
 			float* r[] = { &transform.rotation.x,&transform.rotation.y,&transform.rotation.z };
 			float* s[] = { &transform.scale.x,&transform.scale.y,&transform.scale.z };
 			
@@ -74,6 +75,14 @@ void Inspector::DrawComponents(Entity entity)
 			}
 			if (ImGui::DragFloat3("Rotation", (*r), 0.1f));
 			if (ImGui::DragFloat3("Scale", (*s), 0.1f));
+
+			GameObject* parent = transform.parent->owner;
+			
+			if (parent != nullptr)
+			{
+				TagComponent pt = app->entityComponentSystem.GetComponent<TagComponent>(parent->id);
+				ImGui::Text(pt.c_str());
+			}
 			
 			ImGui::TreePop();
 		}

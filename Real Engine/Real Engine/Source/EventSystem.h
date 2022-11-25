@@ -9,7 +9,7 @@
 
 
 
-class EventSystem : public Module, public System
+class EventSystem : public Module
 {
 public:
 	EventSystem() {};
