@@ -8,6 +8,7 @@
 #include "PanelIDs.h"
 
 #include "Viewport.h"
+#include "GameViewport.h"
 #include "RendererPanel.h"
 #include "FPSGraph.h"
 #include "Inspector.h"
@@ -47,6 +48,7 @@ private:
 	vector<Panel*> panelList;
 
 	Viewport* camViewport;
+	GameViewport* gameViewport;
 	RendererPanel* mainRenderer;
 	FPSGraph* fpsGraph;
 	Inspector* inspector;

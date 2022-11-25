@@ -34,7 +34,7 @@ bool Window::Awake()
 	}
 
 	
-	window = glfwCreateWindow(800, 600,"Real Engine", NULL, NULL);
+	window = glfwCreateWindow(1200, 900, "Real Engine", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	if (!window)
 	{

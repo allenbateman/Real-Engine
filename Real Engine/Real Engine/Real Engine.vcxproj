@@ -41,6 +41,7 @@
     <ClCompile Include="Source\FPSGraph.cpp" />
     <ClCompile Include="Source\FrameBuffer.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
+    <ClCompile Include="Source\GameViewport.cpp" />
     <ClCompile Include="Source\glmath.cpp" />
     <ClCompile Include="Source\Importer.cpp" />
     <ClCompile Include="Source\Input.cpp" />
@@ -103,6 +104,7 @@
     <ClInclude Include="Source\FrameBuffer.h" />
     <ClInclude Include="Source\GameObject.h" />
     <ClInclude Include="Source\GameObjectTypes.h" />
+    <ClInclude Include="Source\GameViewport.h" />
     <ClInclude Include="Source\glmath.h" />
     <ClInclude Include="Source\Importer.h" />
     <ClInclude Include="Source\Input.h" />

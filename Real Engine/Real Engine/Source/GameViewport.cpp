@@ -1,34 +1,32 @@
-#include "Viewport.h"
+#include "GameViewport.h"
 
 #include "Application.h"
 #include "FrameBuffer.h"
 #include "EventSystem.h"
 
-
-Viewport::Viewport(int _id,bool isActive) : Panel(_id,isActive)
+GameViewport::GameViewport(int _id, bool isActive)
 {
-	name.Create("Camera Viewport");
+	name.Create("Game Viewport");
 }
 
-Viewport::~Viewport()
+GameViewport::~GameViewport()
 {
 }
 
-void Viewport::Init()
+void GameViewport::Init()
 {
-
 	active = true;
 	window_flags = ImGuiWindowFlags_NoDocking;
 	borderOffset = 0;
 }
 
-void Viewport::Update()
+void GameViewport::Update()
 {
 	// render your GUI
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	ImGui::SetNextWindowSize(ImVec2{ 720,720 }, ImGuiCond_FirstUseEver);
-	
-	if (ImGui::Begin("Viewport"),NULL,window_flags)
+
+	if (ImGui::Begin("Game"), NULL, window_flags)
 	{
 
 		OnHovered();
@@ -40,7 +38,7 @@ void Viewport::Update()
 	ImGui::PopStyleVar();
 }
 
-bool Viewport::CleanUp()
+bool GameViewport::CleanUp()
 {
 	Panel::CleanUp();
 	return true;

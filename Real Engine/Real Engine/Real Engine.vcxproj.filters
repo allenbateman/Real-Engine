@@ -157,6 +157,9 @@
     <ClCompile Include="Source\ResourceFbx.cpp">
       <Filter>Engine\Core\Files system\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Source\GameViewport.cpp">
+      <Filter>Engine\Core\UI\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -356,6 +359,9 @@
     </ClInclude>
     <ClInclude Include="Source\ResourceFbx.h">
       <Filter>Engine\Core\Files system\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\GameViewport.h">
+      <Filter>Engine\Core\UI\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -35,6 +35,7 @@ bool UiSystem::Start()
 	ImGui_ImplOpenGL3_Init("#version 410");
 
 	camViewport = new Viewport(eViewport,true);
+    gameViewport = new GameViewport(eGameViewport, true);
     mainRenderer = new RendererPanel(eRender_Settings,false);
     fpsGraph = new FPSGraph(eFPS_Graph, false);
     inspector = new Inspector(eInspector, true);
@@ -44,6 +45,7 @@ bool UiSystem::Start()
     consolePanel = new ConsolePanel(eConsole, true);
 
 	panelList.push_back(camViewport);
+    panelList.push_back(gameViewport);
     panelList.push_back(mainRenderer);
     panelList.push_back(fpsGraph);
     panelList.push_back(inspector);
@@ -104,6 +106,7 @@ bool UiSystem::CleanUp()
     io = nullptr;
     panelList.clear();
     camViewport = nullptr;
+    gameViewport = nullptr;
     mainRenderer = nullptr;
 	return true;
 }
