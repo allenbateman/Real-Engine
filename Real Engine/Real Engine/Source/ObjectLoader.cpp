@@ -7,8 +7,6 @@
 
 //https://openil.sourceforge.net/docs/DevIL%20Manual.pdf
 
-static const char* LibraryDir = "../Output/Library/";
-
 ObjectLoader::ObjectLoader()
 {
 }
@@ -177,7 +175,7 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
             //for textures
             string fileName = filename.substr(0, filename.find_last_of('.'));
             cout << fileName<<endl;
-            string storePath = LibraryDir + fileName +".dds";
+            string storePath = LIBRARY_DIR + fileName +".dds";
             cout << storePath << endl;
 
             if (ilSave(IL_DDS, storePath.c_str()))

@@ -83,6 +83,7 @@
     <ClInclude Include="Source\ComponentArray.h" />
     <ClInclude Include="Source\ComponentManager.h" />
     <ClInclude Include="Source\ConsolePanel.h" />
+    <ClInclude Include="Source\Debugger.h" />
     <ClInclude Include="Source\Defs.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityComponentSystem.h" />
@@ -119,6 +120,7 @@
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelIDs.h" />
     <ClInclude Include="Source\Primitives.h" />
+    <ClInclude Include="Source\ProjectDirectories.h" />
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\RendererPanel.h" />
     <ClInclude Include="Source\Resource.h" />

@@ -7,7 +7,6 @@
 #include "Resource.h"
 #include "Importer.h"
 
-//static const char* LibraryDir = "../Output/Library/";
 class ResourcesManagement : public Module
 {
 public:
@@ -26,6 +25,10 @@ public:
 	const Resource* RequestResource(UID uid) const;
 	Resource* RequestResource(UID uid);
 	void ReleaseResource(UID uid);
+
+	//Read all files from Assets folder and import if its not imported
+	//Do this at the begining of the program and onFileChange, onDrop... any more?
+	void ImportFilesFromAssets();
 
 private:
 	Resource* CreateNewResource(const string assetsFile, Resource::Type type);

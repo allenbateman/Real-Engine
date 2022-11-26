@@ -11,8 +11,6 @@
 #include "GameObject.h"
 #include "Resource.h"
 
-static const char* LibraryDir = "../Output/Library/";
-
 /*
 	Importer will import any type of files
 	From assets folder or drag dropped files

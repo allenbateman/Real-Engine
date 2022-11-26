@@ -363,6 +363,12 @@
     <ClInclude Include="Source\GameViewport.h">
       <Filter>Engine\Core\UI\Panels</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Debugger.h">
+      <Filter>Engine\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ProjectDirectories.h">
+      <Filter>Engine\Core\Files system</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

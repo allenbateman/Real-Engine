@@ -95,6 +95,7 @@ bool Application::Start()
 	{
 		ret = (*current)->Start();
 	}
+	resourceManager->ImportFilesFromAssets();
 	return ret;
 }
 

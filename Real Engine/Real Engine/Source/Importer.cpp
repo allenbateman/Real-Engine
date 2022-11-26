@@ -7,6 +7,7 @@
 #include <filesystem>
 #include "EventSystem.h"
 #include "Events.h"
+#include "Debugger.h"
 Importer::Importer()
 {
 }
@@ -131,7 +132,7 @@ bool  Importer::ImportFile(const std::string file_path)
 
         ProcessNode(scene->mRootNode, scene, &meshes);
 
-        MeshImporter::Import(meshes,LibraryDir + fileName + ".mesh");
+        MeshImporter::Import(meshes,LIBRARY_DIR + fileName + ".mesh");
 
         aiReleaseImport(scene);
 
@@ -265,7 +266,7 @@ std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureTy
             //for textures
             string fileName = filename.substr(0, filename.find_last_of('.'));
             cout << fileName << endl;
-            string storePath = LibraryDir + fileName + ".dds";
+            string storePath = LIBRARY_DIR + fileName + ".dds";
             cout << storePath << endl;
 
             if (ilSave(IL_DDS, storePath.c_str()))

@@ -2,11 +2,13 @@
 #include <filesystem>
 #include "EventSystem.h"
 #include "Events.h"
+#include "UiSystem.h"
+#include "MD5.h"
+
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
 #include "ResourceFbx.h"
-#include "MD5.h"
-#include "UiSystem.h"
+
 
 ResourcesManagement::ResourcesManagement(bool isActive) : Module(isActive)
 {
@@ -22,12 +24,15 @@ ResourcesManagement::~ResourcesManagement()
 
 bool ResourcesManagement::Awake()
 {
-    return false;
+  
+    return true;
 }
 
 bool ResourcesManagement::Start()
 {
     app->eventSystem->SubscribeModule(this, ON_FILE_DROP);
+
+
     return true;
 }
 
@@ -52,7 +57,10 @@ void ResourcesManagement::OnDrop(const std::string file_path)
     Resource::Type newFileType;
     newFileType = FilterFile(file_path.c_str());
     if (newFileType == Resource::Type::UNKNOWN)
+    {
+        Debug::Warning("We dont support that file Type :(");
         return;
+    }
 
     std::string* assets_path =  MoveToAssets(file_path);
 
@@ -75,7 +83,8 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
 {
     Resource* resource =  CreateNewResource(assets_path, type);
 
-
+    if (resource == nullptr)
+        return "";
 	return resource->GetID();
 }
 
@@ -93,15 +102,42 @@ void ResourcesManagement::ReleaseResource(UID uid)
 {
 }
 
+void ResourcesManagement::ImportFilesFromAssets()
+{
+    filesystem::path entry = ASSETS_DIR;
+    filesystem::directory_iterator currentDir;
+    
+    cout << "Reading Assets folder \n";
+    for (auto const& dir_entry : std::filesystem::recursive_directory_iterator{ entry })
+    {
+        if (!dir_entry.exists()) return;
+        if (dir_entry.is_directory())
+        {
+            std::cout << dir_entry << '\n';
+            continue;
+        }
+        else {
+            std::cout <<'\t' << dir_entry << '\n';
+            Resource::Type type =  FilterFile(dir_entry.path().string().c_str());
+            ImportFile(dir_entry.path().string().c_str(), type);
+        }
+    }
+}
+
 Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resource::Type type)
 {
 
     Resource* ret = nullptr;
     UID uid = md5(assets_path);
+
+    std::size_t from = assets_path.find_last_of('/');
+    std::string fileName = assets_path.substr(from + 1, ' ');
+
     switch (type) {
     case Resource::Type::Texture: ret = (Resource*) new ResourceTexture(uid); break;
     case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
     case Resource::Type::Fbx: ret = (Resource*) new ResourceFbx(uid); break;
+    case Resource::Type::UNKNOWN:return nullptr; break;
     //case Resource::Type::Scene: ret = (Resource*) new ResourceBone(uid); break;
     //case Resource::Type::Shader: ret = (Resource*) new ResourceAnimation(uid); break;
     default: break;
@@ -111,6 +147,8 @@ Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resou
         resources[uid] = ret;
         resources[uid]->SetAssetPath(assets_path);
         resources[uid]->SetLibraryPath(GenLibraryPath(assets_path));
+        Debug::Log("Imported asset:" + fileName);
+        Debug::Log(" id:" + uid);
     }
     return ret;
 }
