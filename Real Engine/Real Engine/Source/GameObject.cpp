@@ -10,8 +10,8 @@ GameObject::GameObject()
 	name = "Game object";
 	Transform t;
 	t.owner = this;
-	app->entityComponentSystem.AddComponent(id, t);
-	app->entityComponentSystem.AddComponent(id, TagComponent{ "Empty gameObject" });
+	AddComponent( t);
+	AddComponent( TagComponent{ "Empty gameObject" });
 	active = true;
 
 }
@@ -21,8 +21,8 @@ GameObject::GameObject(std::string name)
 	id = app->entityComponentSystem.CreateEntity();
 	Transform t;
 	t.owner = this;
-	app->entityComponentSystem.AddComponent(id, t);
-	app->entityComponentSystem.AddComponent(id, TagComponent{ name });
+	AddComponent( t);
+	AddComponent(TagComponent{ name });
 	this->name = name;
 	active = true;
 }

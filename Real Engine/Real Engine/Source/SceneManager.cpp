@@ -19,9 +19,6 @@ bool SceneManager::Start()
 
 	Scene* sampleScene = CreateScene("Sample Scene");
 	sampleScene->LoadGameObject("../Output/Assets/BakerHouse.fbx");
-	sampleScene->LoadGameObject("../Output/Assets/BakerHouse.fbx");
-	sampleScene->LoadGameObject("../Output/Assets/BakerHouse.fbx");
-
 	currentScene = sampleScene;
 
 	app->eventSystem->SubscribeModule(this, ON_GO_CREATION);
@@ -89,7 +86,7 @@ Scene* SceneManager::CreateScene(std::string name)
 		Scene* newScene = new Scene(name.c_str());
 		newScene->id = sceneCount;
 		newScene->origin.GetComponent<TagComponent>() = name.c_str();
-
+		newScene->Init();
 		sceneList.push_back(*newScene);
 		sceneCount++;
 		return newScene;

@@ -76,10 +76,11 @@ void Inspector::DrawComponents(Entity entity)
 			if (ImGui::DragFloat3("Rotation", (*r), 0.1f));
 			if (ImGui::DragFloat3("Scale", (*s), 0.1f));
 
-			GameObject* parent = transform.parent->owner;
 			
-			if (parent != nullptr)
+			
+			if (transform.parent != nullptr)
 			{
+				GameObject* parent = transform.parent->owner;
 				TagComponent pt = app->entityComponentSystem.GetComponent<TagComponent>(parent->id);
 				ImGui::Text(pt.c_str());
 			}

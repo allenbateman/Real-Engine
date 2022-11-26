@@ -1,7 +1,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "Primitives.h"
-
+#include "Camera.h"
 
 Scene::Scene()
 {
@@ -17,6 +17,11 @@ Scene::~Scene()
 }
 void Scene::Init()
 {
+	GameObject* mainCamera = new GameObject("Main Camera");
+	mainCamera->AddComponent(Camera{});
+	origin.GetComponent<Transform>().AddChild(&mainCamera->GetComponent<Transform>());
+	mainCamera->GetComponent<Transform>().SetParent(&origin.GetComponent<Transform>());
+	gameObejects.push_back(*mainCamera);
 }
 
 void Scene::Enable()
@@ -34,11 +39,11 @@ void Scene::CreateGameObject(gameObjectType goType)
 	case EMPTY: 
 	{
 		GameObject* go = new GameObject("Empty Object");
-		
 
 		origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
 		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
 		gameObejects.push_back(*go);
+
 	}break;
 
 	case CUBE:
