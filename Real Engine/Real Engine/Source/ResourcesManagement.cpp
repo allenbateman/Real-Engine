@@ -82,9 +82,17 @@ UID ResourcesManagement::Find(const char* file_in_assets) const
 UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type type)
 {
     Resource* resource =  CreateNewResource(assets_path, type);
-
     if (resource == nullptr)
         return "";
+    
+    switch (resource->GetType())
+    {
+   // case Resource::Type::Texture: MaterialImporter::Import()
+    case Resource::Type::Fbx: FbxImporter::Import(assets_path);
+    default:
+        break;
+    }
+
 	return resource->GetID();
 }
 
@@ -130,6 +138,7 @@ Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resou
     Resource* ret = nullptr;
     UID uid = md5(assets_path);
 
+
     std::size_t from = assets_path.find_last_of('/');
     std::string fileName = assets_path.substr(from + 1, ' ');
 
@@ -173,7 +182,6 @@ std::string* ResourcesManagement::MoveToAssets(const string disc_path)
         Debug::Log("File moved to assets: " + fileName);
         return newPath;
     }
-
 }
 
 std::string ResourcesManagement::GenLibraryPath(const string assets_path)
@@ -204,17 +212,18 @@ Resource::Type ResourcesManagement::FilterFile(const char* file_path)
         Resource::Type type = Resource::Type::UNKNOWN;
         if (filePath.extension() == ".fbx") // Heed the dot.
         {
-            std::cout << filePath.stem() << " is a valid type.\n";
-            
+            std::cout << filePath.stem() << " is a valid type.\n";            
             type = Resource::Type::Fbx;
         }
         else if (filePath.extension() == ".dds")
         {
             std::cout << filePath.stem() << " is a valid type.\n";
+            type = Resource::Type::Texture;
         }
         else if (filePath.extension() == ".png")
         {
             std::cout << filePath.stem() << " is a valid type.\n";
+            type = Resource::Type::Texture;
         }
         return type;
 }

@@ -9,7 +9,7 @@ Resource::~Resource()
 {
 }
 
-Resource::Type Resource::GetType(UID id)
+Resource::Type Resource::GetType()
 {
     return type;
 }

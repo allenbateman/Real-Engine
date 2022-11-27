@@ -88,13 +88,11 @@ void Scene::LoadGameObject(const std::string file_path)
 {
 	
 	std::vector<GameObject*> obj = app->sceneManager->objLoader.LoadObject(file_path);
-
 	GameObject* go = obj.back();
 	origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
 	go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
 	gameObejects.push_back(*go);
-	//for (auto ob : obj)
-	//	gameObejects.push_back(*ob);
+	
 }
 
 void Scene::RemoveEntity(Entity id)

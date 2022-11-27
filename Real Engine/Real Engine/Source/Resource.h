@@ -17,7 +17,7 @@ public:
 	};
 	Resource(UID id);
 	~Resource();
-	Resource::Type GetType(UID id);
+	Resource::Type GetType();
 	UID GetID()const;
 	const char* GetAssetFile() const;
 	const char* GetLibraryFile() const;
