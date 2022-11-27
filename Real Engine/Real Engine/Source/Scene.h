@@ -19,6 +19,7 @@ public:
 	void RemoveEntity(Entity id);
 	std::vector <GameObject> gameObejects;
 	GameObject origin;
+	GameObject* mainCamera;
 	//Scene properties
 	unsigned int id;
 	std::string name;

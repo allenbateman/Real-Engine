@@ -35,6 +35,8 @@ public:
 	Entity currentCamera;
 
 	FrameBuffer buffer;
+	FrameBuffer gameBuffer;
+
 	mat4x4 ProjectionMatrix;
 	Shader* defaultShader;
 	Shader* colorShader;
@@ -46,5 +48,6 @@ public:
 private:
 	//refernce of the current camera camera
 	Camera camera;
+	Camera gameCamera;
 };
 

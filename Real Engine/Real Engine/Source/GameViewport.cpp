@@ -31,7 +31,7 @@ void GameViewport::Update()
 
 		OnHovered();
 		OnResize();
-		ImGui::Image((ImTextureID)app->renderer->buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)app->renderer->gameBuffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
 
 	}
 	ImGui::End();

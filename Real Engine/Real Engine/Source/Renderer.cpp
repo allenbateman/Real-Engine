@@ -5,6 +5,8 @@
 
 #include "Window.h"
 #include "UiSystem.h"
+#include "SceneManager.h"
+#include "Scene.h"
 #include "EventSystem.h"
 #include "Events.h"
 #include "Mesh.h" 
@@ -77,6 +79,7 @@ bool Renderer::Start()
 
 	OnResize(0, 0, app->window->GetWidth(), app->window->GetHeight());
 	buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
+	gameBuffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
 
 	return true;
 }
@@ -87,6 +90,7 @@ bool Renderer::PreUpdate()
 	//clear window rendered buffer
 	app->window->Clear();
 	buffer.ClearBuffer();
+	gameBuffer.ClearBuffer();
 	glMatrixMode(GL_MODELVIEW);
 
 	return true;
@@ -151,6 +155,76 @@ bool Renderer::PostUpdate()
 		defaultShader->SetMat4("view", view);
 		//render obj
 		mesh.Draw(*defaultShader, material);	
+	}
+
+	//detach the shader to default so it doesnt affect other render process
+	defaultShader->StopUse();
+
+	//Stop render  -------------------------------------------
+
+	////bind to the default renderer to render everything
+	//glBindFramebuffer(GL_FRAMEBUFFER, 0);
+	////app->uiSystem->RenderUi();
+	//app->window->Swapbuffers();
+
+
+
+
+
+	//calcualte view mtarix 
+	
+	
+	gameCamera = app->sceneManager->currentScene->mainCamera->GetComponent<Camera>();
+	
+	
+	gameCamera.CalculateViewMatrix();
+	glLoadMatrixf(gameCamera.GetViewMatrix());
+	//bind renderer to the texture we want to render to (Frame buffer object)
+	glBindFramebuffer(GL_FRAMEBUFFER, gameBuffer.FBO);
+
+	glLineWidth(2.0f);
+
+	glBegin(GL_LINES);
+	glColor3f(150, 150, 150);
+
+	 d = 200.0f;
+
+	for (float i = -d; i <= d; i += 1.0f)
+	{
+		glVertex3f(i, 0.0f, -d);
+		glVertex3f(i, 0.0f, d);
+		glVertex3f(-d, 0.0f, i);
+		glVertex3f(d, 0.0f, i);
+	}
+
+	glEnd();
+
+	//render Every Go
+	for (auto& ent : entities)
+	{
+		auto& transform = app->entityComponentSystem.GetComponent<Transform>(ent);
+		auto& mesh = app->entityComponentSystem.GetComponent<Mesh>(ent);
+		auto& material = app->entityComponentSystem.GetComponent<Material>(ent);
+
+		//attach shader 
+		//set attributes for rendering the textures
+		//colorShader->Use();
+		defaultShader->Use();
+		float* projection = ProjectionMatrix.M;
+		float* model;
+		mat4x4 pos = translate(transform.position.x, transform.position.y, transform.position.z);
+		mat4x4 rotationX = rotate(transform.rotation.x, transform.right);
+		mat4x4 rotationY = rotate(transform.rotation.y, transform.up);
+		mat4x4 rotationZ = rotate(transform.rotation.z, transform.forward);
+		mat4x4 rotation = (rotationX * rotationY * rotationZ);
+		mat4x4 size = scale(transform.scale.x, transform.scale.y, transform.scale.z);
+		model = (pos * size * rotation).M;
+		float* view = gameCamera.GetViewMatrix();
+		defaultShader->SetMat4("projection", projection);
+		defaultShader->SetMat4("model", model);
+		defaultShader->SetMat4("view", view);
+		//render obj
+		mesh.Draw(*defaultShader, material);
 	}
 
 	//detach the shader to default so it doesnt affect other render process

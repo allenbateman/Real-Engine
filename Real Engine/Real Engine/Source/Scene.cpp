@@ -17,11 +17,12 @@ Scene::~Scene()
 }
 void Scene::Init()
 {
-	GameObject* mainCamera = new GameObject("Main Camera");
+	mainCamera = new GameObject("Main Camera");
 	mainCamera->AddComponent(Camera{});
 	origin.GetComponent<Transform>().AddChild(&mainCamera->GetComponent<Transform>());
 	mainCamera->GetComponent<Transform>().SetParent(&origin.GetComponent<Transform>());
 	gameObejects.push_back(*mainCamera);
+	mainCamera->GetComponent<Camera>().Start();
 }
 
 void Scene::Enable()
