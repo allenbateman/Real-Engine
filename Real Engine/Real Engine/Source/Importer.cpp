@@ -247,20 +247,33 @@ void MaterialImporter::Import(const aiMaterial* material, Material* ourMaterial)
 
 std::ostream& operator <<(std::ostream& out, const Mesh& mesh)
 {
+
+    out << "header\n";
+    out << "Vertices:" << mesh.vertices.size() << ' ';
+    out << "Indices:" << mesh.indices.size() << ' ';
+    out << "Materia id" << mesh.MatId << '\n';
+
     for (const auto& v : mesh.vertices)
     {
-        out << v.Position.x << ',' << v.Position.x << ',' << v.Position.x << 'p';
-        out << v.Normal.x << ',' << v.Normal.y << ',' << v.Normal.z << 'n';
-        out << v.TexCoords.x << ',' << v.TexCoords.y << 't';
-        out << v.Color.x << ',' << v.Color.y << ',' << v.Color.z << ',' << v.Color.w << 'c';
+        out << 'p' << v.Position.x << ',' << v.Position.x << ',' << v.Position.x;
+        out << 'n' << v.Normal.x << ',' << v.Normal.y << ',' << v.Normal.z;
+        out << 't' << v.TexCoords.x << ',' << v.TexCoords.y;
+        out << 'c' << v.Color.x << ',' << v.Color.y << ',' << v.Color.z << ',' << v.Color.w;
     }
-
+    out << 'i';
     for (const auto& i : mesh.indices)
     {
         out << i;
     }
-    out << 'i';
+
     return out;
+}
+std::ifstream& operator >>(std::ifstream& in, const Mesh& mesh)
+{
+
+    
+    
+    return in;
 }
 
 void MeshImporter::Load()
