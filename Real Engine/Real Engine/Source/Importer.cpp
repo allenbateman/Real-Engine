@@ -9,6 +9,8 @@
 #include "Events.h"
 #include "Debugger.h"
 #include "TextureLoader.h"
+#include <sstream>
+#include <string>
 Importer::Importer()
 {
 }
@@ -224,12 +226,138 @@ std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureTy
     return textures;
 }
 
-void MaterialImporter::Load()
+//texture operators--------------------------------
+//wrtie
+std::ostream& operator<<(std::ostream& out, const Texture& tex)
+{
+    out << "<id>" <<  '[' + tex.id + ']';
+    out << "<type> " << '[' + tex.type << ']';
+    out << "<path>" << '[' + tex.path << ']' + '\n';
+
+    return out;
+}
+//Read
+std::ifstream& operator>>(std::ifstream& infile, const Texture& tex)
+{
+
+    std::string line;
+    while (std::getline(infile, line,'<'))
+    {
+        std::istringstream iss(line);
+       
+    }
+
+    return infile;
+}
+Texture* TextureImporter::Load(const std::string& filename)
+{
+    std::ifstream texFile(filename);
+    Texture* loadTex = new Texture();
+    if (texFile.is_open())
+    {
+        texFile >> *loadTex;
+    }
+    return loadTex;
+}
+
+void TextureImporter::Save(const Texture tex, const std::string& filename)
+{
+    std::ofstream out(filename);
+    if (out.is_open())
+    {
+        out << tex << '\n';
+    }
+    else {
+        cout << "Error saving texture: " + filename;
+    }
+}
+
+
+std::vector<Texture> TextureImporter::Import(const aiMaterial* mat, aiTextureType type, std::string typeName)
+{
+    std::vector<Texture> textures;
+    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+    {
+        aiString str;
+        mat->GetTexture(type, i, &str);
+
+        string filepath = app->importer->directory + "/" + str.C_Str();
+        string filename = str.C_Str();
+
+        bool skip = false;
+        for (unsigned int j = 0; j < app->importer->loadedtextures.size(); j++)
+        {
+            if (std::strcmp(app->importer->loadedtextures[j].path.data(), str.C_Str()) == 0)
+            {
+                textures.push_back(app->importer->loadedtextures[j]);
+                skip = true;
+                break;
+            }
+        }
+        if (!skip)
+        {
+            if (ilLoadImage(filepath.c_str()))
+            {
+                cout << "Texture: " << str.C_Str() << " loaded with devIL" << endl;
+            }
+            else {
+                cout << "Image not loaded with devIL" << endl;
+            }
+
+            // if texture hasn't been loaded already, load it
+            Texture texture;
+
+            //for textures
+            string fileName = filename.substr(0, filename.find_last_of('.'));
+            cout << fileName << endl;
+            string storePath = LIBRARY_DIR + fileName + ".dds";
+            cout << storePath << endl;
+
+            if (ilSave(IL_DDS, storePath.c_str()))
+                cout << "saved file with devil\n";
+            else
+                cout << "could not save file with devil \n";
+
+
+            texture.id = LoadTexture(app->importer->directory + "/" + str.C_Str());
+
+            texture.path = app->importer->directory + "/" + str.C_Str();
+            texture.type = typeName;
+            textures.push_back(texture);
+            app->importer->loadedtextures.push_back(texture); // add to loaded textures
+        }
+    }
+    return textures;
+}
+
+//Material operators--------------------------------
+std::ostream& operator <<(std::ostream& out, const Material& material)
+{
+    out << "header\n";
+    out << "<textures>" << '[' << material.textures.size() << ']' << '\n';
+    out << "<active>" << '[' << material.active << ']' << '\n';
+
+    vector<Texture>::const_iterator t = material.textures.begin();
+    while(t != material.textures.end())
+    {
+        out << "<id>"<< '[' << t->id << "]" << "<type>"<< '[' << t->type <<']' << "<path>" << '[' << t->path << ']' << '\n';
+    }
+    return out;
+}
+void MaterialImporter::Load(const Material* mat, const std::string& filename)
 {
 }
 
-void MaterialImporter::Save()
+void MaterialImporter::Save(const Material mat, const std::string& filename)
 {
+    std::ofstream out(filename);
+    if (out.is_open())
+    {
+        out << mat << '\n';
+    }
+    else {
+        cout << "Error importing material: " + filename;
+    }
 }
 
 void MaterialImporter::Import(const aiMaterial* material, Material* ourMaterial)
@@ -245,6 +373,7 @@ void MaterialImporter::Import(const aiMaterial* material, Material* ourMaterial)
     ourMaterial = new Material(textures);
 }
 
+//Mesh operators--------------------------------
 std::ostream& operator <<(std::ostream& out, const Mesh& mesh)
 {
 
@@ -338,63 +467,7 @@ void MeshImporter::Import(const aiMesh* mesh, Mesh* ourMesh)
     ourMesh = new Mesh(vertices, indices);
 }
 
-std::vector<Texture> TextureImporter::Import(const aiMaterial* mat, aiTextureType type, std::string typeName)
-{
-    std::vector<Texture> textures;
-    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-    {
-        aiString str;
-        mat->GetTexture(type, i, &str);
-
-        string filepath = app->importer->directory + "/" + str.C_Str();
-        string filename = str.C_Str();
-
-        bool skip = false;
-        for (unsigned int j = 0; j < app->importer->loadedtextures.size(); j++)
-        {
-            if (std::strcmp(app->importer->loadedtextures[j].path.data(), str.C_Str()) == 0)
-            {
-                textures.push_back(app->importer->loadedtextures[j]);
-                skip = true;
-                break;
-            }
-        }
-        if (!skip)
-        {
-            if (ilLoadImage(filepath.c_str()))
-            {
-                cout << "Texture: " << str.C_Str() << " loaded with devIL" << endl;
-            }
-            else {
-                cout << "Image not loaded with devIL" << endl;
-            }
-
-            // if texture hasn't been loaded already, load it
-            Texture texture;
-
-            //for textures
-            string fileName = filename.substr(0, filename.find_last_of('.'));
-            cout << fileName << endl;
-            string storePath = LIBRARY_DIR + fileName + ".dds";
-            cout << storePath << endl;
-
-            if (ilSave(IL_DDS, storePath.c_str()))
-                cout << "saved file with devil\n";
-            else
-                cout << "could not save file with devil \n";
-
-
-            texture.id = LoadTexture(app->importer->directory + "/" + str.C_Str());
-
-            texture.path = app->importer->directory + "/" + str.C_Str();
-            texture.type = typeName;
-            textures.push_back(texture);
-            app->importer->loadedtextures.push_back(texture); // add to loaded textures
-        }
-    }
-    return textures;
-}
-
+//Fbx operators--------------------------------
 void FbxImporter::Import(const std::string& file_path)
 {
     const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);

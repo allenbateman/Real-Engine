@@ -45,16 +45,15 @@ public:
 
 
 };
-
-namespace MaterialImporter {
-	void Load();
-	void Save();
-	void Import(const aiMaterial* material, Material* ourMaterial);
-}
 namespace TextureImporter {
-	void Load();
-	void Save();
+	Texture* Load(const std::string& filename);
+	void Save(const Texture mat, const std::string& filename);
 	std::vector<Texture> Import(const aiMaterial* mat, aiTextureType type, std::string typeName);
+}
+namespace MaterialImporter {
+	void Load(const Material* mat, const std::string& filename);
+	void Save(const Material mat, const std::string& filename);
+	void Import(const aiMaterial* material, Material* ourMaterial);
 }
 namespace MeshImporter {
 	void Load();

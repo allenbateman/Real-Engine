@@ -28,7 +28,7 @@ void FileExplorer::Update()
 
 	if (currentDirectory != fs::path(assetPath))
 	{
-		if (ImGui::Button("<-"))
+		if (ImGui::Button("<-")|| (ImGui::IsItemHovered()&& ImGui::IsMouseDragging(0)))
 		{
 			currentDirectory = currentDirectory.parent_path();
 		}
