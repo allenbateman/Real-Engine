@@ -78,6 +78,7 @@
     <ClInclude Include="Source\Application.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\CameraController.h" />
+    <ClInclude Include="Source\CameraUpdater.h" />
     <ClInclude Include="Source\Color.h" />
     <ClInclude Include="Source\Component.h" />
     <ClInclude Include="Source\ComponentArray.h" />
@@ -85,6 +86,7 @@
     <ClInclude Include="Source\ConsolePanel.h" />
     <ClInclude Include="Source\Debugger.h" />
     <ClInclude Include="Source\Defs.h" />
+    <ClInclude Include="Source\EditorComponent.h" />
     <ClInclude Include="Source\Entity.h" />
     <ClInclude Include="Source\EntityComponentSystem.h" />
     <ClInclude Include="Source\EntityManager.h" />

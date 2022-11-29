@@ -44,7 +44,8 @@ void CameraController::HandleEvent(Event* e)
 		{
 		case KEY_INPUT:
 		{
-
+			
+		
 			if (!camera.GetFocus())
 			{
 				camera.altKey = false;
@@ -63,7 +64,7 @@ void CameraController::HandleEvent(Event* e)
 				if (ki->keys[GLFW_KEY_LEFT_SHIFT] == KEY_REPEAT) speedMulti = 2;
 
 				if (ki->keys[GLFW_KEY_W] == KEY_REPEAT)newPos -= camera.Z * camera.cameraSpeed * speedMulti;
-				if (ki->keys[GLFW_KEY_S] == KEY_REPEAT)newPos += camera.Z * camera.cameraSpeed * speedMulti;
+				if (ki->keys[GLFW_KEY_S] == KEY_REPEAT)newPos += camera.Z * camera.cameraSpeed * speedMulti;				
 				if (ki->keys[GLFW_KEY_A] == KEY_REPEAT)newPos -= camera.X * camera.cameraSpeed * speedMulti;
 				if (ki->keys[GLFW_KEY_D] == KEY_REPEAT)newPos += camera.X * camera.cameraSpeed * speedMulti;
 			}
@@ -76,6 +77,7 @@ void CameraController::HandleEvent(Event* e)
 			if (ki->keys[GLFW_KEY_F] == KEY_DOWN) camera.Focus(camera.target);
 
 			camera.Move(newPos);
+			
 		}
 		break;
 		case MOUSE_INPUT:

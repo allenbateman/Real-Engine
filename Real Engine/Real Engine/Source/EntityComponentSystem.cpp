@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "Camera.h"
 #include "Tag.h"
+#include "EditorComponent.h"
 
 
 EntityComponentSystem::EntityComponentSystem()
@@ -27,6 +28,7 @@ void EntityComponentSystem::Init()
 	RegisterComponent<Mesh>();
 	RegisterComponent<Material>();
 	RegisterComponent<Camera>();
+	RegisterComponent<EditorComponent>();
 
 }
 
