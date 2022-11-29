@@ -1,5 +1,6 @@
 #include "FileExplorer.h"
 #include "TextureLoader.h"
+#include "UiSystem.h"
 
 
 extern const fs::path assetPath = "../Output/Assets";
@@ -59,10 +60,25 @@ void FileExplorer::Update()
 		{
 			auto relativePath =  fs::relative(path, assetPath);
 			const wchar_t* itemPath = relativePath.c_str();
+			//const wchar_t* itemPath = fs::path;
 			ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 			ImGui::EndDragDropSource();
 		}
+		if (ImGui::BeginDragDropTarget()) 
+		{	
 
+			const ImGuiPayload* itemDrop = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM");
+			if (itemDrop != nullptr && directoryEntry.is_directory())
+			{
+				Debug::Log(path.string());
+				fs::path cpath = (wchar_t*)itemDrop->Data;
+				fs::path newPath = path.string() + cpath.filename().string();
+				//fs::rename(cpath, newPath);
+				Debug::Log("Droped file " + cpath.stem().string() + " to " + path.filename().string() );
+				Debug::Log(newPath.string());
+
+			}
+		}
 		ImGui::PopStyleColor();
 		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
 		{

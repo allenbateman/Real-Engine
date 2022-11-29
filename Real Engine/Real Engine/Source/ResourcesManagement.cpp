@@ -98,7 +98,7 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
 
 const Resource* ResourcesManagement::RequestResource(UID uid) const
 {
-    return nullptr;
+    return resources.at(uid);
 }
 
 Resource* ResourcesManagement::RequestResource(UID uid)
@@ -108,6 +108,7 @@ Resource* ResourcesManagement::RequestResource(UID uid)
 
 void ResourcesManagement::ReleaseResource(UID uid)
 {
+    resources.erase(uid);
 }
 
 void ResourcesManagement::ImportFilesFromAssets()
