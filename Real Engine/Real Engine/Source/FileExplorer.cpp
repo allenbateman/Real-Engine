@@ -58,9 +58,7 @@ void FileExplorer::Update()
 
 		if (ImGui::BeginDragDropSource())
 		{
-			auto relativePath =  fs::relative(path, assetPath);
-			const wchar_t* itemPath = relativePath.c_str();
-			//const wchar_t* itemPath = fs::path;
+			const wchar_t* itemPath = path.c_str();
 			ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
 			ImGui::EndDragDropSource();
 		}
@@ -70,13 +68,9 @@ void FileExplorer::Update()
 			const ImGuiPayload* itemDrop = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM");
 			if (itemDrop != nullptr && directoryEntry.is_directory())
 			{
-				Debug::Log(path.string());
 				fs::path cpath = (wchar_t*)itemDrop->Data;
-				fs::path newPath = path.string() + cpath.filename().string();
-				//fs::rename(cpath, newPath);
-				Debug::Log("Droped file " + cpath.stem().string() + " to " + path.filename().string() );
-				Debug::Log(newPath.string());
-
+				fs::path newPath = path.string()+ '/' + cpath.filename().string();
+				fs::rename(cpath, newPath);
 			}
 		}
 		ImGui::PopStyleColor();
