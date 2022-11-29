@@ -13,6 +13,7 @@
 #include "Material.h" 
 #include "Tag.h"
 #include "GL/glew.h"
+#include "EditorComponent.h"
 
 
 
@@ -74,6 +75,7 @@ bool Renderer::Start()
 	app->entityComponentSystem.AddComponent(currentCamera, TagComponent{ "Camera" });
 	app->entityComponentSystem.AddComponent(currentCamera, Transform{});
 	app->entityComponentSystem.AddComponent(currentCamera, Camera());
+	app->entityComponentSystem.AddComponent(currentCamera, EditorComponent());
 	camera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
 	camera.Start();
 
@@ -251,6 +253,7 @@ void Renderer::OnResize(int xPos, int yPos, int width, int height)
 {
 	//resize the texture 
 	buffer.GenerateBuffer(width, height);
+	gameBuffer.GenerateBuffer(width, height);
 
 	glViewport(xPos, yPos, width, height);
 	
@@ -277,6 +280,7 @@ void Renderer::HandleEvent(Event* e)
 			OnResize(0, 0, Pr->x, Pr->y);
 		lastSize.x = Pr->x;
 		lastSize.y = Pr->y;
+
 	}
 		break;
 	case ON_PANEL_FOCUS:

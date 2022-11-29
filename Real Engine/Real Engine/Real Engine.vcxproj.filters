@@ -369,6 +369,12 @@
     <ClInclude Include="Source\ProjectDirectories.h">
       <Filter>Engine\Core\Files system</Filter>
     </ClInclude>
+    <ClInclude Include="Source\EditorComponent.h">
+      <Filter>Engine\Core\Entity component system\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\CameraUpdater.h">
+      <Filter>Engine\Core\Controllers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

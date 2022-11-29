@@ -10,9 +10,12 @@
 #include "SceneManager.h"
 #include "Importer.h"
 #include "ResourcesManagement.h"
+#include "cameraUpdater.h"
+
 
 //include All components
 #include "Tag.h"
+#include "EditorComponent.h"
 
 
 
@@ -30,6 +33,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	importer = std::make_shared<Importer>();
 	resourceManager = std::make_shared<ResourcesManagement>();
 	uiSystem = std::make_shared<UiSystem>();
+	
 	//If a system has to handle  Entities
 	//Set signature of the components it will handle
 	sceneManager = entityComponentSystem.RegisterSystem<SceneManager>();
@@ -44,6 +48,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
 		signature.set(entityComponentSystem.GetComponentType<Transform>());
 		signature.set(entityComponentSystem.GetComponentType<Camera>());
+		signature.set(entityComponentSystem.GetComponentType<EditorComponent>());
 		entityComponentSystem.SetSystemSignature<CameraController>(signature);
 	}
 	renderer = entityComponentSystem.RegisterSystem<Renderer>();
@@ -55,6 +60,14 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 		signature.set(entityComponentSystem.GetComponentType<Material>());
 		entityComponentSystem.SetSystemSignature<Renderer>(signature);
 	}
+	cameraUpdater = entityComponentSystem.RegisterSystem<CameraUpdater>();
+	{
+		Signature signature;
+		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
+		signature.set(entityComponentSystem.GetComponentType<Transform>());
+		signature.set(entityComponentSystem.GetComponentType<Camera>());
+		entityComponentSystem.SetSystemSignature<CameraUpdater>(signature);
+	}
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);
@@ -62,6 +75,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	modules.push_back(resourceManager);
 	modules.push_back(cameraController);
 	modules.push_back(sceneManager);
+	modules.push_back(cameraUpdater);
 	//last
 	modules.push_back(uiSystem);
 	modules.push_back(eventSystem);

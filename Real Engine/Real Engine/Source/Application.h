@@ -28,6 +28,7 @@ class CameraController;
 class SceneManager;
 class Importer;
 class ResourcesManagement;
+class CameraUpdater;
 
 class Application
 {
@@ -80,6 +81,7 @@ public:
 	shared_ptr<SceneManager> sceneManager;
 	shared_ptr<Importer> importer;
 	shared_ptr<ResourcesManagement> resourceManager;
+	shared_ptr<CameraUpdater> cameraUpdater;
 
 	bool exit = false;
 private:
