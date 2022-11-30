@@ -39,7 +39,7 @@ public:
 	BuffCam editor;
 	BuffCam game;
 
-	mat4x4 ProjectionMatrix;
+	
 	Shader* defaultShader;
 	Shader* colorShader;
 

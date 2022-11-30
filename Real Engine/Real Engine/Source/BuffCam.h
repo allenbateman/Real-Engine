@@ -13,5 +13,6 @@ struct BuffCam
 {
 	Camera camera;
 	FrameBuffer buffer;
+	mat4x4 ProjectionMatrix;
 	BuffCamType type;
 };

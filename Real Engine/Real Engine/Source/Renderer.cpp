@@ -128,7 +128,13 @@ bool Renderer::PostUpdate()
 	//calcualte view mtarix 
 	for (vector<BuffCam*>::iterator item = buffCams.begin(); item != buffCams.end(); item++)
 	{
+		glMatrixMode(GL_PROJECTION);
+		glLoadIdentity();
 		
+		glLoadMatrixf(&(*item)->ProjectionMatrix);
+
+		glMatrixMode(GL_MODELVIEW);
+
 		(*item)->camera.CalculateViewMatrix();
 		glLoadMatrixf((*item)->camera.GetViewMatrix());
 		//bind renderer to the texture we want to render to (Frame buffer object)
@@ -162,7 +168,7 @@ bool Renderer::PostUpdate()
 			//set attributes for rendering the textures
 			//colorShader->Use();
 			defaultShader->Use();
-			float* projection = ProjectionMatrix.M;
+			float* projection = (*item)->ProjectionMatrix.M;
 			float* model;
 			mat4x4 pos = translate(transform.position.x, transform.position.y, transform.position.z);
 			mat4x4 rotationX = rotate(transform.rotation.x, transform.right);
@@ -213,8 +219,8 @@ void Renderer::OnResize(int xPos, int yPos, int width, int height)
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		ProjectionMatrix = perspective((*item)->camera.GetFieldOfView(), (float)width / (float)height, 0.125f, 512.0f);
-		glLoadMatrixf(&ProjectionMatrix);
+		(*item)->ProjectionMatrix = perspective((*item)->camera.GetFieldOfView(), (float)width / (float)height, 0.125f, 512.0f);
+		glLoadMatrixf(&(*item)->ProjectionMatrix);
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
@@ -264,8 +270,8 @@ void Renderer::HandleEvent(Event* e)
 		{
 			glMatrixMode(GL_PROJECTION);
 			glLoadIdentity();
-			ProjectionMatrix = perspective(game.camera.GetFieldOfView(), (float)lastSize.x / (float)lastSize.y, 0.125f, 512.0f);
-			glLoadMatrixf(&ProjectionMatrix);
+			(*item)->ProjectionMatrix = perspective((*item)->camera.GetFieldOfView(), (float)lastSize.x / (float)lastSize.y, 0.125f, 512.0f);
+			glLoadMatrixf(&(*item)->ProjectionMatrix);
 
 			glMatrixMode(GL_MODELVIEW);
 			glLoadIdentity();
@@ -273,6 +279,9 @@ void Renderer::HandleEvent(Event* e)
 			aspect_ratio = lastSize.x / lastSize.y;
 			
 		}
+
+
+		
 	}
 	break;
 	default:
