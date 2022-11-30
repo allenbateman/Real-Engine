@@ -33,8 +33,8 @@ void Viewport::Update()
 
 		OnHovered();
 		OnResize();
-		ImGui::Image((ImTextureID)app->renderer->buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
-
+		ImGui::Image((ImTextureID)app->renderer->editor.buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
+		
 	}
 	ImGui::End();
 	ImGui::PopStyleVar();

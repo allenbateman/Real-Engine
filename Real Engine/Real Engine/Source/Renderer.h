@@ -6,6 +6,7 @@
 #include <bitflags/bitflags.hpp>
 #include "Shader.h"
 #include "Camera.h"
+#include "BuffCam.h"
 
 #define MAX_LIGHTS 8
 
@@ -23,19 +24,20 @@ public:
 	bool Awake();
 	bool Start();
 	bool PreUpdate();
-	bool Update();
+	bool Update(float dt);
 	bool PostUpdate();
 	bool CleanUp();
 
 	void OnResize(int xPos,int yPos, int width, int height);
-	//void ChangeFieldOfView(float fieldOfView, int width, int height);
-	void DrawDirectCube(vec3 position, float size);
+	
 	void HandleEvent(Event* e);
+
+	void AddCamera(Camera camera, BuffCamType type = eDefault);
 
 	Entity currentCamera;
 
-	FrameBuffer buffer;
-	FrameBuffer gameBuffer;
+	BuffCam editor;
+	BuffCam game;
 
 	mat4x4 ProjectionMatrix;
 	Shader* defaultShader;
@@ -44,10 +46,22 @@ public:
 	//last renderer resize;
 	vec2 lastSize;
 
-	bool onFocus;
+	bool onFocus; 
+
+	Camera editorCamera;
+	Camera gameCamera;
+
+	FrameBuffer editorBuffer;
+	FrameBuffer gameBuffer;
+	
+
+	
 private:
 	//refernce of the current camera camera
-	Camera camera;
-	Camera gameCamera;
+	vector<BuffCam*> buffCams;
+
+	
+
+	
 };
 

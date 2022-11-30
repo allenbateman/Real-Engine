@@ -375,6 +375,9 @@
     <ClInclude Include="Source\CameraUpdater.h">
       <Filter>Engine\Core\Controllers</Filter>
     </ClInclude>
+    <ClInclude Include="Source\BuffCam.h">
+      <Filter>Engine\Core\Render</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
