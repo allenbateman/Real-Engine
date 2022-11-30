@@ -24,7 +24,7 @@ public:
 	unsigned int GetVAO() { return VAO; }
 	unsigned int MatId;
 private:
-	void SetupMesh();
+	void LoadMesh();
 	unsigned int VAO, VBO, EBO; // idex of the vertex array object in VRam
 
 };

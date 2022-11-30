@@ -25,7 +25,8 @@ public:
 	bool IsLoadedToMemory() const;
 	bool LoadToMemory();
 	unsigned int GetRefereneCount() const;
-
+	void IncreaseReferenceCount() { referenceCount++; };
+	void DecreaseReferenceCount() { referenceCount--; if (referenceCount <= 0) UnLoad(); };
 
 	virtual void Save()const;
 	virtual void Load()const;

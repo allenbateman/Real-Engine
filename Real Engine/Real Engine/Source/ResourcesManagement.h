@@ -22,14 +22,14 @@ public:
 	UID Find(const char* file_in_assets) const;
 	UID ImportFile(const string assetsFile, Resource::Type type);
 
+	Resource* LoadResource(UID uid);
 	const Resource* RequestResource(UID uid) const;
-	Resource* RequestResource(UID uid);
 	void ReleaseResource(UID uid);
 
 	//Read all files from Assets folder and import if its not imported
 	//Do this at the begining of the program and onFileChange, onDrop... any more?
 	void ImportFilesFromAssets();
-
+	UID GenerateUID();
 private:
 	Resource* CreateNewResource(const string assetsFile, Resource::Type type);
 	std::string* MoveToAssets(const string diskPath);
@@ -38,4 +38,3 @@ private:
 	std::map<UID, Resource*> resources{};
 
 };
-

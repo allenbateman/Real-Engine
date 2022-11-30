@@ -49,7 +49,6 @@
     <ClCompile Include="Source\Log.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\Material.cpp" />
-    <ClCompile Include="Source\MD5.cpp" />
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\ObjectLoader.cpp" />
     <ClCompile Include="Source\Panel.cpp" />
@@ -116,7 +115,6 @@
     <ClInclude Include="Source\Inspector.h" />
     <ClInclude Include="Source\Log.h" />
     <ClInclude Include="Source\Material.h" />
-    <ClInclude Include="Source\MD5.h" />
     <ClInclude Include="Source\Mesh.h" />
     <ClInclude Include="Source\Module.h" />
     <ClInclude Include="Source\ObjectLoader.h" />
@@ -144,6 +142,7 @@
     <ClInclude Include="Source\Timer.h" />
     <ClInclude Include="Source\Transform.h" />
     <ClInclude Include="Source\UiSystem.h" />
+    <ClInclude Include="Source\UUID.h" />
     <ClInclude Include="Source\Viewport.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>

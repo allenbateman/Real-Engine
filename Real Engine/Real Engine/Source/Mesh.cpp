@@ -11,14 +11,11 @@ Mesh::Mesh(std::vector<Vertex> vertices, std::vector<unsigned int> indices)
 {
     this->vertices = vertices;
     this->indices = indices;
-    SetupMesh();
+    LoadMesh();
 }
 
 Mesh::~Mesh()
 {
-    //glDeleteFramebuffers(1, &VAO);
-    //glDeleteFramebuffers(1, &VBO);
-    //glDeleteFramebuffers(1, &EBO); 
 }
 
 void Mesh::Draw(Shader& shader, Material& mat)
@@ -47,7 +44,7 @@ void Mesh::Draw(Shader& shader, Material& mat)
     glBindVertexArray(0);
 }
 
-void Mesh::SetupMesh()
+void Mesh::LoadMesh()
 {
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);

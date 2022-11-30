@@ -51,12 +51,14 @@ namespace TextureImporter {
 	std::vector<Texture> Import(const aiMaterial* mat, aiTextureType type, std::string typeName);
 }
 namespace MaterialImporter {
+	void Load(const std::string& filename);
 	void Load(const Material* mat, const std::string& filename);
 	void Save(const Material mat, const std::string& filename);
 	void Import(const aiMaterial* material, Material* ourMaterial);
 }
 namespace MeshImporter {
 	void Load();
+	void Load(const std::string& filename);
 	void Save(const Mesh mesh, const std::string& filename);
 	void Import(const aiMesh* mesh, Mesh* ourMaterial);
 }

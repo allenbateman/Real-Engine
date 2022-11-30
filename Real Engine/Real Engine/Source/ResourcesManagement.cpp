@@ -3,7 +3,8 @@
 #include "EventSystem.h"
 #include "Events.h"
 #include "UiSystem.h"
-#include "MD5.h"
+#include "UUID.h"
+
 
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
@@ -31,7 +32,6 @@ bool ResourcesManagement::Awake()
 bool ResourcesManagement::Start()
 {
     app->eventSystem->SubscribeModule(this, ON_FILE_DROP);
-
 
     return true;
 }
@@ -87,8 +87,7 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
     
     switch (resource->GetType())
     {
-   // case Resource::Type::Texture: MaterialImporter::Import()
-    case Resource::Type::Fbx: FbxImporter::Import(assets_path);
+    case Resource::Type::Fbx: FbxImporter::Import(assets_path); break;
     default:
         break;
     }
@@ -96,13 +95,29 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
 	return resource->GetID();
 }
 
-const Resource* ResourcesManagement::RequestResource(UID uid) const
+Resource* ResourcesManagement::LoadResource(UID uid)
 {
-    return resources.at(uid);
+    std::map<UID, Resource*>::iterator it = resources.begin();
+    if (it != resources.end())
+    {
+        it->second->Load();
+        it->second->IncreaseReferenceCount();
+        return nullptr;
+    }
+    return nullptr;
 }
 
-Resource* ResourcesManagement::RequestResource(UID uid)
+const Resource* ResourcesManagement::RequestResource(UID uid) const
 {
+    ////Find if the resource is already loaded
+    //std::map<UID, Resource*>::iterator it = resources.begin();
+    //if (it != resources.end())
+    //{
+    //    it->second->IncreaseReferenceCount();
+    //    return it->second;
+    //}
+    ////Find the library file (if exists) and load the custom file format
+    //return LoadResource(uid);
     return nullptr;
 }
 
@@ -133,11 +148,16 @@ void ResourcesManagement::ImportFilesFromAssets()
     }
 }
 
+UID ResourcesManagement::GenerateUID()
+{
+    return "asd";
+}
+
 Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resource::Type type)
 {
 
     Resource* ret = nullptr;
-    UID uid = md5(assets_path);
+    UID uid = uuid::generate_uuid();
 
 
     std::size_t from = assets_path.find_last_of('/');
@@ -148,8 +168,6 @@ Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resou
     case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
     case Resource::Type::Fbx: ret = (Resource*) new ResourceFbx(uid); break;
     case Resource::Type::UNKNOWN:return nullptr; break;
-    //case Resource::Type::Scene: ret = (Resource*) new ResourceBone(uid); break;
-    //case Resource::Type::Shader: ret = (Resource*) new ResourceAnimation(uid); break;
     default: break;
     }
     if (ret != nullptr)
