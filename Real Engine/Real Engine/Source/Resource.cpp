@@ -9,6 +9,11 @@ Resource::~Resource()
 {
 }
 
+void Resource::SetType(Resource::Type type)
+{
+   this->type = type;
+}
+
 Resource::Type Resource::GetType()
 {
     return type;
@@ -19,15 +24,6 @@ UID Resource::GetID() const
     return uid;
 }
 
-const char* Resource::GetAssetFile() const
-{
-    return nullptr;
-}
-
-const char* Resource::GetLibraryFile() const
-{
-    return nullptr;
-}
 
 bool Resource::IsLoadedToMemory() const
 {

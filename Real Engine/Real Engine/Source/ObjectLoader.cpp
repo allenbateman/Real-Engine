@@ -183,6 +183,15 @@ std::vector<Texture> ObjectLoader::loadMaterialTextures(aiMaterial* mat, aiTextu
             else
                 cout << "could not save file with devil \n";
 
+            ILubyte* data = ilGetData();
+            ILuint width = ilGetInteger(IL_IMAGE_WIDTH), height = ilGetInteger(IL_IMAGE_HEIGHT);
+            ILuint depth = ilGetInteger(IL_IMAGE_DEPTH);
+            ILubyte channels = ilGetInteger(IL_IMAGE_CHANNELS);
+            ILenum format  = ilGetInteger(IL_IMAGE_FORMAT);
+            ILenum Type = ilGetInteger(IL_IMAGE_TYPE);
+
+            cout << "height:" << height << " width:" << width << " depth: " << depth << " Channels: " << channels << " format: " << format << " type: " << type << endl;
+
             //this creates a texture and load it to the GPU
             //Load texture from library folder
             //create index for it

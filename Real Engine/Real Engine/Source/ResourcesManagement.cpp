@@ -82,15 +82,21 @@ UID ResourcesManagement::Find(const char* file_in_assets) const
 UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type type)
 {
     Resource* resource =  CreateNewResource(assets_path, type);
+
     if (resource == nullptr)
         return "";
     
     switch (resource->GetType())
     {
-    case Resource::Type::Fbx: FbxImporter::Import(assets_path); break;
+    case Resource::Type::Fbx: ImportFbx(assets_path); break;
+    case Resource::Type::Texture: 
+        TextureImporter::Import(resource); 
+        break;
     default:
         break;
     }
+
+    resource->Save();
 
 	return resource->GetID();
 }
@@ -164,7 +170,7 @@ Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resou
     std::string fileName = assets_path.substr(from + 1, ' ');
 
     switch (type) {
-    case Resource::Type::Texture: ret = (Resource*) new ResourceTexture(uid); break;
+    case Resource::Type::Texture: ret = (Resource*) new ResourceTexture(uid);break;
     case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
     case Resource::Type::Fbx: ret = (Resource*) new ResourceFbx(uid); break;
     case Resource::Type::UNKNOWN:return nullptr; break;
@@ -173,9 +179,10 @@ Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resou
     if (ret != nullptr)
     {
         resources[uid] = ret;
-        resources[uid]->SetAssetPath(assets_path);
-        resources[uid]->SetLibraryPath(GenLibraryPath(assets_path));
-        Debug::Log("Imported asset:" + fileName);
+        ret->SetType(type);
+        ret->SetAssetPath(assets_path);
+        ret->SetLibraryPath(GenLibraryPath(assets_path));
+        Debug::Log("Importing asset:" + fileName);
         Debug::Log(" id:" + uid);
     }
     return ret;
@@ -227,22 +234,57 @@ std::string ResourcesManagement::GenLibraryPath(const string assets_path)
 
 Resource::Type ResourcesManagement::FilterFile(const char* file_path)
 {
-        std::filesystem::path filePath = file_path;
-        Resource::Type type = Resource::Type::UNKNOWN;
-        if (filePath.extension() == ".fbx") // Heed the dot.
-        {
-            std::cout << filePath.stem() << " is a valid type.\n";            
-            type = Resource::Type::Fbx;
-        }
-        else if (filePath.extension() == ".dds")
-        {
-            std::cout << filePath.stem() << " is a valid type.\n";
-            type = Resource::Type::Texture;
-        }
-        else if (filePath.extension() == ".png")
-        {
-            std::cout << filePath.stem() << " is a valid type.\n";
-            type = Resource::Type::Texture;
-        }
-        return type;
+    std::filesystem::path filePath = file_path;
+    Resource::Type type = Resource::Type::UNKNOWN;
+    if (filePath.extension() == ".fbx") // Heed the dot.
+    {
+        std::cout << filePath.stem() << " is a valid type.\n";
+        type = Resource::Type::Fbx;
+    }
+    else if (filePath.extension() == ".dds")
+    {
+        std::cout << filePath.stem() << " is a valid type.\n";
+        type = Resource::Type::Texture;
+    }
+    else if (filePath.extension() == ".png")
+    {
+        std::cout << filePath.stem() << " is a valid type.\n";
+        type = Resource::Type::Texture;
+    }
+    else if (filePath.extension() == ".jpg")
+    {
+        std::cout << filePath.stem() << " is a valid type.\n";
+        type = Resource::Type::Texture;
+    }
+    else {
+        std::cout << "unknown file type";
+        type = Resource::Type::UNKNOWN;
+    }
+    return type;
+}
+
+void ResourcesManagement::ImportFbx(const std::string& file_path)
+{
+    //create
+    const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+
+    if (scene != nullptr && scene->HasMeshes())
+    {
+        app->importer->directory = file_path.substr(0, file_path.find_last_of('/'));
+
+        std::size_t from = file_path.find_last_of('/');
+        std::size_t to = file_path.find_last_of('.');
+        std::string fbxName = file_path.substr(from + 1, to);
+        fbxName = fbxName.substr(0, fbxName.find_last_of('.'));
+        vector<Mesh> meshes;
+        FbxImporter::ProcessNode(scene->mRootNode, scene, &meshes);
+        aiReleaseImport(scene);
+
+    }
+    else
+    {
+        std::cout << aiGetErrorString();
+        LOG(aiGetErrorString());
+    }
+    
 }

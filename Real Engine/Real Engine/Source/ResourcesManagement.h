@@ -36,5 +36,9 @@ private:
 	std::string GenLibraryPath(const string assetsFile);
 	Resource::Type FilterFile(const char* file_path);
 	std::map<UID, Resource*> resources{};
+	std::map<Resource*, std::string> reourceToAssets{};
+	void ImportFbx(const std::string& file_path);
 
 };
+
+

@@ -2,8 +2,6 @@
 #include "EntityComponentSystem.h"
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "Transform.h"
-#include <iostream>
 #include <filesystem>
 #include "EventSystem.h"
 #include "Events.h"
@@ -11,6 +9,9 @@
 #include "TextureLoader.h"
 #include <sstream>
 #include <string>
+
+#include "ResourceTexture.h"
+
 Importer::Importer()
 {
 }
@@ -39,198 +40,12 @@ bool Importer::Start(){
     return true;
 }
 
-void Importer::OnDrop(const std::string file_path)
-{
-  
-    //move new file to assets
-    //then, load this file into our file format into library
-
-    directory = file_path.substr(0, file_path.find_last_of('/'));
-    std::size_t from = file_path.find_last_of('/\\');
-    std::size_t to = file_path.find_last_of('.');
-    fileName = file_path.substr(from + 1, ' ');
-    std::string newPathFolder = "../Output/Assets/";
-    std::string newPath = newPathFolder + fileName;
-
-    //store new file to assets
-    if (rename(file_path.c_str(), newPath.c_str()))
-    {
-        cout << "Could not move file: " << fileName << endl;   
-        return;
-    }
-    else
-    {
-        cout << "File moved from: " << file_path << "\n to \n" << newPath.c_str() << endl;
-    }
-
-    //check file type
-    if (FilterFile(file_path) == Resource::Type::UNKNOWN)
-        return;
-    //now store all data in our file format
-    ImportFile(newPath);
-}
-
-Resource::Type Importer::FilterFile(const std::string file_path)
-{
-    std::filesystem::path filePath = file_path;
-    Resource::Type type = Resource::Type::UNKNOWN;
-    if (filePath.extension() == ".fbx") // Heed the dot.
-    {
-        std::cout << filePath.stem() << " is a valid type.\n";
-        type = Resource::Type::Fbx;
-    }
-    else if (filePath.extension() == ".dds")
-    {
-        std::cout << filePath.stem() << " is a valid type.\n";
-        type = Resource::Type::Texture;
-    }
-    else if (filePath.extension() == ".png")
-    {
-        std::cout << filePath.stem() << " is a valid type.\n";
-        type = Resource::Type::Texture;
-    }
-    else if (filePath.extension() == ".jpg")
-    {
-        std::cout << filePath.stem() << " is a valid type.\n";
-        type = Resource::Type::Texture;
-    }
-    else {
-        std::cout << "unknown file type";
-        type = Resource::Type::UNKNOWN;
-    }
-    return type;
-}
-
-bool  Importer::ImportFile(const std::string file_path)
-{
-    bool ret = true;
-
-    
-    /*const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-
-    if (scene != nullptr && scene->HasMeshes())
-    {
-        directory = file_path.substr(0, file_path.find_last_of('/'));
-
-        std::size_t from = file_path.find_last_of('/');
-        std::size_t to = file_path.find_last_of('.');
-        fileName = file_path.substr(from + 1, to);
-        fileName = fileName.substr(0, fileName.find_last_of('.'));
-        vector<Mesh> meshes;
-        ProcessNode(scene->mRootNode, scene, &meshes);
-        aiReleaseImport(scene);
-
-    }
-    else
-    {
-        std::cout << aiGetErrorString();
-        LOG(aiGetErrorString());
-        ret = false;
-    }*/
-    return  ret;
-}
-//
-//void Importer::ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes)
-//{
-//    // process all the node's meshes (if any)  
-//    for (unsigned int i = 0; i < node->mNumMeshes; i++)
-//    {
-//        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-//        meshes->push_back(FbxImporter::ProcessMesh(mesh, scene));
-//    }
-//    // then do the same for each of its children
-//    for (unsigned int i = 0; i < node->mNumChildren; i++)
-//    {
-//        FbxImporter::ProcessNode(node->mChildren[i], scene, meshes);
-//    }
-//}
-//
-//Mesh Importer::ProcessMesh(aiMesh* mesh, const aiScene* scene)
-//{
-//    //load material attached to the obj
-//    if (mesh->mMaterialIndex >= 0)
-//    {
-//        FbxImporter::ProcessMaterial(mesh, scene);
-//    }
-//
-//    Mesh ourMesh;
-//    MeshImporter::Import(mesh, &ourMesh);
-//
-//    return ourMesh;
-//}
-//
-//Material Importer::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
-//{
-//    aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-//    Material ourMaterial;
-//    MaterialImporter::Import(material, &ourMaterial);
-//    return ourMaterial;
-//}
-
-std::vector<Texture> Importer::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
-{
-    std::vector<Texture> textures;
-    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-    {
-        aiString str;
-        mat->GetTexture(type, i, &str);
-
-        string filepath = directory + "/" + str.C_Str();
-        string filename = str.C_Str();      
-    
-        bool skip = false;
-        for (unsigned int j = 0; j < loadedtextures.size(); j++)
-        {
-            if (std::strcmp(loadedtextures[j].path.data(), str.C_Str()) == 0)
-            {
-                textures.push_back(loadedtextures[j]);
-                skip = true;
-                break;
-            }
-        }
-        if (!skip)
-        {   
-
-
-            if (ilLoadImage(filepath.c_str()))
-            {
-                cout << "Texture: " << str.C_Str() << " loaded with devIL" << endl;
-            }
-            else {
-                cout << "Image not loaded with devIL" << endl;
-            }
-
-            // if texture hasn't been loaded already, load it
-            Texture texture;
-
-            //for textures
-            string fileName = filename.substr(0, filename.find_last_of('.'));
-            cout << fileName << endl;
-            string storePath = LIBRARY_DIR + fileName + ".dds";
-            cout << storePath << endl;
-
-            if (ilSave(IL_DDS, storePath.c_str()))
-                cout << "saved file with devil\n";
-            else
-                cout << "could not save file with devil \n";
-
-
-            texture.id = LoadTexture(directory + "/" + str.C_Str());
-
-            texture.path = directory + "/" + str.C_Str();
-            texture.type = typeName;
-            textures.push_back(texture);
-            loadedtextures.push_back(texture); // add to loaded textures
-        }
-    }
-    return textures;
-}
 
 //texture operators--------------------------------
 //wrtie
 std::ostream& operator<<(std::ostream& out, const Texture& tex)
 {
-    out << "<id>" <<  '[' + tex.id + ']';
+    out << "<id>" << '[' + tex.id + ']';
     out << "<type> " << '[' + tex.type << ']';
     out << "<path>" << '[' + tex.path << ']' + '\n';
 
@@ -241,10 +56,10 @@ std::ifstream& operator>>(std::ifstream& infile, const Texture& tex)
 {
 
     std::string line;
-    while (std::getline(infile, line,'<'))
+    while (std::getline(infile, line, '<'))
     {
         std::istringstream iss(line);
-       
+
     }
 
     return infile;
@@ -269,6 +84,60 @@ void TextureImporter::Save(const Texture tex, const std::string& filename)
     }
     else {
         cout << "Error saving texture: " + filename;
+    }
+}
+
+void TextureImporter::Import(Resource* resource)
+{
+
+    string id = resource->GetID();
+
+    bool skip = false;
+    for (unsigned int j = 0; j < app->importer->loadedtextures.size(); j++)
+    {
+        if (std::strcmp(app->importer->loadedtextures[j].path.data(), id.c_str()) == 0)
+        {
+            // app->importer->loadedtextures[j];
+  
+            skip = true;
+            break;
+        }
+    }
+    if (!skip)
+    {
+        if (ilLoadImage(resource->GetAssetPath()))
+        {
+            cout << "Texture id: " <<  id << " loaded with devIL" << endl;
+        }
+        else {
+            cout << "Image not loaded with devIL" << endl;
+        }
+
+        Texture texture;
+        ILubyte* data = ilGetData();
+        ILuint width = ilGetInteger(IL_IMAGE_WIDTH), height = ilGetInteger(IL_IMAGE_HEIGHT);
+        ILuint depth = ilGetInteger(IL_IMAGE_DEPTH);
+        ILubyte channels = ilGetInteger(IL_IMAGE_CHANNELS);
+        ILenum format = ilGetInteger(IL_IMAGE_FORMAT);
+        ILenum type = ilGetInteger(IL_IMAGE_TYPE);
+
+        ResourceTexture* rt = static_cast<ResourceTexture*>(resource);
+
+        rt->width = width;
+        rt->height = height;
+        rt->depth = depth;
+        rt->channels = channels;
+        rt->format = format;
+        rt->type = type;
+
+        string storePath = LIBRARY_DIR + id + ".dds";
+
+        if (ilSave(IL_DDS, storePath.c_str()))
+            cout << "saved file with devil\n";
+        else
+            cout << "could not save file with devil \n";
+
+        
     }
 }
 
@@ -338,9 +207,9 @@ std::ostream& operator <<(std::ostream& out, const Material& material)
     out << "<active>" << '[' << material.active << ']' << '\n';
 
     vector<Texture>::const_iterator t = material.textures.begin();
-    while(t != material.textures.end())
+    while (t != material.textures.end())
     {
-        out << "<id>"<< '[' << t->id << "]" << "<type>"<< '[' << t->type <<']' << "<path>" << '[' << t->path << ']' << '\n';
+        out << "<id>" << '[' << t->id << "]" << "<type>" << '[' << t->type << ']' << "<path>" << '[' << t->path << ']' << '\n';
     }
     return out;
 }
@@ -378,14 +247,14 @@ std::ostream& operator <<(std::ostream& out, const Mesh& mesh)
 {
     out << "<Vertices>" << '[' << mesh.vertices.size() << ']';
     out << "<Indices>" << '[' << mesh.indices.size() << ']';
-    out << "<Material Id>" << '[' << mesh.MatId << ']' <<'\n';
+    out << "<Material Id>" << '[' << mesh.MatId << ']' << '\n';
 
     for (const auto& v : mesh.vertices)
     {
-        out << "<position>" << '[' << v.Position.x << ',' << v.Position.x << ',' << v.Position.x <<']';
+        out << "<position>" << '[' << v.Position.x << ',' << v.Position.x << ',' << v.Position.x << ']';
         out << "<noramls>" << '[' << v.Normal.x << ',' << v.Normal.y << ',' << v.Normal.z << ']';
-        out << "<tex coord>"<< '[' << v.TexCoords.x << ',' << v.TexCoords.y << ']';
-        out << "<color>" <<'[' << v.Color.x << ',' << v.Color.y << ',' << v.Color.z << ',' << v.Color.w <<']';
+        out << "<tex coord>" << '[' << v.TexCoords.x << ',' << v.TexCoords.y << ']';
+        out << "<color>" << '[' << v.Color.x << ',' << v.Color.y << ',' << v.Color.z << ',' << v.Color.w << ']';
     }
     return out;
 }
@@ -393,22 +262,16 @@ std::ifstream& operator >>(std::ifstream& in, const Mesh& mesh)
 {
     return in;
 }
-
-void MeshImporter::Load()
-{
-    //set up mesh
-}
-
 void MeshImporter::Save(const Mesh mesh, const std::string& filename)
 {
 
     std::ofstream out("../Output/Library/Mesh/" + filename);
     if (out.is_open())
     {
-            out << mesh << '\n';
+        out << mesh << '\n';
     }
     else {
-        cout << "Error importing mesh: " + filename;
+        cout << "Error saving mesh: " + filename;
     }
 }
 

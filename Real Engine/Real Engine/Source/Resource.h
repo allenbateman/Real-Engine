@@ -1,5 +1,7 @@
 #pragma once
 #include<iostream>
+#include <string>
+#include <fstream>  
 
 using UID = std::string;
 
@@ -17,10 +19,11 @@ public:
 	};
 	Resource(UID id);
 	~Resource();
+	void SetType(Resource::Type type);
 	Resource::Type GetType();
 	UID GetID()const;
-	const char* GetAssetFile() const;
-	const char* GetLibraryFile() const;
+	const char* GetAssetPath() const { return assetsPath.c_str(); };
+	const char* GetLibraryPath() const { return librayPath.c_str(); };
 
 	bool IsLoadedToMemory() const;
 	bool LoadToMemory();
@@ -37,6 +40,7 @@ public:
 protected:
 	std::string  assetsPath;
 	std::string	 librayPath;
+	std::string name;
 	UID uid;
 	Type type = Type::UNKNOWN;
 
