@@ -75,6 +75,7 @@
   <ItemGroup>
     <ClInclude Include="Source\AboutPanel.h" />
     <ClInclude Include="Source\Application.h" />
+    <ClInclude Include="Source\BuffCam.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\CameraController.h" />
     <ClInclude Include="Source\CameraUpdater.h" />

@@ -166,6 +166,7 @@ void CameraController::HandleEvent(Event* e)
 				break;
 			MouseScroll* ms = dynamic_cast<MouseScroll*>(e);
 			camera.ChangeFieldOfView(ms->dy);
+			
 		}break;
 
 		default:

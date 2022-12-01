@@ -94,6 +94,9 @@
     <ClCompile Include="Source\Log.cpp">
       <Filter>Engine\Utils</Filter>
     </ClCompile>
+    <ClCompile Include="Source\MD5.cpp">
+      <Filter>Engine\Utils</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Main.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
@@ -282,6 +285,9 @@
     <ClInclude Include="Source\Log.h">
       <Filter>Engine\Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Source\MD5.h">
+      <Filter>Engine\Utils</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Renderer.h">
       <Filter>Engine\Core\Render</Filter>
     </ClInclude>
@@ -369,8 +375,8 @@
     <ClInclude Include="Source\CameraUpdater.h">
       <Filter>Engine\Core\Controllers</Filter>
     </ClInclude>
-    <ClInclude Include="Source\UUID.h">
-      <Filter>Engine\Utils</Filter>
+    <ClInclude Include="Source\BuffCam.h">
+      <Filter>Engine\Core\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

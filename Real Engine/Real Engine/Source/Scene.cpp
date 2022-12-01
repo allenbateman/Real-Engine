@@ -2,6 +2,7 @@
 #include "SceneManager.h"
 #include "Primitives.h"
 #include "Camera.h"
+#include "Renderer.h"
 
 Scene::Scene()
 {
@@ -23,6 +24,11 @@ void Scene::Init()
 	mainCamera->GetComponent<Transform>().SetParent(&origin.GetComponent<Transform>());
 	gameObejects.push_back(*mainCamera);
 	mainCamera->GetComponent<Camera>().Start();
+	mainCamera->GetComponent<Transform>().Translate(0.0f, 2.0f, 10.0f);
+
+	app->renderer->game.camera = mainCamera->GetComponent<Camera>();
+
+	
 }
 
 void Scene::Enable()
