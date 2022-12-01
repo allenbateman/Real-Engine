@@ -57,15 +57,17 @@ namespace MaterialImporter {
 	void Import(const aiMaterial* material, Material* ourMaterial);
 }
 namespace MeshImporter {
+
 	void Load();
 	void Load(const std::string& filename);
 	void Save(const Mesh mesh, const std::string& filename);
-	void Import(const aiMesh* mesh, Mesh* ourMaterial);
+	Mesh* Import(const aiMesh* mesh);
 }
 namespace FbxImporter {
+	static std::string fbxName;
 	void Import(const std::string& file_path);
 	void ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes);
-	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene);
+	Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
 	Material ProcessMaterial(aiMesh* mesh, const aiScene* scene);
 }
 

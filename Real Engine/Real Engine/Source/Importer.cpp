@@ -376,11 +376,9 @@ void MaterialImporter::Import(const aiMaterial* material, Material* ourMaterial)
 //Mesh operators--------------------------------
 std::ostream& operator <<(std::ostream& out, const Mesh& mesh)
 {
-
-    out << "header\n";
-    out << "Vertices:" << '[' << mesh.vertices.size() << ']';
-    out << "Indices:" << '[' << mesh.indices.size() << ']';
-    out << "Materia id" << '[' << mesh.MatId << ']' <<'\n';
+    out << "<Vertices>" << '[' << mesh.vertices.size() << ']';
+    out << "<Indices>" << '[' << mesh.indices.size() << ']';
+    out << "<Material Id>" << '[' << mesh.MatId << ']' <<'\n';
 
     for (const auto& v : mesh.vertices)
     {
@@ -403,7 +401,8 @@ void MeshImporter::Load()
 
 void MeshImporter::Save(const Mesh mesh, const std::string& filename)
 {
-    std::ofstream out(filename);
+
+    std::ofstream out("../Output/Library/Mesh/" + filename);
     if (out.is_open())
     {
             out << mesh << '\n';
@@ -413,7 +412,7 @@ void MeshImporter::Save(const Mesh mesh, const std::string& filename)
     }
 }
 
-void MeshImporter::Import(const aiMesh* mesh, Mesh* ourMesh)
+Mesh* MeshImporter::Import(const aiMesh* mesh)
 {
     //temporary varaibles to store the mesh data
     std::vector<Vertex> vertices;
@@ -455,7 +454,7 @@ void MeshImporter::Import(const aiMesh* mesh, Mesh* ourMesh)
             indices.push_back(face.mIndices[j]);
     }
 
-    ourMesh = new Mesh(vertices, indices);
+    return new Mesh(vertices, indices);
 }
 
 //Fbx operators--------------------------------
@@ -469,8 +468,8 @@ void FbxImporter::Import(const std::string& file_path)
 
         std::size_t from = file_path.find_last_of('/');
         std::size_t to = file_path.find_last_of('.');
-        string fileName = file_path.substr(from + 1, to);
-        fileName = fileName.substr(0, fileName.find_last_of('.'));
+        fbxName = file_path.substr(from + 1, to);
+        fbxName = fbxName.substr(0, fbxName.find_last_of('.'));
         vector<Mesh> meshes;
         FbxImporter::ProcessNode(scene->mRootNode, scene, &meshes);
         aiReleaseImport(scene);
@@ -489,7 +488,9 @@ void FbxImporter::ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* 
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        meshes->push_back(FbxImporter::ProcessMesh(mesh, scene));
+        Mesh* ourMesh = FbxImporter::ProcessMesh(mesh, scene);
+        meshes->push_back(*ourMesh);
+        MeshImporter::Save(*ourMesh, fbxName + std::to_string(i) + ".mesh");
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
@@ -498,7 +499,7 @@ void FbxImporter::ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* 
     }
 }
 
-Mesh FbxImporter::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+Mesh* FbxImporter::ProcessMesh(aiMesh* mesh, const aiScene* scene)
 {
     //load material attached to the obj
     if (mesh->mMaterialIndex >= 0)
@@ -506,10 +507,7 @@ Mesh FbxImporter::ProcessMesh(aiMesh* mesh, const aiScene* scene)
         FbxImporter::ProcessMaterial(mesh, scene);
     }
 
-    Mesh ourMesh;
-    MeshImporter::Import(mesh, &ourMesh);
-
-    return ourMesh;
+    return  MeshImporter::Import(mesh);
 }
 
 Material FbxImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
