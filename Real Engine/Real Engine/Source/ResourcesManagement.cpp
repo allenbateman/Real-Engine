@@ -55,7 +55,9 @@ void ResourcesManagement::HandleEvent(Event* e)
 void ResourcesManagement::OnDrop(const std::string file_path)
 {
     Resource::Type newFileType;
+
     newFileType = FilterFile(file_path.c_str());
+
     if (newFileType == Resource::Type::UNKNOWN)
     {
         Debug::Warning("We dont support that file Type :(");

@@ -30,6 +30,15 @@ public:
 	//Do this at the begining of the program and onFileChange, onDrop... any more?
 	void ImportFilesFromAssets();
 	UID GenerateUID();
+
+	void exists(const fs::path& p, fs::file_status s = fs::file_status{})
+	{
+		std::cout << p;
+		if (fs::status_known(s) ? fs::exists(s) : fs::exists(p))
+			std::cout << " exists\n";
+		else
+			std::cout << " does not exist\n";
+	}
 private:
 	Resource* CreateNewResource(const string assetsFile, Resource::Type type);
 	std::string* MoveToAssets(const string diskPath);
