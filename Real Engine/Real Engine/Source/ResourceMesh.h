@@ -10,6 +10,7 @@ public:
 	void Load()const;
 	void UnLoad()const;
 
+	static  Resource* Load(std::string UUID, std::ifstream& data);
 	int indices;
 };
 

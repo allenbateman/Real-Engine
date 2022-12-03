@@ -109,7 +109,9 @@ bool Application::Start()
 	{
 		ret = (*current)->Start();
 	}
-	resourceManager->ImportFilesFromAssets();
+
+	//when everythink has started load meta files and all assets
+	resourceManager->Init();
 	return ret;
 }
 

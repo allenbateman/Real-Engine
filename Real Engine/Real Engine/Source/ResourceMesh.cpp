@@ -21,3 +21,8 @@ void ResourceMesh::Load() const
 void ResourceMesh::UnLoad() const
 {
 }
+
+Resource* ResourceMesh::Load(std::string UUID, std::ifstream& data)
+{
+	return nullptr;
+}

@@ -23,6 +23,17 @@ ResourcesManagement::~ResourcesManagement()
 {
 }
 
+bool ResourcesManagement::Init()
+{
+
+    bool ret = false;
+    
+    LoadMetaFiles();
+    ImportFilesFromAssets();
+
+    return ret;
+}
+
 bool ResourcesManagement::Awake()
 {
   
@@ -147,67 +158,52 @@ std::vector<fs::path> ResourcesManagement::SearchForFileType(const std::filesyst
 
 void ResourcesManagement::ImportFilesFromAssets()
 {
-    filesystem::path entry = ASSETS_DIR;   
-    cout << "Reading Assets folder \n";
-
-    vector<filesystem::path>metafiles = SearchForFileType(entry, ".meta");
-
-    for (const auto& file : metafiles)
+    filesystem::path entry = ASSETS_DIR;
+    //import files from assets that have not been imported yet
+    vector <std::pair<filesystem::path, Resource::Type>> filesToLoad;
+    for (auto const& dir_entry : std::filesystem::recursive_directory_iterator{ entry })
     {
-        //read meta file
-        std::ifstream in;
-        in.open(file);
-        if (in.is_open())
+        if (!dir_entry.exists()) return;
+        if (dir_entry.is_directory())
         {
-            std::string pos_id;
-            std::getline(in,pos_id,':');
-            //extract id's
-            std::string id;
-            std::getline(in,id,'\n');
-            std::string assetPath;
-            std::getline(in, assetPath, ':');
-            std::getline(in, assetPath, '\n');
-            std::string libPath;
-            std::getline(in, libPath, ':');
-            std::getline(in, libPath, '\n');
-            std::string type;
-            std::getline(in, type, ':');
-            std::getline(in, type, '\n');
-
-            //check that id file is stored in the project library
-            // meaning we have the custom file 
-            //if not load new resource 
-            if (std::filesystem::exists(libPath))
+            std::cout << dir_entry << '\n';
+            continue;
+        }
+        else {
+            std::cout <<'\t' << dir_entry << '\n';
+            bool LoadFile = true;
+            for (const auto& resource : resources)
             {
-                cout << "file exist in lib, loading resource...\n";
-                Resource* resource = LoadMetaFile(id,(Resource::Type)stoi(type),in);
 
-                resource->SetAssetPath(assetPath);
-                resource->SetLibraryPath(libPath);
-                resources[id] = resource;
+                std::string file = dir_entry.path().string();
+                std::string resourcePath = resource.second->GetAssetPath();
+
+                if (file == resourcePath)
+                {
+                    //file registered
+                    LoadFile = false;
+                    break;
+                }
             }
-            else {
-                cout << "file does not exist in lib, creating resource...";
-                Resource::Type type = FilterFile(assetPath.c_str());
-                ImportFile(assetPath.c_str(), type);
-            }
+            if (LoadFile)
+            {
+                Resource::Type type = FilterFile(dir_entry.path().string().c_str());
+                if (Resource::Type::UNKNOWN != type )
+                {
+                    pair<filesystem::path, Resource::Type> p;
+                    p.first = dir_entry.path();
+                    p.second = type;                    
+                    filesToLoad.push_back(p);
+                }
+            }  
         }
     }
 
-    //for (auto const& dir_entry : std::filesystem::recursive_directory_iterator{ entry })
-    //{
-    //    if (!dir_entry.exists()) return;
-    //    if (dir_entry.is_directory())
-    //    {
-    //        std::cout << dir_entry << '\n';
-    //        continue;
-    //    }
-    //    else {
-    //        std::cout <<'\t' << dir_entry << '\n';
-    //        Resource::Type type =  FilterFile(dir_entry.path().string().c_str());
-    //        ImportFile(dir_entry.path().string().c_str(), type);
-    //    }
-    //}
+    //import files that have been left to add
+    for (const auto& fileToLoad : filesToLoad)
+    {
+        ImportFile(fileToLoad.first.string().c_str(),fileToLoad.second);
+    }
 }
 
 
@@ -240,13 +236,64 @@ Resource* ResourcesManagement::LoadMetaFile(std::string UUID, Resource::Type typ
     Resource* ret = nullptr;
     switch (type) {
     case Resource::Type::Texture: ret = ResourceTexture::Load(UUID,metaFile); break;
-    //case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
+    case Resource::Type::Mesh: ret = ResourceMesh::Load(UUID,metaFile); break;
     //case Resource::Type::Fbx: ret = (Resource*) new ResourceFbx(uid); break;
     case Resource::Type::UNKNOWN:return nullptr; break;
     default: break;
     }
 
     return ret;
+}
+
+void ResourcesManagement::LoadMetaFiles()
+{
+    filesystem::path entry = ASSETS_DIR;
+    cout << "Reading Assets folder \n";
+
+    vector<filesystem::path>metafiles = SearchForFileType(entry, ".meta");
+    //Load meta files
+    for (const auto& file : metafiles)
+    {
+        //read meta file
+        std::ifstream in;
+        in.open(file);
+        if (in.is_open())
+        {
+            std::string pos_id;
+            std::getline(in, pos_id, ':');
+            //extract id's
+            std::string id;
+            std::getline(in, id, '\n');
+            std::string assetPath;
+            std::getline(in, assetPath, ':');
+            std::getline(in, assetPath, '\n');
+            std::string libPath;
+            std::getline(in, libPath, ':');
+            std::getline(in, libPath, '\n');
+            std::string type;
+            std::getline(in, type, ':');
+            std::getline(in, type, '\n');
+
+            //check that id file is stored in the project library
+            // meaning we have the custom file 
+            //if not load new resource 
+            if (std::filesystem::exists(libPath))
+            {
+                cout << "file exist in lib, loading resource...\n";
+                Resource* resource = LoadMetaFile(id, (Resource::Type)stoi(type), in);
+
+                resource->SetAssetPath(assetPath);
+                resource->SetLibraryPath(libPath);
+                resources[id] = resource;
+            }
+            else {
+                cout << "file does not exist in lib, creating resource...";
+                Resource::Type type = FilterFile(assetPath.c_str());
+                ImportFile(assetPath.c_str(), type);
+            }
+        }
+    }
+
 }
 
 std::string* ResourcesManagement::MoveToAssets(const string disc_path)
