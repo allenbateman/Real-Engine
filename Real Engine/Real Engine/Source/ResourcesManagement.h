@@ -57,6 +57,9 @@ private:
 	//Do this at the begining of the program and onFileChange, onDrop... any more?
 	void ImportFilesFromAssets();
 
+	//check if a file is already registered as a resource in a meta file
+	bool ExistFileInResources(std::string filePath);
+
 	//moves a on drop file to the assets folder	
 	std::string* MoveToAssets(const string diskPath);
 	//generates a library file path for the imported file

@@ -36,6 +36,7 @@ bool Panel::CleanUp()
 
 bool Panel::OnHovered()
 {
+	bool focus = false;
 	if (ImGui::IsWindowHovered(0))
 	{
 		ImGuiViewport* viewport = ImGui::GetMainViewport();
@@ -45,20 +46,26 @@ bool Panel::OnHovered()
 		//vMin.y += ImGui::GetWindowPos().y - borderOffset;
 		vMax.x += ImGui::GetWindowPos().x + borderOffset;
 		vMax.y += ImGui::GetWindowPos().y + borderOffset;
-
-
 		ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, borderColor, 0, 0, borderOffset);
-		ePanelFocus.focused = true;
-		app->eventSystem->PostEvent(&ePanelFocus);
-		return true;
+		
+		focus = true;
 	}
-	ePanelFocus.focused = false;
-	app->eventSystem->PostEvent(&ePanelFocus);
-	return false;
+	else {
+		focus = false;
+	}
+	if (LastPanelFocus != focus)
+	{
+		LastPanelFocus = focus;
+		ePanelFocus.focused = focus;
+		app->eventSystem->PostEvent(&ePanelFocus);
+		cout << "Panel focus: " << name.GetString() << " " << focus << "\n";
+	}
+	return focus;
 }
 
 bool Panel::OnResize()
 {
+	bool Resized = false;
 	availableSize = ImGui::GetContentRegionAvail();
 	if (LastSize.x != availableSize.x || LastSize.y != availableSize.y)
 	{
@@ -66,10 +73,19 @@ bool Panel::OnResize()
 		ePanelResize.x = LastSize.x;
 		ePanelResize.y = LastSize.y;
 
-		BroadCastEvent(&ePanelResize);
-		return true;
+
+		Resized =  true;
+		PanelResize = true;
 	}
-	return false;
+	if ((PanelResize != Resized))
+	{
+		BroadCastEvent(&ePanelResize);
+		PanelResize = false;
+	}
+	Resized = false;
+
+
+	return Resized;
 }
 
 void Panel::BroadCastEvent(Event* e)

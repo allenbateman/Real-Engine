@@ -171,21 +171,8 @@ void ResourcesManagement::ImportFilesFromAssets()
         }
         else {
             std::cout <<'\t' << dir_entry << '\n';
-            bool LoadFile = true;
-            for (const auto& resource : resources)
-            {
-
-                std::string file = dir_entry.path().string();
-                std::string resourcePath = resource.second->GetAssetPath();
-
-                if (file == resourcePath)
-                {
-                    //file registered
-                    LoadFile = false;
-                    break;
-                }
-            }
-            if (LoadFile)
+             bool exist = ExistFileInResources(dir_entry.path().string());
+            if (!exist)
             {
                 Resource::Type type = FilterFile(dir_entry.path().string().c_str());
                 if (Resource::Type::UNKNOWN != type )
@@ -204,6 +191,21 @@ void ResourcesManagement::ImportFilesFromAssets()
     {
         ImportFile(fileToLoad.first.string().c_str(),fileToLoad.second);
     }
+}
+
+bool ResourcesManagement::ExistFileInResources(std::string filePath)
+{
+    for (const auto& resource : resources)
+    {
+        std::string resourcePath = resource.second->GetAssetPath();
+
+        if (filePath == resourcePath)
+        {
+            //file registered
+            return  true;
+        }
+    }
+    return false;
 }
 
 
@@ -237,7 +239,7 @@ Resource* ResourcesManagement::LoadMetaFile(std::string UUID, Resource::Type typ
     switch (type) {
     case Resource::Type::Texture: ret = ResourceTexture::Load(UUID,metaFile); break;
     case Resource::Type::Mesh: ret = ResourceMesh::Load(UUID,metaFile); break;
-    //case Resource::Type::Fbx: ret = (Resource*) new ResourceFbx(uid); break;
+    case Resource::Type::Fbx: ret = ResourceFbx::Load(UUID, metaFile); break;
     case Resource::Type::UNKNOWN:return nullptr; break;
     default: break;
     }
@@ -287,7 +289,7 @@ void ResourcesManagement::LoadMetaFiles()
                 resources[id] = resource;
             }
             else {
-                cout << "file does not exist in lib, creating resource...";
+                cout << "file does not exist in lib, creating resource...\n";
                 Resource::Type type = FilterFile(assetPath.c_str());
                 ImportFile(assetPath.c_str(), type);
             }
@@ -308,7 +310,7 @@ std::string* ResourcesManagement::MoveToAssets(const string disc_path)
     //check if this asset is already in the program
     if (Exists(*newPath))
     {
-        cout << "file already exist: " << fileName;
+        cout << "file already exist: " << fileName <<  "\n";
         return nullptr;
     }
     //store new file to assets

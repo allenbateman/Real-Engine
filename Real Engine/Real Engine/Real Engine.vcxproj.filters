@@ -11,40 +11,40 @@
       <Filter>Engine\Core\Event System</Filter>
     </ClCompile>
     <ClCompile Include="Source\UiSystem.cpp">
-      <Filter>Engine\Core\UI</Filter>
+      <Filter>Engine\Core\Ui system</Filter>
     </ClCompile>
     <ClCompile Include="Source\AboutPanel.cpp">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameObject.cpp">
       <Filter>Engine\Core\Game Objects</Filter>
     </ClCompile>
     <ClCompile Include="Source\Inspector.cpp">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\EntityComponentSystem.cpp">
       <Filter>Engine\Core\Entity component system</Filter>
     </ClCompile>
     <ClCompile Include="Source\FileExplorer.cpp">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\Window.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
     <ClCompile Include="Source\ConsolePanel.cpp">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\RendererPanel.cpp">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\SceneHerarchyPanel.cpp">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\Viewport.cpp">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\Panel.cpp">
-      <Filter>Engine\Core\UI</Filter>
+      <Filter>Engine\Core\Ui system</Filter>
     </ClCompile>
     <ClCompile Include="Source\EntityManager.cpp">
       <Filter>Engine\Core\Entity component system</Filter>
@@ -80,7 +80,7 @@
       <Filter>Engine\Utils\ImGui</Filter>
     </ClCompile>
     <ClCompile Include="Source\FPSGraph.cpp">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\Importer.cpp">
       <Filter>Engine\Core\Files system</Filter>
@@ -92,9 +92,6 @@
       <Filter>Engine\Core\Render</Filter>
     </ClCompile>
     <ClCompile Include="Source\Log.cpp">
-      <Filter>Engine\Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Source\MD5.cpp">
       <Filter>Engine\Utils</Filter>
     </ClCompile>
     <ClCompile Include="Source\Main.cpp">
@@ -158,7 +155,7 @@
       <Filter>Engine\Core\Files system\Resources</Filter>
     </ClCompile>
     <ClCompile Include="Source\GameViewport.cpp">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -178,13 +175,13 @@
       <Filter>Engine\Core\Event System</Filter>
     </ClInclude>
     <ClInclude Include="Source\UiSystem.h">
-      <Filter>Engine\Core\UI</Filter>
+      <Filter>Engine\Core\Ui system</Filter>
     </ClInclude>
     <ClInclude Include="Source\AboutPanel.h">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\Inspector.h">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameObject.h">
       <Filter>Engine\Core\Game Objects</Filter>
@@ -193,28 +190,28 @@
       <Filter>Engine\Core\Entity component system</Filter>
     </ClInclude>
     <ClInclude Include="Source\FileExplorer.h">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\Window.h">
       <Filter>Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Source\ConsolePanel.h">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\RendererPanel.h">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\SceneHerarchyPanel.h">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\Viewport.h">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\Panel.h">
-      <Filter>Engine\Core\UI</Filter>
+      <Filter>Engine\Core\Ui system</Filter>
     </ClInclude>
     <ClInclude Include="Source\PanelIDs.h">
-      <Filter>Engine\Core\UI</Filter>
+      <Filter>Engine\Core\Ui system</Filter>
     </ClInclude>
     <ClInclude Include="Source\EntityManager.h">
       <Filter>Engine\Core\Entity component system</Filter>
@@ -265,7 +262,7 @@
       <Filter>Engine\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\FPSGraph.h">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\Importer.h">
       <Filter>Engine\Core\Files system</Filter>
@@ -283,9 +280,6 @@
       <Filter>Engine\Core\Entity component system</Filter>
     </ClInclude>
     <ClInclude Include="Source\Log.h">
-      <Filter>Engine\Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Source\MD5.h">
       <Filter>Engine\Utils</Filter>
     </ClInclude>
     <ClInclude Include="Source\Renderer.h">
@@ -361,7 +355,7 @@
       <Filter>Engine\Core\Files system\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Source\GameViewport.h">
-      <Filter>Engine\Core\UI\Panels</Filter>
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
     <ClInclude Include="Source\Debugger.h">
       <Filter>Engine\Core</Filter>
@@ -378,6 +372,7 @@
     <ClInclude Include="Source\BuffCam.h">
       <Filter>Engine\Core\Render</Filter>
     </ClInclude>
+    <ClInclude Include="Source\UUID.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">
@@ -388,12 +383,6 @@
     </Filter>
     <Filter Include="Engine\Utils">
       <UniqueIdentifier>{1044801b-c87e-4f9f-90f8-ce0e735ad46d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Core\UI">
-      <UniqueIdentifier>{196dd430-6fcf-4567-82e9-77ef4e3058d9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Core\UI\Panels">
-      <UniqueIdentifier>{fe895f04-d056-4557-be71-8f92c5e58acb}</UniqueIdentifier>
     </Filter>
     <Filter Include="Engine\Core\Game Objects">
       <UniqueIdentifier>{4a513a0e-99cf-4b5b-bf56-1b6414e67be7}</UniqueIdentifier>
@@ -424,6 +413,12 @@
     </Filter>
     <Filter Include="Engine\Core\Controllers">
       <UniqueIdentifier>{ddec1211-0948-4800-b79a-fb4751ea5d31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core\Ui system">
+      <UniqueIdentifier>{196dd430-6fcf-4567-82e9-77ef4e3058d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Core\Ui system\Panels">
+      <UniqueIdentifier>{fe895f04-d056-4557-be71-8f92c5e58acb}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

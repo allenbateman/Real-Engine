@@ -43,6 +43,9 @@ public:
 	OnPanelFocus ePanelFocus;
 
 	int scrollDisplacement = 0;
+
+	bool LastPanelFocus = false;
+	bool PanelResize = false;
 	
 };
 
