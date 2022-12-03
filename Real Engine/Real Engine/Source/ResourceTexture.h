@@ -7,8 +7,9 @@ public:
     ~ResourceTexture();
 
     void Save()const;
-    void Load()const;
+    void Load() const;
     void UnLoad()const;
+    static  Resource* Load(std::string UUID,std::ifstream& data );
 public:
 
     int width;
@@ -17,5 +18,7 @@ public:
     int format;
     int depth;
     int type;
+    int flipped;
+
 };
 

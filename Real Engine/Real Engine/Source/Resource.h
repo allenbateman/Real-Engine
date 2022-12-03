@@ -2,6 +2,7 @@
 #include<iostream>
 #include <string>
 #include <fstream>  
+#include <filesystem>  
 
 using UID = std::string;
 
@@ -20,7 +21,7 @@ public:
 	Resource(UID id);
 	~Resource();
 	void SetType(Resource::Type type);
-	Resource::Type GetType();
+	Resource::Type GetType() const;
 	UID GetID()const;
 	const char* GetAssetPath() const { return assetsPath.c_str(); };
 	const char* GetLibraryPath() const { return librayPath.c_str(); };
@@ -43,6 +44,7 @@ protected:
 	std::string name;
 	UID uid;
 	Type type = Type::UNKNOWN;
+
 
 	unsigned int referenceCount = 0;
 };

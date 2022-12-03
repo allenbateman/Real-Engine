@@ -14,7 +14,7 @@ void Resource::SetType(Resource::Type type)
    this->type = type;
 }
 
-Resource::Type Resource::GetType()
+Resource::Type Resource::GetType() const
 {
     return type;
 }

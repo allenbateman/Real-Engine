@@ -69,8 +69,7 @@ void ResourcesManagement::OnDrop(const std::string file_path)
     if (assets_path == nullptr)
         return;
 
-    //Import the file
-    
+    //Import the file    
     ImportFile(assets_path->c_str(), newFileType);
 }
 
@@ -91,9 +90,7 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
     switch (resource->GetType())
     {
     case Resource::Type::Fbx: ImportFbx(assets_path); break;
-    case Resource::Type::Texture: 
-        TextureImporter::Import(resource); 
-        break;
+    case Resource::Type::Texture: TextureImporter::Import(resource);break;
     default:
         break;
     }
@@ -134,40 +131,90 @@ void ResourcesManagement::ReleaseResource(UID uid)
     resources.erase(uid);
 }
 
-void ResourcesManagement::ImportFilesFromAssets()
+std::vector<fs::path> ResourcesManagement::SearchForFileType(const std::filesystem::path root, const std::string extension)
 {
-    filesystem::path entry = ASSETS_DIR;
-    filesystem::directory_iterator currentDir;
-    
-    cout << "Reading Assets folder \n";
-    for (auto const& dir_entry : std::filesystem::recursive_directory_iterator{ entry })
+    std::vector<fs::path> paths;
+    if (filesystem::exists(root) && filesystem::is_directory(root))
     {
-        if (!dir_entry.exists()) return;
-        if (dir_entry.is_directory())
+        for (auto const& entry : filesystem::recursive_directory_iterator(root))
         {
-            std::cout << dir_entry << '\n';
-            continue;
-        }
-        else {
-            std::cout <<'\t' << dir_entry << '\n';
-            Resource::Type type =  FilterFile(dir_entry.path().string().c_str());
-            ImportFile(dir_entry.path().string().c_str(), type);
+            if (fs::is_regular_file(entry) && entry.path().extension() == extension)
+                paths.emplace_back(entry.path());
         }
     }
+    return paths;
 }
 
-UID ResourcesManagement::GenerateUID()
+void ResourcesManagement::ImportFilesFromAssets()
 {
-    return "asd";
+    filesystem::path entry = ASSETS_DIR;   
+    cout << "Reading Assets folder \n";
+
+    vector<filesystem::path>metafiles = SearchForFileType(entry, ".meta");
+
+    for (const auto& file : metafiles)
+    {
+        //read meta file
+        std::ifstream in;
+        in.open(file);
+        if (in.is_open())
+        {
+            std::string pos_id;
+            std::getline(in,pos_id,':');
+            //extract id's
+            std::string id;
+            std::getline(in,id,'\n');
+            std::string assetPath;
+            std::getline(in, assetPath, ':');
+            std::getline(in, assetPath, '\n');
+            std::string libPath;
+            std::getline(in, libPath, ':');
+            std::getline(in, libPath, '\n');
+            std::string type;
+            std::getline(in, type, ':');
+            std::getline(in, type, '\n');
+
+            //check that id file is stored in the project library
+            // meaning we have the custom file 
+            //if not load new resource 
+            if (std::filesystem::exists(libPath))
+            {
+                cout << "file exist in lib, loading resource...\n";
+                Resource* resource = LoadMetaFile(id,(Resource::Type)stoi(type),in);
+
+                resource->SetAssetPath(assetPath);
+                resource->SetLibraryPath(libPath);
+                resources[id] = resource;
+            }
+            else {
+                cout << "file does not exist in lib, creating resource...";
+                Resource::Type type = FilterFile(assetPath.c_str());
+                ImportFile(assetPath.c_str(), type);
+            }
+        }
+    }
+
+    //for (auto const& dir_entry : std::filesystem::recursive_directory_iterator{ entry })
+    //{
+    //    if (!dir_entry.exists()) return;
+    //    if (dir_entry.is_directory())
+    //    {
+    //        std::cout << dir_entry << '\n';
+    //        continue;
+    //    }
+    //    else {
+    //        std::cout <<'\t' << dir_entry << '\n';
+    //        Resource::Type type =  FilterFile(dir_entry.path().string().c_str());
+    //        ImportFile(dir_entry.path().string().c_str(), type);
+    //    }
+    //}
 }
+
 
 Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resource::Type type)
 {
-
     Resource* ret = nullptr;
     UID uid = uuid::generate_uuid();
-
-
     std::size_t from = assets_path.find_last_of('/');
     std::string fileName = assets_path.substr(from + 1, ' ');
 
@@ -181,12 +228,24 @@ Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resou
     if (ret != nullptr)
     {
         resources[uid] = ret;
-        ret->SetType(type);
         ret->SetAssetPath(assets_path);
-        ret->SetLibraryPath(GenLibraryPath(assets_path));
         Debug::Log("Importing asset:" + fileName);
         Debug::Log(" id:" + uid);
     }
+    return ret;
+}
+
+Resource* ResourcesManagement::LoadMetaFile(std::string UUID, Resource::Type type, std::ifstream& metaFile)
+{
+    Resource* ret = nullptr;
+    switch (type) {
+    case Resource::Type::Texture: ret = ResourceTexture::Load(UUID,metaFile); break;
+    //case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
+    //case Resource::Type::Fbx: ret = (Resource*) new ResourceFbx(uid); break;
+    case Resource::Type::UNKNOWN:return nullptr; break;
+    default: break;
+    }
+
     return ret;
 }
 
@@ -199,6 +258,12 @@ std::string* ResourcesManagement::MoveToAssets(const string disc_path)
     std::string newPathFolder = "../Output/Assets/";
     std::string* newPath = new std::string(newPathFolder + fileName);
 
+    //check if this asset is already in the program
+    if (Exists(*newPath))
+    {
+        cout << "file already exist: " << fileName;
+        return nullptr;
+    }
     //store new file to assets
     if (rename(disc_path.c_str(), newPath->c_str()))
     {
@@ -219,7 +284,7 @@ std::string ResourcesManagement::GenLibraryPath(const string assets_path)
     std::size_t from = assets_path.find_last_of('/');
     std::string fileName = assets_path.substr(from + 1, ' ');
     std::string newPathFolder = "../Output/Library/";
-    std::string* newPath = new std::string(newPathFolder + fileName);
+    std::string* newPath = new std::string(newPathFolder);
     return *newPath;
     //store new file to assets
     if (rename(assets_path.c_str(), newPath->c_str()))

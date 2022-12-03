@@ -26,27 +26,31 @@ public:
 	const Resource* RequestResource(UID uid) const;
 	void ReleaseResource(UID uid);
 
+
+	std::vector<filesystem::path> SearchForFileType(const std::filesystem::path root, const std::string extension);
 	//Read all files from Assets folder and import if its not imported
 	//Do this at the begining of the program and onFileChange, onDrop... any more?
 	void ImportFilesFromAssets();
-	UID GenerateUID();
 
-	void exists(const fs::path& p, fs::file_status s = fs::file_status{})
+	bool Exists(const std::filesystem::path& path)
 	{
-		std::cout << p;
-		if (fs::status_known(s) ? fs::exists(s) : fs::exists(p))
-			std::cout << " exists\n";
-		else
-			std::cout << " does not exist\n";
+		ifstream ifile;
+		ifile.open(path);
+		if (ifile) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 private:
 	Resource* CreateNewResource(const string assetsFile, Resource::Type type);
+	Resource* LoadMetaFile(std::string UUID,Resource::Type type,std::ifstream& metaFile );
 	std::string* MoveToAssets(const string diskPath);
 	std::string GenLibraryPath(const string assetsFile);
-	Resource::Type FilterFile(const char* file_path);
+	Resource::Type FilterFile(const char* filePath);
 	std::map<UID, Resource*> resources{};
-	std::map<Resource*, std::string> reourceToAssets{};
-	void ImportFbx(const std::string& file_path);
+	void ImportFbx(const std::string& filePath);
 
 };
 

@@ -133,11 +133,12 @@ void TextureImporter::Import(Resource* resource)
         string storePath = LIBRARY_DIR + id + ".dds";
 
         if (ilSave(IL_DDS, storePath.c_str()))
+        {
             cout << "saved file with devil\n";
+            rt->SetLibraryPath(storePath);
+        }
         else
-            cout << "could not save file with devil \n";
-
-        
+            cout << "could not save file with devil \n";        
     }
 }
 
@@ -245,16 +246,16 @@ void MaterialImporter::Import(const aiMaterial* material, Material* ourMaterial)
 //Mesh operators--------------------------------
 std::ostream& operator <<(std::ostream& out, const Mesh& mesh)
 {
-    out << "<Vertices>" << '[' << mesh.vertices.size() << ']';
-    out << "<Indices>" << '[' << mesh.indices.size() << ']';
-    out << "<Material Id>" << '[' << mesh.MatId << ']' << '\n';
+    out << "Vertices:" << mesh.vertices.size() << '\n';
+    out << "Indices:" <<  mesh.indices.size() << '\n';
+    out << "Material Id:" << mesh.MatId << '\n';
 
     for (const auto& v : mesh.vertices)
     {
         out << "<position>" << '[' << v.Position.x << ',' << v.Position.x << ',' << v.Position.x << ']';
-        out << "<noramls>" << '[' << v.Normal.x << ',' << v.Normal.y << ',' << v.Normal.z << ']';
+        out << "<normals>" << '[' << v.Normal.x << ',' << v.Normal.y << ',' << v.Normal.z << ']';
         out << "<tex coord>" << '[' << v.TexCoords.x << ',' << v.TexCoords.y << ']';
-        out << "<color>" << '[' << v.Color.x << ',' << v.Color.y << ',' << v.Color.z << ',' << v.Color.w << ']';
+        out << "<color>" << '[' << v.Color.x << ',' << v.Color.y << ',' << v.Color.z << ',' << v.Color.w << ']' << "\n";
     }
     return out;
 }
