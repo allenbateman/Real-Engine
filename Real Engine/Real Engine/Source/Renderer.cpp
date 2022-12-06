@@ -55,6 +55,7 @@ bool Renderer::Awake()
 	app->eventSystem->SubscribeModule(this, ON_PANEL_FOCUS);
 	app->eventSystem->SubscribeModule(this, MOUSE_SCROLL);
 	app->eventSystem->SubscribeModule(this, ON_FOV_CHANGE);
+	
 	return true;
 }
 

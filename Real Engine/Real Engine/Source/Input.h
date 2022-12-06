@@ -29,7 +29,7 @@ public:
 	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
 	void RetriveKeyCallBack(int key, int scancode, int action, int mods);
 	static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
-	void RetriveMouseButtonCallBack(int button, int action, int mods);
+	void RetriveMouseButtonCallBack(int button, int action, int mods, double xpos, double ypos);
 	static void MousePositionCallback(GLFWwindow* window, double xpos, double ypos);
 	void RetriveMousePositionCallBack(double xpos, double ypos,double dx, double dy);
 	static void MouseScrollCallback(GLFWwindow* window, double xOffset, double yOffset);

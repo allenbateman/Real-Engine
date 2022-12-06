@@ -62,11 +62,13 @@ PixelInfo PickingTexture::ReadPixel(int x, int y)
     glReadBuffer(GL_COLOR_ATTACHMENT0);
 
     PixelInfo Pixel;
-    glReadPixels(x, y, 1, 1, GL_RGB_INTEGER, GL_UNSIGNED_INT, &Pixel);
+    glReadPixels(x, y, 1, 1, GL_RGB_INTEGER, GL_INT, &Pixel);
 
     glReadBuffer(GL_NONE);
 
     glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
 
+    std::cout << "DrawId: " << Pixel.DrawId << " ObjectId: " << Pixel.ObjectId <<" PrimId: "<< Pixel.PrimId <<" X: "<<x<<" Y: "<<y << std::endl;
+    
     return Pixel;
 }
