@@ -167,13 +167,15 @@ void Input::MouseButtonCallback(GLFWwindow* window, int button, int action, int 
 		break;
 	}
 	shared_ptr<Input>  input = app->input;
-	input->RetriveMouseButtonCallBack(button, action, mods);
+	input->RetriveMouseButtonCallBack(button, action, mods, mouseX, mouseY);
 }
 
-void Input::RetriveMouseButtonCallBack(int button, int action, int mods)
+void Input::RetriveMouseButtonCallBack(int button, int action, int mods, double xpos, double ypos)
 {
 	mouseButtonEvent.key = button;
 	mouseButtonEvent.keyState = mouseButtons[button];
+	mouseButtonEvent.x = xpos;
+	mouseButtonEvent.y = ypos;
 	app->eventSystem->PostEvent(&mouseButtonEvent);
 }
 

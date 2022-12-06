@@ -7,6 +7,7 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "BuffCam.h"
+#include "PickingTexture.h"
 
 #define MAX_LIGHTS 8
 
@@ -53,6 +54,8 @@ public:
 
 	FrameBuffer editorBuffer;
 	FrameBuffer gameBuffer;
+
+	PickingTexture pickingTex;
 	
 
 	

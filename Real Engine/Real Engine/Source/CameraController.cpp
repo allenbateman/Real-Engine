@@ -92,9 +92,13 @@ void CameraController::HandleEvent(Event* e)
 
 			MouseInput* mo = dynamic_cast<MouseInput*>(e);
 
-			if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)camera.mouseLeft = true;
+			if (mo->key == GLFW_MOUSE_BUTTON_1 && mo->keyState == KEY_DOWN)
+			{
+				camera.mouseLeft = true;
+				app->renderer->pickingTex.ReadPixel(mo->x, -mo->y);
+			}
 			if (mo->key == GLFW_MOUSE_BUTTON_2 && mo->keyState == KEY_DOWN)camera.mouseRight = true;
-
+			
 		}
 
 		break;
@@ -130,6 +134,8 @@ void CameraController::HandleEvent(Event* e)
 				camera.CalculateViewMatrix();
 			}
 
+			
+
 			if (camera.altKey && camera.mouseLeft)
 			{
 				float rotationX = 0.0f;
@@ -158,6 +164,7 @@ void CameraController::HandleEvent(Event* e)
 
 				camera.CalculateViewMatrix();
 			}
+			
 		}
 		break;
 		case MOUSE_SCROLL:

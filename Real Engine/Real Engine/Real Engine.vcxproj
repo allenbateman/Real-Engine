@@ -52,6 +52,7 @@
     <ClCompile Include="Source\Mesh.cpp" />
     <ClCompile Include="Source\ObjectLoader.cpp" />
     <ClCompile Include="Source\Panel.cpp" />
+    <ClCompile Include="Source\PickingTexture.cpp" />
     <ClCompile Include="Source\Renderer.cpp" />
     <ClCompile Include="Source\RendererPanel.cpp" />
     <ClCompile Include="Source\Resource.cpp" />
@@ -121,6 +122,7 @@
     <ClInclude Include="Source\ObjectLoader.h" />
     <ClInclude Include="Source\Panel.h" />
     <ClInclude Include="Source\PanelIDs.h" />
+    <ClInclude Include="Source\PickingTexture.h" />
     <ClInclude Include="Source\Primitives.h" />
     <ClInclude Include="Source\ProjectDirectories.h" />
     <ClInclude Include="Source\Renderer.h" />

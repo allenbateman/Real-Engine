@@ -159,6 +159,9 @@
     </ClCompile>
     <ClCompile Include="Source\ResourceMaterial.cpp">
       <Filter>Engine\Core\Files system\Resources</Filter>
+	</ClCompile>
+    <ClCompile Include="Source\PickingTexture.cpp">
+      <Filter>Engine\Core\Render</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -378,6 +381,9 @@
     <ClInclude Include="Source\UUID.h" />
     <ClInclude Include="Source\ResourceMaterial.h">
       <Filter>Engine\Core\Files system\Resources</Filter>
+	</ClInclude>
+    <ClInclude Include="Source\PickingTexture.h">
+      <Filter>Engine\Core\Render</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
