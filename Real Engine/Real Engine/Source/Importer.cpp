@@ -6,11 +6,8 @@
 #include "EventSystem.h"
 #include "Events.h"
 #include "Debugger.h"
-#include "TextureLoader.h"
 #include <sstream>
 #include <string>
-
-#include "ResourceTexture.h"
 
 Importer::Importer()
 {
@@ -64,16 +61,6 @@ std::ifstream& operator>>(std::ifstream& infile, const Texture& tex)
 
     return infile;
 }
-Texture* TextureImporter::Load(const std::string& filename)
-{
-    std::ifstream texFile(filename);
-    Texture* loadTex = new Texture();
-    if (texFile.is_open())
-    {
-        texFile >> *loadTex;
-    }
-    return loadTex;
-}
 
 void TextureImporter::Save(const Texture tex, const std::string& filename)
 {
@@ -85,135 +72,181 @@ void TextureImporter::Save(const Texture tex, const std::string& filename)
     else {
         cout << "Error saving texture: " + filename;
     }
+
+    out.close();
 }
 
-void TextureImporter::Import(Resource* resource)
-{
+Resource* TextureImporter::Import(Resource* resource){
 
     string id = resource->GetID();
-
-    bool skip = false;
-    for (unsigned int j = 0; j < app->importer->loadedtextures.size(); j++)
+    ResourceTexture* rt = static_cast<ResourceTexture*>(resource);
+    
+    if (ilLoadImage(resource->GetAssetPath()))
     {
-        if (std::strcmp(app->importer->loadedtextures[j].path.data(), id.c_str()) == 0)
-        {
-            // app->importer->loadedtextures[j];
+        cout << "Texture id: " <<  id << " loaded with devIL" << endl;
+    }
+    else {
+        cout << "Image not loaded with devIL "<< resource->name << endl;
+       // return ;
+    }
+
+    ILubyte* data = ilGetData();
+    ILuint width = ilGetInteger(IL_IMAGE_WIDTH), height = ilGetInteger(IL_IMAGE_HEIGHT);
+    ILuint depth = ilGetInteger(IL_IMAGE_DEPTH);
+    ILubyte channels = ilGetInteger(IL_IMAGE_CHANNELS);
+    ILenum format = ilGetInteger(IL_IMAGE_FORMAT);
+    ILenum type = ilGetInteger(IL_IMAGE_TYPE);
+
+
+
+    rt->width = width;
+    rt->height = height;
+    rt->depth = depth;
+    rt->channels = channels;
+    rt->format = format;
+    rt->type = type;
+
+    string path = LIBRARY_DIR;
+    std::string storePath = path + "Textures\\" + id + ".dds";
+
+    if (ilSave(IL_DDS, storePath.c_str()))
+    {
+        cout << "saved file with devil\n";
+        rt->SetLibraryPath(storePath);
+    }
+    else
+    {
+        cout << "could not save file with devil \n";
+        app->importer->importedTextures.push_back("Save Failed: " + resource->name);
+        return nullptr;
+    }
+    //Save meta file
+    rt->Save();
   
-            skip = true;
-            break;
-        }
-    }
-    if (!skip)
-    {
-        if (ilLoadImage(resource->GetAssetPath()))
-        {
-            cout << "Texture id: " <<  id << " loaded with devIL" << endl;
-        }
-        else {
-            cout << "Image not loaded with devIL" << endl;
-        }
+    app->importer->importedTextures.push_back(resource->GetAssetPath());
 
-        Texture texture;
-        ILubyte* data = ilGetData();
-        ILuint width = ilGetInteger(IL_IMAGE_WIDTH), height = ilGetInteger(IL_IMAGE_HEIGHT);
-        ILuint depth = ilGetInteger(IL_IMAGE_DEPTH);
-        ILubyte channels = ilGetInteger(IL_IMAGE_CHANNELS);
-        ILenum format = ilGetInteger(IL_IMAGE_FORMAT);
-        ILenum type = ilGetInteger(IL_IMAGE_TYPE);
-
-        ResourceTexture* rt = static_cast<ResourceTexture*>(resource);
-
-        rt->width = width;
-        rt->height = height;
-        rt->depth = depth;
-        rt->channels = channels;
-        rt->format = format;
-        rt->type = type;
-
-        string storePath = LIBRARY_DIR + id + ".dds";
-
-        if (ilSave(IL_DDS, storePath.c_str()))
-        {
-            cout << "saved file with devil\n";
-            rt->SetLibraryPath(storePath);
-        }
-        else
-            cout << "could not save file with devil \n";        
-    }
+    return rt;
+    
 }
-
-
-std::vector<Texture> TextureImporter::Import(const aiMaterial* mat, aiTextureType type, std::string typeName)
-{
-    std::vector<Texture> textures;
-    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
-    {
-        aiString str;
-        mat->GetTexture(type, i, &str);
-
-        string filepath = app->importer->directory + "/" + str.C_Str();
-        string filename = str.C_Str();
-
-        bool skip = false;
-        for (unsigned int j = 0; j < app->importer->loadedtextures.size(); j++)
-        {
-            if (std::strcmp(app->importer->loadedtextures[j].path.data(), str.C_Str()) == 0)
-            {
-                textures.push_back(app->importer->loadedtextures[j]);
-                skip = true;
-                break;
-            }
-        }
-        if (!skip)
-        {
-            if (ilLoadImage(filepath.c_str()))
-            {
-                cout << "Texture: " << str.C_Str() << " loaded with devIL" << endl;
-            }
-            else {
-                cout << "Image not loaded with devIL" << endl;
-            }
-
-            // if texture hasn't been loaded already, load it
-            Texture texture;
-
-            //for textures
-            string fileName = filename.substr(0, filename.find_last_of('.'));
-            cout << fileName << endl;
-            string storePath = LIBRARY_DIR + fileName + ".dds";
-            cout << storePath << endl;
-
-            if (ilSave(IL_DDS, storePath.c_str()))
-                cout << "saved file with devil\n";
-            else
-                cout << "could not save file with devil \n";
-
-
-            texture.id = LoadTexture(app->importer->directory + "/" + str.C_Str());
-
-            texture.path = app->importer->directory + "/" + str.C_Str();
-            texture.type = typeName;
-            textures.push_back(texture);
-            app->importer->loadedtextures.push_back(texture); // add to loaded textures
-        }
-    }
-    return textures;
-}
-
 //Material operators--------------------------------
 std::ostream& operator <<(std::ostream& out, const Material& material)
 {
     out << "header\n";
     out << "<textures>" << '[' << material.textures.size() << ']' << '\n';
-    out << "<active>" << '[' << material.active << ']' << '\n';
-
     vector<Texture>::const_iterator t = material.textures.begin();
     while (t != material.textures.end())
     {
         out << "<id>" << '[' << t->id << "]" << "<type>" << '[' << t->type << ']' << "<path>" << '[' << t->path << ']' << '\n';
+        t++;
     }
     return out;
 }
+void MaterialImporter::Import(const aiMaterial* material, Resource* resource)
+{
+    ResourceMaterial* resourceMat = static_cast<ResourceMaterial*>(resource);
+
+    bool Skip = false;
+
+    //Laod material textures
+    for (unsigned int i = 0; i < material->GetTextureCount(aiTextureType_DIFFUSE); i++)
+    {
+        aiString str;
+        material->GetTexture(aiTextureType_DIFFUSE, i, &str);
+        string name = str.C_Str();
+        string path = ASSETS_DIR + name;
+               
+        for (const auto& texPath : app->importer->importedTextures)
+        {
+          
+            if (std::strcmp(texPath.data(), path.data()) == 0)
+            {
+                UID resourceID = app->resourceManager->FindResource(texPath.c_str());
+                     
+                Resource* textureDiff = app->resourceManager->GetResource(resourceID);
+                if (textureDiff == nullptr)
+                {
+                    cout << "ERROR::METRAIL_IMPORTER::RESOURCE_IS_NULL\n"; 
+                    return;
+                }
+                ResourceTexture* t = static_cast<ResourceTexture*>(textureDiff);
+                pair<string, ResourceTexture > tResource{ "texture_diffuse",*t};
+                resourceMat->resourcesTexture.push_back(tResource);
+                Skip = true;
+                break;
+            }
+        }
+        if (!Skip)
+        {
+            Resource* textureDiff = app->resourceManager->CreateNewResource(path, Resource::Type::Texture);
+            TextureImporter::Import(textureDiff);
+            ResourceTexture* t = static_cast<ResourceTexture*>(textureDiff);
+            pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
+            resourceMat->resourcesTexture.push_back(tResource);
+        }
+    }
+    for (unsigned int i = 0; i < material->GetTextureCount(aiTextureType_SPECULAR); i++)
+    {
+        aiString str;
+        material->GetTexture(aiTextureType_SPECULAR, i, &str);
+        string path = str.C_Str();
+        path = ASSETS_DIR + path;
+
+        for (const auto& texPath : app->importer->importedTextures)
+        {
+
+            if (std::strcmp(texPath.data(), path.data()) == 0)
+            {
+                UID resourceID = app->resourceManager->FindResource(texPath.c_str());
+
+                Resource* textureDiff = app->resourceManager->GetResource(resourceID);
+                if (textureDiff == nullptr)
+                {
+                    cout << "ERROR::METRAIL_IMPORTER::RESOURCE_IS_NULL\n";
+                    return;
+                }
+                ResourceTexture* t = static_cast<ResourceTexture*>(textureDiff);
+                pair<string, ResourceTexture > tResource{ "texture_specular",*t };
+                resourceMat->resourcesTexture.push_back(tResource);
+                Skip = true;
+                break;
+            }
+        }
+        if (!Skip) {
+            Resource* textureSpecular = app->resourceManager->CreateNewResource(str.C_Str(), Resource::Type::Texture);
+            TextureImporter::Import(textureSpecular);
+
+            ResourceTexture* t = static_cast<ResourceTexture*>(textureSpecular);
+            pair<string, ResourceTexture > tResource{ "texture_specular",*t };
+            resourceMat->resourcesTexture.push_back(tResource);
+        }
+    }
+
+    Material mat;
+
+    for (const auto& tex : resourceMat->resourcesTexture)
+    {
+
+        Texture newTex;
+
+        newTex.path = tex.second.GetAssetPath();
+        newTex.type = tex.first;
+        mat.textures.push_back(newTex);
+    }
+    resourceMat->SetLibraryPath("..\\Output\\Library\\Materials\\" + resourceMat->GetID() + ".material");
+    if (Skip)
+    {
+        MaterialImporter::Save(mat, resourceMat->GetLibraryPath());
+        resourceMat->Save();
+    }
+}
+
+Resource* MaterialImporter::Import(Resource* resource)
+{
+    ResourceMaterial* resourceMat = static_cast<ResourceMaterial*>(resource);
+   
+    return resourceMat;
+}
+
 void MaterialImporter::Load(const Material* mat, const std::string& filename)
 {
 }
@@ -228,19 +261,7 @@ void MaterialImporter::Save(const Material mat, const std::string& filename)
     else {
         cout << "Error importing material: " + filename;
     }
-}
-
-void MaterialImporter::Import(const aiMaterial* material, Material* ourMaterial)
-{
-    std::vector<Texture> textures;
-    std::vector<Texture> diffuseMaps = TextureImporter::Import(material,
-        aiTextureType_DIFFUSE, "texture_diffuse");
-    textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-    std::vector<Texture> specularMaps = TextureImporter::Import(material,
-        aiTextureType_SPECULAR, "texture_specular");
-    textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-
-    ourMaterial = new Material(textures);
+    out.close();
 }
 
 //Mesh operators--------------------------------
@@ -266,7 +287,7 @@ std::ifstream& operator >>(std::ifstream& in, const Mesh& mesh)
 void MeshImporter::Save(const Mesh mesh, const std::string& filename)
 {
 
-    std::ofstream out("../Output/Library/Mesh/" + filename);
+    std::ofstream out(filename);
     if (out.is_open())
     {
         out << mesh << '\n';
@@ -274,14 +295,16 @@ void MeshImporter::Save(const Mesh mesh, const std::string& filename)
     else {
         cout << "Error saving mesh: " + filename;
     }
+    out.close();
 }
 
-Mesh* MeshImporter::Import(const aiMesh* mesh)
+Mesh* MeshImporter::Import(const aiMesh* mesh,Resource* resource)
 {
     //temporary varaibles to store the mesh data
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
-    std::vector<Texture> textures;
+
+
 
     for (unsigned int vi = 0; vi < mesh->mNumVertices; vi++)
     {
@@ -317,27 +340,58 @@ Mesh* MeshImporter::Import(const aiMesh* mesh)
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
+    Mesh newMesh;
+    newMesh.vertices = vertices;
+    newMesh.indices = indices;
+  
+    ResourceMesh* rm = static_cast<ResourceMesh*>(resource);
 
-    return new Mesh(vertices, indices);
+    string savePath = "..\\Output\\Library\\Mesh\\" + rm->GetID() + ".material";
+    rm->SetLibraryPath(savePath);
+
+    MeshImporter::Save(newMesh, savePath);
+
+    rm->indices = indices.size();
+    rm->Save();
+
+    return &newMesh;
+}
+
+Resource* MeshImporter::Import(Resource* resource)
+{
+
+    return nullptr;
 }
 
 //Fbx operators--------------------------------
-void FbxImporter::Import(const std::string& file_path)
+void FbxImporter::Import(Resource* resource)
 {
+    string file_path = resource->GetAssetPath();
     const aiScene* scene = aiImportFile(file_path.c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+    
 
     if (scene != nullptr && scene->HasMeshes())
     {
-        app->importer->directory = file_path.substr(0, file_path.find_last_of('/'));
-
-        std::size_t from = file_path.find_last_of('/');
+        std::size_t from = file_path.find_last_of('\\');
         std::size_t to = file_path.find_last_of('.');
-        fbxName = file_path.substr(from + 1, to);
-        fbxName = fbxName.substr(0, fbxName.find_last_of('.'));
-        vector<Mesh> meshes;
-        FbxImporter::ProcessNode(scene->mRootNode, scene, &meshes);
-        aiReleaseImport(scene);
+        std::string fbxName = file_path.substr(from + 1, to);
+        fbxName = fbxName.substr(0, fbxName.find_last_of('.'));        
+        ResourceFbx* fbx = static_cast<ResourceFbx*>(resource);
+        fbx->name = fbxName;
+        fbx->SetLibraryPath("..\\Output\\Library\\Objects\\" + fbx->GetID() + ".object");
 
+        FbxImporter::ProcessaNode(scene->mRootNode, scene, fbx );
+
+        fbx->Save();
+
+        try
+        {
+            aiReleaseImport(scene);
+        }
+        catch(int error)
+        {
+            cout<<aiGetErrorString();
+        }
     }
     else
     {
@@ -346,38 +400,45 @@ void FbxImporter::Import(const std::string& file_path)
     }
 }
 
-void FbxImporter::ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes)
+void FbxImporter::ProcessaNode(aiNode* node, const aiScene* scene, ResourceFbx* resourceFbx)
 {
+    ResourceFbx::FbxNode fbxnode;
+    fbxnode.childsCount = node->mNumChildren;
+    std::string index = std::to_string(resourceFbx->nodes.size());
+    fbxnode.name = resourceFbx->name + index;
+    resourceFbx->nodes.push_back(fbxnode);
     // process all the node's meshes (if any)  
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
         aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        Mesh* ourMesh = FbxImporter::ProcessMesh(mesh, scene);
-        meshes->push_back(*ourMesh);
-        MeshImporter::Save(*ourMesh, fbxName + std::to_string(i) + ".mesh");
+
+        FbxImporter::ProcessaMesh(mesh, scene);        
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        FbxImporter::ProcessNode(node->mChildren[i], scene, meshes);
+        FbxImporter::ProcessaNode(node->mChildren[i], scene, resourceFbx);
     }
 }
 
-Mesh* FbxImporter::ProcessMesh(aiMesh* mesh, const aiScene* scene)
+void FbxImporter::ProcessaMesh(aiMesh* mesh, const aiScene* scene)
 {
+
+    string name = mesh->mName.C_Str();
+    Resource* resourceMesh = app->resourceManager->CreateNewResource("..\\Output\\Assets\\"+name, Resource::Type::Mesh);
+    resourceMesh->name = name;
+    MeshImporter::Import(mesh, resourceMesh);
     //load material attached to the obj
     if (mesh->mMaterialIndex >= 0)
     {
         FbxImporter::ProcessMaterial(mesh, scene);
     }
-
-    return  MeshImporter::Import(mesh);
 }
-
-Material FbxImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
+void FbxImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
 {
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-    Material ourMaterial;
-    MaterialImporter::Import(material, &ourMaterial);
-    return ourMaterial;
+    string name = material->GetName().C_Str();
+    Resource* resourceMat = app->resourceManager->CreateNewResource("..\\Output\\Assets\\" + name, Resource::Type::Material);
+    resourceMat->name = name;
+    MaterialImporter::Import(material, resourceMat);
 }

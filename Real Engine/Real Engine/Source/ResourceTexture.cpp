@@ -1,5 +1,5 @@
 #include "ResourceTexture.h"
-
+#include "Importer.h"
 ResourceTexture::ResourceTexture(UID uid) : Resource(uid)
 {
 	SetType(Type::Texture);
@@ -9,9 +9,9 @@ ResourceTexture::~ResourceTexture()
 {
 }
 
-//Material operators--------------------------------
 std::ostream& operator <<(std::ostream& out, const ResourceTexture& resource)
 {
+    out << "name:" << resource.name << '\n';
     out << "id:" << resource.GetID().c_str() << "\n";
     out << "assets path:" << resource.GetAssetPath() << "\n";
     out << "library path:" << resource.GetLibraryPath() << "\n";
@@ -41,6 +41,7 @@ void ResourceTexture::Save() const
     else {
         std::cout << "Error creating meta file" + uid;
     }
+    out.close();
 }
 
 void ResourceTexture::Load() const
@@ -52,38 +53,34 @@ void ResourceTexture::UnLoad() const
 {
 }
 
-Resource* ResourceTexture::Load(std::string UUID,std::ifstream& data)
+Resource* ResourceTexture::Load(Resource* resource,std::ifstream& data)
 {
-    Resource* ret = nullptr;
+    ResourceTexture* rt = static_cast<ResourceTexture*>(resource);
     if (data.is_open())
-    {
-        ResourceTexture* resource = new ResourceTexture(UUID);
-        
+    {       
         std::string val;
         std::getline(data, val, ':');
         std::getline(data, val, '\n');
-        resource->width = stoi(val);
+        rt->width = stoi(val);
         std::getline(data, val, ':');
         std::getline(data, val, '\n');
-        resource->height = stoi(val);
+        rt->height = stoi(val);
         std::getline(data, val, ':');
         std::getline(data, val, '\n');
-        resource->type = stoi(val);
+        rt->type = stoi(val);
         std::getline(data, val, ':');
         std::getline(data, val, '\n');
-        resource->format = stoi(val);
+        rt->format = stoi(val);
         std::getline(data, val, ':');
         std::getline(data, val, '\n');
-        resource->depth = stoi(val);
+        rt->depth = stoi(val);
         std::getline(data, val, ':');
         std::getline(data, val, '\n');
-        resource->channels = stoi(val);
+        rt->channels = stoi(val);       
 
-        ret = (Resource*)resource;
+        app->importer->importedTextures.push_back(rt->GetAssetPath());
     }
 
     data.close();
-
-
-    return ret;
+    return rt;
 }

@@ -21,13 +21,14 @@ public:
 	void HandleEvent(Event* e);
 	void OnDrop(const std::string file_path);
 	
-	UID Find(const char* file_in_assets) const;
+	UID FindResource(const char* file_in_assets) const;
 	UID ImportFile(const string assetsFile, Resource::Type type);
 
 	Resource* LoadResource(UID uid);
-	const Resource* RequestResource(UID uid) const;
+	Resource* RequestResource(UID uid);
 	void ReleaseResource(UID uid);
 
+	Resource* GetResource(UID uid);
 
 	std::vector<filesystem::path> SearchForFileType(const std::filesystem::path root, const std::string extension);
 
@@ -43,12 +44,13 @@ public:
 			return false;
 		}
 	}
-private:
 	//creates a new resource when needed
 	Resource* CreateNewResource(const string assetsFile, Resource::Type type);
+private:
+
 	//loads the meta file and creates the resource
-	Resource* LoadMetaFile(std::string UUID,Resource::Type type,std::ifstream& metaFile );
-	
+	Resource* LoadMetaFile(Resource* resource, std::ifstream& metaFile);
+	Resource* ImportResourceFromMetaFile(Resource* resource);
 	//Load all the meta files in the program, if a file is not in lib
 	//it imports the file again
 	void LoadMetaFiles();
@@ -69,8 +71,6 @@ private:
 
 	//stores the link beteen UUID of imported resources with the resource it self
 	std::map<UID, Resource*> resources{};
-	void ImportFbx(const std::string& filePath);
-
 };
 
 

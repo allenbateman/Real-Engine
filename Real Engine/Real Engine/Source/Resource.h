@@ -16,10 +16,11 @@ public:
 		Shader,
 		Scene,
 		GameObject,
-		Fbx
+		Fbx,
+		Material
 	};
 	Resource(UID id);
-	~Resource();
+	virtual~Resource();
 	void SetType(Resource::Type type);
 	Resource::Type GetType() const;
 	UID GetID()const;
@@ -38,10 +39,12 @@ public:
 
 	void SetAssetPath(std::string  assets_path) { assetsPath = assets_path; };
 	void SetLibraryPath(std::string  library_path) { librayPath = library_path; };
+
+	std::string name;
 protected:
 	std::string  assetsPath;
 	std::string	 librayPath;
-	std::string name;
+
 	UID uid;
 	Type type = Type::UNKNOWN;
 

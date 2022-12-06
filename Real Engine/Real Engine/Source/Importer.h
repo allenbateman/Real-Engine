@@ -1,22 +1,33 @@
 #pragma once
+//utils
 #include "Log.h"
+#include "TextureLoader.h"
+
+//libs
 #include <assimp/cimport.h>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 #include <DevIL/il.h>
-#include "Mesh.h"
-#include "Material.h"
-#include "TextureLoader.h"
+//App modules
 #include "Entity.h"
 #include "GameObject.h"
-#include "Resource.h"
 #include "ResourcesManagement.h"
+//components
+#include "Mesh.h"
+#include "Material.h"
+//resources
+#include "Resource.h"
+#include "ResourceFbx.h"
+#include "ResourceMaterial.h"
+#include "ResourceMesh.h"
+#include "ResourceTexture.h"
 
 /*
 	Importer will import any type of files
 	From assets folder or drag dropped files
 */
 
+using pathList = std::vector<std::string>;
 class Importer : public Module
 {
 public:
@@ -26,36 +37,31 @@ public:
 
 	bool Awake();
 	bool Start();
-
-	std::string directory;
-	std::string fileName;
-	std::vector<Texture>loadedtextures;
-	std::vector<Texture>ImportedTextures;
+	pathList importedTextures{};
 };
 
 
 namespace TextureImporter {
-	Texture* Load(const std::string& filename);
+	Resource* Import(Resource* resource);
+	void Import(const aiTexture* texture,Resource* resource);
 	void Save(const Texture mat, const std::string& filename);
-	void Import(Resource* resource);
-	std::vector<Texture> Import(const aiMaterial* mat, aiTextureType type, std::string typeName);
 }
 namespace MaterialImporter {
-	void Load(const std::string& filename);
+	void Import(const aiMaterial* material, Resource* resource);
+	Resource* Import(Resource* resource);
 	void Load(const Material* mat, const std::string& filename);
 	void Save(const Material mat, const std::string& filename);
-	void Import(const aiMaterial* material, Material* ourMaterial);
 }
-namespace MeshImporter {
+namespace MeshImporter { 
+	Mesh* Import(const aiMesh* mesh, Resource* resource);
+	Resource* Import(Resource* resource);
 	void Load(const std::string& filename);
 	void Save(const Mesh mesh, const std::string& filename);
-	Mesh* Import(const aiMesh* mesh);
 }
 namespace FbxImporter {
-	static std::string fbxName;
-	void Import(const std::string& file_path);
-	void ProcessNode(aiNode* node, const aiScene* scene, vector<Mesh>* meshes);
-	Mesh* ProcessMesh(aiMesh* mesh, const aiScene* scene);
-	Material ProcessMaterial(aiMesh* mesh, const aiScene* scene);
+	void Import(Resource* resource);
+	void ProcessaNode(aiNode* node, const aiScene* scene, ResourceFbx* resourceFbx);
+	void ProcessaMesh(aiMesh* mesh, const aiScene* scene);
+	void ProcessMaterial(aiMesh* mesh, const aiScene* scene);
 }
 

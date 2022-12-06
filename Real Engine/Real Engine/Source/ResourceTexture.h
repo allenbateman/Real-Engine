@@ -9,7 +9,7 @@ public:
     void Save()const;
     void Load() const;
     void UnLoad()const;
-    static  Resource* Load(std::string UUID,std::ifstream& data );
+    static  Resource* Load(Resource* resource,std::ifstream& data );
 public:
 
     int width;
@@ -19,6 +19,5 @@ public:
     int depth;
     int type;
     int flipped;
-
 };
 

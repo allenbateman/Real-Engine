@@ -157,6 +157,9 @@
     <ClCompile Include="Source\GameViewport.cpp">
       <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ResourceMaterial.cpp">
+      <Filter>Engine\Core\Files system\Resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -373,6 +376,9 @@
       <Filter>Engine\Core\Render</Filter>
     </ClInclude>
     <ClInclude Include="Source\UUID.h" />
+    <ClInclude Include="Source\ResourceMaterial.h">
+      <Filter>Engine\Core\Files system\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Engine">

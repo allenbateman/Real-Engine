@@ -11,8 +11,12 @@ public :
 	void Load()const;
 	void UnLoad()const;
 
-	static  Resource* Load(std::string UUID, std::ifstream& data);
-    unsigned int ChildCount;
-    
+	static  Resource* Load(Resource* resource, std::ifstream& data);
+	struct FbxNode {
+		std::string name;
+		unsigned int childsCount;
+		std::vector<UID> reources;
+	};
+	std::vector<FbxNode> nodes;
 };
 
