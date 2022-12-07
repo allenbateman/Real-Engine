@@ -22,11 +22,6 @@
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
 
-/*
-	Importer will import any type of files
-	From assets folder or drag dropped files
-*/
-
 using pathList = std::vector<std::string>;
 class Importer : public Module
 {

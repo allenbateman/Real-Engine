@@ -346,7 +346,7 @@ Mesh* MeshImporter::Import(const aiMesh* mesh,Resource* resource)
   
     ResourceMesh* rm = static_cast<ResourceMesh*>(resource);
 
-    string savePath = "..\\Output\\Library\\Mesh\\" + rm->GetID() + ".material";
+    string savePath = "..\\Output\\Library\\Meshes\\" + rm->GetID() + ".material";
     rm->SetLibraryPath(savePath);
 
     MeshImporter::Save(newMesh, savePath);

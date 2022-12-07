@@ -58,7 +58,6 @@ bool Panel::OnHovered()
 		LastPanelFocus = focus;
 		ePanelFocus.focused = focus;
 		app->eventSystem->PostEvent(&ePanelFocus);
-		cout << "Panel focus: " << name.GetString() << " " << focus << "\n";
 	}
 	return focus;
 }

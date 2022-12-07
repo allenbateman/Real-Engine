@@ -54,20 +54,20 @@ void AboutPanel::Update()
         {
             
             
-            file.open("../../README.md");
-            if (file.is_open())
-            {
-                ImGui::Text("\n");
-                while (getline(file, line))
-                {
-                    
-                    ImGui::Text(line.c_str());
+            //file.open("../../README.md");
+            //if (file.is_open())
+            //{
+            //    ImGui::Text("\n");
+            //    while (getline(file, line))
+            //    {
+            //        
+            //        ImGui::Text(line.c_str());
 
-                }
-                ImGui::Text("\n");
-                file.close();
-            }
-            
+            //    }
+            //    ImGui::Text("\n");
+            //    file.close();
+            //}
+            //
         }
        
     }

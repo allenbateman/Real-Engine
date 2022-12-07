@@ -30,7 +30,7 @@ bool ResourcesManagement::Init()
     
 
     //LoadMetaFiles();
-   // ImportFilesFromAssets();
+    //ImportFilesFromAssets();
 
     return ret;
 }
@@ -210,9 +210,7 @@ bool ResourcesManagement::ExistFileInResources(std::string filePath)
 {
     for (const auto& resource : resources)
     {
-        std::string resourcePath = resource.second->GetAssetPath();
-
-        if (filePath == resourcePath)
+        if (filePath == resource.second->GetAssetPath())
         {
             //file registered
             return  true;
@@ -319,7 +317,7 @@ void ResourcesManagement::LoadMetaFiles()
                 resource->SetLibraryPath(libPath);
                 resource->SetType((Resource::Type)stoi(type));
                 
-                //resources[id] = LoadMetaFile(resource, in);
+                resources[id] = LoadMetaFile(resource, in);
             }
             else {
               //  cout << "file does not exist in lib, creating resource...\n";
