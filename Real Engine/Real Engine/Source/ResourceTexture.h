@@ -9,7 +9,7 @@ public:
     void Save()const;
     void Load() const;
     void UnLoad()const;
-    static  Resource* Load(Resource* resource,std::ifstream& data );
+    static void Load(std::shared_ptr<Resource>& resource,std::ifstream& data );
 public:
 
     int width;

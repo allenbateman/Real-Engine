@@ -4,11 +4,6 @@ Resource::Resource(UID id)
 {
     uid = id;
 }
-
-Resource::~Resource()
-{
-}
-
 void Resource::SetType(Resource::Type type)
 {
    this->type = type;

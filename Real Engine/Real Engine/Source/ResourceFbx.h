@@ -1,5 +1,6 @@
 #pragma once
 #include "Resource.h"
+#include "GameObject.h"
 class ResourceFbx : public Resource
 {
 public :
@@ -11,7 +12,7 @@ public :
 	void Load()const;
 	void UnLoad()const;
 
-	static  Resource* Load(Resource* resource, std::ifstream& data);
+	static std::shared_ptr<Resource> Load(std::shared_ptr<Resource> resource, std::ifstream& data);
 	struct FbxNode {
 		std::string name;
 		unsigned int childsCount;

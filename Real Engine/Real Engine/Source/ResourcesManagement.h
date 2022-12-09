@@ -24,11 +24,11 @@ public:
 	UID FindResource(const char* file_in_assets) const;
 	UID ImportFile(const string assetsFile, Resource::Type type);
 
-	Resource* LoadResource(UID uid);
-	Resource* RequestResource(UID uid);
+	shared_ptr<Resource> LoadResource(UID uid);
+	shared_ptr<Resource> RequestResource(UID uid);
 	void ReleaseResource(UID uid);
 
-	Resource* GetResource(UID uid);
+	shared_ptr<Resource> GetResource(UID uid);
 
 	std::vector<filesystem::path> SearchForFileType(const std::filesystem::path root, const std::string extension);
 
@@ -45,12 +45,12 @@ public:
 		}
 	}
 	//creates a new resource when needed
-	Resource* CreateNewResource(const string assetsFile, Resource::Type type);
+	shared_ptr<Resource> CreateNewResource(const string assetsFile, Resource::Type type);
 private:
 
 	//loads the meta file and creates the resource
-	Resource* LoadMetaFile(Resource* resource, std::ifstream& metaFile);
-	Resource* ImportResourceFromMetaFile(Resource* resource);
+	void LoadMetaFile(shared_ptr<Resource>& resource, std::ifstream& metaFile);
+	//shared_ptr<Resource> ImportResourceFromMetaFile(shared_ptr<Resource> resource);
 	//Load all the meta files in the program, if a file is not in lib
 	//it imports the file again
 	void LoadMetaFiles();
@@ -63,14 +63,14 @@ private:
 	bool ExistFileInResources(std::string filePath);
 
 	//moves a on drop file to the assets folder	
-	std::string* MoveToAssets(const string diskPath);
+	std::string MoveToAssets(const string diskPath);
 	//generates a library file path for the imported file
 	std::string GenLibraryPath(const string assetsFile);
 	//filters the file through the supported files
 	Resource::Type FilterFile(const char* filePath);
 
 	//stores the link beteen UUID of imported resources with the resource it self
-	std::map<UID, Resource*> resources{};
+	std::map<UID,std::shared_ptr<Resource>> resources{};
 };
 
 

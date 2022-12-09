@@ -12,8 +12,8 @@ std::ostream& operator <<(std::ostream& out, const ResourceFbx& resource)
 {
     out << "name:" << resource.name<<'\n';
     out << "id:" << resource.GetID().c_str() << "\n";
-    out << "assets path:" << resource.GetAssetPath() << "\n";
-    out << "library path:" << resource.GetLibraryPath() << "\n";
+    out << "assets path:" << resource.GetAssetPath().c_str() << "\n";
+    out << "library path:" << resource.GetLibraryPath().c_str() << "\n";
     out << "resource type:" << (int)resource.GetType() << "\n";
 
     out << "Total nodes:" << resource.nodes.size() << "\n";
@@ -31,7 +31,7 @@ std::ostream& operator <<(std::ostream& out, const ResourceFbx& resource)
 }
 void ResourceFbx::Save() const
 {
-    std::ofstream out(assetsPath + ".meta");
+    std::ofstream out(assetsPath.string() + ".meta");
     if (out.is_open())
     {
         out << *this << '\n';
@@ -50,9 +50,9 @@ void ResourceFbx::UnLoad() const
 {
 }
 
-Resource* ResourceFbx::Load(Resource* resource, std::ifstream& data)
+std::shared_ptr<Resource> ResourceFbx::Load(std::shared_ptr<Resource> resource, std::ifstream& data)
 {
-    ResourceFbx* rt = static_cast<ResourceFbx*>(resource);
+    std::shared_ptr<ResourceFbx> rt = std::dynamic_pointer_cast<ResourceFbx>(resource);
     if (data.is_open())
     {
         //Load fbx

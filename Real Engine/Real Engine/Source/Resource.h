@@ -19,13 +19,15 @@ public:
 		Fbx,
 		Material
 	};
+
 	Resource(UID id);
-	virtual~Resource();
+	virtual ~Resource() {};
+
 	void SetType(Resource::Type type);
 	Resource::Type GetType() const;
 	UID GetID()const;
-	const char* GetAssetPath() const { return assetsPath.c_str(); };
-	const char* GetLibraryPath() const { return librayPath.c_str(); };
+	const std::string GetAssetPath() const { return assetsPath.string(); };
+	const std::string GetLibraryPath() const { return librayPath.string(); };
 
 	bool IsLoadedToMemory() const;
 	bool LoadToMemory();
@@ -42,8 +44,8 @@ public:
 
 	std::string name;
 protected:
-	std::string  assetsPath;
-	std::string	 librayPath;
+	std::filesystem::path  assetsPath;
+	std::filesystem::path librayPath;
 
 	UID uid;
 	Type type = Type::UNKNOWN;

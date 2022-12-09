@@ -31,6 +31,8 @@ bool ResourcesManagement::Init()
 
     //LoadMetaFiles();
     //ImportFilesFromAssets();
+    LoadMetaFiles();
+    ImportFilesFromAssets();
 
     return ret;
 }
@@ -78,18 +80,18 @@ void ResourcesManagement::OnDrop(const std::string file_path)
 
     auto assets_path =  MoveToAssets(file_path);
 
-    if (assets_path == nullptr)
+    if (assets_path == "")
         return;
 
     //Import the file    
-    ImportFile(assets_path->c_str(), newFileType);
+    ImportFile(assets_path.c_str(), newFileType);
 }
 
 UID ResourcesManagement::FindResource(const char* file_in_assets) const
 {
     for (const auto& resource : resources)
     {
-        if (strcmp(file_in_assets, resource.second->GetAssetPath()) == 0)
+        if (strcmp(file_in_assets, resource.second->GetAssetPath().c_str()) == 0)
         {
             return resource.first;
         }
@@ -100,7 +102,7 @@ UID ResourcesManagement::FindResource(const char* file_in_assets) const
 
 UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type type)
 {
-    Resource* resource =  CreateNewResource(assets_path, type);
+    shared_ptr<Resource> resource =  CreateNewResource(assets_path, type);
 
     if (resource == nullptr)
         return "";
@@ -119,9 +121,9 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
 	return ret;
 }
 
-Resource* ResourcesManagement::RequestResource(UID uid)
+shared_ptr<Resource> ResourcesManagement::RequestResource(UID uid)
 {
-    std::map<UID, Resource*>::iterator it = resources.begin();
+    std::map<UID, shared_ptr<Resource>>::iterator it = resources.begin();
     if (it != resources.end())
     {
         if (it->second->GetRefereneCount() <= 0)
@@ -139,13 +141,13 @@ void ResourcesManagement::ReleaseResource(UID uid)
     resources.erase(uid);
 }
 
-Resource* ResourcesManagement::GetResource(UID uid)
+shared_ptr<Resource> ResourcesManagement::GetResource(UID uid)
 {
-    std::map<UID, Resource*>::iterator it = resources.begin();
+    std::map<UID, shared_ptr<Resource>>::iterator it = resources.begin();
     while (it != resources.end())
     {
-        if(it->first == uid)
-         return it->second;
+        if (it->first == uid)
+            return it->second;;
         
         it++;
     }
@@ -210,6 +212,7 @@ bool ResourcesManagement::ExistFileInResources(std::string filePath)
 {
     for (const auto& resource : resources)
     {
+
         if (filePath == resource.second->GetAssetPath())
         {
             //file registered
@@ -220,18 +223,18 @@ bool ResourcesManagement::ExistFileInResources(std::string filePath)
 }
 
 
-Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resource::Type type)
+shared_ptr<Resource> ResourcesManagement::CreateNewResource(const string assets_path, Resource::Type type)
 {
-    Resource* ret = nullptr;
+    shared_ptr<Resource> ret;
     UID uid = uuid::generate_uuid();
     std::size_t from = assets_path.find_last_of('\\');
     std::string fileName = assets_path.substr(from + 1, ' ');
 
     switch (type) {
-    case Resource::Type::Texture: ret = (Resource*) new ResourceTexture(uid);break;
-    case Resource::Type::Mesh: ret = (Resource*) new ResourceMesh(uid); break;
-    case Resource::Type::Fbx: ret = (Resource*) new ResourceFbx(uid); break;
-    case Resource::Type::Material: ret = (Resource*) new ResourceMaterial(uid); break;
+    case Resource::Type::Texture: ret = shared_ptr<Resource>(new ResourceTexture(uid));break;
+    case Resource::Type::Mesh: ret = shared_ptr<Resource>(new ResourceMesh(uid)); break;
+    case Resource::Type::Fbx: ret = shared_ptr<Resource>(new ResourceFbx(uid)); break;
+    case Resource::Type::Material: ret = shared_ptr<Resource>(new ResourceMaterial(uid)); break;
     case Resource::Type::UNKNOWN:return nullptr; break;
     default: break;
     }
@@ -246,35 +249,36 @@ Resource* ResourcesManagement::CreateNewResource(const string assets_path, Resou
     return ret;
 }
 
-Resource* ResourcesManagement::LoadMetaFile(Resource* resource, std::ifstream& metaFile)
+void ResourcesManagement::LoadMetaFile(shared_ptr<Resource>& resource, std::ifstream& metaFile)
 {
-    Resource* ret = nullptr;
+
+    //if(metaFile.rdbuf() == NULL) return nullptr;
+    shared_ptr<Resource> ret;
+
     switch (resource->GetType()) {
-    case Resource::Type::Texture: ret = ResourceTexture::Load(resource, metaFile);; break;
+    case Resource::Type::Texture: ResourceTexture::Load(resource, metaFile); break;
     case Resource::Type::Mesh: ret = ResourceMesh::Load(resource,metaFile); break;
     case Resource::Type::Material: ret = ResourceMaterial::Load(resource,metaFile); break;
     case Resource::Type::Fbx: ret = ResourceFbx::Load(resource, metaFile); break;
-    case Resource::Type::UNKNOWN:return nullptr; break;
+    case Resource::Type::UNKNOWN:return;
     default: break;
     }
-
-    return ret;
 }
 
-Resource* ResourcesManagement::ImportResourceFromMetaFile(Resource* resource)
-{
-    Resource::Type type = resource->GetType();
-    switch (type) {
-    case Resource::Type::Texture: TextureImporter::Import(resource); break;
-    case Resource::Type::Mesh: MeshImporter::Import(resource); break;
-    case Resource::Type::Material: MaterialImporter::Import(resource); break;
-    case Resource::Type::Fbx: FbxImporter::Import(resource); break;
-    case Resource::Type::UNKNOWN:return nullptr; break;
-    default: break;
-    }
-
-    return resource;
-}
+//shared_ptr<Resource> ResourcesManagement::ImportResourceFromMetaFile(shared_ptr<Resource> resource)
+//{
+//    Resource::Type type = resource->GetType();
+//    switch (type) {
+//    case Resource::Type::Texture: TextureImporter::Import(resource); break;
+//    case Resource::Type::Mesh: MeshImporter::Import(resource); break;
+//    case Resource::Type::Material: MaterialImporter::Import(resource); break;
+//    case Resource::Type::Fbx: FbxImporter::Import(resource); break;
+//    case Resource::Type::UNKNOWN:return nullptr; break;
+//    default: break;
+//    }
+//
+//    return resource;
+//}
 
 void ResourcesManagement::LoadMetaFiles()
 {
@@ -312,45 +316,47 @@ void ResourcesManagement::LoadMetaFiles()
             if (std::filesystem::exists(libPath))
             {
                 cout << "file exist in lib, loading resource...\n";
-                Resource* resource = new Resource(id);
+                shared_ptr<Resource> resource (new Resource(id));
                 resource->SetAssetPath(assetPath);
                 resource->SetLibraryPath(libPath);
                 resource->SetType((Resource::Type)stoi(type));
-                
-                resources[id] = LoadMetaFile(resource, in);
+                LoadMetaFile(resource, in);
+                resources[id] = resource;
+
             }
             else {
-              //  cout << "file does not exist in lib, creating resource...\n";
-              //  Resource* resource = new Resource(id);
+               cout << "ERROR::RESOURCE_NOT_FOUND\n";
+              //  shared_ptr<Resource> resource = new Resource(id);
               //  resource->SetAssetPath(assetPath);
               //  resource->SetType((Resource::Type)stoi(type));
-              ////TODO  resources[id] = ImportResourceFromMetaFile(resource);
+              //  resources[id] = ImportResourceFromMetaFile(resource);
             }
         }
+        in.close();
     }
 
 }
 
-std::string* ResourcesManagement::MoveToAssets(const string disc_path)
+std::string ResourcesManagement::MoveToAssets(const string disc_path)
 {
     //once the file is something that we accept
     // move file from disk to the assets lib  
     std::size_t from = disc_path.find_last_of('/\\');
     std::string fileName = disc_path.substr(from + 1, ' ');
     std::string newPathFolder = "../Output/Assets/";
-    std::string* newPath = new std::string(newPathFolder + fileName);
+    std::string newPath = newPathFolder + fileName;
 
     //check if this asset is already in the program
-    if (Exists(*newPath))
+    if (Exists(newPath))
     {
         cout << "file already exist: " << fileName <<  "\n";
-        return nullptr;
+        return newPath;
     }
     //store new file to assets
-    if (rename(disc_path.c_str(), newPath->c_str()))
+    if (rename(disc_path.c_str(), newPath.c_str()))
     {
         Debug::Warning("Couldn't load file: " + fileName);
-        return nullptr;
+        return "";
     }
     else
     {
@@ -366,19 +372,18 @@ std::string ResourcesManagement::GenLibraryPath(const string assets_path)
     std::size_t from = assets_path.find_last_of('\\');
     std::string fileName = assets_path.substr(from + 1, ' ');
     std::string newPathFolder = "..\\Output\\Library\\";
-    std::string* newPath = new std::string(newPathFolder);
-    return *newPath;
-    //store new file to assets
-    if (rename(assets_path.c_str(), newPath->c_str()))
-    {
-        Debug::Warning("Couldn't load file: " + fileName);
-        return nullptr;
-    }
-    else
-    {
-        Debug::Log("File imported to library: " + fileName);
-        return *newPath;
-    }
+    return newPathFolder;
+    ////store new file to assets
+    //if (rename(assets_path.c_str(), newPath->c_str()))
+    //{
+    //    Debug::Warning("Couldn't load file: " + fileName);
+    //    return nullptr;
+    //}
+    //else
+    //{
+    //    Debug::Log("File imported to library: " + fileName);
+    //    return *newPath;
+    //}
 }
 
 Resource::Type ResourcesManagement::FilterFile(const char* file_path)

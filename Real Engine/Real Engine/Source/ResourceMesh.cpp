@@ -13,16 +13,16 @@ std::ostream& operator <<(std::ostream& out, const ResourceMesh& resource)
 {
     out << "name:" << resource.name << '\n';
     out << "id:" << resource.GetID().c_str() << "\n";
-    out << "assets path:" << resource.GetAssetPath() << "\n";
-    out << "library path:" << resource.GetLibraryPath() << "\n";
+    out << "assets path:" << resource.GetAssetPath().c_str() << "\n";
+    out << "library path:" << resource.GetLibraryPath().c_str() << "\n";
     out << "resource type:" << (int)resource.GetType() << "\n";
 
-    out << "indices:" << resource.indices << "\n";
+    out << "material index:" << resource.materialIndex << "\n";
     return out;
 }
 void ResourceMesh::Save() const
 {
-    std::ofstream out(assetsPath + ".mesh.meta");
+    std::ofstream out(assetsPath.string() + ".mesh.meta");
     if (out.is_open())
     {
         out << *this << '\n';
@@ -41,9 +41,9 @@ void ResourceMesh::UnLoad() const
 {
 }
 
-Resource* ResourceMesh::Load(Resource* resource, std::ifstream& data)
+std::shared_ptr<Resource>ResourceMesh::Load(std::shared_ptr<Resource> resource, std::ifstream& data)
 {
-    ResourceMesh* rm = static_cast<ResourceMesh*>(resource);
+    std::shared_ptr<ResourceMesh> rm = std::dynamic_pointer_cast<ResourceMesh>(resource);
 
 
     if (data.is_open())
@@ -53,7 +53,7 @@ Resource* ResourceMesh::Load(Resource* resource, std::ifstream& data)
         std::getline(data, indices, ':');
         std::getline(data, indices, '\n');
 
-        rm->indices = stoi(indices);
+        rm->materialIndex = stoi(indices);
     }
 
     data.close();

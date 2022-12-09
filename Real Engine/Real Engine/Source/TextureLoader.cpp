@@ -1,6 +1,5 @@
 #include "TextureLoader.h"
 #include "Log.h"
-#define STB_IMAGE_IMPLEMENTATION
 #include <Stb/stb_image.h>
 unsigned int LoadTexture(std::string file_path)//data
 {

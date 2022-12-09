@@ -13,8 +13,8 @@ std::ostream& operator <<(std::ostream& out, const ResourceMaterial& resource)
 {
     out << "name:" << resource.name << '\n';
     out << "id:" << resource.GetID().c_str() << "\n";
-    out << "assets path:" << resource.GetAssetPath() << "\n";
-    out << "library path:" << resource.GetLibraryPath() << "\n";
+    out << "assets path:" << resource.GetAssetPath().c_str() << "\n";
+    out << "library path:" << resource.GetLibraryPath().c_str() << "\n";
     out << "resource type:" << (int)resource.GetType() << "\n";
 
     out << "Textures used:" << resource.resourcesTexture.size() << "\n";
@@ -27,7 +27,7 @@ std::ostream& operator <<(std::ostream& out, const ResourceMaterial& resource)
 }
 void ResourceMaterial::Save() const
 {
-    std::ofstream out(assetsPath + ".material.meta");
+    std::ofstream out(assetsPath.string() + ".material.meta");
     if (out.is_open())
     {
         out << *this << '\n';
@@ -46,9 +46,9 @@ void ResourceMaterial::UnLoad() const
 {
 }
 
-Resource* ResourceMaterial::Load(Resource* resource, std::ifstream& data)
+std::shared_ptr<Resource> ResourceMaterial::Load(std::shared_ptr<Resource> resource, std::ifstream& data)
 {
-    ResourceMaterial* rm = static_cast<ResourceMaterial*>(resource);
+    std::shared_ptr<ResourceMaterial> rm = std::dynamic_pointer_cast<ResourceMaterial>(resource);
     if (data.is_open())
     {
         //laod vertices
@@ -63,9 +63,9 @@ Resource* ResourceMaterial::Load(Resource* resource, std::ifstream& data)
             std::string id;
             std::getline(data, id, ':');
             std::getline(data, id, '\n');
-            Resource* r = app->resourceManager->GetResource(id);
+            shared_ptr<Resource> r = app->resourceManager->GetResource(id);
             if (r == nullptr) break;
-            ResourceTexture* rt = static_cast<ResourceTexture*>(r);
+            shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(r);
             std::pair<std::string, ResourceTexture > tResource{ textureType,*rt };
             rm->resourcesTexture.push_back(tResource);
 

@@ -2,7 +2,6 @@
 #include "Component.h"
 #include "Texture.h"
 
-
 class Material : public  Component
 {
 public:
