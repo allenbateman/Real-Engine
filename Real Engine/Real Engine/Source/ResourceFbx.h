@@ -8,7 +8,7 @@ struct FbxNode {
 	FbxNode* parent = nullptr;
 	vector<FbxNode> childs;
 	unsigned int childsCount = 0;
-	unsigned int* meshIndex;//array of indices to the mesh used
+	vector<unsigned int> meshIndex;//array of indices to the mesh used
 	unsigned int meshCount;//number of meshes used by the node
 };
 
@@ -25,6 +25,7 @@ public :
 
 	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
 
+	FbxNode GetRoot() const{ return *root; };
 	FbxNode* root;
 	//sotre all materials used by the obj
 	vector<UID> materials;
