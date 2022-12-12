@@ -41,9 +41,9 @@ void ResourceMesh::UnLoad() const
 {
 }
 
-std::shared_ptr<Resource>ResourceMesh::Load(std::shared_ptr<Resource> resource, std::ifstream& data)
+void ResourceMesh::Load(std::shared_ptr<Resource>& resource, std::ifstream& data)
 {
-    std::shared_ptr<ResourceMesh> rm = std::dynamic_pointer_cast<ResourceMesh>(resource);
+    std::shared_ptr<ResourceMesh> rm = std::static_pointer_cast<ResourceMesh>(resource);
 
 
     if (data.is_open())
@@ -57,5 +57,4 @@ std::shared_ptr<Resource>ResourceMesh::Load(std::shared_ptr<Resource> resource, 
     }
 
     data.close();
-    return rm;
 }

@@ -26,8 +26,8 @@ public:
 	void SetType(Resource::Type type);
 	Resource::Type GetType() const;
 	UID GetID()const;
-	const std::string GetAssetPath() const { return assetsPath.string(); };
-	const std::string GetLibraryPath() const { return librayPath.string(); };
+	const std::filesystem::path GetAssetPath() const { return assetsPath; };
+	const std::filesystem::path GetLibraryPath() const { return librayPath; };
 
 	bool IsLoadedToMemory() const;
 	bool LoadToMemory();

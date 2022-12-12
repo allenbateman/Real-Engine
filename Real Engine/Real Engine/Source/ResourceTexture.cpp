@@ -89,9 +89,8 @@ void ResourceTexture::UnLoad() const
 
 void ResourceTexture::Load(std::shared_ptr<Resource>& resource,std::ifstream& data)
 {
-    auto rt = std::dynamic_pointer_cast<ResourceTexture>(resource);
-    if (rt == nullptr)
-        return;
+    auto rt = std::static_pointer_cast<ResourceTexture>(resource);
+
     if (data.is_open())
     {       
         std::string val;

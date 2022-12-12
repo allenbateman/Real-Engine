@@ -66,10 +66,6 @@ bool Renderer::Start()
 
 	defaultShader = new Shader(vs, fs);
 
-	/*vs = "../Output/Assets/Shaders/color.vertex";
-	fs = "../Output/Assets/Shaders/color.fragment";
-	colorShader = new Shader(vs, fs);*/
-
 	currentCamera = app->entityComponentSystem.CreateEntity();
 	app->entityComponentSystem.AddComponent(currentCamera, TagComponent{ "Camera" });
 	app->entityComponentSystem.AddComponent(currentCamera, Transform{});

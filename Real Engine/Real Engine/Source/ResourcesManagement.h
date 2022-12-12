@@ -45,11 +45,12 @@ public:
 		}
 	}
 	//creates a new resource when needed
-	shared_ptr<Resource> CreateNewResource(const string assetsFile, Resource::Type type);
+	shared_ptr<Resource> CreateNewResource(const std::filesystem::path assetsFile, Resource::Type type);
 private:
 
 	//loads the meta file and creates the resource
 	void LoadMetaFile(shared_ptr<Resource>& resource, std::ifstream& metaFile);
+	void ReImportAsset(shared_ptr<Resource>& resource);
 	//shared_ptr<Resource> ImportResourceFromMetaFile(shared_ptr<Resource> resource);
 	//Load all the meta files in the program, if a file is not in lib
 	//it imports the file again

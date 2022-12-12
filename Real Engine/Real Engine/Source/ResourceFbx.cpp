@@ -15,19 +15,20 @@ std::ostream& operator <<(std::ostream& out, const ResourceFbx& resource)
     out << "assets path:" << resource.GetAssetPath().c_str() << "\n";
     out << "library path:" << resource.GetLibraryPath().c_str() << "\n";
     out << "resource type:" << (int)resource.GetType() << "\n";
+/*    out << "Resources: " << ();
 
-    out << "Total nodes:" << resource.nodes.size() << "\n";
-    for (const auto& node : resource.nodes)
+    for (const auto& node : resource.root->childs)
     {
         out << "\tname:" << node.name << "\n";
         out << "\tchild count:" << node.childsCount << "\n";
-        out << "\tresources count:" << node.reources.size() << "\n";
-        for (const auto& resource : node.reources)
+        out << "\tchild count:" << node.childsCount << "\n";
+        for (const auto& resource : node.meshCount)
         {
-            out << "\t id:" << resource << "\n";
+            out << "\t\ttype:" << resource.first << "\n";
+            out << "\t\tid:" << resource.second << "\n";           
         }
     }
-    return out;
+    return */out;
 }
 void ResourceFbx::Save() const
 {
@@ -50,9 +51,9 @@ void ResourceFbx::UnLoad() const
 {
 }
 
-std::shared_ptr<Resource> ResourceFbx::Load(std::shared_ptr<Resource> resource, std::ifstream& data)
+void ResourceFbx::Load(std::shared_ptr<Resource>& resource, std::ifstream& data)
 {
-    std::shared_ptr<ResourceFbx> rt = std::dynamic_pointer_cast<ResourceFbx>(resource);
+    std::shared_ptr<ResourceFbx> obj = std::static_pointer_cast<ResourceFbx>(resource);
     if (data.is_open())
     {
         //Load fbx
@@ -72,17 +73,24 @@ std::shared_ptr<Resource> ResourceFbx::Load(std::shared_ptr<Resource> resource, 
             std::getline(data, nChilds, ':');
             std::getline(data, nChilds, '\n');
             node.childsCount = stoi(nChilds);
-            for (int n = 0; n < node.childsCount; n++)
-            {
-                UID r;
-                std::getline(data, r, ':');
-                std::getline(data, r, '\n');
-                node.reources.push_back(r);
-            }
-            rt->nodes.push_back(node);
+            //for (int n = 0; n < node.childsCount; n++)
+            //{
+            //    std::string type;
+            //    std::getline(data, type, ':');
+            //    std::getline(data, type, '\n');
+
+            //    Resource::Type t = static_cast<Resource::Type>(stoi(type));
+
+            //    UID r;
+            //    std::getline(data, r, ':');
+            //    std::getline(data, r, '\n');
+
+            //    std::pair<Resource::Type, UID> p{t,r};
+            //    node.resources.push_back(p);
+            //}
+            //obj->nodes.push_back(node);
         }
     }
 
     data.close();
-    return rt;
 }

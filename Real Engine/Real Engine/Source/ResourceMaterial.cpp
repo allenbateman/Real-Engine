@@ -46,9 +46,9 @@ void ResourceMaterial::UnLoad() const
 {
 }
 
-std::shared_ptr<Resource> ResourceMaterial::Load(std::shared_ptr<Resource> resource, std::ifstream& data)
+void ResourceMaterial::Load(std::shared_ptr<Resource>& resource, std::ifstream& data)
 {
-    std::shared_ptr<ResourceMaterial> rm = std::dynamic_pointer_cast<ResourceMaterial>(resource);
+    std::shared_ptr<ResourceMaterial> rm = std::static_pointer_cast<ResourceMaterial>(resource);
     if (data.is_open())
     {
         //laod vertices
@@ -74,5 +74,4 @@ std::shared_ptr<Resource> ResourceMaterial::Load(std::shared_ptr<Resource> resou
     }
 
     data.close();
-    return rm;
 }

@@ -11,7 +11,7 @@ public:
 	void Load()const;
 	void UnLoad()const;
 
-	static std::shared_ptr<Resource> Load(std::shared_ptr<Resource> resource, std::ifstream& data);
+	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
 	int materialIndex;
 };
 

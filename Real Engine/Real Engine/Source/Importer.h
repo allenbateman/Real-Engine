@@ -39,26 +39,26 @@ public:
 
 
 namespace TextureImporter {
-	shared_ptr<Resource> Import(shared_ptr<Resource> resource);
+	void Import(shared_ptr<Resource>& resource);
 	void Import(const aiTexture* texture, shared_ptr<Resource> resource);
 	void Save(const Texture mat, const std::string& filename);
 }
 namespace MaterialImporter {
 	int Import(const aiMaterial* material, shared_ptr<Resource> resource);
-	shared_ptr<Resource> Import(shared_ptr<Resource> resource);
+	void Import(shared_ptr<Resource>& resource);
 	void Load(const Material* mat, const std::string& filename);
 	void Save(const Material mat, const std::string& filename);
 }
 namespace MeshImporter { 
 	Mesh* Import(const aiMesh* mesh, shared_ptr<Resource> resource);
-	shared_ptr<Resource> Import(shared_ptr<Resource> resource);
+	void Import(shared_ptr<Resource>& resource);
 	void Load(const std::string& filename);
 	void Save(const Mesh mesh, const std::string& filename);
 }
 namespace FbxImporter {
-	void Import(shared_ptr<Resource> resource);
-	void ProcessaNode(aiNode* node, const aiScene* scene, shared_ptr<ResourceFbx> resourceFbx);
-	void ProcessaMesh(aiMesh* mesh, const aiScene* scene);
-	int ProcessMaterial(aiMesh* mesh, const aiScene* scene);
+	void Import(shared_ptr<Resource>& resource);
+	void ProcessaNode(aiNode* node, const aiScene* scene, FbxNode* rNode,shared_ptr<ResourceFbx>& rFbx);
+	void ProcessaMesh(aiMesh* mesh, const aiScene* scene, FbxNode* rNode, shared_ptr<ResourceFbx>& rFbx);
+	int ProcessMaterial(aiMesh* mesh, const aiScene* scene, FbxNode* rNode, shared_ptr<ResourceFbx>& rFbx);
 }
 
