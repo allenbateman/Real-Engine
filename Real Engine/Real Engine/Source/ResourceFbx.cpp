@@ -12,31 +12,30 @@ std::ostream& operator <<(std::ostream& out, const ResourceFbx& resource)
 {
     out << "name:" << resource.name<<'\n';
     out << "id:" << resource.GetID().c_str() << "\n";
-    out << "assets path:" << resource.GetAssetPath().c_str() << "\n";
-    out << "library path:" << resource.GetLibraryPath().c_str() << "\n";
+    out << "assets path:" << resource.GetAssetPath().string() << "\n";
+    out << "library path:" << resource.GetLibraryPath().string() << "\n";
     out << "resource type:" << (int)resource.GetType() << "\n";
     out << "materials count:" << resource.materials.size() << "\n";
     for (int i = 0; i < resource.materials.size(); i++)
     {
-        out << "\t uid " << i << ":" << resource.materials.at(i);
+        out << "\t uid " << i << ":" << resource.materials.at(i) << "\n";
     }
-    out << "mesh count:" << resource.meshes.size() << "\n";
+    out << "mesh count :" << resource.meshes.size() << "\n";
     for (int i = 0; i < resource.meshes.size(); i++)
     {
-        out << "\t uid " << i << ":" << resource.meshes.at(i);
+        out << "\t uid " << i << ":" << resource.meshes.at(i) <<"\n";
     }
-    out << "\tname:" << resource.GetRoot().name << "\n";
-    out << "\tchild count:" << resource.GetRoot().childsCount << "\n";
+    out << "\tname: " << resource.GetRoot().name << "\n";
+    out << "\tchild count: " << resource.GetRoot().childsCount << "\n";
     for (const auto& node : resource.root->childs)
     {
-        out << "\tname:" << node.name << "\n";
-        out << "\tchild count:" << node.childsCount << "\n";
-
-        //for (const auto& resource : node.meshCount)
-        //{
-        //    out << "\t\ttype:" << resource.first << "\n";
-        //    out << "\t\tid:" << resource.second << "\n";           
-        //}
+        out << "\tname: " << node.name << "\n";
+        out << "\tchild count: " << node.childsCount << "\n";
+        out << "\tmesh count: " << node.meshCount << "\n";
+        for (auto& i : node.meshIndex)
+        {
+            out << "\tmesh index: " << node.meshIndex[i] << "\n";
+        }
     }
     return out;
 }

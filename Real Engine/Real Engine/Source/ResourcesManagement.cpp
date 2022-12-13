@@ -27,10 +27,6 @@ bool ResourcesManagement::Init()
 {
 
     bool ret = false;
-    
-
-    //LoadMetaFiles();
-    //ImportFilesFromAssets();
     LoadMetaFiles();
     ImportFilesFromAssets();
 
@@ -241,7 +237,7 @@ shared_ptr<Resource> ResourcesManagement::CreateNewResource(const std::filesyste
         resources[uid] = ret;
         ret->name = path.stem().string();
         ret->SetAssetPath(path.string());
-        Debug::Log("Importing asset:" + path.stem().string());
+        Debug::Log("Importing asset:" + path.filename().string());
         Debug::Log(" id:" + uid);
     }
     return ret;
@@ -249,7 +245,6 @@ shared_ptr<Resource> ResourcesManagement::CreateNewResource(const std::filesyste
 
 void ResourcesManagement::LoadMetaFile(shared_ptr<Resource>& resource, std::ifstream& metaFile)
 {
-
     //if(metaFile.rdbuf() == NULL) return nullptr;
     shared_ptr<Resource> ret;
 

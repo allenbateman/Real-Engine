@@ -361,6 +361,7 @@ void FbxImporter::Import(shared_ptr<Resource>& resource)
 {
     const aiScene* scene = aiImportFile(resource->GetAssetPath().string().c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
     shared_ptr<ResourceFbx> fbx = static_pointer_cast<ResourceFbx>(resource);
+    GameObject* obj;
     if (scene != nullptr && scene->HasMeshes())
     { 
         fbx->name = resource->GetAssetPath().stem().string();
