@@ -25,6 +25,7 @@ public:
 	bool HasComponent();
 	void Destroy();
 
+	std::vector<Component> components;
 
 	bool active;
 	Entity id = -1; // id of the game object

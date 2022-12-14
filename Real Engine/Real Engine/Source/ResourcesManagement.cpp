@@ -8,7 +8,7 @@
 
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
-#include "ResourceFbx.h"
+#include "ResourceScene.h"
 
 
 ResourcesManagement::ResourcesManagement(bool isActive) : Module(isActive)
@@ -105,7 +105,7 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
     
     switch (resource->GetType())
     {
-    case Resource::Type::Fbx: FbxImporter::Import(resource); break;
+    case Resource::Type::Fbx: SceneImporter::Import(resource); break;
     case Resource::Type::Texture: TextureImporter::Import(resource);break;
     default:
         break;
@@ -126,7 +126,6 @@ shared_ptr<Resource> ResourcesManagement::RequestResource(UID uid)
         {
             it->second->Load();
         }
-        it->second->IncreaseReferenceCount();
         return it->second;
     }
     return nullptr;
@@ -227,7 +226,7 @@ shared_ptr<Resource> ResourcesManagement::CreateNewResource(const std::filesyste
     switch (type) {
     case Resource::Type::Texture: ret = shared_ptr<Resource>(new ResourceTexture(uid));break;
     case Resource::Type::Mesh: ret = shared_ptr<Resource>(new ResourceMesh(uid)); break;
-    case Resource::Type::Fbx: ret = shared_ptr<Resource>(new ResourceFbx(uid)); break;
+    case Resource::Type::Fbx: ret = shared_ptr<Resource>(new ResourceScene(uid)); break;
     case Resource::Type::Material: ret = shared_ptr<Resource>(new ResourceMaterial(uid)); break;
     case Resource::Type::UNKNOWN:return nullptr; break;
     default: break;
@@ -252,7 +251,7 @@ void ResourcesManagement::LoadMetaFile(shared_ptr<Resource>& resource, std::ifst
     case Resource::Type::Texture: ResourceTexture::Load(resource, metaFile); break;
     case Resource::Type::Mesh: ResourceMesh::Load(resource,metaFile); break;
     case Resource::Type::Material: ResourceMaterial::Load(resource,metaFile); break;
-    case Resource::Type::Fbx: ResourceFbx::Load(resource, metaFile); break;
+    case Resource::Type::Fbx: ResourceScene::Load(resource, metaFile); break;
     case Resource::Type::UNKNOWN:return;
     default: break;
     }
@@ -265,7 +264,7 @@ void ResourcesManagement::ReImportAsset(shared_ptr<Resource>& resource)
     case Resource::Type::Texture: TextureImporter::Import(resource); break;
     case Resource::Type::Mesh: MeshImporter::Import(resource); break;
     case Resource::Type::Material: MaterialImporter::Import(resource); break;
-    case Resource::Type::Fbx: FbxImporter::Import(resource); break;
+    case Resource::Type::Fbx: SceneImporter::Import(resource); break;
     case Resource::Type::UNKNOWN: break;
     default: break;
     }

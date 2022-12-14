@@ -24,6 +24,7 @@ public:
 	UID FindResource(const char* file_in_assets) const;
 	UID ImportFile(const string assetsFile, Resource::Type type);
 
+
 	shared_ptr<Resource> LoadResource(UID uid);
 	shared_ptr<Resource> RequestResource(UID uid);
 	void ReleaseResource(UID uid);

@@ -151,17 +151,17 @@
     <ClCompile Include="Source\CameraController.cpp">
       <Filter>Engine\Core\Controllers</Filter>
     </ClCompile>
-    <ClCompile Include="Source\ResourceFbx.cpp">
-      <Filter>Engine\Core\Files system\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="Source\GameViewport.cpp">
       <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
     <ClCompile Include="Source\ResourceMaterial.cpp">
       <Filter>Engine\Core\Files system\Resources</Filter>
-	</ClCompile>
+    </ClCompile>
     <ClCompile Include="Source\PickingTexture.cpp">
       <Filter>Engine\Core\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\ResourceScene.cpp">
+      <Filter>Engine\Core\Files system\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -357,9 +357,6 @@
     <ClInclude Include="Source\CameraController.h">
       <Filter>Engine\Core\Controllers</Filter>
     </ClInclude>
-    <ClInclude Include="Source\ResourceFbx.h">
-      <Filter>Engine\Core\Files system\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="Source\GameViewport.h">
       <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
@@ -381,9 +378,12 @@
     <ClInclude Include="Source\UUID.h" />
     <ClInclude Include="Source\ResourceMaterial.h">
       <Filter>Engine\Core\Files system\Resources</Filter>
-	</ClInclude>
+    </ClInclude>
     <ClInclude Include="Source\PickingTexture.h">
       <Filter>Engine\Core\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourceScene.h">
+      <Filter>Engine\Core\Files system\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

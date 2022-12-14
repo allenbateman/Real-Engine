@@ -17,7 +17,7 @@
 #include "Material.h"
 //resources
 #include "Resource.h"
-#include "ResourceFbx.h"
+#include "ResourceScene.h"
 #include "ResourceMaterial.h"
 #include "ResourceMesh.h"
 #include "ResourceTexture.h"
@@ -55,10 +55,11 @@ namespace MeshImporter {
 	void Load(const std::string& filename);
 	void Save(const Mesh mesh, const std::string& filename);
 }
-namespace FbxImporter {
+namespace SceneImporter {
 	void Import(shared_ptr<Resource>& resource);
-	void ProcessaNode(aiNode* node, const aiScene* scene, FbxNode* rNode,shared_ptr<ResourceFbx>& rFbx);
-	void ProcessaMesh(aiMesh* mesh, const aiScene* scene, FbxNode* rNode, shared_ptr<ResourceFbx>& rFbx);
-	int ProcessMaterial(aiMesh* mesh, const aiScene* scene, FbxNode* rNode, shared_ptr<ResourceFbx>& rFbx);
+	void ProcessaNode(aiNode* node, const aiScene* scene, GameObject* rNode,shared_ptr<ResourceScene>& rFbx);
+	void ProcessaMesh(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx);
+	int ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx);
+	void Save(const GameObject scene, const std::string& filename);
 }
 

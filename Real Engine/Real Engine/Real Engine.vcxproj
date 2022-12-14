@@ -56,9 +56,9 @@
     <ClCompile Include="Source\Renderer.cpp" />
     <ClCompile Include="Source\RendererPanel.cpp" />
     <ClCompile Include="Source\Resource.cpp" />
-    <ClCompile Include="Source\ResourceFbx.cpp" />
     <ClCompile Include="Source\ResourceMaterial.cpp" />
     <ClCompile Include="Source\ResourceMesh.cpp" />
+    <ClCompile Include="Source\ResourceScene.cpp" />
     <ClCompile Include="Source\ResourcesManagement.cpp" />
     <ClCompile Include="Source\ResourceTexture.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
@@ -128,9 +128,9 @@
     <ClInclude Include="Source\Renderer.h" />
     <ClInclude Include="Source\RendererPanel.h" />
     <ClInclude Include="Source\Resource.h" />
-    <ClInclude Include="Source\ResourceFbx.h" />
     <ClInclude Include="Source\ResourceMaterial.h" />
     <ClInclude Include="Source\ResourceMesh.h" />
+    <ClInclude Include="Source\ResourceScene.h" />
     <ClInclude Include="Source\ResourcesManagement.h" />
     <ClInclude Include="Source\ResourceTexture.h" />
     <ClInclude Include="Source\Scene.h" />

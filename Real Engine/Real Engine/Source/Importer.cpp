@@ -97,8 +97,6 @@ void TextureImporter::Import(shared_ptr<Resource>& resource){
     ILenum format = ilGetInteger(IL_IMAGE_FORMAT);
     ILenum type = ilGetInteger(IL_IMAGE_TYPE);
 
-
-
     rt->width = width;
     rt->height = height;
     rt->depth = depth;
@@ -312,7 +310,6 @@ Mesh* MeshImporter::Import(const aiMesh* mesh, shared_ptr<Resource> resource)
         vector.z = mesh->mNormals[vi].z;
         vertex.Normal = vector;
 
-
         if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
         {
             vec2 vec;
@@ -357,18 +354,20 @@ void MeshImporter::Import(shared_ptr<Resource>& resource)
 }
 
 //Fbx operators--------------------------------
-void FbxImporter::Import(shared_ptr<Resource>& resource)
+void SceneImporter::Import(shared_ptr<Resource>& resource)
 {
     const aiScene* scene = aiImportFile(resource->GetAssetPath().string().c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-    shared_ptr<ResourceFbx> fbx = static_pointer_cast<ResourceFbx>(resource);
-    GameObject* obj;
+    shared_ptr<ResourceScene> fbx = static_pointer_cast<ResourceScene>(resource);
+
     if (scene != nullptr && scene->HasMeshes())
     { 
         fbx->name = resource->GetAssetPath().stem().string();
-        fbx->SetLibraryPath("..\\Output\\Library\\Objects\\" + fbx->GetID() + ".object");
-        FbxNode* root = new FbxNode();
+        fbx->SetLibraryPath("..\\Output\\Library\\Objects\\" + fbx->GetID() + ".scene");
+        SceneNode* root = new SceneNode();
         fbx->root = root;
-        FbxImporter::ProcessaNode(scene->mRootNode, scene,fbx->root,fbx );
+       // SceneImporter::ProcessaNode(scene->mRootNode, scene,fbx->root,fbx );
+
+        string savePath = fbx->GetLibraryPath().string();
 
         fbx->Save();
         try
@@ -387,39 +386,41 @@ void FbxImporter::Import(shared_ptr<Resource>& resource)
     }
 }
 
-void FbxImporter::ProcessaNode(aiNode* node, const aiScene* scene, FbxNode* rNode, shared_ptr<ResourceFbx>& rFbx)
+void SceneImporter::ProcessaNode(aiNode* node, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
 {
-   
+    GameObject* obj = new GameObject(rFbx->name);
+
     // process all the node's meshes (if any)  
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
-        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        rNode->meshIndex.push_back(i);
-        FbxImporter::ProcessaMesh(mesh, scene, rNode,rFbx);
+        //aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+        //rNode->meshIndex.push_back(i);
+        //SceneImporter::ProcessaMesh(mesh, scene, rNode,rFbx);
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-        FbxNode* newNode = new FbxNode();
-        newNode->parent = rNode;
+   /*     GameObject* newNode = new GameObject("n");
+        newNode->GetComponent<Transform>().parent = rNode->get
+        newNodeparent = rNode;
         rNode->childs.push_back(*newNode);
         rNode->meshCount = node->mNumMeshes;
         rNode->childsCount= node->mNumChildren;
-        FbxImporter::ProcessaNode(node->mChildren[i], scene, &rNode->childs[i],rFbx);
+        SceneImporter::ProcessaNode(node->mChildren[i], scene, &rNode->childs[i],rFbx);*/
     }
 }
 
-void FbxImporter::ProcessaMesh(aiMesh* mesh, const aiScene* scene, FbxNode* rNode, shared_ptr<ResourceFbx>& rFbx)
-{
-    int matId;
+void SceneImporter::ProcessaMesh(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
+{   
     //load material attached to the obj
+    int matId;
    
     if (mesh->mMaterialIndex >= 0 )
     {
         //if empty load the first mat
         if (rFbx->materials.empty())
         {
-            matId = FbxImporter::ProcessMaterial(mesh, scene, rNode, rFbx);
+            matId = SceneImporter::ProcessMaterial(mesh, scene, rNode, rFbx);
             if (matId == -1) cout << "ERROR::PROCESS_MATERIAL\n";
         }
         else {
@@ -431,8 +432,7 @@ void FbxImporter::ProcessaMesh(aiMesh* mesh, const aiScene* scene, FbxNode* rNod
                     matId = i;
                 }
             }   
-        }
-   
+        }   
     }
     string name = mesh->mName.C_Str();
     shared_ptr<Resource> resourceMesh = app->resourceManager->CreateNewResource("..\\Output\\Assets\\" + name, Resource::Type::Mesh);
@@ -440,7 +440,7 @@ void FbxImporter::ProcessaMesh(aiMesh* mesh, const aiScene* scene, FbxNode* rNod
     MeshImporter::Import(mesh, resourceMesh)->MatId = matId;
     rFbx->meshes.push_back(resourceMesh->GetID());
 }
-int  FbxImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, FbxNode* rNode, shared_ptr<ResourceFbx>& rFbx)
+int  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
 {
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
     string name = material->GetName().C_Str();
@@ -460,4 +460,29 @@ int  FbxImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, FbxNode* r
     app->importer->importedMaterials.push_back(p);
 
     return mesh->mMaterialIndex;
+}
+
+std::ostream& operator <<(std::ostream& out, const GameObject& scene)
+{
+    out << "Components count:" << scene.components.size();
+    for (int i = 0; i< scene.components.size(); i++)
+    {
+        out << "component " << i << ":\n";
+        out << "resource active:" << scene.components.at(i).active;
+        out <<"resource id:" << scene.components.at(i).resource_id;
+    }
+
+    return out;
+}
+void SceneImporter::Save(const GameObject scene, const std::string& filename)
+{
+    std::ofstream out(filename);
+    if (out.is_open())
+    {
+        out << scene << '\n';
+    }
+    else {
+        cout << "Error saving mesh: " + filename;
+    }
+    out.close();
 }

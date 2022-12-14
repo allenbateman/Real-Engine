@@ -82,7 +82,7 @@ void ResourceScene::Load(std::shared_ptr<Resource>& resource, std::ifstream& dat
             std::getline(data, nChilds, ':');
             std::getline(data, nChilds, '\n');
             node.childsCount = stoi(nChilds);
-            for (int n = 0; n < node.childsCount; n++)
+    /*        for (int n = 0; n < node.childsCount; n++)
             {
                 std::string type;
                 std::getline(data, type, ':');
@@ -97,7 +97,7 @@ void ResourceScene::Load(std::shared_ptr<Resource>& resource, std::ifstream& dat
                 std::pair<Resource::Type, UID> p{t,r};
                 node.resources.push_back(p);
             }
-            obj->nodes.push_back(node);
+            obj->nodes.push_back(node);*/
         }
     }
 
