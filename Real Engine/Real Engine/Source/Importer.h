@@ -34,7 +34,7 @@ public:
 	bool Awake();
 	bool Start();
 	pathList importedTextures{};
-	std::vector<std::pair<int,std::filesystem::path>>importedMaterials;
+	std::vector<std::pair<int, UID>>importedMaterials;
 };
 
 
@@ -42,9 +42,10 @@ namespace TextureImporter {
 	void Import(shared_ptr<Resource>& resource);
 	void Import(const aiTexture* texture, shared_ptr<Resource> resource);
 	void Save(const Texture mat, const std::string& filename);
+	void LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<Resource>& resourceMat);
 }
 namespace MaterialImporter {
-	int Import(const aiMaterial* material, shared_ptr<Resource> resource);
+	UID Import(const aiMaterial* material, shared_ptr<Resource> resource);
 	void Import(shared_ptr<Resource>& resource);
 	void Load(const Material* mat, const std::string& filename);
 	void Save(const Material mat, const std::string& filename);
@@ -59,7 +60,12 @@ namespace SceneImporter {
 	void Import(shared_ptr<Resource>& resource);
 	void ProcessaNode(aiNode* node, const aiScene* scene, GameObject* rNode,shared_ptr<ResourceScene>& rFbx);
 	void ProcessaMesh(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx);
-	int ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx);
+	UID ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx);
 	void Save(const GameObject scene, const std::string& filename);
+
+	void LoadObject(const std::string file_path);
+	void ProcessNode(aiNode* node, const aiScene* scene,GameObject* go, shared_ptr<ResourceScene>& rFbx);
+	Mesh ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* go);
+	Material ProcessMaterial(aiMesh* mesh, const aiScene* scene);
 }
 

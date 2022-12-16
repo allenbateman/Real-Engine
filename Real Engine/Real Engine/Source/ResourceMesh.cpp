@@ -13,8 +13,8 @@ std::ostream& operator <<(std::ostream& out, const ResourceMesh& resource)
 {
     out << "name:" << resource.name << '\n';
     out << "id:" << resource.GetID().c_str() << "\n";
-    out << "assets path:" << resource.GetAssetPath().c_str() << "\n";
-    out << "library path:" << resource.GetLibraryPath().c_str() << "\n";
+    out << "assets path:" << resource.GetAssetPath().string() << "\n";
+    out << "library path:" << resource.GetLibraryPath().string() << "\n";
     out << "resource type:" << (int)resource.GetType() << "\n";
 
     out << "material index:" << resource.materialIndex << "\n";

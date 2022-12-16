@@ -1,6 +1,6 @@
 Vertices:160
 Indices:324
-Material Id:0
+Material Id:5c5d7edc-45cd-45b4-8b59-caab3bc564e3
 <position>[1.90793,1.90793,1.90793]<normals>[3.54003e-07,1,0]<tex coord>[0.0549909,0.326436]<color>[0,0,0,0]
 <position>[1.90793,1.90793,1.90793]<normals>[3.54004e-07,1,0]<tex coord>[0.161299,0.326436]<color>[0,0,0,0]
 <position>[1.57119,1.57119,1.57119]<normals>[3.54003e-07,1,0]<tex coord>[0.161299,0.356032]<color>[0,0,0,0]

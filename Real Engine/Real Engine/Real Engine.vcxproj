@@ -66,7 +66,6 @@
     <ClCompile Include="Source\SceneManager.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\SystemManager.cpp" />
-    <ClCompile Include="Source\Texture.cpp" />
     <ClCompile Include="Source\TextureLoader.cpp" />
     <ClCompile Include="Source\Timer.cpp" />
     <ClCompile Include="Source\Transform.cpp" />

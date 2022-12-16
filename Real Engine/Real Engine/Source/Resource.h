@@ -15,7 +15,7 @@ public:
 		Mesh,
 		Shader,
 		Scene,
-		GameObject,
+		GObject,
 		Fbx,
 		Material
 	};

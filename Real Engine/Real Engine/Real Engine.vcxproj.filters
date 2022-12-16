@@ -127,9 +127,6 @@
     <ClCompile Include="Source\Camera.cpp">
       <Filter>Engine\Core\Entity component system\Components</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Texture.cpp">
-      <Filter>Engine\Core\Entity component system\Components</Filter>
-    </ClCompile>
     <ClCompile Include="Source\Transform.cpp">
       <Filter>Engine\Core\Entity component system\Components</Filter>
     </ClCompile>

@@ -26,6 +26,9 @@ public:
 	void Destroy();
 
 	std::vector<Component> components;
+	unsigned int childsCount = 0;
+	vector<unsigned int> meshIndex;//array of indices to the mesh used
+	unsigned int meshCount;//number of meshes used by the node
 
 	bool active;
 	Entity id = -1; // id of the game object

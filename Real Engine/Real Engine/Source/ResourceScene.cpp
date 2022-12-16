@@ -1,5 +1,5 @@
 #include "ResourceScene.h"
-
+#include "Transform.h"
 ResourceScene::ResourceScene(UID uid): Resource(uid)
 {
 	type = Type::Fbx;
@@ -27,15 +27,15 @@ std::ostream& operator <<(std::ostream& out, const ResourceScene& resource)
     }
     out << "\tname: " << resource.GetRoot().name << "\n";
     out << "\tchild count: " << resource.GetRoot().childsCount << "\n";
-    for (const auto& node : resource.root->childs)
+    for (const auto& node : resource.root->GetComponent<Transform>().childs)
     {
-        out << "\tname: " << node.name << "\n";
+       /* out << "\tname: " << node. << "\n";
         out << "\tchild count: " << node.childsCount << "\n";
         out << "\tmesh count: " << node.meshCount << "\n";
         for (auto& i : node.meshIndex)
         {
             out << "\tmesh index: " << node.meshIndex[i] << "\n";
-        }
+        }*/
     }
     return out;
 }
@@ -73,7 +73,7 @@ void ResourceScene::Load(std::shared_ptr<Resource>& resource, std::ifstream& dat
         for (int i = 0; i < stoi(nNodes); i++)
         {
 
-            SceneNode node;
+            GameObject node;
             std::string name;
             std::getline(data, name, ':');
             std::getline(data, name, '\n');

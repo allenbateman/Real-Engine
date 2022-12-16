@@ -8,6 +8,7 @@
 #include "Debugger.h"
 #include <sstream>
 #include <string>
+#include "Transform.h"
 
 Importer::Importer()
 {
@@ -76,6 +77,50 @@ void TextureImporter::Save(const Texture tex, const std::string& filename)
     out.close();
 }
 
+void TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<Resource>& resource)
+{
+    shared_ptr<ResourceMaterial> resourceMat = static_pointer_cast<ResourceMaterial>(resource);
+    std::vector<Texture> textures;
+    for (unsigned int i = 0; i < mat->GetTextureCount(type); i++)
+    {
+        aiString str;
+        mat->GetTexture(type, i, &str);
+        bool Skip = false;
+        string name = str.C_Str();
+        string path = ASSETS_DIR + name;
+        shared_ptr<Resource> texture;
+        for (const auto& texPath : app->importer->importedTextures)
+        {
+
+            if (std::strcmp(texPath.string().data(), path.data()) == 0)
+            {
+                UID resourceID = app->resourceManager->FindResource(texPath.string().c_str());
+                texture = app->resourceManager->GetResource(resourceID);
+
+                if (texture == nullptr)
+                {
+                    cout << "ERROR::METRAIL_IMPORTER::RESOURCE_IS_NULL\n";
+                    return;
+                }
+                shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
+                pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
+                resourceMat->resourcesTexture.push_back(tResource);
+                Skip = true;
+                break;
+            }
+        }
+        if (!Skip)
+        {
+
+            texture = app->resourceManager->CreateNewResource(path, Resource::Type::Texture);
+            TextureImporter::Import(texture);
+            shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
+            pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
+            resourceMat->resourcesTexture.push_back(tResource);
+        }
+    }
+}
+
 void TextureImporter::Import(shared_ptr<Resource>& resource){
 
     string id = resource->GetID();
@@ -129,12 +174,12 @@ std::ostream& operator <<(std::ostream& out, const Material& material)
     vector<Texture>::const_iterator t = material.textures.begin();
     while (t != material.textures.end())
     {
-        out << "<id>" << '[' << t->id << "]" << "<type>" << '[' << t->type << ']' << "<path>" << '[' << t->path << ']' << '\n';
+        out << "<id>" << '[' << t->uid << "]" << "<type>" << '[' << t->type << ']' << "<path>" << '[' << t->path << ']' << '\n';
         t++;
     }
     return out;
 }
-int MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resource> resource)
+UID MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resource> resource)
 {
     shared_ptr<ResourceMaterial> resourceMat = dynamic_pointer_cast<ResourceMaterial>(resource);
 
@@ -159,7 +204,7 @@ int MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resource> re
                 if (textureDiff == nullptr)
                 {
                     cout << "ERROR::METRAIL_IMPORTER::RESOURCE_IS_NULL\n"; 
-                    return -1;
+                    return "";
                 }
                 shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureDiff);
                 pair<string, ResourceTexture > tResource{ "texture_diffuse",*t};
@@ -196,7 +241,7 @@ int MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resource> re
                 if (textureDiff == nullptr)
                 {
                     cout << "ERROR::METRAIL_IMPORTER::RESOURCE_IS_NULL\n";
-                    return -1;
+                    return "";
                 }
                 shared_ptr < ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureDiff);
                 pair<string, ResourceTexture > tResource{ "texture_specular",*t };
@@ -220,7 +265,7 @@ int MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resource> re
     for (const auto& tex : resourceMat->resourcesTexture)
     {
         Texture newTex;
-
+        newTex.uid = tex.second.GetID();
         newTex.path = tex.second.GetAssetPath().string().c_str();
         newTex.type = tex.first;
         mat.textures.push_back(newTex);
@@ -230,14 +275,17 @@ int MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resource> re
     MaterialImporter::Save(mat, resourceMat->GetLibraryPath().string().c_str());
     resourceMat->Save();   
 
-    return -1;
+    return resourceMat->GetID();
 }
-
 void MaterialImporter::Import(shared_ptr<Resource>& resource)
 {
-    shared_ptr<ResourceMaterial> resourceMat = static_pointer_cast<ResourceMaterial>(resource);
-   
 }
+//
+//void MaterialImporter::Import(shared_ptr<Resource>& resource)
+//{
+//    shared_ptr<ResourceMaterial> resourceMat = static_pointer_cast<ResourceMaterial>(resource);
+//   
+//}
 
 void MaterialImporter::Load(const Material* mat, const std::string& filename)
 {
@@ -261,7 +309,7 @@ std::ostream& operator <<(std::ostream& out, const Mesh& mesh)
 {
     out << "Vertices:" << mesh.vertices.size() << '\n';
     out << "Indices:" <<  mesh.indices.size() << '\n';
-    out << "Material Id:" << mesh.MatId << '\n';
+    out << "Material Id:" << mesh.material_UID << '\n';
 
     for (const auto& v : mesh.vertices)
     {
@@ -329,22 +377,11 @@ Mesh* MeshImporter::Import(const aiMesh* mesh, shared_ptr<Resource> resource)
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
-    Mesh newMesh;
-    newMesh.vertices = vertices;
-    newMesh.indices = indices;
-    newMesh.MatId = mesh->mMaterialIndex;
+    Mesh* newMesh = new Mesh();
+    newMesh->vertices = vertices;
+    newMesh->indices = indices;
   
-    shared_ptr<ResourceMesh> rm = static_pointer_cast<ResourceMesh>(resource);
-    string savePath = "..\\Output\\Library\\Meshes\\" + rm->GetID() + ".mesh";
-
-    rm->SetLibraryPath(savePath);
-
-    MeshImporter::Save(newMesh, savePath);
-
-    rm->materialIndex = mesh->mMaterialIndex;
-    rm->Save();
-
-    return &newMesh;
+    return newMesh;
 }
 
 void MeshImporter::Import(shared_ptr<Resource>& resource)
@@ -357,19 +394,19 @@ void MeshImporter::Import(shared_ptr<Resource>& resource)
 void SceneImporter::Import(shared_ptr<Resource>& resource)
 {
     const aiScene* scene = aiImportFile(resource->GetAssetPath().string().c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
-    shared_ptr<ResourceScene> fbx = static_pointer_cast<ResourceScene>(resource);
+    shared_ptr<ResourceScene> rScene = static_pointer_cast<ResourceScene>(resource);
 
     if (scene != nullptr && scene->HasMeshes())
     { 
-        fbx->name = resource->GetAssetPath().stem().string();
-        fbx->SetLibraryPath("..\\Output\\Library\\Objects\\" + fbx->GetID() + ".scene");
-        SceneNode* root = new SceneNode();
-        fbx->root = root;
-       // SceneImporter::ProcessaNode(scene->mRootNode, scene,fbx->root,fbx );
+        rScene->name = resource->GetAssetPath().stem().string();
+        rScene->SetLibraryPath("..\\Output\\Library\\Objects\\" + rScene->GetID() + ".scene");
+        GameObject* root = new GameObject(rScene->name);
+        rScene->root = root;
+        SceneImporter::ProcessaNode(scene->mRootNode, scene, rScene->root, rScene);
 
-        string savePath = fbx->GetLibraryPath().string();
+        string savePath = rScene->GetLibraryPath().string();
 
-        fbx->Save();
+        rScene->Save();
         try
         {
             aiReleaseImport(scene);
@@ -388,40 +425,37 @@ void SceneImporter::Import(shared_ptr<Resource>& resource)
 
 void SceneImporter::ProcessaNode(aiNode* node, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
 {
-    GameObject* obj = new GameObject(rFbx->name);
-
     // process all the node's meshes (if any)  
     for (unsigned int i = 0; i < node->mNumMeshes; i++)
     {
-        //aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-        //rNode->meshIndex.push_back(i);
-        //SceneImporter::ProcessaMesh(mesh, scene, rNode,rFbx);
+        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+        rNode->meshIndex.push_back(i);
+        SceneImporter::ProcessaMesh(mesh, scene, rNode,rFbx);
     }
     // then do the same for each of its children
     for (unsigned int i = 0; i < node->mNumChildren; i++)
     {
-   /*     GameObject* newNode = new GameObject("n");
-        newNode->GetComponent<Transform>().parent = rNode->get
-        newNodeparent = rNode;
-        rNode->childs.push_back(*newNode);
+        GameObject* newNode = new GameObject("n");
+        newNode->GetComponent<Transform>().parent = &rNode->GetComponent<Transform>();
+        rNode->GetComponent<Transform>().AddChild(&newNode->GetComponent<Transform>());
         rNode->meshCount = node->mNumMeshes;
         rNode->childsCount= node->mNumChildren;
-        SceneImporter::ProcessaNode(node->mChildren[i], scene, &rNode->childs[i],rFbx);*/
+        SceneImporter::ProcessaNode(node->mChildren[i], scene, newNode,rFbx);
     }
 }
 
 void SceneImporter::ProcessaMesh(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
 {   
     //load material attached to the obj
-    int matId;
-   
+    UID matId;
+    bool NewMaterial = true;
     if (mesh->mMaterialIndex >= 0 )
     {
         //if empty load the first mat
         if (rFbx->materials.empty())
         {
             matId = SceneImporter::ProcessMaterial(mesh, scene, rNode, rFbx);
-            if (matId == -1) cout << "ERROR::PROCESS_MATERIAL\n";
+            if (matId == "") cout << "ERROR::PROCESS_MATERIAL\n";
         }
         else {
             for (int i = 0; i < rFbx->materials.size(); i++)
@@ -429,37 +463,59 @@ void SceneImporter::ProcessaMesh(aiMesh* mesh, const aiScene* scene, GameObject*
                 //check if the material is alrady loaded
                 if (mesh->mMaterialIndex == i)
                 {
-                    matId = i;
+                    matId = rFbx->materials.at(i);
+                    NewMaterial = false;
                 }
             }   
+            if (NewMaterial)
+            {
+                matId = SceneImporter::ProcessMaterial(mesh, scene, rNode, rFbx);
+                if (matId == "") cout << "ERROR::PROCESS_MATERIAL\n";
+            }
         }   
     }
     string name = mesh->mName.C_Str();
     shared_ptr<Resource> resourceMesh = app->resourceManager->CreateNewResource("..\\Output\\Assets\\" + name, Resource::Type::Mesh);
     resourceMesh->name = name;
-    MeshImporter::Import(mesh, resourceMesh)->MatId = matId;
+
+    shared_ptr<ResourceMesh> rm = static_pointer_cast<ResourceMesh>(resourceMesh);
+    string savePath = "..\\Output\\Library\\Meshes\\" + rm->GetID() + ".mesh";
+    rm->SetLibraryPath(savePath);
+    rm->materialIndex = mesh->mMaterialIndex;
+    rm->Save();
+
+    Mesh* newMesh = MeshImporter::Import(mesh, resourceMesh);
+    newMesh->material_UID = matId;
+    MeshImporter::Save(*newMesh, savePath);
+
+    rNode->AddComponent(*newMesh);
     rFbx->meshes.push_back(resourceMesh->GetID());
 }
-int  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
+UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
 {
+    //aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+   
+    //for (const auto& mat : app->importer->importedMaterials)
+    //{
+    //    if (mat.first == mesh->mMaterialIndex && mat.second == name)
+    //    {
+    //        return mat.second;
+    //    }
+    //}
     aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
     string name = material->GetName().C_Str();
-    for (const auto& mat : app->importer->importedMaterials)
-    {
-        if (mat.first == mesh->mMaterialIndex && mat.second.stem() == name)
-        {
-            return mat.first;
-        }
-    }
-
     shared_ptr<Resource> resourceMat = app->resourceManager->CreateNewResource("..\\Output\\Assets\\" + name, Resource::Type::Material);
-    resourceMat->name = name;
+    TextureImporter::LoadAiMaterialTextures(material,aiTextureType_DIFFUSE, "texture_diffuse", resourceMat);
+    TextureImporter::LoadAiMaterialTextures(material,aiTextureType_SPECULAR, "texture_specular", resourceMat);
+
+
+
     MaterialImporter::Import(material, resourceMat);
     rFbx->materials.push_back(resourceMat->GetID());
     std::pair<int, UID> p{ mesh->mMaterialIndex ,resourceMat->GetID() };
     app->importer->importedMaterials.push_back(p);
 
-    return mesh->mMaterialIndex;
+    return resourceMat->GetID();
 }
 
 std::ostream& operator <<(std::ostream& out, const GameObject& scene)
@@ -469,7 +525,7 @@ std::ostream& operator <<(std::ostream& out, const GameObject& scene)
     {
         out << "component " << i << ":\n";
         out << "resource active:" << scene.components.at(i).active;
-        out <<"resource id:" << scene.components.at(i).resource_id;
+        out <<"resource id:" << scene.components.at(i).resource->GetID();
     }
 
     return out;
@@ -485,4 +541,100 @@ void SceneImporter::Save(const GameObject scene, const std::string& filename)
         cout << "Error saving mesh: " + filename;
     }
     out.close();
+}
+
+void SceneImporter::LoadObject(const std::string file_path)
+{
+}
+//
+//void SceneImporter::ProcessNode(aiNode* node, const aiScene* scene, GameObject* go, shared_ptr<ResourceScene>& rScene)
+//{
+//    go->GetComponent<Transform>().localMatrix = node->mTransformation.;
+//    // process all the node's meshes (if any)
+//    for (unsigned int i = 0; i < node->mNumMeshes; i++)
+//    {
+//        aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
+//        parentGo.AddComponent(ProcessMesh(mesh, scene, parentGo));
+//    }
+//    // then do the same for each of its children
+//    for (unsigned int i = 0; i < node->mNumChildren; i++)
+//    {
+//        GameObject* childGo = new GameObject(rScene->name + std::to_string(i));
+//        childGo->GetComponent<Transform>().parent = &parentGo.GetComponent<Transform>();
+//        parentGo.GetComponent<Transform>().childs.push_back(&childGo->GetComponent<Transform>());
+//        ProcessNode(node->mChildren[i], scene, *childGo, result);
+//
+//        result.push_back(childGo);
+//    }
+//}
+//
+//Mesh SceneImporter::ProcessMesh(aiMesh* mesh, const aiScene* scene, GameObject* go)
+//{
+//    //temporary varaibles to store the mesh data
+//    std::vector<Vertex> vertices;
+//    std::vector<unsigned int> indices;
+//    std::vector<Texture> textures;
+//
+//    for (unsigned int vi = 0; vi < mesh->mNumVertices; vi++)
+//    {
+//        Vertex vertex;
+//        vec3 vector;
+//        vector.x = mesh->mVertices[vi].x;
+//        vector.y = mesh->mVertices[vi].y;
+//        vector.z = mesh->mVertices[vi].z;
+//        vertex.Position = vector;
+//
+//        vector.x = mesh->mNormals[vi].x;
+//        vector.y = mesh->mNormals[vi].y;
+//        vector.z = mesh->mNormals[vi].z;
+//        vertex.Normal = vector;
+//
+//        vec4 color;
+//        color.r = 0;
+//        color.g = 0;
+//        color.b = 0;
+//        color.a = 0;
+//        vertex.Color = color;
+//
+//        if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+//        {
+//            vec2 vec;
+//            vec.x = mesh->mTextureCoords[0][vi].x;
+//            vec.y = mesh->mTextureCoords[0][vi].y;
+//            vertex.TexCoords = vec;
+//        }
+//        else
+//            vertex.TexCoords = vec2(0.0f, 0.0f);
+//
+//        vertices.push_back(vertex);
+//    }
+//
+//    for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+//    {
+//        aiFace face = mesh->mFaces[i];
+//        for (unsigned int j = 0; j < face.mNumIndices; j++)
+//            indices.push_back(face.mIndices[j]);
+//    }
+//
+//    //load material attached to the obj
+//    if (mesh->mMaterialIndex >= 0)
+//    {
+//        go->AddComponent(ProcessMaterial(mesh, scene));
+//    }
+//
+//    return Mesh(vertices, indices);
+//}
+//
+Material SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
+{
+    std::vector<Texture> textures;
+    //aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+    //std::vector<Texture> diffuseMaps = TextureImporter::LoadAiMaterialTextures(material,
+    //    aiTextureType_DIFFUSE, "texture_diffuse");
+    //textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+    //std::vector<Texture> specularMaps = TextureImporter::LoadAiMaterialTextures(material,
+    //    aiTextureType_SPECULAR, "texture_specular");
+    //textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+
+    return Material(textures);
 }
