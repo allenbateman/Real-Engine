@@ -12,7 +12,7 @@ Using some libraries as helpers, we are happy to say that is a great learning pr
 
 Understanding in depth rendering and file management is in a great part hard. But over all is fun and solidifies the basics of resource management and optimizations to improve our games in our game developer journey.
 
-## A1 Geometry Viwer
+## A1 - Geometry Viwer
 
 
 
@@ -40,6 +40,7 @@ Scene serialisation is work in progress.
 
 The street house is not set as we had some last minute issue with the obj imported we where using until now.
 
+## A2 - Tool Implementation
 
 
 
