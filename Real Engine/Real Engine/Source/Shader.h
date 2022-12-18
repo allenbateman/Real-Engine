@@ -14,7 +14,9 @@ public:
 	//program ID
 	unsigned int ID;
 
+	Shader();
 	Shader(const char* vertexPath, const char* fragmentPath);
+	bool Load(const char* vertexPath, const char* fragmentPath);
 	//use/active shader
 	void Use();
 	// deactivate sharder setting to default shader

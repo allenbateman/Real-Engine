@@ -55,14 +55,14 @@ struct  OnPanelResize : Event
 public:
 	OnPanelResize() {  type = EventType::PANEL_RESIZE; };
 	~OnPanelResize() {};
-	int x, y,id;
+	int x = 0, y = 0,id = 0;
 };
 
 struct OnPanelFocus :Event {
 public:
 	OnPanelFocus() {type = EventType::ON_PANEL_FOCUS; };
 	~OnPanelFocus() {};
-	int id;
+	int id = 0;
 	bool focused = false;
 };
 
@@ -80,7 +80,7 @@ struct OnFileDrop : Event
 	OnFileDrop() {  type = ON_FILE_DROP; }
 	~OnFileDrop() {};
 	
-	const char* path;
+	const char* path = nullptr;
 
 	void Displaydata()
 	{
@@ -96,5 +96,5 @@ struct OnGameObjectCreation : Event
 
 	~OnGameObjectCreation() {};
 
-	gameObjectType goType;
+	gameObjectType goType = EMPTY;
 };

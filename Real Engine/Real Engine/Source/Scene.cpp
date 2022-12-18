@@ -26,9 +26,7 @@ void Scene::Init()
 	mainCamera->GetComponent<Camera>().Start();
 	mainCamera->GetComponent<Transform>().Translate(0.0f, 2.0f, 10.0f);
 
-	app->renderer->game.camera = mainCamera->GetComponent<Camera>();
-
-	
+	app->renderer->SetGameSpaceCamera(&mainCamera->GetComponent<Camera>());
 }
 
 void Scene::Enable()
@@ -93,13 +91,11 @@ void Scene::CreateGameObject(gameObjectType goType)
 
 void Scene::LoadGameObject(const std::string file_path)
 {
-	
 	std::vector<GameObject*> obj = app->sceneManager->objLoader.LoadObject(file_path);
 	GameObject* go = obj.back();
 	origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
 	go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
-	gameObejects.push_back(*go);
-	
+	gameObejects.push_back(*go);	
 }
 
 void Scene::RemoveEntity(Entity id)

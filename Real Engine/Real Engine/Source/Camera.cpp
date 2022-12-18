@@ -32,14 +32,15 @@ Camera::~Camera()
 // -----------------------------------------------------------------
 bool Camera::Start()
 {
-	
 	bool ret = true;
-
 	freecam = false;
 	maxFieldOfView = 120.0f;
 	fieldOfView = 60.0f;
 	minFieldOfView = 40.0f;
 	zoomSpeed = 4.0f;
+	const char* vs = "../Output/Assets/Shaders/default.vertex";
+	const char* fs = "../Output/Assets/Shaders/default.fragment";
+	ret = shader.Load(vs, fs);
 	return ret;
 }
 
@@ -143,4 +144,9 @@ void Camera::CalculateViewMatrix()
 {
 	ViewMatrix = mat4x4(X.x, Y.x, Z.x, 0.0f, X.y, Y.y, Z.y, 0.0f, X.z, Y.z, Z.z, 0.0f, -dot(X, Position), -dot(Y, Position), -dot(Z, Position), 1.0f);
 	ViewMatrixInverse = inverse(ViewMatrix);
+}
+
+void Camera::SetShader(Shader& _shader)
+{
+	shader = _shader;
 }

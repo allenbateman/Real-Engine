@@ -45,17 +45,17 @@ public:
 	ImVec2 GetPanelSize(PanelID id);
 	ConsolePanel* GetConsole() { return consolePanel; }
 private:
-	vector<Panel*> panelList;
+	vector<Panel*> panelList{};
 
-	Viewport* camViewport;
-	GameViewport* gameViewport;
-	RendererPanel* mainRenderer;
-	FPSGraph* fpsGraph;
-	Inspector* inspector;
-	SceneHerarchyPanel* herarchyPanel;
-	FileExplorer* fileExplorer;
-	AboutPanel* aboutPanel;
-	ConsolePanel* consolePanel;
+	Viewport* camViewport = nullptr;
+	GameViewport* gameViewport = nullptr;;
+	RendererPanel* mainRenderer = nullptr;;
+	FPSGraph* fpsGraph = nullptr;;
+	Inspector* inspector = nullptr;;
+	SceneHerarchyPanel* herarchyPanel = nullptr;;
+	FileExplorer* fileExplorer = nullptr;;
+	AboutPanel* aboutPanel = nullptr;;
+	ConsolePanel* consolePanel = nullptr;;
 
 	bool OpenMainWindow;
 	ImGuiIO* io = nullptr;

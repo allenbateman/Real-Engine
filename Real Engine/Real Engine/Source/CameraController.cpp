@@ -44,8 +44,6 @@ void CameraController::HandleEvent(Event* e)
 		{
 		case KEY_INPUT:
 		{
-			
-		
 			if (!camera.GetFocus())
 			{
 				camera.altKey = false;
@@ -133,9 +131,6 @@ void CameraController::HandleEvent(Event* e)
 
 				camera.CalculateViewMatrix();
 			}
-
-			
-
 			if (camera.altKey && camera.mouseLeft)
 			{
 				float rotationX = 0.0f;

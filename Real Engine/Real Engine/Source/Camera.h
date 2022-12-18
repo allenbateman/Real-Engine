@@ -5,7 +5,7 @@
 #include "glmath.h"
 #include "Transform.h"
 #include "Events.h"
-
+#include "Shader.h"
 
 class Camera
 {
@@ -35,7 +35,9 @@ public:
 
 	void SetFocus(bool focus) { onFocus = focus; };
 	bool GetFocus() { return onFocus; };
-	
+
+	void SetShader(Shader& _shader);
+	Shader GetShader() { return shader; };
 public:
 	vec3 X, Y, Z, Position, Reference;
 	Transform target;
@@ -46,7 +48,6 @@ public:
 	bool mouseRight;
 	vec2 rotationSpeed{ 0.1f, 0.1f };
 	float fieldOfView;
-
 	float maxFieldOfView;
 	float minFieldOfView;
 	float zoomSpeed;
@@ -60,11 +61,9 @@ private:
 		right
 
 	};
+	Shader shader;
 	mat3x3 NormalMatrix;
 	mat4x4 ModelMatrix, ViewMatrix, ViewMatrixInverse;
-
-
-
 	view cview = normal;
 	bool freecam;
 	bool onFocus;

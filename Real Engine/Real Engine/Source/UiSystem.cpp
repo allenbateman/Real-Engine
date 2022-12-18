@@ -119,8 +119,6 @@ void UiSystem::HandleEvent(Event* event)
     }
 }
 
-
-
 void UiSystem::UpdatePanels()
 {
 	for (vector<Panel*>::iterator it = panelList.begin(); it != panelList.end(); it++)

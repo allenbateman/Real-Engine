@@ -61,38 +61,24 @@ bool Renderer::Awake()
 
 bool Renderer::Start()
 {
-	const char *  vs = "../Output/Assets/Shaders/default.vertex";
-	const char* fs = "../Output/Assets/Shaders/default.fragment";
+	editorCam = app->entityComponentSystem.CreateEntity();
+	app->entityComponentSystem.AddComponent(editorCam, TagComponent{ "Camera" });
+	app->entityComponentSystem.AddComponent(editorCam, Transform{});
+	app->entityComponentSystem.AddComponent(editorCam, Camera());
+	app->entityComponentSystem.AddComponent(editorCam, EditorComponent());
+	Camera* editorCamera = &app->entityComponentSystem.GetComponent<Camera>(editorCam);
+	if (!editorCamera->Start())
+		Debug::Error("Shader compile error");
 
-	defaultShader = new Shader(vs, fs);
-
-	currentCamera = app->entityComponentSystem.CreateEntity();
-	app->entityComponentSystem.AddComponent(currentCamera, TagComponent{ "Camera" });
-	app->entityComponentSystem.AddComponent(currentCamera, Transform{});
-	app->entityComponentSystem.AddComponent(currentCamera, Camera());
-	app->entityComponentSystem.AddComponent(currentCamera, EditorComponent());
-	editorCamera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
-	editorCamera.Start();
-
-	
-	editor.buffer = editorBuffer;
 	editor.camera = editorCamera;
 	editor.type = eEditor;
-	buffCams.push_back(&editor);
+	renderers.push_back(&editor);
+	renderers.push_back(&game);
 
-	game.buffer = gameBuffer;
-	game.camera = app->sceneManager->currentScene->mainCamera->GetComponent<Camera>();
-	game.type = eGame;
-	buffCams.push_back(&game);
-
-
-	OnResize(0, 0, app->window->GetWidth(), app->window->GetHeight());
-
-	for (vector<BuffCam*>::iterator item = buffCams.begin(); item != buffCams.end(); item++)
+	for (vector<RenderSpace*>::iterator item = renderers.begin(); item != renderers.end(); item++)
 	{
 		(*item)->buffer.GenerateBuffer(app->window->GetWidth(), app->window->GetHeight());
 	}
-	
 	return true;
 }
 
@@ -100,7 +86,7 @@ bool Renderer::PreUpdate()
 {
 	
 	//clear window rendered buffer
-	for (vector<BuffCam*>::iterator item = buffCams.begin(); item != buffCams.end(); item++)
+	for (vector<RenderSpace*>::iterator item = renderers.begin(); item != renderers.end(); item++)
 	{
 		(*item)->buffer.ClearBuffer();
 	}
@@ -113,17 +99,13 @@ bool Renderer::PreUpdate()
 
 bool Renderer::Update(float dt)
 {
-	editor.camera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
-	game.camera = app->sceneManager->currentScene->mainCamera->GetComponent<Camera>();
 	return true;
 }
 
 bool Renderer::PostUpdate()
 {	
-	
-	
 	//calcualte view mtarix 
-	for (vector<BuffCam*>::iterator item = buffCams.begin(); item != buffCams.end(); item++)
+	for (vector<RenderSpace*>::iterator item = renderers.begin(); item != renderers.end(); item++)
 	{
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -132,8 +114,8 @@ bool Renderer::PostUpdate()
 
 		glMatrixMode(GL_MODELVIEW);
 
-		(*item)->camera.CalculateViewMatrix();
-		glLoadMatrixf((*item)->camera.GetViewMatrix());
+		(*item)->camera->CalculateViewMatrix();
+		glLoadMatrixf((*item)->camera->GetViewMatrix());
 		//bind renderer to the texture we want to render to (Frame buffer object)
 		glBindFramebuffer(GL_FRAMEBUFFER, (*item)->buffer.FBO);
 
@@ -154,6 +136,12 @@ bool Renderer::PostUpdate()
 
 		glEnd();
 
+		//Set Camera shader to render 
+		Shader shader = (*item)->camera->GetShader();
+		shader.Use();
+		float* projection = (*item)->ProjectionMatrix.M;
+		float* view = (*item)->camera->GetViewMatrix();
+		float* model;
 		//render Every Go
 		for (auto& ent : entities)
 		{
@@ -163,10 +151,6 @@ bool Renderer::PostUpdate()
 
 			//attach shader 
 			//set attributes for rendering the textures
-			//colorShader->Use();
-			defaultShader->Use();
-			float* projection = (*item)->ProjectionMatrix.M;
-			float* model;
 			mat4x4 pos = translate(transform.position.x, transform.position.y, transform.position.z);
 			mat4x4 rotationX = rotate(transform.rotation.x, transform.right);
 			mat4x4 rotationY = rotate(transform.rotation.y, transform.up);
@@ -174,24 +158,20 @@ bool Renderer::PostUpdate()
 			mat4x4 rotation = (rotationX * rotationY * rotationZ);
 			mat4x4 size = scale(transform.scale.x, transform.scale.y, transform.scale.z);
 			model = (pos * size * rotation).M;
-			float* view = (*item)->camera.GetViewMatrix();
-			defaultShader->SetMat4("projection", projection);
-			defaultShader->SetMat4("model", model);
-			defaultShader->SetMat4("view", view);
+			shader.SetMat4("projection", projection);
+			shader.SetMat4("model", model);
+			shader.SetMat4("view", view);
 			//render obj
-			mesh.Draw(*defaultShader, material);
+			mesh.Draw(shader, material);
 		}
 
 		//detach the shader to default so it doesnt affect other render process
-		defaultShader->StopUse();
+		shader.StopUse();
 
 		//Stop render  -------------------------------------------
 
 		//bind to the default renderer to render everything
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);
-		
-		
-		
 	}
 	app->window->Swapbuffers();
 	app->uiSystem->RenderUi();
@@ -203,12 +183,10 @@ bool Renderer::CleanUp()
 	return true;
 }
 
-static float aspect_ratio;
-
 void Renderer::OnResize(int xPos, int yPos, int width, int height)
 {
 	//resize the texture 
-	for (vector<BuffCam*>::iterator item = buffCams.begin(); item != buffCams.end(); item++)
+	for (vector<RenderSpace*>::iterator item = renderers.begin(); item != renderers.end(); item++)
 	{
 		(*item)->buffer.GenerateBuffer(width, height);
 
@@ -216,18 +194,12 @@ void Renderer::OnResize(int xPos, int yPos, int width, int height)
 
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
-		(*item)->ProjectionMatrix = perspective((*item)->camera.GetFieldOfView(), (float)width / (float)height, 0.125f, 512.0f);
+		(*item)->ProjectionMatrix = perspective((*item)->camera->GetFieldOfView(), (float)width / (float)height, 0.125f, 512.0f);
 		glLoadMatrixf(&(*item)->ProjectionMatrix);
 
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
-
-		aspect_ratio = width / height;
 	}
-	
-	
-
-	
 }
 
 void Renderer::HandleEvent(Event* e)
@@ -238,47 +210,41 @@ void Renderer::HandleEvent(Event* e)
 	case PANEL_RESIZE:
 	{
 		OnPanelResize* Pr = dynamic_cast<OnPanelResize*>(e);
-		if(Pr->id == eViewport)
-			OnResize(0, 0, Pr->x, Pr->y);
-		lastSize.x = Pr->x;
-		lastSize.y = Pr->y;
-
+		switch (Pr->id)
+		{
+		case eViewport:
+			editor.OnResize(0, 0, Pr->x, Pr->y);
+			break;
+		case eGameViewport:
+			game.OnResize(0, 0, Pr->x, Pr->y);
+			break;
+		}	
 	}
 		break;
 	case ON_PANEL_FOCUS:
 	{
 		OnPanelFocus* Pf = dynamic_cast<OnPanelFocus*>(e);
-		if (Pf->id == eViewport)
+		switch (Pf->id)
 		{
-			auto& camera = app->entityComponentSystem.GetComponent<Camera>(currentCamera);
-			camera.SetFocus(Pf->focused);
+		case eViewport:
+			editor.camera->SetFocus(Pf->focused);
+			break;
+		case eGameViewport:
+			game.camera->SetFocus(Pf->focused);
+			break;
 		}
 	}
 	break;
 	case MOUSE_SCROLL:
 	{
-		OnResize(0, 0, lastSize.x, lastSize.y);
+		game.OnFovChange();
+		editor.OnFovChange();
 	}
 	break;
 	case ON_FOV_CHANGE:
 	{
-		
-		for (vector<BuffCam*>::iterator item = buffCams.begin(); item != buffCams.end(); item++)
-		{
-			glMatrixMode(GL_PROJECTION);
-			glLoadIdentity();
-			(*item)->ProjectionMatrix = perspective((*item)->camera.GetFieldOfView(), (float)lastSize.x / (float)lastSize.y, 0.125f, 512.0f);
-			glLoadMatrixf(&(*item)->ProjectionMatrix);
-
-			glMatrixMode(GL_MODELVIEW);
-			glLoadIdentity();
-
-			aspect_ratio = lastSize.x / lastSize.y;
-			
-		}
-
-
-		
+		game.OnFovChange();
+		editor.OnFovChange();
 	}
 	break;
 	default:
@@ -286,14 +252,9 @@ void Renderer::HandleEvent(Event* e)
 	}
 }
 
-void Renderer::AddCamera(Camera camera, BuffCamType type)
-{	
-	FrameBuffer buff;
-	BuffCam bCam;
-	bCam.buffer = buff;
-	bCam.camera = camera;
-	bCam.type = type;
-		
-	buffCams.push_back(&bCam);
+void Renderer::SetGameSpaceCamera(Camera* camera, RenderSpaceType type)
+{
+	game.camera = camera;		
+	game.type = eGame;
+	game.OnResize(0, 0, app->window->GetWidth(), app->window->GetHeight());
 }
-

@@ -4,7 +4,6 @@
 #include "glmath.h"
 #include "FrameBuffer.h"
 #include <bitflags/bitflags.hpp>
-#include "Shader.h"
 #include "Camera.h"
 #include "BuffCam.h"
 #include "PickingTexture.h"
@@ -33,38 +32,14 @@ public:
 	
 	void HandleEvent(Event* e);
 
-	void AddCamera(Camera camera, BuffCamType type = eDefault);
-
-	Entity currentCamera;
-
-	BuffCam editor;
-	BuffCam game;
-
-	
-	Shader* defaultShader;
-	Shader* colorShader;
-
-	//last renderer resize;
-	vec2 lastSize;
-
-	bool onFocus; 
-
-	Camera editorCamera;
-	Camera gameCamera;
-
-	FrameBuffer editorBuffer;
-	FrameBuffer gameBuffer;
-
+	void SetGameSpaceCamera(Camera* camera, RenderSpaceType type = noSpace);
+	Entity editorCam;
+	RenderSpace editor{};
+	RenderSpace game{};
+	bool onFocus = false;
 	PickingTexture pickingTex;
-	
-
-	
 private:
 	//refernce of the current camera camera
-	vector<BuffCam*> buffCams;
-
-	
-
-	
+	vector<RenderSpace*> renderers;
 };
 

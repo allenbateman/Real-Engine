@@ -16,7 +16,6 @@ Viewport::~Viewport()
 
 void Viewport::Init()
 {
-
 	active = true;
 	window_flags = ImGuiWindowFlags_NoDocking;
 	borderOffset = 0;
@@ -30,11 +29,9 @@ void Viewport::Update()
 	
 	if (ImGui::Begin("Viewport"),NULL,window_flags)
 	{
-
 		OnHovered();
 		OnResize();
 		ImGui::Image((ImTextureID)app->renderer->editor.buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
-		
 	}
 	ImGui::End();
 	ImGui::PopStyleVar();

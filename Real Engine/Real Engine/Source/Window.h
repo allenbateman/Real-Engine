@@ -10,7 +10,6 @@ struct GLFWwindow;
 class Window : public Module
 {
 	public:
-
 		Window() {};
 		Window(bool isActive);
 		virtual ~Window();
