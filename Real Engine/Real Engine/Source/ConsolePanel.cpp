@@ -1,6 +1,6 @@
 #include "ConsolePanel.h"
 
-ConsolePanel::ConsolePanel(int _id, bool isActive)
+ConsolePanel::ConsolePanel(int _id, bool isActive) : Panel(_id, isActive)
 {
 
 }

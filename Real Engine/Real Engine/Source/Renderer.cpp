@@ -51,7 +51,7 @@ bool Renderer::Awake()
 	glEnable(GL_COLOR_MATERIAL);
 
 
-	app->eventSystem->SubscribeModule(this,PANEL_RESIZE);
+	app->eventSystem->SubscribeModule(this, PANEL_RESIZE);
 	app->eventSystem->SubscribeModule(this, ON_PANEL_FOCUS);
 	app->eventSystem->SubscribeModule(this, MOUSE_SCROLL);
 	app->eventSystem->SubscribeModule(this, ON_FOV_CHANGE);

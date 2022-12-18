@@ -43,7 +43,7 @@ bool Panel::OnHovered()
 		ImVec2 vMin = ImGui::GetWindowContentRegionMin();
 		ImVec2 vMax = ImGui::GetWindowContentRegionMax();
 		vMin.x += ImGui::GetWindowPos().x - borderOffset;
-		//vMin.y += ImGui::GetWindowPos().y - borderOffset;
+		vMin.y += ImGui::GetWindowPos().y - borderOffset;
 		vMax.x += ImGui::GetWindowPos().x + borderOffset;
 		vMax.y += ImGui::GetWindowPos().y + borderOffset;
 		ImGui::GetForegroundDrawList()->AddRect(vMin, vMax, borderColor, 0, 0, borderOffset);

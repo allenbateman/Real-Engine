@@ -1,6 +1,6 @@
 #include "FPSGraph.h"
 
-FPSGraph::FPSGraph(int _id, bool isActive)
+FPSGraph::FPSGraph(int _id, bool isActive) : Panel(_id, isActive)
 {
 }
 

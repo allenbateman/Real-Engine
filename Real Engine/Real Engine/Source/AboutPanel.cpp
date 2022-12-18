@@ -7,7 +7,7 @@
 #include "AboutPanel.h"
 
 using namespace std;
-AboutPanel::AboutPanel(int _id, bool isActive)
+AboutPanel::AboutPanel(int _id, bool isActive) : Panel(_id, isActive)
 {
 }
 
