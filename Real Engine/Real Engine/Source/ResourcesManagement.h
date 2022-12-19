@@ -47,6 +47,8 @@ public:
 	}
 	//creates a new resource when needed
 	shared_ptr<Resource> CreateNewResource(const std::filesystem::path assetsFile, Resource::Type type);
+
+	std::map<UID, std::shared_ptr<Resource>> GetResourcesList() { return resources; };
 private:
 
 	//loads the meta file and creates the resource
@@ -74,5 +76,7 @@ private:
 	//stores the link beteen UUID of imported resources with the resource it self
 	std::map<UID,std::shared_ptr<Resource>> resources{};
 };
+
+
 
 

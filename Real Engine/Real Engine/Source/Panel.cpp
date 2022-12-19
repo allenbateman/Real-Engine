@@ -73,7 +73,6 @@ bool Panel::OnResize()
 		ePanelResize.x = LastSize.x;
 		ePanelResize.y = LastSize.y;
 
-
 		Resized =  true;
 		PanelResize = true;
 	}

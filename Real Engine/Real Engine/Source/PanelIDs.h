@@ -10,4 +10,5 @@ enum PanelID {
 	eFileExplorer = 7,
 	eAbout = 8,
 	eConsole = 9,
+	eResources = 10,
 };

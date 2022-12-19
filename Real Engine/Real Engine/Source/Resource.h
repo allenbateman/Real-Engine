@@ -9,7 +9,7 @@ using UID = std::string;
 class Resource
 {
 public:
-	enum Type {
+	enum class Type {
 		UNKNOWN,
 		Texture,
 		Mesh,
@@ -44,11 +44,63 @@ public:
 	std::string name;
 	bool IsLoaded;
 
+	const char* GetTypeChar();
+
 protected:
 	std::filesystem::path  assetsPath;
 	std::filesystem::path librayPath;
 
 	UID uid;
 	Type type = Type::UNKNOWN;
+
+public:
+	const char* operator = (Resource::Type& type)
+	{
+		switch (type)
+		{
+		case Resource::Type::UNKNOWN:
+			return "unknown";
+		case Resource::Type::Texture:
+			return "Texture";
+		case Resource::Type::Material:
+			return "Material";
+		case Resource::Type::Mesh:
+			return "Mesh";
+		case Resource::Type::Fbx:
+			return "Fbx";
+		case Resource::Type::GObject:
+			return "Gameobject";
+		case Resource::Type::Shader:
+			return "Shader";
+		case Resource::Type::Scene:
+			return "Scene";
+		default:
+			break;
+		}
+	}
 };
 
+//const char* operator << (Resource::Type& type)
+//{
+//	switch (type)
+//	{
+//	case Resource::Type::UNKNOWN:
+//		return "unknown";
+//	case Resource::Type::Texture:
+//		return "Texture";
+//	case Resource::Type::Material:
+//		return "Material";
+//	case Resource::Type::Mesh:
+//		return "Mesh";
+//	case Resource::Type::Fbx:
+//		return "Fbx";
+//	case Resource::Type::GObject:
+//		return "Gameobject";
+//	case Resource::Type::Shader:
+//		return "Shader";
+//	case Resource::Type::Scene:
+//		return "Scene";
+//	default:
+//		break;
+//	}
+//}

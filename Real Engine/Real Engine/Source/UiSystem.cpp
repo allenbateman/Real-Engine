@@ -34,15 +34,16 @@ bool UiSystem::Start()
 	ImGui_ImplGlfw_InitForOpenGL(app->window->window, true);
 	ImGui_ImplOpenGL3_Init("#version 410");
 
-	camViewport = new Viewport(eViewport,true);
-    gameViewport = new GameViewport(eGameViewport, true);
-    mainRenderer = new RendererPanel(eRender_Settings,false);
-    fpsGraph = new FPSGraph(eFPS_Graph, false);
-    inspector = new Inspector(eInspector, true);
-    herarchyPanel = new SceneHerarchyPanel(eSceneHerarchy, true);
-    fileExplorer = new FileExplorer(eFileExplorer, true);
-    aboutPanel = new AboutPanel(eAbout, true);
-    consolePanel = new ConsolePanel(eConsole, true);
+	camViewport     = new Viewport(eViewport,true);
+    gameViewport    = new GameViewport(eGameViewport, true);
+    mainRenderer    = new RendererPanel(eRender_Settings,false);
+    fpsGraph        = new FPSGraph(eFPS_Graph, false);
+    inspector       = new Inspector(eInspector, true);
+    herarchyPanel   = new SceneHerarchyPanel(eSceneHerarchy, true);
+    fileExplorer    = new FileExplorer(eFileExplorer, true);
+    aboutPanel      = new AboutPanel(eAbout, false);
+    consolePanel    = new ConsolePanel(eConsole, true);
+    resourcesPanel  = new ResourcesPanel(eResources, false);
 
 	panelList.push_back(camViewport);
     panelList.push_back(gameViewport);
@@ -53,6 +54,7 @@ bool UiSystem::Start()
     panelList.push_back(fileExplorer);
     panelList.push_back(aboutPanel);
     panelList.push_back(consolePanel);
+    panelList.push_back(resourcesPanel);
 
     herarchyPanel->inspector = inspector;
 
@@ -99,7 +101,7 @@ bool UiSystem::CleanUp()
         (*it)->CleanUp();
     }
 
-  //  LOG("Quitting ImGui subsystem");
+    LOG("Quitting ImGui subsystem");
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
@@ -252,16 +254,21 @@ void UiSystem::MainAppDockSpace(bool* p_open)
                 fpsGraph->active = true;
                 ImGui::SetWindowFocus(fpsGraph->name.GetString());
             }
-            if (ImGui::MenuItem("About"))
-            {
-                aboutPanel->active = true;
-                ImGui::SetWindowFocus(aboutPanel->name.GetString());
-            }
             if (ImGui::MenuItem("Console"))
             {
                 consolePanel->active = true;
                 ImGui::SetWindowFocus(consolePanel->name.GetString());
-
+            }
+            if (ImGui::MenuItem("Resources"))
+            {
+                consolePanel->active = true;
+                ImGui::SetWindowFocus(resourcesPanel->name.GetString());
+            }
+            ImGui::Separator();
+            if (ImGui::MenuItem("About"))
+            {
+                aboutPanel->active = true;
+                ImGui::SetWindowFocus(aboutPanel->name.GetString());
             }
             ImGui::Separator();
 

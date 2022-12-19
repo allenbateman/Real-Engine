@@ -73,6 +73,7 @@ bool Renderer::Start()
 	editor.camera = editorCamera;
 	editor.type = eEditor;
 	renderers.push_back(&editor);
+	game.type = eGame;
 	renderers.push_back(&game);
 
 	for (vector<RenderSpace*>::iterator item = renderers.begin(); item != renderers.end(); item++)
@@ -183,25 +184,6 @@ bool Renderer::CleanUp()
 	return true;
 }
 
-void Renderer::OnResize(int xPos, int yPos, int width, int height)
-{
-	//resize the texture 
-	for (vector<RenderSpace*>::iterator item = renderers.begin(); item != renderers.end(); item++)
-	{
-		(*item)->buffer.GenerateBuffer(width, height);
-
-		glViewport(xPos, yPos, width, height);
-
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		(*item)->ProjectionMatrix = perspective((*item)->camera->GetFieldOfView(), (float)width / (float)height, 0.125f, 512.0f);
-		glLoadMatrixf(&(*item)->ProjectionMatrix);
-
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-	}
-}
-
 void Renderer::HandleEvent(Event* e)
 {
 
@@ -216,7 +198,7 @@ void Renderer::HandleEvent(Event* e)
 			editor.OnResize(0, 0, Pr->x, Pr->y);
 			break;
 		case eGameViewport:
-			game.OnResize(0, 0, Pr->x, Pr->y);
+			//game.OnResize(0, 0, Pr->x, Pr->y);
 			break;
 		}	
 	}
@@ -237,14 +219,14 @@ void Renderer::HandleEvent(Event* e)
 	break;
 	case MOUSE_SCROLL:
 	{
-		game.OnFovChange();
-		editor.OnFovChange();
+		//game.OnFovChange();
+		//editor.OnFovChange();
 	}
 	break;
 	case ON_FOV_CHANGE:
 	{
-		game.OnFovChange();
-		editor.OnFovChange();
+		//game.OnFovChange();
+		//editor.OnFovChange();
 	}
 	break;
 	default:

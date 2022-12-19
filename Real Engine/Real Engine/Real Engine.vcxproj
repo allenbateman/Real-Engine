@@ -60,6 +60,7 @@
     <ClCompile Include="Source\ResourceMesh.cpp" />
     <ClCompile Include="Source\ResourceScene.cpp" />
     <ClCompile Include="Source\ResourcesManagement.cpp" />
+    <ClCompile Include="Source\ResourcesPanel.cpp" />
     <ClCompile Include="Source\ResourceTexture.cpp" />
     <ClCompile Include="Source\Scene.cpp" />
     <ClCompile Include="Source\SceneHerarchyPanel.cpp" />
@@ -131,6 +132,7 @@
     <ClInclude Include="Source\ResourceMesh.h" />
     <ClInclude Include="Source\ResourceScene.h" />
     <ClInclude Include="Source\ResourcesManagement.h" />
+    <ClInclude Include="Source\ResourcesPanel.h" />
     <ClInclude Include="Source\ResourceTexture.h" />
     <ClInclude Include="Source\Scene.h" />
     <ClInclude Include="Source\SceneHerarchyPanel.h" />

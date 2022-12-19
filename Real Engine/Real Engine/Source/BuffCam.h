@@ -32,6 +32,8 @@ struct RenderSpace
 
 		lastSize.x = width;
 		lastSize.y = height;
+
+		cout << "id :"<<type << " x : " << width << " y : " << height << endl;
 	}
 
 	void OnFovChange()

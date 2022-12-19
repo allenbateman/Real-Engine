@@ -160,6 +160,9 @@
     <ClCompile Include="Source\ResourceScene.cpp">
       <Filter>Engine\Core\Files system\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ResourcesPanel.cpp">
+      <Filter>Engine\Core\Ui system\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -381,6 +384,9 @@
     </ClInclude>
     <ClInclude Include="Source\ResourceScene.h">
       <Filter>Engine\Core\Files system\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ResourcesPanel.h">
+      <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -16,6 +16,7 @@
 #include "FileExplorer.h"
 #include "AboutPanel.h"
 #include "ConsolePanel.h"
+#include "ResourcesPanel.h"
 
 // Variables to configure the Dockspace example.
 static bool opt_fullscreen = true; // Is the Dockspace full-screen?
@@ -48,14 +49,15 @@ private:
 	vector<Panel*> panelList{};
 
 	Viewport* camViewport = nullptr;
-	GameViewport* gameViewport = nullptr;;
-	RendererPanel* mainRenderer = nullptr;;
-	FPSGraph* fpsGraph = nullptr;;
-	Inspector* inspector = nullptr;;
-	SceneHerarchyPanel* herarchyPanel = nullptr;;
-	FileExplorer* fileExplorer = nullptr;;
-	AboutPanel* aboutPanel = nullptr;;
-	ConsolePanel* consolePanel = nullptr;;
+	GameViewport* gameViewport = nullptr;
+	RendererPanel* mainRenderer = nullptr;
+	FPSGraph* fpsGraph = nullptr;
+	Inspector* inspector = nullptr;
+	SceneHerarchyPanel* herarchyPanel = nullptr;
+	FileExplorer* fileExplorer = nullptr;
+	AboutPanel* aboutPanel = nullptr;
+	ConsolePanel* consolePanel = nullptr;
+	ResourcesPanel* resourcesPanel = nullptr;
 
 	bool OpenMainWindow;
 	ImGuiIO* io = nullptr;
