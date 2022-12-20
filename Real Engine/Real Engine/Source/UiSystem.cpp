@@ -43,7 +43,7 @@ bool UiSystem::Start()
     fileExplorer    = new FileExplorer(eFileExplorer, true);
     aboutPanel      = new AboutPanel(eAbout, false);
     consolePanel    = new ConsolePanel(eConsole, true);
-    resourcesPanel  = new ResourcesPanel(eResources, false);
+    resourcesPanel  = new ResourcesPanel(eResources, true);
 
 	panelList.push_back(camViewport);
     panelList.push_back(gameViewport);
@@ -261,7 +261,7 @@ void UiSystem::MainAppDockSpace(bool* p_open)
             }
             if (ImGui::MenuItem("Resources"))
             {
-                consolePanel->active = true;
+                resourcesPanel->active = true;
                 ImGui::SetWindowFocus(resourcesPanel->name.GetString());
             }
             ImGui::Separator();

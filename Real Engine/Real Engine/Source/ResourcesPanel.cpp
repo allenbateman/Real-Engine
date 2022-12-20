@@ -22,20 +22,18 @@ void ResourcesPanel::End()
 
 void ResourcesPanel::Init()
 {
-
-	active = true;
-	window_flags = ImGuiWindowFlags_NoDocking;
+	window_flags = ImGuiConfigFlags_DockingEnable;
 	borderOffset = 0;
-
 }
 
 void ResourcesPanel::Update()
 {
+	if (!active) return;
 	// render your GUI
 	ImGui::PushStyleVar(ImGuiStyleVar_WindowPadding, ImVec2(0.0f, 0.0f));
 	ImGui::SetNextWindowSize(ImVec2{ 250,350 }, ImGuiCond_FirstUseEver);
 
-	if (ImGui::Begin("Viewport"), NULL, window_flags)
+	if (ImGui::Begin("Resources"), NULL, window_flags)
 	{
 		OnHovered();
 		OnResize();
