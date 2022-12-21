@@ -25,18 +25,18 @@ std::ostream& operator <<(std::ostream& out, const ResourceScene& resource)
     {
         out << "\t uid " << i << ":" << resource.meshes.at(i) <<"\n";
     }
-    out << "\tname: " << resource.GetRoot().name << "\n";
-    out << "\tchild count: " << resource.GetRoot().childsCount << "\n";
-    for (const auto& node : resource.root->GetComponent<Transform>().childs)
+
+    Transform t = resource.root->GetComponent<Transform>();
+    out << "scene objects count :" << t.childs.size() << "\n";
+
+    for (int i = 0; i < t.childs.size(); i++)
     {
-       /* out << "\tname: " << node. << "\n";
-        out << "\tchild count: " << node.childsCount << "\n";
-        out << "\tmesh count: " << node.meshCount << "\n";
-        for (auto& i : node.meshIndex)
-        {
-            out << "\tmesh index: " << node.meshIndex[i] << "\n";
-        }*/
+
+
+        //get all childs, and for each child get the mesh and material it uses and also save other type of components
+       // out << "\t uid " << i << ":" << resource.root->FindChild(i) << "\n";
     }
+
     return out;
 }
 void ResourceScene::Save() const
@@ -62,43 +62,47 @@ void ResourceScene::UnLoad() const
 
 void ResourceScene::Load(std::shared_ptr<Resource>& resource, std::ifstream& data)
 {
-    std::shared_ptr<ResourceScene> obj = std::static_pointer_cast<ResourceScene>(resource);
+    std::shared_ptr<ResourceScene> scene = std::static_pointer_cast<ResourceScene>(resource);
     if (data.is_open())
     {
-        //Load fbx
-        std::string nNodes;
-        std::getline(data, nNodes, ':');
-        std::getline(data, nNodes, '\n');
-
-        for (int i = 0; i < stoi(nNodes); i++)
+        //get how many resources types the scene uses
+        std::string materials;
+        std::getline(data, materials, ':');
+        std::getline(data, materials, '\n');
+        
+        for (int ii = 0; ii < stoi(materials); ii++)
         {
-
-            GameObject node;
-            std::string name;
-            std::getline(data, name, ':');
-            std::getline(data, name, '\n');
-            node.name = name;
-            std::string nChilds;
-            std::getline(data, nChilds, ':');
-            std::getline(data, nChilds, '\n');
-            node.childsCount = stoi(nChilds);
-    /*        for (int n = 0; n < node.childsCount; n++)
-            {
-                std::string type;
-                std::getline(data, type, ':');
-                std::getline(data, type, '\n');
-
-                Resource::Type t = static_cast<Resource::Type>(stoi(type));
-
-                UID r;
-                std::getline(data, r, ':');
-                std::getline(data, r, '\n');
-
-                std::pair<Resource::Type, UID> p{t,r};
-                node.resources.push_back(p);
-            }
-            obj->nodes.push_back(node);*/
+           std::string id;
+           std::getline(data, id, ':');
+           std::getline(data, id, '\n');
+           scene->materials.push_back(id);
         }
+
+        //get how many resources types the scene uses
+        std::string meshes;
+        std::getline(data, meshes, ':');
+        std::getline(data, meshes, '\n');
+
+        for (int ii = 0; ii < stoi(meshes); ii++)
+        {
+            std::string id;
+            std::getline(data, id, ':');
+            std::getline(data, id, '\n');
+            scene->meshes.push_back(id);
+        }        
+        
+        //get how many obj the scene uses
+        std::string objsCount;
+        std::getline(data, objsCount, ':');
+        std::getline(data, objsCount, '\n');
+
+        //for (int ii = 0; ii < stoi(objsCount); ii++)
+        //{
+        //    std::string id;
+        //    std::getline(data, id, ':');
+        //    std::getline(data, id, '\n');
+        //    scene->meshes.push_back(id);
+        //}
     }
 
     data.close();

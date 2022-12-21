@@ -115,7 +115,5 @@ void ResourceTexture::Load(std::shared_ptr<Resource>& resource,std::ifstream& da
 
         app->importer->importedTextures.push_back(rt->GetAssetPath().c_str());
     }
-
     data.close();
-   // return rt;
 }

@@ -43,7 +43,7 @@ void ResourcesPanel::Update()
 			ImGui::Text("\tname: "); ImGui::SameLine(); ImGui::Text(r.second.get()->name.c_str());
 			ImGui::Text("\t type: "); ImGui::SameLine(); ImGui::Text(r.second.get()->GetTypeChar());
 			ImGui::Text("\t count: "); ImGui::SameLine(); ImGui::Text(std::to_string(r.second.use_count()).c_str());
-			ImGui::Text("\t id: "); ImGui::SameLine(); ImGui::Text(r.first.c_str());
+			ImGui::Text("\t id: "); ImGui::SameLine(); ImGui::Text(r.first.c_str()); 
 		}
 	}
 	ImGui::End();

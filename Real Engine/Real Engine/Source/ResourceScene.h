@@ -3,16 +3,6 @@
 #include "GameObject.h"
 
 #define MAX_CHILDS 100
-//struct SceneNode {
-//	std::string name = "Unamed";
-//	mat4x4 transfom;
-//	SceneNode* parent = nullptr;
-//	vector<SceneNode> childs;
-//	unsigned int childsCount = 0;
-//	vector<unsigned int> meshIndex;//array of indices to the mesh used
-//	unsigned int meshCount;//number of meshes used by the node
-//};
-
 class ResourceScene : public Resource
 {
 public :
@@ -29,6 +19,18 @@ public :
 	vector<UID> materials;
 	//sotre all meshes used by the obj
 	vector<UID> meshes;
+	//sotre all transforms used by the obj
+	vector<UID> transforms;
+
+
 	GameObject* root;
+
+
+
 };
 
+template<typename T>
+class ComponentList
+{
+	vector<vector<T>> componentsList;
+};

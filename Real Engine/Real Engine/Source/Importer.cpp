@@ -405,8 +405,9 @@ void SceneImporter::Import(shared_ptr<Resource>& resource)
         SceneImporter::ProcessaNode(scene->mRootNode, scene, rScene->root, rScene);
 
         string savePath = rScene->GetLibraryPath().string();
-
+        SceneImporter::Save(*root, savePath);
         rScene->Save();
+
         try
         {
             aiReleaseImport(scene);

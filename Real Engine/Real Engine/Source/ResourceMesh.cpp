@@ -3,7 +3,7 @@
 
 ResourceMesh::ResourceMesh(UID id) : Resource(id)
 {
-
+    SetType(Type::Mesh);
 }
 ResourceMesh::~ResourceMesh()
 {

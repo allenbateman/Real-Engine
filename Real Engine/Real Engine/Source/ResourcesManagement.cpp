@@ -27,7 +27,7 @@ bool ResourcesManagement::Init()
 {
 
     bool ret = false;
-  //  LoadMetaFiles();
+    LoadMetaFiles();
     ImportFilesFromAssets();
 
     return ret;
@@ -315,7 +315,7 @@ void ResourcesManagement::LoadMetaFiles()
                 resources[id] = resource;
             }
             else {
-               cout << "ERROR::RESOURCE_NOT_FOUND\n";
+               cout << "ERROR::RESOURCE_CUSTOM_FORMAT_NOT_FOUND\n";
                shared_ptr<Resource> resource(new Resource(id));
                resource->SetAssetPath(assetPath);
                resource->SetType((Resource::Type)stoi(type));
