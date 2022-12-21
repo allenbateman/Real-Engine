@@ -11,4 +11,5 @@ enum PanelID {
 	eAbout = 8,
 	eConsole = 9,
 	eResources = 10,
+	eShaderEditor = 11,
 };

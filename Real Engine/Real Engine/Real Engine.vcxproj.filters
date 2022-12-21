@@ -163,6 +163,9 @@
     <ClCompile Include="Source\ResourcesPanel.cpp">
       <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="Source\ShaderEditorPanel.cpp">
+      <Filter>Engine\Core\Ui system\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Application.h">
@@ -386,6 +389,9 @@
       <Filter>Engine\Core\Files system\Resources</Filter>
     </ClInclude>
     <ClInclude Include="Source\ResourcesPanel.h">
+      <Filter>Engine\Core\Ui system\Panels</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\ShaderEditorPanel.h">
       <Filter>Engine\Core\Ui system\Panels</Filter>
     </ClInclude>
   </ItemGroup>
