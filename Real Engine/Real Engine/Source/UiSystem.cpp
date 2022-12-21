@@ -44,6 +44,7 @@ bool UiSystem::Start()
     aboutPanel      = new AboutPanel(eAbout, false);
     consolePanel    = new ConsolePanel(eConsole, true);
     resourcesPanel  = new ResourcesPanel(eResources, true);
+    shaderEditor = new ShaderEditorPanel(eShaderEditor, false);
 
 	panelList.push_back(camViewport);
     panelList.push_back(gameViewport);
@@ -55,6 +56,7 @@ bool UiSystem::Start()
     panelList.push_back(aboutPanel);
     panelList.push_back(consolePanel);
     panelList.push_back(resourcesPanel);
+    panelList.push_back(shaderEditor);
 
     herarchyPanel->inspector = inspector;
 
@@ -264,12 +266,18 @@ void UiSystem::MainAppDockSpace(bool* p_open)
                 resourcesPanel->active = true;
                 ImGui::SetWindowFocus(resourcesPanel->name.GetString());
             }
-            ImGui::Separator();
+            if (ImGui::MenuItem("Shader Editor"))
+            {
+                shaderEditor->active = true;
+                ImGui::SetWindowFocus(shaderEditor->name.GetString());
+            }
+            //ImGui::Separator();
             if (ImGui::MenuItem("About"))
             {
                 aboutPanel->active = true;
                 ImGui::SetWindowFocus(aboutPanel->name.GetString());
             }
+
             ImGui::Separator();
 
  

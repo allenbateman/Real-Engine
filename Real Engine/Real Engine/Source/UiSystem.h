@@ -17,6 +17,7 @@
 #include "AboutPanel.h"
 #include "ConsolePanel.h"
 #include "ResourcesPanel.h"
+#include "ShaderEditorPanel.h"
 
 // Variables to configure the Dockspace example.
 static bool opt_fullscreen = true; // Is the Dockspace full-screen?
@@ -58,6 +59,7 @@ private:
 	AboutPanel* aboutPanel = nullptr;
 	ConsolePanel* consolePanel = nullptr;
 	ResourcesPanel* resourcesPanel = nullptr;
+	ShaderEditorPanel* shaderEditor = nullptr;
 
 	bool OpenMainWindow;
 	ImGuiIO* io = nullptr;
