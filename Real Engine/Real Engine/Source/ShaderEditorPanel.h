@@ -1,5 +1,6 @@
 #pragma once
 #include "Panel.h"
+#include "Application.h"
 #include <string>
 
 class ShaderEditorPanel : public Panel
@@ -14,8 +15,8 @@ public:
 
 private:
 	bool editVertex = true;
-	char* vertexPath;
-	char* fragmentPath;
+	std::string vertexPath = "";
+	std::string fragmentPath = "";
 
 	char* program = nullptr;
 	
