@@ -326,6 +326,18 @@ void ResourcesManagement::LoadMetaFiles()
                {
                    resource->SetAssetPath(assetPath);
                    resource->SetLibraryPath(libPath);
+
+                   switch (resource->GetType())
+                   {
+                   case Resource::Type::Fbx: SceneImporter::Import(resource); break;
+                   case Resource::Type::Texture: TextureImporter::Import(resource); break;
+                   default:
+                       break;
+                   }
+
+                   resource->Save();
+
+
                    resources[id] = resource;
                }
             }
