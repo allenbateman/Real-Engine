@@ -10,6 +10,7 @@ public:
     void Load() const;
     void UnLoad()const;
     static void Load(std::shared_ptr<Resource>& resource,std::ifstream& data );
+    void Load(std::ifstream& data) override;
 public:
 
     int width;

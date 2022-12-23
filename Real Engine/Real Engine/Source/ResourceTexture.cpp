@@ -117,3 +117,32 @@ void ResourceTexture::Load(std::shared_ptr<Resource>& resource,std::ifstream& da
     }
     data.close();
 }
+
+void ResourceTexture::Load(std::ifstream& data)
+{
+    if (data.is_open())
+    {
+        std::string val;
+        std::getline(data, val, ':');
+        std::getline(data, val, '\n');
+        width = stoi(val);
+        std::getline(data, val, ':');
+        std::getline(data, val, '\n');
+        height = stoi(val);
+        std::getline(data, val, ':');
+        std::getline(data, val, '\n');
+        type = stoi(val);
+        std::getline(data, val, ':');
+        std::getline(data, val, '\n');
+        format = stoi(val);
+        std::getline(data, val, ':');
+        std::getline(data, val, '\n');
+        depth = stoi(val);
+        std::getline(data, val, ':');
+        std::getline(data, val, '\n');
+        channels = stoi(val);
+
+        app->importer->importedTextures.push_back(GetAssetPath().c_str());
+    }
+    data.close();
+}

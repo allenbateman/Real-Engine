@@ -38,6 +38,7 @@
     <ClCompile Include="Source\External\include\ImGui\imgui_tables.cpp" />
     <ClCompile Include="Source\External\include\ImGui\imgui_widgets.cpp" />
     <ClCompile Include="Source\FileExplorer.cpp" />
+    <ClCompile Include="Source\FileSystem.cpp" />
     <ClCompile Include="Source\FPSGraph.cpp" />
     <ClCompile Include="Source\FrameBuffer.cpp" />
     <ClCompile Include="Source\GameObject.cpp" />
@@ -106,6 +107,7 @@
     <ClInclude Include="Source\External\ImGui\imstb_textedit.h" />
     <ClInclude Include="Source\External\ImGui\imstb_truetype.h" />
     <ClInclude Include="Source\FileExplorer.h" />
+    <ClInclude Include="Source\FileSystem.h" />
     <ClInclude Include="Source\FPSGraph.h" />
     <ClInclude Include="Source\FrameBuffer.h" />
     <ClInclude Include="Source\GameObject.h" />

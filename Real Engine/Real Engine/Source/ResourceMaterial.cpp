@@ -75,3 +75,31 @@ void ResourceMaterial::Load(std::shared_ptr<Resource>& resource, std::ifstream& 
 
     data.close();
 }
+
+void ResourceMaterial::Load(std::ifstream& data)
+{
+    if (data.is_open())
+    {
+        //laod vertices
+        std::string nTex;
+        std::getline(data, nTex, ':');
+        std::getline(data, nTex, '\n');
+        for (int i = 0; i < stoi(nTex); i++)
+        {
+            std::string textureType;
+            std::getline(data, textureType, ':');
+            std::getline(data, textureType, '\n');
+            std::string id;
+            std::getline(data, id, ':');
+            std::getline(data, id, '\n');
+            shared_ptr<Resource> r = app->resourceManager->GetResource(id);
+            if (r == nullptr) break;
+            shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(r);
+            std::pair<std::string, ResourceTexture > tResource{ textureType,*rt };
+            resourcesTexture.push_back(tResource);
+        }
+
+    }
+
+    data.close();
+}

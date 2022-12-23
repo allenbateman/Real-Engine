@@ -15,6 +15,7 @@ public :
 	void UnLoad()const;
 	GameObject GetRoot() const { return *root; };
 	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
+	void Load(std::ifstream& data) override;
 	//sotre all materials used by the obj
 	vector<UID> materials;
 	//sotre all meshes used by the obj
