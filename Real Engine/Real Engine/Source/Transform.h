@@ -2,7 +2,7 @@
 #include "Component.h"
 
 class GameObject;
-
+//RESOUCEuuuuuuuuuuuuuuu
 struct Transform : public  Component
 {
 

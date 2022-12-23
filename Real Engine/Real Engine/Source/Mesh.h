@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "Shader.h"
 #include "Material.h"
-
+//RESOUCE
 struct Vertex {
 	vec3 Position;
 	vec3 Normal;

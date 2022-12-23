@@ -2,6 +2,7 @@
 #include "Component.h"
 #include "Texture.h"
 
+//RESOUCE
 class Material : public  Component
 {
 public:

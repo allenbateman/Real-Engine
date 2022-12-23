@@ -15,6 +15,7 @@ struct Component
 	bool active;
 	std::shared_ptr<Resource> resource;
 	virtual void OnUi() {}
+	virtual void Save() {};
 };
 
 struct MeshComponent : Component

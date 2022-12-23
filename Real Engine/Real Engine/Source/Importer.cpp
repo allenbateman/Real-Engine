@@ -9,6 +9,7 @@
 #include <sstream>
 #include <string>
 #include "Transform.h"
+#include "nlohmann/json.hpp"
 
 Importer::Importer()
 {
@@ -68,11 +69,22 @@ void TextureImporter::Save(const Texture tex, const std::string& filename)
     std::ofstream out(filename);
     if (out.is_open())
     {
-        out << tex << '\n';
+        nlohmann::json json_obj;
+        json_obj["uid"] = tex.uid;
+        json_obj["id"] = tex.id;
+        json_obj["path"] = tex.path;
+        json_obj["type"] = tex.type;
+        std::string json_str = json_obj.dump();
+        out << json_str.c_str();
     }
-    else {
-        cout << "Error saving texture: " + filename;
-    }
+
+    //if (out.is_open())
+    //{
+    //    out << tex << '\n';
+    //}
+    //else {
+    //    cout << "Error saving texture: " + filename;
+    //}
 
     out.close();
 }
@@ -132,7 +144,6 @@ void TextureImporter::Import(shared_ptr<Resource>& resource){
     }
     else {
         cout << "Image not loaded with devIL "<< resource->name << endl;
-       // return ;
     }
 
     ILubyte* data = ilGetData();
@@ -294,6 +305,7 @@ void MaterialImporter::Load(const Material* mat, const std::string& filename)
 void MaterialImporter::Save(const Material mat, const std::string& filename)
 {
     std::ofstream out(filename);
+
     if (out.is_open())
     {
         out << mat << '\n';
@@ -328,6 +340,20 @@ void MeshImporter::Save(const Mesh mesh, const std::string& filename)
 {
 
     std::ofstream out(filename);
+    if (out.is_open())
+    {
+        nlohmann::json json_obj;
+        for (const auto& v : mesh.vertices)
+        {
+            nlohmann::json::value vec3Array;
+            vec3Array[0] = v.Position.x;
+            vec3Array[1] = v.Position.y;
+            vec3Array[2] = v.Position.z;
+        }
+        std::string json_str = json_obj.dump();
+        out << json_str.c_str();
+    }
+
     if (out.is_open())
     {
         out << mesh << '\n';
