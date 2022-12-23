@@ -107,3 +107,50 @@ void ResourceScene::Load(std::shared_ptr<Resource>& resource, std::ifstream& dat
 
     data.close();
 }
+
+void ResourceScene::Load(std::ifstream& data)
+{
+    if (data.is_open())
+    {
+        //get how many resources types the scene uses
+        std::string materialCount;
+        std::getline(data, materialCount, ':');
+        std::getline(data, materialCount, '\n');
+
+        for (int ii = 0; ii < stoi(materialCount); ii++)
+        {
+            std::string id;
+            std::getline(data, id, ':');
+            std::getline(data, id, '\n');
+            materials.push_back(id);
+        }
+
+        //get how many resources types the scene uses
+        std::string mesheCount;
+        std::getline(data, mesheCount, ':');
+        std::getline(data, mesheCount, '\n');
+
+        for (int ii = 0; ii < stoi(mesheCount); ii++)
+        {
+            std::string id;
+            std::getline(data, id, ':');
+            std::getline(data, id, '\n');
+            meshes.push_back(id);
+        }
+
+        //get how many obj the scene uses
+        std::string objsCount;
+        std::getline(data, objsCount, ':');
+        std::getline(data, objsCount, '\n');
+
+        //for (int ii = 0; ii < stoi(objsCount); ii++)
+        //{
+        //    std::string id;
+        //    std::getline(data, id, ':');
+        //    std::getline(data, id, '\n');
+        //    scene->meshes.push_back(id);
+        //}
+    }
+
+    data.close();
+}

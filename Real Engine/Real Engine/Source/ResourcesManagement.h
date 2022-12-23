@@ -53,8 +53,7 @@ private:
 
 	//loads the meta file and creates the resource
 	void LoadMetaFile(shared_ptr<Resource>& resource, std::ifstream& metaFile);
-	void ReImportAsset(shared_ptr<Resource>& resource);
-	//shared_ptr<Resource> ImportResourceFromMetaFile(shared_ptr<Resource> resource);
+
 	//Load all the meta files in the program, if a file is not in lib
 	//it imports the file again
 	void LoadMetaFiles();

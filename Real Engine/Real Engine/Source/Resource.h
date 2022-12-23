@@ -32,6 +32,7 @@ public:
 
 	bool IsLoadedToMemory() const;
 	bool LoadToMemory();
+	virtual void Load(std::ifstream& data) {};
 	unsigned int GetRefereneCount() const;
 
 	virtual void Save()const;

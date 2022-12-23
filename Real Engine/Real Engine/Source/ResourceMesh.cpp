@@ -58,3 +58,18 @@ void ResourceMesh::Load(std::shared_ptr<Resource>& resource, std::ifstream& data
 
     data.close();
 }
+
+void ResourceMesh::Load(std::ifstream& data)
+{
+    if (data.is_open())
+    {
+        //laod vertices
+        std::string indices;
+        std::getline(data, indices, ':');
+        std::getline(data, indices, '\n');
+
+        materialIndex = stoi(indices);
+    }
+
+    data.close();
+}
