@@ -498,6 +498,9 @@ public:
 	mat4x4& translate(float x, float y, float z);
 	mat4x4& transpose();
 	vec3  translation() const;
+	vec3  rotation() const;
+	vec3  scale() const;
+	mat4x4& GetMatrixFromTransform(const vec3& position, const vec3& rotation, const vec3& scale);
 };
 
 // ----------------------------------------------------------------------------------------------------------------------------

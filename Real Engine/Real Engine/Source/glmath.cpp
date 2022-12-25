@@ -1,4 +1,5 @@
 #include "glmath.h"
+#include <cmath>
 
 // ----------------------------------------------------------------------------------------------------------------------------
 
@@ -679,6 +680,70 @@ vec3 mat4x4::translation() const
 	return(vec3(M[12], M[13], M[14]));
 }
 
+vec3 mat4x4::rotation() const
+{
+	vec3 rotation;
+
+	// Extract the x-axis from the matrix
+	rotation.x = std::atan2(M[6], M[10]);
+
+	// Extract the y-axis from the matrix
+	rotation.y = std::atan2(-M[2], std::sqrt(M[6] * M[6] + M[10] * M[10]));
+
+	// Extract the z-axis from the matrix
+	rotation.z = std::atan2(M[1], M[0]);
+
+	return rotation;
+}
+
+vec3 mat4x4::scale() const
+{
+	vec3 scale;
+
+	// Extract the x-axis from the matrix
+	scale.x = std::sqrt(M[0] * M[0] + M[1] * M[1] + M[2] * M[2]);
+
+	// Extract the y-axis from the matrix
+	scale.y = std::sqrt(M[4] * M[4] + M[5] * M[5] + M[6] * M[6]);
+
+	// Extract the z-axis from the matrix
+	scale.z = std::sqrt(M[8] * M[8] + M[9] * M[9] + M[10] * M[10]);
+
+	return scale;
+}
+
+mat4x4& mat4x4::GetMatrixFromTransform(const vec3& position, const vec3& rotation, const vec3& scale)
+{
+	mat4x4 matrix;
+
+	// Compute sines and cosines of the angles
+	float cx = std::cos(rotation.x);
+	float sx = std::sin(rotation.x);
+	float cy = std::cos(rotation.y);
+	float sy = std::sin(rotation.y);
+	float cz = std::cos(rotation.z);
+	float sz = std::sin(rotation.z);
+
+	// Compute the matrix elements
+	matrix[0] = scale.x * cy * cz;
+	matrix[1] = scale.x * cy * sz;
+	matrix[2] = -scale.x * sy;
+	matrix[3] = 0.0f;
+	matrix[4] = -scale.y * cx * sz + scale.z * sx * sy;
+	matrix[5] = scale.y * cx * cz + scale.z * sx * sy;
+	matrix[6] = scale.y * sx;
+	matrix[7] = 0.0f;
+	matrix[8] = scale.z * cx * sz + scale.y * sx * sy;
+	matrix[9] = -scale.z * cx * cz + scale.y * sx * sy;
+	matrix[10] = scale.z * cx;
+	matrix[11] = 0.0f;
+	matrix[12] = position.x;
+	matrix[13] = position.y;
+	matrix[14] = position.z;
+	matrix[15] = 1.0f;
+
+	return matrix;
+}
 
 mat4x4 inverse(const mat4x4 &Matrix)
 {

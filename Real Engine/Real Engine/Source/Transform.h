@@ -13,7 +13,8 @@ struct Transform : public  Component
 	vec3 localScale{ 0,0,0 };
 
 	vec3 position{ 0,0,0 };		//Stores position x,y,z
-	vec4 rotation{ 0,0,0,0 };	//Quaternion that stores rotation x,y,z,w
+	vec3 rotation{ 0,0,0};	//Quaternion that stores rotation x,y,z,w
+	//vec4 rotation{ 0,0,0,0 };	//Quaternion that stores rotation x,y,z,w
 	vec3 scale{ 1,1,1 };	    //Stores scale x,y,z
 
 	mat4x4 localMatrix;		//Stores transformation of the object in a matrix from parent reference
@@ -123,10 +124,37 @@ struct Transform : public  Component
 		return localMatrix.translation();
 	}
 
+	void ApplyTransformation()
+	{
+		//means the root is origin
+		//move world pos
+		mat4x4 tmp = localMatrix;
+
+
+		worldMatrix = parent->worldMatrix * localMatrix;
+
+		position = worldMatrix.translation();
+		scale = worldMatrix.scale();
+		rotation = worldMatrix.rotation();
+
+		//world parent to propagate to the childs
+		mat4x4 wpt = tmp * worldMatrix;
+
+		//move all childs
+		for (auto& c : childs)
+		{
+			c->PropagateTransform(wpt);
+		}
+
+		worldMatrix = wpt;
+	}
+
 	void PropagateTransform(mat4x4 T)
 	{
 		worldMatrix = T * localMatrix;
 		position = worldMatrix.translation();
+		scale = worldMatrix.scale();
+		rotation = worldMatrix.rotation();
 
 		for (auto& c : childs)
 		{

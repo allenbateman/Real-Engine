@@ -345,10 +345,10 @@ void MeshImporter::Save(const Mesh mesh, const std::string& filename)
         nlohmann::json json_obj;
         for (const auto& v : mesh.vertices)
         {
-            nlohmann::json::value vec3Array;
-            vec3Array[0] = v.Position.x;
-            vec3Array[1] = v.Position.y;
-            vec3Array[2] = v.Position.z;
+            //nlohmann::json::value vec3Array;
+            //vec3Array[0] = v.Position.x;
+            //vec3Array[1] = v.Position.y;
+            //vec3Array[2] = v.Position.z;
         }
         std::string json_str = json_obj.dump();
         out << json_str.c_str();
