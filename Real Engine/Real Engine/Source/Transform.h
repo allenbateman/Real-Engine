@@ -9,7 +9,7 @@ struct Transform : public  Component
 	//properties
 
 	vec3 localPosition{ 0,0,0 };
-	vec4 localRotation{ 0,0,0,0 };
+	vec3 localRotation{ 0,0,0 };
 	vec3 localScale{ 0,0,0 };
 
 	vec3 position{ 0,0,0 };		//Stores position x,y,z
@@ -115,28 +115,19 @@ struct Transform : public  Component
 
 		worldMatrix = wpt;
 	}
-	vec3 Position()
-	{
-		return worldMatrix.translation();
-	}
-	vec3 LocalPosition()
-	{
-		return localMatrix.translation();
-	}
 
-	void ApplyTransformation()
-	{
+	void Rotate(float angle, vec3 u) {
+
 		//means the root is origin
 		//move world pos
 		mat4x4 tmp = localMatrix;
 
+		//apply changes
+		localMatrix.rotate(angle, u);
+		localRotation = localMatrix.rotation();
 
 		worldMatrix = parent->worldMatrix * localMatrix;
-
-		position = worldMatrix.translation();
-		scale = worldMatrix.scale();
 		rotation = worldMatrix.rotation();
-
 		//world parent to propagate to the childs
 		mat4x4 wpt = tmp * worldMatrix;
 
@@ -149,13 +140,127 @@ struct Transform : public  Component
 		worldMatrix = wpt;
 	}
 
-	void PropagateTransform(mat4x4 T)
+	void Rotate(float pitch, float yaw, float roll) {
+
+		//means the root is origin
+		//move world pos
+		mat4x4 tmp = localMatrix;
+
+		//apply changes
+		localMatrix.rotate( pitch, yaw,roll);
+		localRotation = localMatrix.rotation();
+
+		worldMatrix = parent->worldMatrix * localMatrix;
+		rotation = worldMatrix.rotation();
+		//world parent to propagate to the childs
+		mat4x4 wpt = tmp * worldMatrix;
+
+		//move all childs
+		for (auto& c : childs)
+		{
+			c->PropagateTransform(wpt);
+		}
+
+		worldMatrix = wpt;
+	}
+
+
+	void Scale(float x, float y, float z) {
+
+		//means the root is origin
+		//move world pos
+		mat4x4 tmp = localMatrix;
+
+		//apply changes
+		localMatrix.scale(x, y, z);
+		localScale = localMatrix.scale();
+
+		worldMatrix = parent->worldMatrix * localMatrix;
+		scale = worldMatrix.scale();
+		//world parent to propagate to the childs
+		mat4x4 wpt = tmp * worldMatrix;
+
+		//move all childs
+		for (auto& c : childs)
+		{
+			c->PropagateTransform(wpt);
+		}
+
+		worldMatrix = wpt;
+	}
+
+	vec3 Position()
+	{
+		return worldMatrix.translation();
+	}
+	vec3 LocalPosition()
+	{
+		return localMatrix.translation();
+	}
+	vec3 LocalRotation()
+	{
+		return localMatrix.rotation();
+	}
+	vec3 LocalScale()
+	{
+		return localMatrix.scale();
+	}
+	//void ApplyTransformation(vec3 _position, vec3 _rotation,vec3 _scale)
+	//{
+	//	//means the root is origin
+	//	//move world pos
+	//	mat4x4 pretransformation = localMatrix;
+	//	mat4x4 newTransforamtion;
+
+	//	localMatrix = newTransforamtion.GetMatrixFromTransform(_position, _rotation, _scale);
+	//	worldMatrix = parent->worldMatrix * localMatrix;		
+
+	//	position = worldMatrix.translation();
+	//	//scale = worldMatrix.scale();
+	//	//rotation = worldMatrix.rotation();
+
+	//	//world parent to propagate to the childs
+	//	mat4x4 wpt = pretransformation * worldMatrix;
+
+	//	//move all childs
+	//	for (auto& c : childs)
+	//	{
+	//		c->PropagateTransform(wpt);
+	//	}
+
+	//	worldMatrix = wpt;
+	//}
+
+	void ApplyTransformation(mat4x4 newtransformation)
+	{
+		//save mat
+		mat4x4 tmp = localMatrix;
+
+		worldMatrix = parent->worldMatrix * localMatrix * newtransformation;
+		localMatrix = localMatrix * newtransformation;
+		//world parent to propagate to the childs
+		mat4x4 wpt = tmp * worldMatrix;
+
+
+		position = worldMatrix.translation();
+		scale = worldMatrix.scale();
+		rotation = worldMatrix.rotation();
+
+		//move all childs
+		for (auto& c : childs)
+		{
+			c->PropagateTransform(wpt);
+		}
+
+	//	worldMatrix = wpt;
+	}
+
+	void PropagateTransform(mat4x4& T)
 	{
 		worldMatrix = T * localMatrix;
 		position = worldMatrix.translation();
 		scale = worldMatrix.scale();
 		rotation = worldMatrix.rotation();
-
 		for (auto& c : childs)
 		{
 			c->PropagateTransform(worldMatrix);

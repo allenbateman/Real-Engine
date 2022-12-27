@@ -63,20 +63,50 @@ void Inspector::DrawComponents(Entity entity)
 		{
 			auto& transform = app->entityComponentSystem.GetComponent<Transform>(entity);
 			
+
+			mat4x4 currentTransformation = transform.localMatrix;
+
+
 			vec3 pos = transform.LocalPosition();
+			vec3 rot = transform.LocalRotation();
+			vec3 scale = transform.LocalScale();
 				
 			float* p[] = { &pos.x,&pos.y,&pos.z };
-			float* r[] = { &transform.rotation.x,&transform.rotation.y,&transform.rotation.z };
-			float* s[] = { &transform.scale.x,&transform.scale.y,&transform.scale.z };
+			float* r[] = { &rot.x,&rot.y,&rot.z };
+			float* s[] = { &scale.x,&scale.y,&scale.z };
+
+
+		//translate matrix * rotation matrix * scale matrix = final matrix
 			
-			if (ImGui::DragFloat3("Position", (*p), 0.1f))
+			if (ImGui::DragFloat3("Position", (*p), 0.1f) )
 			{
 				transform.Translate(pos.x, pos.y, pos.z);
 			}
-			if (ImGui::DragFloat3("Rotation", (*r), 0.1f));
-			if (ImGui::DragFloat3("Scale", (*s), 0.1f));
+			else if (ImGui::DragFloat3("Rotation", (*r), 0.1f))
+			{
+			//	transform.Rotate(rot.x,rot.y,rot.z);
+				//if (*r[0] != rot.x)
+				//	transform.Rotate(rot.x, vec3(1, 0, 0));
+				//if(*r[1] != rot.y)
+				//	transform.Rotate(rot.y, vec3(0, 1, 0));
+				//if(*r[2] != rot.z)
+				//	transform.Rotate(rot.z, vec3(0, 0, 1));
+			}
+			else if (ImGui::DragFloat3("Scale", (*s), 0.1f))
+			{
+				transform.Scale(scale.x, scale.y, scale.z);
+			}
 
-			
+			//mat4x4 newTransformation;
+			//bool OnChange = false;
+			//if (ImGui::DragFloat3("Position", (*p), 0.1f) || ImGui::DragFloat3("Rotation", (*r), 0.1f) || ImGui::DragFloat3("Scale", (*s), 0.1f))
+			//{
+			//	newTransformation = newTransformation.GetMatrixFromTransform(pos, rot, scale);
+			//	OnChange = true;
+			//}
+
+			//if(OnChange)
+			//	transform.ApplyTransformation(newTransformation);
 			
 			if (transform.parent != nullptr)
 			{

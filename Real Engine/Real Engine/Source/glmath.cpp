@@ -631,6 +631,42 @@ mat4x4& mat4x4::rotate(float angle, const vec3 &u)
 	return *this;
 }
 
+mat4x4& mat4x4::rotate(float pitch, float yaw, float roll)
+{
+	// Create the sine and cosine values for all three angles
+	float cosPitch = cos(pitch);
+	float sinPitch = sin(pitch);
+	float cosYaw = cos(yaw);
+	float sinYaw = sin(yaw);
+	float cosRoll = cos(roll);
+	float sinRoll = sin(roll);
+
+	// Create the rotation matrix using the sine and cosine values
+	float rotMatrix[16] = {
+	  cosYaw * cosRoll, cosYaw * sinRoll, -sinYaw, 0.0f,
+	  sinPitch * sinYaw * cosRoll - cosPitch * sinRoll, sinPitch * sinYaw * sinRoll + cosPitch * cosRoll, sinPitch * cosYaw, 0.0f,
+	  cosPitch * sinYaw * cosRoll + sinPitch * sinRoll, cosPitch * sinYaw * sinRoll - sinPitch * cosRoll, cosPitch * cosYaw, 0.0f,
+	  0.0f, 0.0f, 0.0f, 1.0f
+	};
+
+	// Multiply the rotation matrix with the original matrix to apply the rotation
+	float result[16];
+	for (int i = 0; i < 4; i++) {
+		for (int j = 0; j < 4; j++) {
+			result[i * 4 + j] = 0.0f;
+			for (int k = 0; k < 4; k++) {
+				result[i * 4 + j] += M[i * 4 + k] * rotMatrix[k * 4 + j];
+			}
+		}
+	}
+
+	// Copy the result back into the original matrix
+	for (int i = 0; i < 16; i++) {
+		M[i] = result[i];
+	}
+	return *this;
+}
+
 mat4x4& mat4x4::scale(float x, float y, float z)
 {
 	M[0] = x;
@@ -831,6 +867,43 @@ mat4x4 perspective(float fovy, float aspect, float n, float f)
 
 	return Perspective;
 }
+//mat4x4& mat4x4::rotate(float pitch, float yaw, float roll) {
+//
+//
+//	mat4x4 Rotate;
+//	// Create the sine and cosine values for all three angles
+//	float cosPitch = cos(pitch);
+//	float sinPitch = sin(pitch);
+//	float cosYaw = cos(yaw);
+//	float sinYaw = sin(yaw);
+//	float cosRoll = cos(roll);
+//	float sinRoll = sin(roll);
+//
+//	// Create the rotation matrix using the sine and cosine values
+//	float rotMatrix[16] = {
+//	  cosYaw * cosRoll, cosYaw * sinRoll, -sinYaw, 0.0f,
+//	  sinPitch * sinYaw * cosRoll - cosPitch * sinRoll, sinPitch * sinYaw * sinRoll + cosPitch * cosRoll, sinPitch * cosYaw, 0.0f,
+//	  cosPitch * sinYaw * cosRoll + sinPitch * sinRoll, cosPitch * sinYaw * sinRoll - sinPitch * cosRoll, cosPitch * cosYaw, 0.0f,
+//	  0.0f, 0.0f, 0.0f, 1.0f
+//	};
+//
+//	// Multiply the rotation matrix with the original matrix to apply the rotation
+//	float result[16];
+//	for (int i = 0; i < 4; i++) {
+//		for (int j = 0; j < 4; j++) {
+//			result[i * 4 + j] = 0.0f;
+//			for (int k = 0; k < 4; k++) {
+//				result[i * 4 + j] += Rotate.M[i * 4 + k] * rotMatrix[k * 4 + j];
+//			}
+//		}
+//	}
+//
+//	// Copy the result back into the original matrix
+//	for (int i = 0; i < 16; i++) {
+//		Rotate.M[i] = result[i];
+//	}
+//	return Rotate;
+//}
 
 mat4x4 rotate(float angle, const vec3 &u)
 {
