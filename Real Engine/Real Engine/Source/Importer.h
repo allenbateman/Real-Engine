@@ -45,7 +45,7 @@ namespace TextureImporter {
 	void LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<Resource>& resourceMat);
 }
 namespace MaterialImporter {
-	UID Import(const aiMaterial* material, shared_ptr<Resource> resource);
+	Material* Import(const aiMaterial* material, shared_ptr<Resource> resource);
 	void Import(shared_ptr<Resource>& resource);
 	void Load(const Material* mat, const std::string& filename);
 	void Save(const Material mat, const std::string& filename);

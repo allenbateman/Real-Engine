@@ -160,7 +160,6 @@ struct Transform : public  Component
 		{
 			c->PropagateTransform(wpt);
 		}
-
 		worldMatrix = wpt;
 	}
 

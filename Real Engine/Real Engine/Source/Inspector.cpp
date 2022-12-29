@@ -70,6 +70,9 @@ void Inspector::DrawComponents(Entity entity)
 			vec3 pos = transform.LocalPosition();
 			vec3 rot = transform.LocalRotation();
 			vec3 scale = transform.LocalScale();
+			//vec3 pos = transform.localPosition;
+			//vec3 rot = transform.localRotation;
+			//vec3 scale = transform.localScale;
 				
 			float* p[] = { &pos.x,&pos.y,&pos.z };
 			float* r[] = { &rot.x,&rot.y,&rot.z };
@@ -82,17 +85,17 @@ void Inspector::DrawComponents(Entity entity)
 			{
 				transform.Translate(pos.x, pos.y, pos.z);
 			}
-			else if (ImGui::DragFloat3("Rotation", (*r), 0.1f))
+			if (ImGui::DragFloat3("Rotation", (*r), 0.1f))
 			{
-			//	transform.Rotate(rot.x,rot.y,rot.z);
-				//if (*r[0] != rot.x)
-				//	transform.Rotate(rot.x, vec3(1, 0, 0));
-				//if(*r[1] != rot.y)
-				//	transform.Rotate(rot.y, vec3(0, 1, 0));
-				//if(*r[2] != rot.z)
-				//	transform.Rotate(rot.z, vec3(0, 0, 1));
+				//transform.Rotate(rot.x,rot.y,rot.z);
+				if (*r[0] != rot.x)
+					transform.Rotate(rot.x, vec3(1, 0, 0));
+				else if(*r[1] != rot.y)
+					transform.Rotate(rot.y, vec3(0, 1, 0));
+				else if(*r[2] != rot.z)
+					transform.Rotate(rot.z, vec3(0, 0, 1));
 			}
-			else if (ImGui::DragFloat3("Scale", (*s), 0.1f))
+			if (ImGui::DragFloat3("Scale", (*s), 0.1f))
 			{
 				transform.Scale(scale.x, scale.y, scale.z);
 			}

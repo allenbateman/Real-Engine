@@ -15,6 +15,7 @@ public:
 	void Enable();
 	void Disable();
 	void CreateGameObject(gameObjectType goType);
+	void AddGameObject(GameObject* object);
 	void LoadGameObject(const std::string file_path);
 	void RemoveEntity(Entity id);
 	std::vector <GameObject> gameObejects;

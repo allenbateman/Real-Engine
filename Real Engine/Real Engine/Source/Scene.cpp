@@ -89,6 +89,15 @@ void Scene::CreateGameObject(gameObjectType goType)
 	
 }
 
+void Scene::AddGameObject(GameObject* object)
+{
+	auto& t  = object->GetComponent<Transform>();
+
+	auto& root = origin.GetComponent<Transform>();
+	t.parent = &root;
+	root.AddChild(&t);
+}
+
 void Scene::LoadGameObject(const std::string file_path)
 {
 	std::vector<GameObject*> obj = app->sceneManager->objLoader.LoadObject(file_path);

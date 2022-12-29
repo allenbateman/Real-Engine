@@ -28,7 +28,7 @@ bool ResourcesManagement::Init()
 
     bool ret = false;
     LoadMetaFiles();
-    //ImportFilesFromAssets();
+    ImportFilesFromAssets();
 
     return ret;
 }
