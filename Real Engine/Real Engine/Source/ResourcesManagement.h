@@ -47,8 +47,10 @@ public:
 	}
 	//creates a new resource when needed
 	shared_ptr<Resource> CreateNewResource(const std::filesystem::path assetsFile, Resource::Type type);
+	//check if a file is already registered as a resource in a meta file
+	bool ExistFileInResources(std::string filePath);
 
-	std::map<UID, std::shared_ptr<Resource>> GetResourcesList() { return resources; };
+	std::map<string, std::pair<UID, std::shared_ptr<Resource>>> GetResourcesList() { return resources; };
 private:
 
 	//loads the meta file and creates the resource
@@ -62,8 +64,6 @@ private:
 	//Do this at the begining of the program and onFileChange, onDrop... any more?
 	void ImportFilesFromAssets();
 
-	//check if a file is already registered as a resource in a meta file
-	bool ExistFileInResources(std::string filePath);
 
 	//moves a on drop file to the assets folder	
 	std::string MoveToAssets(const string diskPath);
@@ -73,9 +73,34 @@ private:
 	Resource::Type FilterFile(const char* filePath);
 
 	//stores the link beteen UUID of imported resources with the resource it self
-	std::map<UID,std::shared_ptr<Resource>> resources{};
+	//std::map<UID,std::shared_ptr<Resource>> resources{};
+	std::map<string, std::pair<UID, std::shared_ptr<Resource>>> resources{};
 };
 
 
+template<typename T>
+class ResourceManager {
+public:
+	UID Add(const std::string& filePath)
+	{
+		auto it = resources.find(filePath);
+		if (it == resources.end())
+		{
+			return it->second.first;
+		}
+
+		shared_ptr<T> resource = std::make_shared<T>();
 
 
+	}
+	void CreateResource(const std::string& filepath);
+private:
+	std::map<string, std::pair<UID, std::shared_ptr<T>>> resources{};
+};
+
+template<typename T>
+inline void ResourceManager<T>::CreateResource(const std::string& filepath)
+{
+
+	//create resource
+}

@@ -2,12 +2,13 @@
 #include "Event.h"
 #include "EventSystem.h"
 #include "Events.h"
+#include <filesystem>
 #include <ImGui/imgui.h>
 #include <ImGui/backends/imgui_impl_glfw.h>
 #include <ImGui/backends/imgui_impl_opengl3.h>
 
 
-
+namespace fs = std::filesystem;
 class Panel
 {
 public:
@@ -50,3 +51,6 @@ public:
 };
 
 
+//Panel ImGuiPayload events
+static const char* payload_fileContent = "file_scene_drop";
+static const char* payload_objectHierarchy = "SceneHierarchy";

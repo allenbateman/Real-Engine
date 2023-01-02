@@ -18,7 +18,8 @@ bool SceneManager::Start()
 {
 
 	Scene* sampleScene = CreateScene("Sample Scene");
-	sampleScene->LoadGameObject("../Output/Assets/BakerHouse.fbx");
+	//sampleScene->LoadGameObject("../Output/Assets/BakerHouse.fbx");
+	sampleScene->LoadGameObject("../Output/Assets/water_plane.fbx");
 	currentScene = sampleScene;
 
 	app->eventSystem->SubscribeModule(this, ON_GO_CREATION);

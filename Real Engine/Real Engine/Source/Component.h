@@ -20,16 +20,16 @@ struct Component
 
 struct MeshComponent : Component
 {
-	unsigned int VAO, VBO, EBO; // idex of the vertex array object in VRam
+	//unsigned int VAO, VBO, EBO; // idex of the vertex array object in VRam
 };
 
 struct TextureComponent : Component
 {
-	unsigned int Texture_ID;
+	//unsigned int Texture_ID;
 };
 
 struct MaterialComponent : Component
 {
-	unsigned int Shader_ID;
+	//unsigned int Shader_ID;
 };
 

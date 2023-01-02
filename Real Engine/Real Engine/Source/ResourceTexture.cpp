@@ -15,8 +15,8 @@ std::ostream& operator <<(std::ostream& out, const ResourceTexture& resource)
 {
     out << "name:" << resource.name << '\n';
     out << "id:" << resource.GetID().c_str() << "\n";
-    out << "assets path:" << resource.GetAssetPath().c_str() << "\n";
-    out << "library path:" << resource.GetLibraryPath().c_str() << "\n";
+    out << "assets path:" << resource.GetAssetPath().string().c_str() << "\n";
+    out << "library path:" << resource.GetLibraryPath().string().c_str() << "\n";
     out << "resource type:" << (int) resource.GetType() << "\n";
     out << "width:" << resource.width << "\n";
     out << "height:" << resource.height << "\n";
@@ -35,7 +35,7 @@ std::ifstream& operator >>(std::ifstream& in, ResourceTexture& Resource)
 }
 void ResourceTexture::Save() const
 {
-    std::ofstream out(assetsPath.string() + ".meta");
+    std::ofstream out(assetsPath.string() + ".texture.meta");
     if (out.is_open())
     {
         out << *this << '\n';

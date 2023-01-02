@@ -41,7 +41,7 @@ std::ostream& operator <<(std::ostream& out, const ResourceScene& resource)
 }
 void ResourceScene::Save() const
 {
-    std::ofstream out(assetsPath.string() + ".meta");
+    std::ofstream out(assetsPath.string() + ".scene.meta");
     if (out.is_open())
     {
         out << *this << '\n';

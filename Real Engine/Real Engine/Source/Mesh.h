@@ -19,7 +19,7 @@ public:
 	std::vector<Vertex>       vertices;
 	std::vector<unsigned int> indices;
 
-	void Draw(Shader& shader ,Material& mat);
+	void Draw(Shader& shader,Material& mat);
 	unsigned int GetVAO() { return VAO; }
 	UID material_UID;
 private:

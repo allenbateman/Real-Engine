@@ -24,75 +24,76 @@ void FileExplorer::Init()
 
 void FileExplorer::Update()
 {
-	ImGui::Begin("Files");
+	if (ImGui::Begin("Files"));
 
-	if (currentDirectory != fs::path(assetPath))
-	{
-		if (ImGui::Button("<-")|| (ImGui::IsItemHovered()&& ImGui::IsMouseDragging(0)))
+		if (currentDirectory != fs::path(assetPath))
 		{
-			currentDirectory = currentDirectory.parent_path();
-		}
-	}
-
-	static float padding = 16.0f;
-	static float thumbnailSize = 128.0f;
-	float cellSize = thumbnailSize + padding;
-
-	float panelWidth = ImGui::GetContentRegionAvail().x;
-	int columnCount = (int)(panelWidth / cellSize);
-	if (columnCount < 1)
-		columnCount = 1;
-
-	ImGui::Columns(columnCount, 0, false);
-
-	for (auto& directoryEntry : fs::directory_iterator(currentDirectory))
-	{
-
-		const auto& path = directoryEntry.path();
-		std::string filenameString = path.filename().string();
-
-		ImGui::PushID(filenameString.c_str());
-		int icon = directoryEntry.is_directory() ? directoryIcon : fileIcon;
-		ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 1));
-		ImGui::ImageButton((ImTextureID)icon, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
-
-		if (ImGui::BeginDragDropSource())
-		{
-			const wchar_t* itemPath = path.c_str();
-			ImGui::SetDragDropPayload("CONTENT_BROWSER_ITEM", itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
-			ImGui::EndDragDropSource();
-		}
-		if (ImGui::BeginDragDropTarget()) 
-		{	
-
-			const ImGuiPayload* itemDrop = ImGui::AcceptDragDropPayload("CONTENT_BROWSER_ITEM");
-			if (itemDrop != nullptr && directoryEntry.is_directory())
+			if (ImGui::Button("<-") || (ImGui::IsItemHovered() && ImGui::IsMouseDragging(0)))
 			{
-				fs::path cpath = (wchar_t*)itemDrop->Data;
-				fs::path newPath = path.string()+ '/' + cpath.filename().string();
-				fs::rename(cpath, newPath);
+				currentDirectory = currentDirectory.parent_path();
 			}
 		}
-		ImGui::PopStyleColor();
-		if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+
+		static float padding = 16.0f;
+		static float thumbnailSize = 128.0f;
+		float cellSize = thumbnailSize + padding;
+
+		float panelWidth = ImGui::GetContentRegionAvail().x;
+		int columnCount = (int)(panelWidth / cellSize);
+		if (columnCount < 1)
+			columnCount = 1;
+
+		ImGui::Columns(columnCount, 0, false);
+
+		for (auto& directoryEntry : fs::directory_iterator(currentDirectory))
 		{
-			if (directoryEntry.is_directory())
-				currentDirectory /= path.filename();
 
+			const auto& path = directoryEntry.path();
+			std::string filenameString = path.filename().string();
+
+			ImGui::PushID(filenameString.c_str());
+			int icon = directoryEntry.is_directory() ? directoryIcon : fileIcon;
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 1));
+			ImGui::ImageButton((ImTextureID)icon, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
+
+			if (ImGui::BeginDragDropSource())
+			{
+				const wchar_t* itemPath = path.c_str();
+				ImGui::SetDragDropPayload(payload_fileContent, itemPath, (wcslen(itemPath) + 1) * sizeof(wchar_t));
+				ImGui::EndDragDropSource();
+			}
+			if (ImGui::BeginDragDropTarget())
+			{
+
+				const ImGuiPayload* itemDrop = ImGui::AcceptDragDropPayload(payload_fileContent);
+				if (itemDrop != nullptr && directoryEntry.is_directory())
+				{
+					fs::path cpath = (wchar_t*)itemDrop->Data;
+					fs::path newPath = path.string() + '/' + cpath.filename().string();
+					fs::rename(cpath, newPath);
+				}
+			}
+			ImGui::PopStyleColor();
+			if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(ImGuiMouseButton_Left))
+			{
+				if (directoryEntry.is_directory())
+					currentDirectory /= path.filename();
+
+			}
+			ImGui::TextWrapped(filenameString.c_str());
+
+			ImGui::NextColumn();
+
+			ImGui::PopID();
 		}
-		ImGui::TextWrapped(filenameString.c_str());
 
-		ImGui::NextColumn();
+		ImGui::Columns(1);
 
-		ImGui::PopID();
-	}
+		ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
+		ImGui::SliderFloat("Padding", &padding, 0, 32);
 
-	ImGui::Columns(1);
-
-	ImGui::SliderFloat("Thumbnail Size", &thumbnailSize, 16, 512);
-	ImGui::SliderFloat("Padding", &padding, 0, 32);
-
-	// TODO: status bar
+		// TODO: status bar
+	
 	ImGui::End();
 }
 

@@ -99,12 +99,12 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 		inspector->context = entitySelectionContext;
 	}
 	if (ImGui::BeginDragDropSource()) {
-		ImGui::SetDragDropPayload(payloadDragDrop, &go, sizeof(GameObject));
+		ImGui::SetDragDropPayload(payload_objectHierarchy, &go, sizeof(GameObject));
 		ImGui::Text(go.name.c_str());
 		ImGui::EndDragDropSource();
 	}
 	if (ImGui::BeginDragDropTarget()) {
-		const ImGuiPayload* obj = ImGui::AcceptDragDropPayload(payloadDragDrop);
+		const ImGuiPayload* obj = ImGui::AcceptDragDropPayload(payload_objectHierarchy);
 		if (obj != nullptr)
 		{
 			//get go dragged to the new parent

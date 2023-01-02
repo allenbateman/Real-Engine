@@ -16,18 +16,13 @@ public :
 	GameObject GetRoot() const { return *root; };
 	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
 	void Load(std::ifstream& data) override;
-	//sotre all materials used by the obj
+	//sotre all materials ids used by the obj
 	vector<UID> materials;
-	//sotre all meshes used by the obj
+	//sotre all meshes ids used by the obj
 	vector<UID> meshes;
 	//sotre all transforms used by the obj
 	vector<UID> transforms;
-
-
 	GameObject* root;
-
-
-
 };
 
 template<typename T>

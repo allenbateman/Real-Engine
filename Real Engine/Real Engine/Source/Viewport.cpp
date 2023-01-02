@@ -32,8 +32,21 @@ void Viewport::Update()
 		OnHovered();
 		OnResize();
 		ImGui::Image((ImTextureID)app->renderer->editor.buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
+	
+		if (ImGui::BeginDragDropTarget()) {
+			const ImGuiPayload* itemDrop = ImGui::AcceptDragDropPayload(payload_fileContent);
+			if (itemDrop != nullptr)
+			{
+				fs::path cpath = (wchar_t*)itemDrop->Data;
+				//app->
+				//fs::path newPath = path.string() + '/' + cpath.filename().string();
+				//fs::rename(cpath, newPath);
+			}
+			ImGui::EndDragDropSource();
+		}
+		ImGui::End();
 	}
-	ImGui::End();
+
 	ImGui::PopStyleVar();
 }
 

@@ -14,5 +14,7 @@ public:
 	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
 	void Load(std::ifstream& data) override;
 	int materialIndex;
+
+	Mesh mesh;
 };
 

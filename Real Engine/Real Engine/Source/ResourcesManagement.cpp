@@ -27,6 +27,9 @@ bool ResourcesManagement::Init()
 {
 
     bool ret = false;
+
+    // create all resources from meta files 
+    // read all meta files data 
     LoadMetaFiles();
     ImportFilesFromAssets();
 
@@ -87,13 +90,13 @@ UID ResourcesManagement::FindResource(const char* file_in_assets) const
 {
     for (const auto& resource : resources)
     {
-        if (strcmp(file_in_assets, resource.second->GetAssetPath().string().c_str()) == 0)
+        if (strcmp(file_in_assets, resource.second.second->GetAssetPath().string().c_str()) == 0)
         {
-            return resource.first;
+            return resource.second.first;
         }
     }
    
-    return "Resource not found";
+    return "";
 }
 
 UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type type)
@@ -119,14 +122,14 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
 
 shared_ptr<Resource> ResourcesManagement::RequestResource(UID uid)
 {
-    std::map<UID, shared_ptr<Resource>>::iterator it = resources.begin();
+    std::map<string, pair<UID, shared_ptr<Resource>>>::iterator it = resources.begin();
     if (it != resources.end())
     {
-        if (it->second->GetRefereneCount() <= 0)
+        if (it->second.second->GetRefereneCount() <= 0)
         {
-            it->second->Load();
+            it->second.second->Load();
         }
-        return it->second;
+        return it->second.second;
     }
     return nullptr;
 }
@@ -138,11 +141,12 @@ void ResourcesManagement::ReleaseResource(UID uid)
 
 shared_ptr<Resource> ResourcesManagement::GetResource(UID uid)
 {
-    std::map<UID, shared_ptr<Resource>>::iterator it = resources.begin();
+    //std::map<UID, shared_ptr<Resource>>::iterator it = resources.begin();
+    std::map<string,pair<UID, shared_ptr<Resource>>>::iterator it = resources.begin();
     while (it != resources.end())
     {
-        if (it->first == uid)
-            return it->second;;
+        if (it->second.first == uid)
+            return it->second.second;
         
         it++;
     }
@@ -199,7 +203,9 @@ void ResourcesManagement::ImportFilesFromAssets()
     //import files that have been left to add
     for (const auto& fileToLoad : filesToLoad)
     {
-        ImportFile(fileToLoad.first.string().c_str(),fileToLoad.second);
+
+        if (!ExistFileInResources(fileToLoad.first.string()));
+            ImportFile(fileToLoad.first.string().c_str(),fileToLoad.second);
     }
 }
 
@@ -207,8 +213,7 @@ bool ResourcesManagement::ExistFileInResources(std::string filePath)
 {
     for (const auto& resource : resources)
     {
-
-        if (filePath == resource.second->GetAssetPath())
+        if (filePath == resource.first)
         {
             //file registered
             return  true;
@@ -233,11 +238,10 @@ shared_ptr<Resource> ResourcesManagement::CreateNewResource(const std::filesyste
     }
     if (ret != nullptr)
     {
-        resources[uid] = ret;
         ret->name = path.stem().string();
         ret->SetAssetPath(path.string());
-        Debug::Log("Importing new asset:" + path.filename().string());
-        Debug::Log(" id:" + uid);
+        Debug::Log("Importing new asset:" + ret->name);
+        resources.insert(std::make_pair(path.string(), std::make_pair(uid, ret)));
     }
     return ret;
 }
@@ -304,10 +308,11 @@ void ResourcesManagement::LoadMetaFiles()
                 }
                 if (resource != nullptr)
                 {
+                    resource->name = name;
                     resource->SetAssetPath(assetPath);
                     resource->SetLibraryPath(libPath);
                     resource->Load(in);
-                    resources[id] = resource;
+                    resources.insert(std::make_pair(assetPath, std::make_pair(id, resource)));
                 }
             }
             else {
@@ -337,8 +342,7 @@ void ResourcesManagement::LoadMetaFiles()
 
                    resource->Save();
 
-
-                   resources[id] = resource;
+                   resources.insert(std::make_pair(assetPath, std::make_pair(id, resource)));
                }
             }
         }

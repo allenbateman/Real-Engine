@@ -1,5 +1,6 @@
 #pragma once
 #include "Resource.h"
+#include "Texture.h"
 class ResourceTexture : public Resource
 {
 public: 
@@ -12,7 +13,7 @@ public:
     static void Load(std::shared_ptr<Resource>& resource,std::ifstream& data );
     void Load(std::ifstream& data) override;
 public:
-
+    Texture texture;
     int width;
     int height;
     int channels;

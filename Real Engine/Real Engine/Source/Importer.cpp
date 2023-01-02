@@ -11,6 +11,7 @@
 #include "Transform.h"
 #include "nlohmann/json.hpp"
 #include "SceneManager.h"
+#include "UiSystem.h"
 
 Importer::Importer()
 {
@@ -37,6 +38,10 @@ bool Importer::Awake()
 bool Importer::Start(){
 
     app->eventSystem->SubscribeModule(this, ON_FILE_DROP);
+
+    //import all files that exist into custom file formats
+    //and create meta files
+
     return true;
 }
 
@@ -90,7 +95,7 @@ void TextureImporter::Save(const Texture tex, const std::string& filename)
     out.close();
 }
 
-void TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<Resource>& resource)
+bool TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<Resource>& resource)
 {
     shared_ptr<ResourceMaterial> resourceMat = static_pointer_cast<ResourceMaterial>(resource);
     std::vector<Texture> textures;
@@ -104,7 +109,7 @@ void TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type
         shared_ptr<Resource> texture;
         for (const auto& texPath : app->importer->importedTextures)
         {
-
+            //check if the texture is already imported
             if (std::strcmp(texPath.string().data(), path.data()) == 0)
             {
                 UID resourceID = app->resourceManager->FindResource(texPath.string().c_str());
@@ -113,25 +118,26 @@ void TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type
                 if (texture == nullptr)
                 {
                     cout << "ERROR::METRAIL_IMPORTER::RESOURCE_IS_NULL\n";
-                    return;
+                    return false;
                 }
                 shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
                 pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
                 resourceMat->resourcesTexture.push_back(tResource);
                 Skip = true;
-                break;
+                return true;
             }
         }
         if (!Skip)
         {
-
             texture = app->resourceManager->CreateNewResource(path, Resource::Type::Texture);
             TextureImporter::Import(texture);
             shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
             pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
             resourceMat->resourcesTexture.push_back(tResource);
+            return true;
         }
     }
+    return false;
 }
 
 void TextureImporter::Import(shared_ptr<Resource>& resource){
@@ -226,7 +232,7 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
         }
         if (!Skip)
         {
-    
+            cout << "IMPORTING NEW TEXTURE "<< name <<"\n";
             shared_ptr<Resource> textureDiff = app->resourceManager->CreateNewResource(path, Resource::Type::Texture);
             TextureImporter::Import(textureDiff);
             shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureDiff);
@@ -526,24 +532,57 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
     string name = material->GetName().C_Str();
 
 
-    //check if the textue or material already exist
+    //check if the material already exist
     for (const auto& mat : app->importer->importedMaterials)
     {
-        if (mat.first == mesh->mMaterialIndex && mat.second == name)
+        //compare the asset path and the material index
+        if (mat.first == rFbx->GetAssetPath().string() && mat.second.first == mesh->mMaterialIndex)
         {
-            return mat.second;
+            return mat.second.second;
         }
     }
 
-    shared_ptr<Resource> resourceMat = app->resourceManager->CreateNewResource("..\\Output\\Assets\\" + name, Resource::Type::Material);
-    TextureImporter::LoadAiMaterialTextures(material,aiTextureType_DIFFUSE, "texture_diffuse", resourceMat);
-    TextureImporter::LoadAiMaterialTextures(material,aiTextureType_SPECULAR, "texture_specular", resourceMat);
+    bool hasMat = false;
+    shared_ptr<Resource> resourceMat = app->resourceManager->CreateNewResource(rFbx->GetAssetPath(), Resource::Type::Material);
+    hasMat = TextureImporter::LoadAiMaterialTextures(material,aiTextureType_DIFFUSE, "texture_diffuse", resourceMat);
+    hasMat =  TextureImporter::LoadAiMaterialTextures(material,aiTextureType_SPECULAR, "texture_specular", resourceMat);
+   
+    //if resource mat is empty, because the mesh has no mat assigned, 
+    //we assing a default mat
+    if (!hasMat)
+    {
+        std::string name = "default_texture.png";
+        std::string fullPath = ASSETS_DIR + name;
+        if (!app->resourceManager->ExistFileInResources(fullPath))
+        {
+            shared_ptr<Resource> defaultTex = app->resourceManager->CreateNewResource(fullPath, Resource::Type::Texture);
+            TextureImporter::Import(defaultTex);
+        }
+        else
+        {
+           shared_ptr<ResourceMaterial> resourceMat = static_pointer_cast<ResourceMaterial>(resourceMat);
+           shared_ptr<Resource> texture;
+           UID Uid = app->resourceManager->FindResource(fullPath.c_str());
+           if (Uid != "")
+           {
+              texture = app->resourceManager->GetResource(Uid);
+              if (texture.get() == nullptr) Debug::Error("ERROR::LOADING_DEFAULT_MATERIAL"); return"";
+              shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
+              pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
+              resourceMat->resourcesTexture.push_back(tResource);
+           }
+           else {
+               cout << "ERROR::LOADING_DEFAULT_MATERIAL";
+                Debug::Error("ERROR::LOADING_DEFAULT_MATERIAL");
+           }       
+        }
+    }
+
 
     Material* newMaterial = MaterialImporter::Import(material, resourceMat);
     rNode->AddComponent(*newMaterial);
     rFbx->materials.push_back(resourceMat->GetID());
-    std::pair<int, UID> p{ mesh->mMaterialIndex ,resourceMat->GetID() };
-    app->importer->importedMaterials.push_back(p);
+    app->importer->importedMaterials.insert(std::make_pair(resourceMat->GetAssetPath().string(),std::make_pair(mesh->mMaterialIndex, resourceMat->GetID())));
     return resourceMat->GetID();
 }
 

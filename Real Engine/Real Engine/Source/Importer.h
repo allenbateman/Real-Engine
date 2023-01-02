@@ -34,15 +34,17 @@ public:
 	bool Awake();
 	bool Start();
 	pathList importedTextures{};
-	std::vector<std::pair<int, UID>>importedMaterials;
+	//of the materials to keep track of them, we will store the asset path, where do they comefrom
+	//and if it belongs to any scene we need to know the index
+	std::map<string, std::pair<int, UID>>importedMaterials{};
+	std::map<string, std::pair<int, UID>>importedMeshes{};
 };
 
 
 namespace TextureImporter {
 	void Import(shared_ptr<Resource>& resource);
-	void Import(const aiTexture* texture, shared_ptr<Resource> resource);
 	void Save(const Texture mat, const std::string& filename);
-	void LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<Resource>& resourceMat);
+	bool LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<Resource>& resourceMat);
 }
 namespace MaterialImporter {
 	Material* Import(const aiMaterial* material, shared_ptr<Resource> resource);

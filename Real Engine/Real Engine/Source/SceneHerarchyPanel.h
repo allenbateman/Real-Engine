@@ -21,4 +21,4 @@ public:
 private:
 	
 };
-static const char* payloadDragDrop = "SceneHierarchy";
+

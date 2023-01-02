@@ -4,8 +4,6 @@
 #include <iostream>
 #include <filesystem>
 
-namespace fs = std::filesystem;
-
 class FileExplorer :  public Panel
 {
 public :
@@ -19,4 +17,3 @@ private:
 	int fileIcon;
 	fs::path currentDirectory;
 };
-static const char* FILE_SCENE_DROP = "FILE_SCENE_DROP";

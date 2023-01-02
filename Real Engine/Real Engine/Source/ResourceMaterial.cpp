@@ -13,8 +13,8 @@ std::ostream& operator <<(std::ostream& out, const ResourceMaterial& resource)
 {
     out << "name:" << resource.name << '\n';
     out << "id:" << resource.GetID().c_str() << "\n";
-    out << "assets path:" << resource.GetAssetPath().c_str() << "\n";
-    out << "library path:" << resource.GetLibraryPath().c_str() << "\n";
+    out << "assets path:" << resource.GetAssetPath().string().c_str() << "\n";
+    out << "library path:" << resource.GetLibraryPath().string().c_str() << "\n";
     out << "resource type:" << (int)resource.GetType() << "\n";
 
     out << "Textures used:" << resource.resourcesTexture.size() << "\n";
