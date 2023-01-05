@@ -11,5 +11,8 @@ public:
 	void DrawComponents(Entity entity);
 	OnFOVChange fovChange;
 	Entity context = -1;
+private:
+	bool SearchTabOpen = false;
+	void ShowSearchField(Entity entity);
 };
 

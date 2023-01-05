@@ -64,7 +64,6 @@ bool Panel::OnHovered()
 
 bool Panel::OnResize()
 {
-	name;
 	bool Resized = false;
 	availableSize = ImGui::GetContentRegionAvail();
 	if (LastSize.x != availableSize.x || LastSize.y != availableSize.y)

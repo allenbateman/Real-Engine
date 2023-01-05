@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "FrameBuffer.h"
 #include "EventSystem.h"
+#include "UiSystem.h"
 
 
 Viewport::Viewport(int _id,bool isActive) : Panel(_id,isActive)
@@ -38,6 +39,8 @@ void Viewport::Update()
 			if (itemDrop != nullptr)
 			{
 				fs::path cpath = (wchar_t*)itemDrop->Data;
+
+				Debug::Log("File dropped to scene...");
 				//app->
 				//fs::path newPath = path.string() + '/' + cpath.filename().string();
 				//fs::rename(cpath, newPath);

@@ -42,6 +42,14 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
 		entityComponentSystem.SetSystemSignature<SceneManager>(signature);
 	}
+	cameraUpdater = entityComponentSystem.RegisterSystem<CameraUpdater>();
+	{
+		Signature signature;
+		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
+		signature.set(entityComponentSystem.GetComponentType<Transform>());
+		signature.set(entityComponentSystem.GetComponentType<Camera>());
+		entityComponentSystem.SetSystemSignature<CameraUpdater>(signature);
+	}
 	cameraController = entityComponentSystem.RegisterSystem<CameraController>();
 	{
 		Signature signature;
@@ -60,14 +68,7 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 		signature.set(entityComponentSystem.GetComponentType<Material>());
 		entityComponentSystem.SetSystemSignature<Renderer>(signature);
 	}
-	cameraUpdater = entityComponentSystem.RegisterSystem<CameraUpdater>();
-	{
-		Signature signature;
-		signature.set(entityComponentSystem.GetComponentType<TagComponent>());
-		signature.set(entityComponentSystem.GetComponentType<Transform>());
-		signature.set(entityComponentSystem.GetComponentType<Camera>());
-		entityComponentSystem.SetSystemSignature<CameraUpdater>(signature);
-	}
+
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);

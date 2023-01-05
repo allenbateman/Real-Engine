@@ -198,7 +198,7 @@ void Renderer::HandleEvent(Event* e)
 			editor.OnResize(0, 0, Pr->x, Pr->y);
 			break;
 		case eGameViewport:
-			//game.OnResize(0, 0, Pr->x, Pr->y);
+			game.OnResize(0, 0, Pr->x, Pr->y);
 			break;
 		}	
 	}
@@ -219,14 +219,13 @@ void Renderer::HandleEvent(Event* e)
 	break;
 	case MOUSE_SCROLL:
 	{
-		//game.OnFovChange();
-		//editor.OnFovChange();
+		editor.OnFovChange();
 	}
 	break;
 	case ON_FOV_CHANGE:
 	{
-		//game.OnFovChange();
-		//editor.OnFovChange();
+		game.OnFovChange();
+		editor.OnFovChange();
 	}
 	break;
 	default:
