@@ -121,7 +121,7 @@ bool TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type
                     return false;
                 }
                 shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
-                pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
+                pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t };
                 resourceMat->resourcesTexture.push_back(tResource);
                 Skip = true;
                 return true;
@@ -132,7 +132,7 @@ bool TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type
             texture = app->resourceManager->CreateNewResource(path, Resource::Type::Texture);
             TextureImporter::Import(texture);
             shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
-            pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
+            pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t };
             resourceMat->resourcesTexture.push_back(tResource);
             return true;
         }
@@ -224,7 +224,7 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
                     cout << "ERROR::METRAIL_IMPORTER::RESOURCE_IS_NULL\n"; 
                 }
                 shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureDiff);
-                pair<string, ResourceTexture > tResource{ "texture_diffuse",*t};
+                pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t};
                 resourceMat->resourcesTexture.push_back(tResource);
                 Skip = true;
                 break;
@@ -236,7 +236,7 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
             shared_ptr<Resource> textureDiff = app->resourceManager->CreateNewResource(path, Resource::Type::Texture);
             TextureImporter::Import(textureDiff);
             shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureDiff);
-            pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
+            pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t };
             resourceMat->resourcesTexture.push_back(tResource);
         }
     }
@@ -263,7 +263,7 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
                    
                 }
                 shared_ptr < ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureDiff);
-                pair<string, ResourceTexture > tResource{ "texture_specular",*t };
+                pair<string, shared_ptr < ResourceTexture> > tResource{ "texture_specular",t };
                 resourceMat->resourcesTexture.push_back(tResource);
                 Skip = true;
                 break;
@@ -274,7 +274,7 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
             TextureImporter::Import(textureSpecular);
 
             shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureSpecular);
-            pair<string, ResourceTexture > tResource{ "texture_specular",*t };
+            pair<string, shared_ptr < ResourceTexture> > tResource{ "texture_specular",t };
             resourceMat->resourcesTexture.push_back(tResource);
         }
     }
@@ -284,8 +284,8 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
     for (const auto& tex : resourceMat->resourcesTexture)
     {
         Texture newTex;
-        newTex.uid = tex.second.GetID();
-        newTex.path = tex.second.GetAssetPath().string().c_str();
+        newTex.uid = tex.second->GetID();
+        newTex.path = tex.second->GetAssetPath().string().c_str();
         newTex.type = tex.first;
         mat->textures.push_back(newTex);
     }
@@ -568,7 +568,7 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
               texture = app->resourceManager->GetResource(Uid);
               if (texture.get() == nullptr) Debug::Error("ERROR::LOADING_DEFAULT_MATERIAL"); return"";
               shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
-              pair<string, ResourceTexture > tResource{ "texture_diffuse",*t };
+              pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t };
               resourceMat->resourcesTexture.push_back(tResource);
            }
            else {

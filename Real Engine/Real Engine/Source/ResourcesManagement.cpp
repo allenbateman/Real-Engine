@@ -153,6 +153,23 @@ shared_ptr<Resource> ResourcesManagement::GetResource(UID uid)
     return nullptr;
 }
 
+vector<shared_ptr<Resource>> ResourcesManagement::GetResourceListOfType(Resource::Type type)
+{
+    vector< shared_ptr<Resource>> resourcesFound;
+
+    std::map<string, pair<UID, shared_ptr<Resource>>>::iterator it = resources.begin();
+    while (it != resources.end())
+    {
+        if (it->second.second->GetType() == type)
+            resourcesFound.push_back(it->second.second);
+
+        it++;
+    }
+
+
+    return resourcesFound;
+}
+
 std::vector<fs::path> ResourcesManagement::SearchForFileType(const std::filesystem::path root, const std::string extension)
 {
     std::vector<fs::path> paths;

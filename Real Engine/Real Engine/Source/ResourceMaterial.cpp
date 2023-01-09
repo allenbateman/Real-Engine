@@ -21,7 +21,7 @@ std::ostream& operator <<(std::ostream& out, const ResourceMaterial& resource)
     for (const auto& tex : resource.resourcesTexture)
     {
         out << "type:" << tex.first << "\n";
-        out << "Textue id:" << tex.second.GetID() << "\n";
+        out << "Textue id:" << tex.second->GetID() << "\n";
     }
     return out;
 }
@@ -66,7 +66,7 @@ void ResourceMaterial::Load(std::shared_ptr<Resource>& resource, std::ifstream& 
             shared_ptr<Resource> r = app->resourceManager->GetResource(id);
             if (r == nullptr) break;
             shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(r);
-            std::pair<std::string, ResourceTexture > tResource{ textureType,*rt };
+            std::pair<std::string, shared_ptr<ResourceTexture> > tResource{ textureType,rt };
             rm->resourcesTexture.push_back(tResource);
 
         }
@@ -95,7 +95,7 @@ void ResourceMaterial::Load(std::ifstream& data)
             shared_ptr<Resource> r = app->resourceManager->GetResource(id);
             if (r == nullptr) break;
             shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(r);
-            std::pair<std::string, ResourceTexture > tResource{ textureType,*rt };
+            std::pair<std::string, shared_ptr<ResourceTexture> > tResource{ textureType,rt };
             resourcesTexture.push_back(tResource);
         }
 

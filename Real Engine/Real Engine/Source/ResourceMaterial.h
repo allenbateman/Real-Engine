@@ -1,5 +1,6 @@
 #pragma once
 #include "Resource.h"
+#include "Material.h"
 #include "ResourceTexture.h"
 class ResourceMaterial : public Resource
 {
@@ -12,6 +13,7 @@ public:
     void UnLoad()const;
     static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
     void Load(std::ifstream& data) override;
-    std::vector<std::pair<std::string, ResourceTexture>> resourcesTexture;
+    std::vector<std::pair<std::string, std::shared_ptr<ResourceTexture>>> resourcesTexture;
+    Material material;
 };
 

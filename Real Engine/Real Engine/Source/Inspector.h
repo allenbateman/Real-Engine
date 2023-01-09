@@ -1,6 +1,8 @@
 #pragma once
 #include "Panel.h"
 #include "Events.h"
+#include "Resource.h"
+#include "Texture.h"
 class Inspector : public Panel
 {
 public:
@@ -14,5 +16,8 @@ public:
 private:
 	bool SearchTabOpen = false;
 	void ShowSearchField(Entity entity);
+
+	void ListAvailableResources(Resource::Type  type,shared_ptr<Resource>& resource);
+	Texture* SelectTexture();
 };
 

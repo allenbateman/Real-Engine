@@ -34,19 +34,19 @@ void Viewport::Update()
 		OnResize();
 		ImGui::Image((ImTextureID)app->renderer->editor.buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
 	
-		if (ImGui::BeginDragDropTarget()) {
-			const ImGuiPayload* itemDrop = ImGui::AcceptDragDropPayload(payload_fileContent);
-			if (itemDrop != nullptr)
-			{
-				fs::path cpath = (wchar_t*)itemDrop->Data;
+		//if (ImGui::BeginDragDropTarget()) {
+		//	const ImGuiPayload* itemDrop = ImGui::AcceptDragDropPayload(payload_fileContent);
+		//	if (itemDrop != nullptr)
+		//	{
+		//		//fs::path cpath = (wchar_t*)itemDrop->Data;
 
-				Debug::Log("File dropped to scene...");
-				//app->
-				//fs::path newPath = path.string() + '/' + cpath.filename().string();
-				//fs::rename(cpath, newPath);
-			}
-			ImGui::EndDragDropSource();
-		}
+		//		Debug::Log("File dropped to scene...");
+		//		//app->
+		//		//fs::path newPath = path.string() + '/' + cpath.filename().string();
+		//		//fs::rename(cpath, newPath);
+		//	}
+		//	ImGui::EndDragDropSource();
+		//}
 		ImGui::End();
 	}
 

@@ -143,7 +143,13 @@ void Inspector::DrawComponents(Entity entity)
 			auto& mesh = app->entityComponentSystem.GetComponent<Mesh>(entity);
 			ImGui::Text("Vertices %d", mesh.vertices.size());
 			ImGui::Text("Indices %d", mesh.indices.size());
-			
+
+			if (mesh.resource.get() == nullptr)
+			{
+				ImGui::Text("Pointer to resource is empty"); 
+				ListAvailableResources(Resource::Type::Mesh, mesh.resource);
+
+			}
 
 			ImGui::TreePop();
 		}
@@ -155,9 +161,15 @@ void Inspector::DrawComponents(Entity entity)
 			auto& material = app->entityComponentSystem.GetComponent<Material>(entity);
 			unsigned int diffuseNr = 1;
 			unsigned int specularNr = 1;
+
+			if (material.textures.size() == 0)
+			{
+				ImGui::Text("Material has no textue assigned");
+				auto tex = app->resourceManager->GetResourceListOfType(Resource::Type::Texture);
+			}
+
 			for (unsigned int i = 0; i < material.textures.size(); i++) 
 			{
-
 				std::string number;
 
 				std::string name = material.textures[i].type;
@@ -169,13 +181,17 @@ void Inspector::DrawComponents(Entity entity)
 				ImGui::Text((name + number).c_str());
 				ImGui::Image((ImTextureID)material.textures.at(i).id, ImVec2{ 250,250 });			
 			}
-		
+			if (material.resource.get() == nullptr)
+			{
+				ImGui::Text("Pointer to resource is empty");
+
+				ListAvailableResources(Resource::Type::Material, material.resource);
+			}
 			ImGui::TreePop();
 		}
 	}
 	if (ImGui::Button("Add component"))
 	{
-		Debug::Log("Add component");
 		SearchTabOpen = true;
 	}
 	if (SearchTabOpen)
@@ -196,22 +212,131 @@ void Inspector::ShowSearchField(Entity entity)
 			if (ImGui::Selectable(items[n], is_selected))
 			{
 				current_item = items[n];
-				string tmp = "Added component";
-				Debug::Log(tmp);
+				
 				ImGui::SetItemDefaultFocus();
 				SearchTabOpen = false;
-	/*			switch (current_item)
+				switch (n)
 				{
-				case "Material":
+				case 0:
+					if (!app->entityComponentSystem.HasComponent<Mesh>(entity))
+					{
+						app->entityComponentSystem.AddComponent(entity, Mesh{});
+						Debug::Log("Added component");
+					}
+					else
+					{
+						Debug::Log("Game object already has a Mesh");
+					}
 					break;
-				case "Mesh":
-					break;*/
+				case 1:
+					if (!app->entityComponentSystem.HasComponent<Material>(entity))
+					{
+						app->entityComponentSystem.AddComponent(entity, Material{});
+						Debug::Log("Added component");
+					}
+					else
+					{
+						Debug::Log("Game object already has a Material");
+					}
+					break;	
+				//case 2:
+				//	if (!app->entityComponentSystem.HasComponent<Texture>(entity))
+				//	{
+				//		app->entityComponentSystem.AddComponent(entity, Texture());
+				//		Debug::Log("Added component");
+				//	}
+				//	else {
+				//		Debug::Log("Game object already has a Texture");
+				//	}
+				//	break;
 
 				}
-				//app->entityComponentSystem.AddComponent(entity, Material{});
+				
 			}   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
 		}
 		ImGui::EndCombo();
 	}
 
+}
+
+void Inspector::ListAvailableResources(Resource::Type type, shared_ptr<Resource>& resource)
+{
+	const auto  listBoxSize = ImVec2(310, 260);
+	auto result = app->resourceManager->GetResourceListOfType(type);
+	const char** items = new const char*[result.size()];
+	int currentItem = 0;
+	const char* current_item = NULL;
+	for (int i = 0; i< result.size(); i++)
+	{
+		items[i] = result.at(i)->name.c_str();
+	}
+
+	if (ImGui::BeginCombo("##Resources", current_item)) {
+
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_DownArrow))) {
+			if (currentItem < result.size() - 1) { ++currentItem; }
+		}
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_UpArrow))) {
+			if (currentItem > 0) { --currentItem; }
+		}
+
+		for (int n = 0; n < result.size(); ++n) {
+			const bool is_selected = (currentItem == n);
+			if (ImGui::Selectable(items[n], is_selected)) 
+			{ 
+				currentItem = n; 
+				ImGui::SetItemDefaultFocus();
+				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+				if (is_selected) {
+
+					resource = result.at(n);
+				}
+			}
+		}
+		ImGui::EndCombo();
+	}
+}
+
+Texture* Inspector::SelectTexture()
+{
+	auto result = app->resourceManager->GetResourceListOfType(Resource::Type::Texture);
+	const char** items = new const char* [result.size()];
+	int currentItem = 0;
+	const char* current_item = NULL;
+	for (int i = 0; i < result.size(); i++)
+	{
+		items[i] = result.at(i)->name.c_str();
+	}
+
+	if (ImGui::BeginCombo("##Resources", current_item)) {
+
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_DownArrow))) {
+			if (currentItem < result.size() - 1) { ++currentItem; }
+		}
+		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_UpArrow))) {
+			if (currentItem > 0) { --currentItem; }
+		}
+
+		for (int n = 0; n < result.size(); ++n) {
+			const bool is_selected = (currentItem == n);
+			if (ImGui::Selectable(items[n], is_selected))
+			{
+				currentItem = n;
+				ImGui::SetItemDefaultFocus();
+				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+				if (is_selected) {
+
+					auto resource = result.at(n);
+
+
+		
+				}
+			}
+
+
+		}
+		ImGui::EndCombo();
+
+	}
+	return new Texture();
 }

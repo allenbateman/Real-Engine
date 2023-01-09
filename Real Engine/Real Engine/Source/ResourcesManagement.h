@@ -30,6 +30,7 @@ public:
 	void ReleaseResource(UID uid);
 
 	shared_ptr<Resource> GetResource(UID uid);
+	vector<shared_ptr<Resource>> GetResourceListOfType(Resource::Type type);
 
 	std::vector<filesystem::path> SearchForFileType(const std::filesystem::path root, const std::string extension);
 
