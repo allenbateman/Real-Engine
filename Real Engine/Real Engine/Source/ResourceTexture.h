@@ -8,7 +8,7 @@ public:
     ~ResourceTexture();
 
     void Save()const;
-    void Load() const;
+    void Load();
     void UnLoad()const;
     static void Load(std::shared_ptr<Resource>& resource,std::ifstream& data );
     void Load(std::ifstream& data) override;

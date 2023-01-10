@@ -278,23 +278,20 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
             resourceMat->resourcesTexture.push_back(tResource);
         }
     }
-
-    Material* mat = new Material();
-
     for (const auto& tex : resourceMat->resourcesTexture)
     {
         Texture newTex;
         newTex.uid = tex.second->GetID();
         newTex.path = tex.second->GetAssetPath().string().c_str();
         newTex.type = tex.first;
-        mat->textures.push_back(newTex);
+        resourceMat->material.textures.push_back(newTex);
     }
 
     resourceMat->SetLibraryPath("..\\Output\\Library\\Materials\\" + resourceMat->GetID() + ".material");
-    MaterialImporter::Save(*mat, resourceMat->GetLibraryPath().string().c_str());
+    MaterialImporter::Save(resourceMat->material, resourceMat->GetLibraryPath().string().c_str());
     resourceMat->Save();   
 
-    return mat;
+    return &resourceMat->material;
 }
 void MaterialImporter::Import(shared_ptr<Resource>& resource)
 {
@@ -514,16 +511,16 @@ void SceneImporter::ProcessaMesh(aiMesh* mesh, const aiScene* scene, GameObject*
     resourceMesh->name = name;
 
     shared_ptr<ResourceMesh> rm = static_pointer_cast<ResourceMesh>(resourceMesh);
+
     string savePath = "..\\Output\\Library\\Meshes\\" + rm->GetID() + ".mesh";
     rm->SetLibraryPath(savePath);
     rm->materialIndex = mesh->mMaterialIndex;
     rm->Save();
+    rm->mesh = *MeshImporter::Import(mesh, resourceMesh);
+    rm->mesh.material_UID = matId;
+    MeshImporter::Save(rm->mesh, savePath);
 
-    Mesh* newMesh = MeshImporter::Import(mesh, resourceMesh);
-    newMesh->material_UID = matId;
-    MeshImporter::Save(*newMesh, savePath);
-
-    rNode->AddComponent(*newMesh);
+    rNode->AddComponent(rm->mesh);
     rFbx->meshes.push_back(resourceMesh->GetID());
 }
 UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
@@ -577,10 +574,7 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
            }       
         }
     }
-
-
-    Material* newMaterial = MaterialImporter::Import(material, resourceMat);
-    rNode->AddComponent(*newMaterial);
+    rNode->AddComponent(MaterialImporter::Import(material, resourceMat));
     rFbx->materials.push_back(resourceMat->GetID());
     app->importer->importedMaterials.insert(std::make_pair(resourceMat->GetAssetPath().string(),std::make_pair(mesh->mMaterialIndex, resourceMat->GetID())));
     return resourceMat->GetID();

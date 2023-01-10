@@ -3,6 +3,7 @@
 #include "Events.h"
 #include "Resource.h"
 #include "Texture.h"
+#include "Material.h"
 class Inspector : public Panel
 {
 public:
@@ -17,7 +18,7 @@ private:
 	bool SearchTabOpen = false;
 	void ShowSearchField(Entity entity);
 
-	void ListAvailableResources(Resource::Type  type,shared_ptr<Resource>& resource);
-	Texture* SelectTexture();
+	void ListAvailableResources(Resource::Type type, shared_ptr<Resource>& resource);
+	void SelectTexture(Material& material);
 };
 

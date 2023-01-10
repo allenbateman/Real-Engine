@@ -46,15 +46,16 @@ void ResourceTexture::Save() const
     out.close();
 }
 
-void ResourceTexture::Load() const
+void ResourceTexture::Load()
 {
+    if (IsLoaded) return;
     //TODO check file path if its already flipped, the don,t flip 
     stbi_set_flip_vertically_on_load(true);
-    unsigned int texture;
+    unsigned int texId;
     int width, height, nrChannels;
 
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glGenTextures(1, &texId);
+    glBindTexture(GL_TEXTURE_2D, texId);
     // set the texture wrapping/filtering options (on the currently bound texture object)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -67,7 +68,7 @@ void ResourceTexture::Load() const
     {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
-        LOG("Succesfully loaded texture:%i ", texture);
+        LOG("Succesfully loaded texture:%i ", texId);
         LOG(librayPath.string().c_str());
     }
     else
@@ -78,7 +79,9 @@ void ResourceTexture::Load() const
     }
     stbi_image_free(data);
 
-    texture;
+
+    IsLoaded = true;
+    texture.id = texId;
 }
 
 void ResourceTexture::UnLoad() const

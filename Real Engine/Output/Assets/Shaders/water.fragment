@@ -1,0 +1,10 @@
+#version 330
+
+in vec3 vColor;  // Vertex color passed from the vertex shader
+
+out vec4 fragColor;  // Fragment color to be output to the framebuffer
+
+void main()
+{
+    fragColor = vec4(vColor, 1.0);
+}

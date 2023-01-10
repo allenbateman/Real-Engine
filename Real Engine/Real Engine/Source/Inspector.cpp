@@ -162,11 +162,7 @@ void Inspector::DrawComponents(Entity entity)
 			unsigned int diffuseNr = 1;
 			unsigned int specularNr = 1;
 
-			if (material.textures.size() == 0)
-			{
-				ImGui::Text("Material has no textue assigned");
-				auto tex = app->resourceManager->GetResourceListOfType(Resource::Type::Texture);
-			}
+
 
 			for (unsigned int i = 0; i < material.textures.size(); i++) 
 			{
@@ -186,6 +182,15 @@ void Inspector::DrawComponents(Entity entity)
 				ImGui::Text("Pointer to resource is empty");
 
 				ListAvailableResources(Resource::Type::Material, material.resource);
+			}
+			else
+			{
+				if (material.textures.size() == 0)
+				{
+					ImGui::Text("Material has no textue assigned");
+					//auto tex = app->resourceManager->GetResourceListOfType(Resource::Type::Texture);
+					SelectTexture(material);
+				}
 			}
 			ImGui::TreePop();
 		}
@@ -297,7 +302,7 @@ void Inspector::ListAvailableResources(Resource::Type type, shared_ptr<Resource>
 	}
 }
 
-Texture* Inspector::SelectTexture()
+void Inspector::SelectTexture(Material& material)
 {
 	auto result = app->resourceManager->GetResourceListOfType(Resource::Type::Texture);
 	const char** items = new const char* [result.size()];
@@ -308,14 +313,7 @@ Texture* Inspector::SelectTexture()
 		items[i] = result.at(i)->name.c_str();
 	}
 
-	if (ImGui::BeginCombo("##Resources", current_item)) {
-
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_DownArrow))) {
-			if (currentItem < result.size() - 1) { ++currentItem; }
-		}
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_UpArrow))) {
-			if (currentItem > 0) { --currentItem; }
-		}
+	if (ImGui::BeginCombo("##Texture", current_item)) {
 
 		for (int n = 0; n < result.size(); ++n) {
 			const bool is_selected = (currentItem == n);
@@ -326,9 +324,13 @@ Texture* Inspector::SelectTexture()
 				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 				if (is_selected) {
 
-					auto resource = result.at(n);
-
-
+					auto resource = result.at(n); resource->GetAssetPath();
+					shared_ptr<ResourceMaterial> rm = dynamic_pointer_cast<ResourceMaterial>(material.resource);
+					shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(resource);
+					rt->Load();
+					material.textures.push_back(rt->texture);
+					std::pair<std::string, shared_ptr<ResourceTexture> > t{ resource->GetAssetPath().string(), rt };
+					rm->resourcesTexture.push_back(t);
 		
 				}
 			}
@@ -338,5 +340,5 @@ Texture* Inspector::SelectTexture()
 		ImGui::EndCombo();
 
 	}
-	return new Texture();
+
 }

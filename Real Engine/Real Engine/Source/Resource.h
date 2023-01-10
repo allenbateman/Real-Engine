@@ -43,7 +43,7 @@ public:
 	void SetLibraryPath(std::string  library_path) { librayPath = library_path; };
 
 	std::string name;
-	bool IsLoaded;
+	bool IsLoaded = false;
 
 	const char* GetTypeChar();
 
