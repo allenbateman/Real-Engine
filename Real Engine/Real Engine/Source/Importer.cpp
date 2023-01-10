@@ -147,10 +147,10 @@ void TextureImporter::Import(shared_ptr<Resource>& resource){
     
     if (ilLoadImage(resource->GetAssetPath().string().c_str()))
     {
-        cout << "Texture id: " <<  id << " loaded with devIL" << endl;
+        cout << "Texture  " <<  rt->name << " loaded with devIL" << endl;
     }
     else {
-        cout << "Image not loaded with devIL "<< resource->name << endl;
+        cout << "Texture not loaded with devIL "<< resource->name << endl;
     }
 
     ILubyte* data = ilGetData();

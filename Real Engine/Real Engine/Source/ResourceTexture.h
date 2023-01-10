@@ -14,12 +14,12 @@ public:
     void Load(std::ifstream& data) override;
 public:
     Texture texture;
-    int width;
-    int height;
-    int channels;
-    int format;
-    int depth;
-    int type;
-    int flipped;
+    int width = 0;
+    int height = 0;
+    int channels = 0;
+    int format = 0;
+    int depth = 0;
+    int type = 0;
+    int flipped = 0;
 };
 

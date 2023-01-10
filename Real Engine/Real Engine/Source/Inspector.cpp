@@ -209,7 +209,7 @@ void Inspector::ShowSearchField(Entity entity)
 	const char* items[] = { "Mesh","Material","Texture" };
 	const char* current_item =NULL;
 
-	if (ImGui::BeginCombo("##combo", current_item)) // The second parameter is the label previewed before opening the combo.
+	if (ImGui::BeginCombo("##Resources", current_item)) // The second parameter is the label previewed before opening the combo.
 	{
 		for (int n = 0; n < IM_ARRAYSIZE(items); n++)
 		{
@@ -269,33 +269,25 @@ void Inspector::ListAvailableResources(Resource::Type type, shared_ptr<Resource>
 	const auto  listBoxSize = ImVec2(310, 260);
 	auto result = app->resourceManager->GetResourceListOfType(type);
 	const char** items = new const char*[result.size()];
-	int currentItem = 0;
-	const char* current_item = NULL;
+	int currentItem = -1;
 	for (int i = 0; i< result.size(); i++)
 	{
 		items[i] = result.at(i)->name.c_str();
 	}
 
-	if (ImGui::BeginCombo("##Resources", current_item)) {
-
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_DownArrow))) {
-			if (currentItem < result.size() - 1) { ++currentItem; }
-		}
-		if (ImGui::IsKeyPressed(ImGui::GetKeyIndex(ImGuiKey_UpArrow))) {
-			if (currentItem > 0) { --currentItem; }
-		}
+	if (ImGui::BeginCombo("##Resources", "resources...")) {
 
 		for (int n = 0; n < result.size(); ++n) {
-			const bool is_selected = (currentItem == n);
+			bool is_selected = false; 
 			if (ImGui::Selectable(items[n], is_selected)) 
 			{ 
-				currentItem = n; 
+				currentItem = n;
+			}
+			is_selected = (currentItem == n);
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected) {
 				ImGui::SetItemDefaultFocus();
-				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-				if (is_selected) {
-
-					resource = result.at(n);
-				}
+				resource = result.at(n);
 			}
 		}
 		ImGui::EndCombo();
@@ -306,35 +298,37 @@ void Inspector::SelectTexture(Material& material)
 {
 	auto result = app->resourceManager->GetResourceListOfType(Resource::Type::Texture);
 	const char** items = new const char* [result.size()];
-	int currentItem = 0;
-	const char* current_item = NULL;
+	int currentItem = -1;
 	for (int i = 0; i < result.size(); i++)
 	{
 		items[i] = result.at(i)->name.c_str();
 	}
 
-	if (ImGui::BeginCombo("##Texture", current_item)) {
+	if (ImGui::BeginCombo("##Texture", "textures...")) {
+		
 
 		for (int n = 0; n < result.size(); ++n) {
-			const bool is_selected = (currentItem == n);
+			bool is_selected = false;
 			if (ImGui::Selectable(items[n], is_selected))
 			{
 				currentItem = n;
-				ImGui::SetItemDefaultFocus();
-				// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-				if (is_selected) {
-
-					auto resource = result.at(n); resource->GetAssetPath();
-					shared_ptr<ResourceMaterial> rm = dynamic_pointer_cast<ResourceMaterial>(material.resource);
-					shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(resource);
-					rt->Load();
-					material.textures.push_back(rt->texture);
-					std::pair<std::string, shared_ptr<ResourceTexture> > t{ resource->GetAssetPath().string(), rt };
-					rm->resourcesTexture.push_back(t);
-		
-				}
 			}
 
+			is_selected = (currentItem == n);
+			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+				auto resource = result.at(n);
+
+				shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(resource);
+				rt->Load();
+				material.textures.push_back(rt->texture);
+
+				//get material resource to add the new texture resource
+				shared_ptr<ResourceMaterial> rm = dynamic_pointer_cast<ResourceMaterial>(material.resource);
+				std::pair<std::string, shared_ptr<ResourceTexture> > t{ resource->GetAssetPath().string(), rt };
+				rm->resourcesTexture.push_back(t);
+			}
 
 		}
 		ImGui::EndCombo();

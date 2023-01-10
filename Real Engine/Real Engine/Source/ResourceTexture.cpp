@@ -1,7 +1,9 @@
 #include "ResourceTexture.h"
 #include "Importer.h"
-#define STB_IMAGE_IMPLEMENTATION
-#include <Stb/stb_image.h>
+#include "UiSystem.h"
+#include <DevIL/ilu.h>
+#include "TextureLoader.h"
+
 ResourceTexture::ResourceTexture(UID uid) : Resource(uid)
 {
 	SetType(Type::Texture);
@@ -49,45 +51,23 @@ void ResourceTexture::Save() const
 void ResourceTexture::Load()
 {
     if (IsLoaded) return;
-    //TODO check file path if its already flipped, the don,t flip 
-    stbi_set_flip_vertically_on_load(true);
-    unsigned int texId;
-    int width, height, nrChannels;
 
-    glGenTextures(1, &texId);
-    glBindTexture(GL_TEXTURE_2D, texId);
-    // set the texture wrapping/filtering options (on the currently bound texture object)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    // load and generate the texture
-    unsigned char* data = stbi_load(librayPath.string().c_str(), &width, &height, &nrChannels, 0);
+    unsigned int id = LoadTexture(librayPath.string());
 
-    if (data)
+    if (id == 0)
     {
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
-        glGenerateMipmap(GL_TEXTURE_2D);
-        LOG("Succesfully loaded texture:%i ", texId);
-        LOG(librayPath.string().c_str());
+        IsLoaded = false;
+        texture.id = id;
+        Debug::Log("Error loading texture..." + name);
+        return;
     }
-    else
-    {
-        LOG("Failed to load texture: ");
-        LOG(librayPath.string().c_str());
-        std::cout << "Failed to load texture" << std::endl;
-    }
-    stbi_image_free(data);
-
-
     IsLoaded = true;
-    texture.id = texId;
+    texture.id = id;
 }
 
 void ResourceTexture::UnLoad() const
 {
-   // glDeleteTextures(1,&renderId);
-
+    glDeleteTextures(1,&texture.id);
 }
 
 void ResourceTexture::Load(std::shared_ptr<Resource>& resource,std::ifstream& data)

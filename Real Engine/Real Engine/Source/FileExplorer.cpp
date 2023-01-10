@@ -20,7 +20,7 @@ FileExplorer::~FileExplorer()
 void FileExplorer::Init()
 {
 	directoryIcon = LoadTexture("../Output/SystemFiles/folder.png");
-	fileIcon = LoadTexture("../Output/SystemFiles/happy-file.jpg");
+	fileIcon = LoadTexture("../Output/SystemFiles/file.png");
 }
 
 void FileExplorer::Update()
@@ -50,11 +50,15 @@ void FileExplorer::Update()
 		{
 
 			const auto& path = directoryEntry.path();
+			if (path.extension() == ".meta")
+			{
+				continue;
+			}
 			std::string filenameString = path.filename().string();
 
 			ImGui::PushID(filenameString.c_str());
 			int icon = directoryEntry.is_directory() ? directoryIcon : fileIcon;
-			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 1));
+			ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(1, 1,1, 0.5));
 			ImGui::ImageButton((ImTextureID)icon, { thumbnailSize, thumbnailSize }, { 0, 1 }, { 1, 0 });
 
 			if (ImGui::BeginDragDropSource())
