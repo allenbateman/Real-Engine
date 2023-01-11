@@ -263,19 +263,20 @@ shared_ptr<Resource> ResourcesManagement::CreateNewResource(const std::filesyste
     return ret;
 }
 
-void ResourcesManagement::LoadMetaFile(shared_ptr<Resource>& resource, std::ifstream& metaFile)
-{
-    //if(metaFile.rdbuf() == NULL) return nullptr;
-    
-    switch (resource->GetType()) {
-    case Resource::Type::Texture: ResourceTexture::Load(resource, metaFile); break;
-    case Resource::Type::Mesh: ResourceMesh::Load(resource,metaFile); break;
-    case Resource::Type::Material: ResourceMaterial::Load(resource,metaFile); break;
-    case Resource::Type::Fbx: ResourceScene::Load(resource, metaFile); break;
-    case Resource::Type::UNKNOWN:return;
-    default: break;
-    }
-}
+//void ResourcesManagement::LoadMetaFile(shared_ptr<Resource>& resource, std::ifstream& metaFile)
+//{
+//    //if(metaFile.rdbuf() == NULL) return nullptr;
+//    
+//    switch (resource->GetType()) {
+//    case Resource::Type::Texture: resource->load ResourceTexture::Load(resource, metaFile); break;
+//    case Resource::Type::Mesh: ResourceMesh::Load(resource,metaFile); break;
+//    case Resource::Type::Material: ResourceMaterial::Load(resource,metaFile); break;
+//    case Resource::Type::Fbx: ResourceScene::Load(resource, metaFile); break;
+//    case Resource::Type::Shader: ResourceShader::Load(resource, metaFile); break;
+//    case Resource::Type::UNKNOWN:return;
+//    default: break;
+//    }
+//}
 
 void ResourcesManagement::LoadMetaFiles()
 {
@@ -328,7 +329,7 @@ void ResourcesManagement::LoadMetaFiles()
                     resource->name = name;
                     resource->SetAssetPath(assetPath);
                     resource->SetLibraryPath(libPath);
-                    resource->Load(in);
+                    resource->LoadMetaData(in);
                     resources.insert(std::make_pair(assetPath, std::make_pair(id, resource)));
                 }
             }

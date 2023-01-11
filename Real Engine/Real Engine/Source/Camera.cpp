@@ -40,7 +40,7 @@ bool Camera::Start()
 	zoomSpeed = 4.0f;
 	const char* vs = "../Output/Assets/Shaders/default.vertex";
 	const char* fs = "../Output/Assets/Shaders/default.fragment";
-	ret = shader.Load(vs, fs);
+	//ret = shader.Load(vs, fs);
 	return ret;
 }
 

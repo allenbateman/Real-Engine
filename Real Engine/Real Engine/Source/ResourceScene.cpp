@@ -108,7 +108,7 @@ void ResourceScene::Load(std::shared_ptr<Resource>& resource, std::ifstream& dat
     data.close();
 }
 
-void ResourceScene::Load(std::ifstream& data)
+void ResourceScene::LoadMetaData(std::ifstream& data)
 {
     if (data.is_open())
     {
@@ -153,4 +153,8 @@ void ResourceScene::Load(std::ifstream& data)
     }
 
     data.close();
+}
+
+void ResourceScene::GenerateMetaFile()
+{
 }

@@ -13,23 +13,5 @@ using Signature = std::bitset<MAX_COMPONENTS>;
 struct Component
 {
 	bool active;
-	std::shared_ptr<Resource> resource;
 	virtual void OnUi() {}
-	virtual void Save() {};
 };
-
-struct MeshComponent : Component
-{
-	//unsigned int VAO, VBO, EBO; // idex of the vertex array object in VRam
-};
-
-struct TextureComponent : Component
-{
-	//unsigned int Texture_ID;
-};
-
-struct MaterialComponent : Component
-{
-	//unsigned int Shader_ID;
-};
-

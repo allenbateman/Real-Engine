@@ -56,9 +56,11 @@ void Scene::CreateGameObject(gameObjectType goType)
 		GameObject* go = new GameObject("Cube");
 
 		Cube cubeInfo;
-		Mesh cubeMesh (cubeInfo.vertices, cubeInfo.indices);
+		Mesh cubeMesh{};
+		cubeMesh.resource->vertices = cubeInfo.vertices;
+		cubeMesh.resource->indices =  cubeInfo.indices;
 		Material cubeMaterial;
-		cubeMaterial.textures.push_back(app->sceneManager->objLoader.loadedtextures[0]);
+	//	cubeMaterial.textures.push_back(app->sceneManager->objLoader.loadedtextures[0]);
 
 		origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
 		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
@@ -72,9 +74,11 @@ void Scene::CreateGameObject(gameObjectType goType)
 		GameObject* go = new GameObject("Sphere");
 
 		Sphere spherereInfo;
-		Mesh shpereMesh(spherereInfo.vertices, spherereInfo.indices);
+		Mesh shpereMesh{};
+		shpereMesh.resource->vertices = spherereInfo.vertices;
+		shpereMesh.resource->indices = spherereInfo.indices;
 		Material sphereMaterial;
-		sphereMaterial.textures.push_back(app->sceneManager->objLoader.loadedtextures[0]);
+	//	sphereMaterial.textures.push_back(app->sceneManager->objLoader.loadedtextures[0]);
 
 		origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
 		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
@@ -100,11 +104,11 @@ void Scene::AddGameObject(GameObject* object)
 
 void Scene::LoadGameObject(const std::string file_path)
 {
-	std::vector<GameObject*> obj = app->sceneManager->objLoader.LoadObject(file_path);
+/*	std::vector<GameObject*> obj = app->sceneManager->objLoader.LoadObject(file_path);
 	GameObject* go = obj.back();
 	origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
 	go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
-	gameObejects.push_back(*go);	
+	gameObejects.push_back(*go);*/	
 }
 
 void Scene::RemoveEntity(Entity id)

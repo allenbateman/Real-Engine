@@ -136,10 +136,10 @@ bool Renderer::PostUpdate()
 		}
 
 		glEnd();
-
+		/*
 		//Set Camera shader to render 
 		Shader shader = (*item)->camera->GetShader();
-		shader.Use();
+		shader.resource->Use();
 		float* projection = (*item)->ProjectionMatrix.M;
 		float* view = (*item)->camera->GetViewMatrix();
 		float* model;
@@ -159,16 +159,16 @@ bool Renderer::PostUpdate()
 			mat4x4 rotation = (rotationX * rotationY * rotationZ);
 			mat4x4 size = scale(transform.scale.x, transform.scale.y, transform.scale.z);
 			model = (pos * size * rotation).M;
-			shader.SetMat4("projection", projection);
-			shader.SetMat4("model", model);
-			shader.SetMat4("view", view);
+			shader.resource->SetMat4("projection", projection);
+			shader.resource->SetMat4("model", model);
+			shader.resource->SetMat4("view", view);
 			//render obj
-			mesh.Draw(shader, material);
+			//mesh.Draw(shader, material);
 		}
 
 		//detach the shader to default so it doesnt affect other render process
-		shader.StopUse();
-
+		shader.resource->StopUse();
+		*/
 		//Stop render  -------------------------------------------
 
 		//bind to the default renderer to render everything

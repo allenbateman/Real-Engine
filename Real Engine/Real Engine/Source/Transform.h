@@ -2,12 +2,10 @@
 #include "Component.h"
 
 class GameObject;
-//RESOUCEuuuuuuuuuuuuuuu
+//
 struct Transform : public  Component
 {
-
 	//properties
-
 	vec3 localPosition{ 0,0,0 };
 	vec3 localRotation{ 0,0,0 };
 	vec3 localScale{ 0,0,0 };

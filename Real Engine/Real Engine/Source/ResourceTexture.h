@@ -11,7 +11,8 @@ public:
     void Load();
     void UnLoad()const;
     static void Load(std::shared_ptr<Resource>& resource,std::ifstream& data );
-    void Load(std::ifstream& data) override;
+    void LoadMetaData(std::ifstream& data) override;
+    void GenerateMetaFile() override;
 public:
     Texture texture;
     int width = 0;
@@ -19,7 +20,7 @@ public:
     int channels = 0;
     int format = 0;
     int depth = 0;
-    int type = 0;
-    int flipped = 0;
+    unsigned int id;//opengl render id
+    std::string type; //what type of texture is
 };
 

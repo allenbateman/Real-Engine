@@ -60,6 +60,7 @@
     <ClCompile Include="Source\ResourceMaterial.cpp" />
     <ClCompile Include="Source\ResourceMesh.cpp" />
     <ClCompile Include="Source\ResourceScene.cpp" />
+    <ClCompile Include="Source\ResourceShader.cpp" />
     <ClCompile Include="Source\ResourcesManagement.cpp" />
     <ClCompile Include="Source\ResourcesPanel.cpp" />
     <ClCompile Include="Source\ResourceTexture.cpp" />
@@ -134,6 +135,7 @@
     <ClInclude Include="Source\ResourceMaterial.h" />
     <ClInclude Include="Source\ResourceMesh.h" />
     <ClInclude Include="Source\ResourceScene.h" />
+    <ClInclude Include="Source\ResourceShader.h" />
     <ClInclude Include="Source\ResourcesManagement.h" />
     <ClInclude Include="Source\ResourcesPanel.h" />
     <ClInclude Include="Source\ResourceTexture.h" />

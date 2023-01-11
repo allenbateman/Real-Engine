@@ -1,6 +1,12 @@
 #pragma once
 #include "Resource.h"
-#include "Mesh.h"
+#include "glmath.h"
+struct Vertex {
+	vec3 Position;
+	vec3 Normal;
+	vec2 TexCoords;
+	vec4 Color;
+};
 class ResourceMesh : public Resource
 {
 public:
@@ -8,13 +14,20 @@ public:
 	~ResourceMesh();
 
 	void Save()const;
-	void Load()const;
+	void Load();
 	void UnLoad()const;
 
 	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
-	void Load(std::ifstream& data) override;
-	int materialIndex;
+	void LoadMetaData(std::ifstream& data) override;
+	void GenerateMetaFile() override;
+	unsigned int GetVAO() { return VAO; }
 
-	Mesh mesh;
+public:
+	std::vector<Vertex>       vertices;
+	std::vector<unsigned int> indices;
+	UID material_UID;
+	int materialIndex;
+private:
+	unsigned int VAO, VBO, EBO; // idex of the vertex array object in VRam
 };
 

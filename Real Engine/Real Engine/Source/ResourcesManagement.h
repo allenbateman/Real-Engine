@@ -91,8 +91,6 @@ public:
 		}
 
 		shared_ptr<T> resource = std::make_shared<T>();
-
-
 	}
 	void CreateResource(const std::string& filepath);
 private:
@@ -102,6 +100,22 @@ private:
 template<typename T>
 inline void ResourceManager<T>::CreateResource(const std::string& filepath)
 {
+	//UID uid = uuid::generate_uuid();
 
-	//create resource
+	//switch (type) {
+	//case Resource::Type::Texture: ret = shared_ptr<T>(new ResourceTexture(uid)); break;
+	//case Resource::Type::Mesh: ret = shared_ptr<T>(new ResourceMesh(uid)); break;
+	//case Resource::Type::Fbx: ret = shared_ptr<T>(new ResourceScene(uid)); break;
+	//case Resource::Type::Material: ret = shared_ptr<T>(new ResourceMaterial(uid)); break;
+	//case Resource::Type::UNKNOWN:return nullptr; break;
+	//default: break;
+	//}
+	//if (ret != nullptr)
+	//{
+	//	ret->name = path.stem().string();
+	//	ret->SetAssetPath(path.string());
+	//	Debug::Log("Importing new asset:" + ret->name);
+	//	resources.insert(std::make_pair(path.string(), std::make_pair(uid, ret)));
+	//}
+	//return ret;
 }

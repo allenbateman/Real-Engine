@@ -17,8 +17,7 @@ public:
 private:
 	bool SearchTabOpen = false;
 	void ShowSearchField(Entity entity);
-
-	void ListAvailableResources(Resource::Type type, shared_ptr<Resource>& resource);
-	void SelectTexture(Material& material);
+	shared_ptr<Resource> ListAvailableResources(Resource::Type type);
+	void SelectTexture(Material& material, unsigned int id);
 };
 

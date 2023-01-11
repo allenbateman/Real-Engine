@@ -141,14 +141,13 @@ void Inspector::DrawComponents(Entity entity)
 		if (ImGui::TreeNodeEx((void*)typeid(Mesh).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Mesh"))
 		{
 			auto& mesh = app->entityComponentSystem.GetComponent<Mesh>(entity);
-			ImGui::Text("Vertices %d", mesh.vertices.size());
-			ImGui::Text("Indices %d", mesh.indices.size());
+			ImGui::Text("Vertices %d", mesh.resource->vertices.size());
+			ImGui::Text("Indices %d", mesh.resource->indices.size());
 
 			if (mesh.resource.get() == nullptr)
 			{
 				ImGui::Text("Pointer to resource is empty"); 
-				ListAvailableResources(Resource::Type::Mesh, mesh.resource);
-
+			//	mesh.resource =	ListAvailableResources(Resource::Type::Mesh);
 			}
 
 			ImGui::TreePop();
@@ -162,34 +161,43 @@ void Inspector::DrawComponents(Entity entity)
 			unsigned int diffuseNr = 1;
 			unsigned int specularNr = 1;
 
-
-
-			for (unsigned int i = 0; i < material.textures.size(); i++) 
+			for (unsigned int i = 0; i < material.resource->textures.size(); i++) 
 			{
-				std::string number;
-
-				std::string name = material.textures[i].type;
-				if (name == "texture_diffuse")
-					number = std::to_string(diffuseNr++);
-				else if (name == "texture_specular")
-					number = std::to_string(specularNr++);
-
-				ImGui::Text((name + number).c_str());
-				ImGui::Image((ImTextureID)material.textures.at(i).id, ImVec2{ 250,250 });			
+		
 			}
 			if (material.resource.get() == nullptr)
 			{
 				ImGui::Text("Pointer to resource is empty");
 
-				ListAvailableResources(Resource::Type::Material, material.resource);
+				//material.resource = ListAvailableResources(Resource::Type::Material);
 			}
 			else
 			{
-				if (material.textures.size() == 0)
+				if (material.resource->textures.empty())
 				{
-					ImGui::Text("Material has no textue assigned");
-					//auto tex = app->resourceManager->GetResourceListOfType(Resource::Type::Texture);
-					SelectTexture(material);
+					ImGui::Text("Material has no textures...");
+					SelectTexture(material, 0);
+				}
+
+				for (unsigned int i = 0; i < material.resource->textures.size(); i++)
+				{
+					SelectTexture(material, i);
+
+					//draw the textures
+					std::string number;
+					std::string name = material.resource->textures[i].second->type;
+					if (name == "texture_diffuse")
+						number = std::to_string(diffuseNr++);
+					else if (name == "texture_specular")
+						number = std::to_string(specularNr++);
+
+					ImGui::Text((name + number).c_str());
+					ImGui::Image((ImTextureID)material.resource->textures.at(i).second->id, ImVec2{ 250,250 });
+
+				}
+				if (material.resource->shader == nullptr)
+				{
+					//material.resource->shader = ListAvailableResources(Resource::Type::Shader);
 				}
 			}
 			ImGui::TreePop();
@@ -207,7 +215,7 @@ void Inspector::ShowSearchField(Entity entity)
 {
 
 	const char* items[] = { "Mesh","Material","Texture" };
-	const char* current_item =NULL;
+	const char* current_item = "components...";
 
 	if (ImGui::BeginCombo("##Resources", current_item)) // The second parameter is the label previewed before opening the combo.
 	{
@@ -257,46 +265,17 @@ void Inspector::ShowSearchField(Entity entity)
 
 				}
 				
-			}   // You may set the initial focus when opening the combo (scrolling + for keyboard navigation support)
+			}
 		}
 		ImGui::EndCombo();
 	}
 
 }
 
-void Inspector::ListAvailableResources(Resource::Type type, shared_ptr<Resource>& resource)
+shared_ptr<Resource> Inspector::ListAvailableResources(Resource::Type type)
 {
 	const auto  listBoxSize = ImVec2(310, 260);
 	auto result = app->resourceManager->GetResourceListOfType(type);
-	const char** items = new const char*[result.size()];
-	int currentItem = -1;
-	for (int i = 0; i< result.size(); i++)
-	{
-		items[i] = result.at(i)->name.c_str();
-	}
-
-	if (ImGui::BeginCombo("##Resources", "resources...")) {
-
-		for (int n = 0; n < result.size(); ++n) {
-			bool is_selected = false; 
-			if (ImGui::Selectable(items[n], is_selected)) 
-			{ 
-				currentItem = n;
-			}
-			is_selected = (currentItem == n);
-			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
-			if (is_selected) {
-				ImGui::SetItemDefaultFocus();
-				resource = result.at(n);
-			}
-		}
-		ImGui::EndCombo();
-	}
-}
-
-void Inspector::SelectTexture(Material& material)
-{
-	auto result = app->resourceManager->GetResourceListOfType(Resource::Type::Texture);
 	const char** items = new const char* [result.size()];
 	int currentItem = -1;
 	for (int i = 0; i < result.size(); i++)
@@ -304,8 +283,7 @@ void Inspector::SelectTexture(Material& material)
 		items[i] = result.at(i)->name.c_str();
 	}
 
-	if (ImGui::BeginCombo("##Texture", "textures...")) {
-		
+	if (ImGui::BeginCombo("##Resources", "resources...")) {
 
 		for (int n = 0; n < result.size(); ++n) {
 			bool is_selected = false;
@@ -313,26 +291,55 @@ void Inspector::SelectTexture(Material& material)
 			{
 				currentItem = n;
 			}
+			is_selected = (currentItem == n);
+			if (is_selected) {
+				ImGui::SetItemDefaultFocus();
+				return result.at(n);
+			}
+		}
+		ImGui::EndCombo();
+	}
+}
+
+void Inspector::SelectTexture(Material& material, unsigned int id)
+{
+	auto result = app->resourceManager->GetResourceListOfType(Resource::Type::Texture);
+	const char** items = new const char* [result.size()];
+	int currentItem = -1;
+	for (unsigned int i = 0; i < result.size(); i++)
+	{
+		items[i] = result.at(i)->name.c_str();
+	}
+
+	if (ImGui::BeginCombo("##Texture", "textures...")) {
+
+		for (unsigned int n = 0; n < result.size(); ++n) {
+			bool is_selected = false;
+			if (ImGui::Selectable(items[n], is_selected))
+			{
+				currentItem = n;
+			}
 
 			is_selected = (currentItem == n);
-			// Set the initial focus when opening the combo (scrolling + keyboard navigation focus)
 			if (is_selected) {
 				ImGui::SetItemDefaultFocus();
 				auto resource = result.at(n);
 
-				shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(resource);
-				rt->Load();
-				material.textures.push_back(rt->texture);
-
-				//get material resource to add the new texture resource
-				shared_ptr<ResourceMaterial> rm = dynamic_pointer_cast<ResourceMaterial>(material.resource);
-				std::pair<std::string, shared_ptr<ResourceTexture> > t{ resource->GetAssetPath().string(), rt };
-				rm->resourcesTexture.push_back(t);
+				if (material.resource->textures.empty())
+				{
+					shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(resource);
+					rt->Load();
+					pair<std::string, shared_ptr<ResourceTexture>> texture(rt->GetAssetPath().string(),rt);
+					material.resource->textures.push_back(texture);
+				}
+				else {
+					shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(resource);
+					rt->Load();
+					pair<std::string, shared_ptr<ResourceTexture>> texture(rt->GetAssetPath().string(), rt);
+					material.resource->textures.at(id) = texture;
+				}
 			}
-
 		}
 		ImGui::EndCombo();
-
 	}
-
 }

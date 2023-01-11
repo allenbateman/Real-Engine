@@ -83,15 +83,6 @@ void TextureImporter::Save(const Texture tex, const std::string& filename)
         std::string json_str = json_obj.dump();
         out << json_str.c_str();
     }
-
-    //if (out.is_open())
-    //{
-    //    out << tex << '\n';
-    //}
-    //else {
-    //    cout << "Error saving texture: " + filename;
-    //}
-
     out.close();
 }
 
@@ -121,10 +112,10 @@ bool TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type
                     return false;
                 }
                 shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
-                pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t };
-                resourceMat->resourcesTexture.push_back(tResource);
+                t->type = typeName;
+                pair<string, shared_ptr<ResourceTexture> > tResource{ typeName,t };
+                resourceMat->textures.push_back(tResource);
                 Skip = true;
-                return true;
             }
         }
         if (!Skip)
@@ -132,9 +123,10 @@ bool TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type
             texture = app->resourceManager->CreateNewResource(path, Resource::Type::Texture);
             TextureImporter::Import(texture);
             shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
-            pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t };
-            resourceMat->resourcesTexture.push_back(tResource);
-            return true;
+            t->type = typeName;
+            pair<string, shared_ptr<ResourceTexture> > tResource{ typeName,t };
+            resourceMat->textures.push_back(tResource);
+            app->importer->importedTextures.push_back(t->GetAssetPath().string());
         }
     }
     return false;
@@ -165,7 +157,6 @@ void TextureImporter::Import(shared_ptr<Resource>& resource){
     rt->depth = depth;
     rt->channels = channels;
     rt->format = format;
-    rt->type = type;
 
     string path = LIBRARY_DIR;
     std::string storePath = path + "Textures\\" + id + ".dds";
@@ -188,19 +179,17 @@ void TextureImporter::Import(shared_ptr<Resource>& resource){
 //Material operators--------------------------------
 std::ostream& operator <<(std::ostream& out, const Material& material)
 {
-    out << "<textures>" << '[' << material.textures.size() << ']' << '\n';
-    vector<Texture>::const_iterator t = material.textures.begin();
-    while (t != material.textures.end())
-    {
-        out << "<id>" << '[' << t->uid << "]" << "<type>" << '[' << t->type << ']' << "<path>" << '[' << t->path << ']' << '\n';
-        t++;
-    }
+    //out << "<textures>" << '[' << material.resource->textures.size() << ']' << '\n';
+    //vector<Texture>::const_iterator t = material.textures.begin();
+    //while (t != material.textures.end())
+    //{
+    //    out << "<id>" << '[' << t->uid << "]" << "<type>" << '[' << t->type << ']' << "<path>" << '[' << t->path << ']' << '\n';
+    //    t++;
+    //}
     return out;
 }
-Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resource> resource)
+void MaterialImporter::Import(const aiMaterial* material, shared_ptr<ResourceMaterial>& resourceMat)
 {
-    shared_ptr<ResourceMaterial> resourceMat = dynamic_pointer_cast<ResourceMaterial>(resource);
-
     bool Skip = false;
 
     //Laod material textures
@@ -225,7 +214,7 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
                 }
                 shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureDiff);
                 pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t};
-                resourceMat->resourcesTexture.push_back(tResource);
+                resourceMat->textures.push_back(tResource);
                 Skip = true;
                 break;
             }
@@ -237,7 +226,7 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
             TextureImporter::Import(textureDiff);
             shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureDiff);
             pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t };
-            resourceMat->resourcesTexture.push_back(tResource);
+            resourceMat->textures.push_back(tResource);
         }
     }
 
@@ -264,7 +253,7 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
                 }
                 shared_ptr < ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureDiff);
                 pair<string, shared_ptr < ResourceTexture> > tResource{ "texture_specular",t };
-                resourceMat->resourcesTexture.push_back(tResource);
+                resourceMat->textures.push_back(tResource);
                 Skip = true;
                 break;
             }
@@ -275,39 +264,23 @@ Material* MaterialImporter::Import(const aiMaterial* material, shared_ptr<Resour
 
             shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(textureSpecular);
             pair<string, shared_ptr < ResourceTexture> > tResource{ "texture_specular",t };
-            resourceMat->resourcesTexture.push_back(tResource);
+            resourceMat->textures.push_back(tResource);
         }
     }
-    for (const auto& tex : resourceMat->resourcesTexture)
-    {
-        Texture newTex;
-        newTex.uid = tex.second->GetID();
-        newTex.path = tex.second->GetAssetPath().string().c_str();
-        newTex.type = tex.first;
-        resourceMat->material.textures.push_back(newTex);
-    }
+    //for (const auto& tex : resourceMat->resourcesTexture)
+    //{
+    //    Texture newTex;
+    //    newTex.uid = tex.second->GetID();
+    //    newTex.path = tex.second->GetAssetPath().string().c_str();
+    //    newTex.type = tex.first;
+    //    resourceMat->textures.push_back(newTex);
+    //}
 
     resourceMat->SetLibraryPath("..\\Output\\Library\\Materials\\" + resourceMat->GetID() + ".material");
-    MaterialImporter::Save(resourceMat->material, resourceMat->GetLibraryPath().string().c_str());
+    MaterialImporter::Save(resourceMat, resourceMat->GetLibraryPath().string().c_str());
     resourceMat->Save();   
-
-    return &resourceMat->material;
 }
-void MaterialImporter::Import(shared_ptr<Resource>& resource)
-{
-}
-//
-//void MaterialImporter::Import(shared_ptr<Resource>& resource)
-//{
-//    shared_ptr<ResourceMaterial> resourceMat = static_pointer_cast<ResourceMaterial>(resource);
-//   
-//}
-
-void MaterialImporter::Load(const Material* mat, const std::string& filename)
-{
-}
-
-void MaterialImporter::Save(const Material mat, const std::string& filename)
+void MaterialImporter::Save(const shared_ptr<ResourceMaterial>& mat, const std::string& filename)
 {
     std::ofstream out(filename);
 
@@ -322,13 +295,13 @@ void MaterialImporter::Save(const Material mat, const std::string& filename)
 }
 
 //Mesh operators--------------------------------
-std::ostream& operator <<(std::ostream& out, const Mesh& mesh)
+std::ostream& operator <<(std::ostream& out, const shared_ptr<ResourceMesh>& mesh)
 {
-    out << "Vertices:" << mesh.vertices.size() << '\n';
-    out << "Indices:" <<  mesh.indices.size() << '\n';
-    out << "Material Id:" << mesh.material_UID << '\n';
+    out << "Vertices:" << mesh->vertices.size() << '\n';
+    out << "Indices:" <<  mesh->indices.size() << '\n';
+    out << "Material Id:" << mesh->material_UID << '\n';
 
-    for (const auto& v : mesh.vertices)
+    for (const auto& v : mesh->vertices)
     {
         out << "<position>" << '[' << v.Position.x << ',' << v.Position.x << ',' << v.Position.x << ']';
         out << "<normals>" << '[' << v.Normal.x << ',' << v.Normal.y << ',' << v.Normal.z << ']';
@@ -341,14 +314,14 @@ std::ifstream& operator >>(std::ifstream& in, const Mesh& mesh)
 {
     return in;
 }
-void MeshImporter::Save(const Mesh mesh, const std::string& filename)
+void MeshImporter::Save(const shared_ptr<ResourceMesh>& mesh, const std::string& filename)
 {
 
     std::ofstream out(filename);
     if (out.is_open())
     {
         nlohmann::json json_obj;
-        for (const auto& v : mesh.vertices)
+        for (const auto& v : mesh->vertices)
         {
             //nlohmann::json::value vec3Array;
             //vec3Array[0] = v.Position.x;
@@ -369,7 +342,7 @@ void MeshImporter::Save(const Mesh mesh, const std::string& filename)
     out.close();
 }
 
-Mesh* MeshImporter::Import(const aiMesh* mesh, shared_ptr<Resource> resource)
+void MeshImporter::Import(const aiMesh* mesh, shared_ptr<ResourceMesh>&  resource)
 {
     //temporary varaibles to store the mesh data
     std::vector<Vertex> vertices;
@@ -408,17 +381,8 @@ Mesh* MeshImporter::Import(const aiMesh* mesh, shared_ptr<Resource> resource)
         for (unsigned int j = 0; j < face.mNumIndices; j++)
             indices.push_back(face.mIndices[j]);
     }
-    Mesh* newMesh = new Mesh();
-    newMesh->vertices = vertices;
-    newMesh->indices = indices;
-  
-    return newMesh;
-}
-
-void MeshImporter::Import(shared_ptr<Resource>& resource)
-{
-    shared_ptr<ResourceMesh> resourceMesh = static_pointer_cast<ResourceMesh>(resource);
-
+    resource->vertices = vertices;
+    resource->indices = indices;
 }
 
 //Fbx operators--------------------------------
@@ -515,12 +479,13 @@ void SceneImporter::ProcessaMesh(aiMesh* mesh, const aiScene* scene, GameObject*
     string savePath = "..\\Output\\Library\\Meshes\\" + rm->GetID() + ".mesh";
     rm->SetLibraryPath(savePath);
     rm->materialIndex = mesh->mMaterialIndex;
-    rm->Save();
-    rm->mesh = *MeshImporter::Import(mesh, resourceMesh);
-    rm->mesh.material_UID = matId;
-    MeshImporter::Save(rm->mesh, savePath);
+    MeshImporter::Import(mesh, rm);
+    rm->material_UID = matId;
 
-    rNode->AddComponent(rm->mesh);
+    rm->Save();
+    MeshImporter::Save(rm, savePath);
+
+    rNode->AddComponent(Mesh{}.resource = rm);
     rFbx->meshes.push_back(resourceMesh->GetID());
 }
 UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
@@ -566,7 +531,7 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
               if (texture.get() == nullptr) Debug::Error("ERROR::LOADING_DEFAULT_MATERIAL"); return"";
               shared_ptr<ResourceTexture> t = dynamic_pointer_cast<ResourceTexture>(texture);
               pair<string, shared_ptr<ResourceTexture> > tResource{ "texture_diffuse",t };
-              resourceMat->resourcesTexture.push_back(tResource);
+              resourceMat->textures.push_back(tResource);
            }
            else {
                cout << "ERROR::LOADING_DEFAULT_MATERIAL";
@@ -574,7 +539,10 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
            }       
         }
     }
-    rNode->AddComponent(MaterialImporter::Import(material, resourceMat));
+
+    shared_ptr<ResourceMaterial> rm = static_pointer_cast<ResourceMaterial>(resourceMat);
+    MaterialImporter::Import(material, rm);
+    rNode->AddComponent(Material{}.resource = rm); 
     rFbx->materials.push_back(resourceMat->GetID());
     app->importer->importedMaterials.insert(std::make_pair(resourceMat->GetAssetPath().string(),std::make_pair(mesh->mMaterialIndex, resourceMat->GetID())));
     return resourceMat->GetID();
@@ -582,13 +550,13 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
 
 std::ostream& operator <<(std::ostream& out, const GameObject& scene)
 {
-    out << "Components count:" << scene.components.size();
-    for (int i = 0; i< scene.components.size(); i++)
-    {
-        out << "component " << i << ":\n";
-        out << "resource active:" << scene.components.at(i).active;
-        out <<"resource id:" << scene.components.at(i).resource->GetID();
-    }
+    //out << "Components count:" << scene.components.size();
+    //for (int i = 0; i< scene.components.size(); i++)
+    //{
+    //    out << "component " << i << ":\n";
+    //    out << "resource active:" << scene.components.at(i).active;
+    //    out <<"resource id:" << scene.components.at(i).resource->GetID();
+    //}
 
     return out;
 }
@@ -687,16 +655,16 @@ void SceneImporter::LoadObject(const std::string file_path)
 //    return Mesh(vertices, indices);
 //}
 //
-Material SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
-{
-    std::vector<Texture> textures;
-    //aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-    //std::vector<Texture> diffuseMaps = TextureImporter::LoadAiMaterialTextures(material,
-    //    aiTextureType_DIFFUSE, "texture_diffuse");
-    //textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-    //std::vector<Texture> specularMaps = TextureImporter::LoadAiMaterialTextures(material,
-    //    aiTextureType_SPECULAR, "texture_specular");
-    //textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-
-    return Material(textures);
-}
+//Material SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene)
+//{
+//    std::vector<Texture> textures;
+//    //aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+//    //std::vector<Texture> diffuseMaps = TextureImporter::LoadAiMaterialTextures(material,
+//    //    aiTextureType_DIFFUSE, "texture_diffuse");
+//    //textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+//    //std::vector<Texture> specularMaps = TextureImporter::LoadAiMaterialTextures(material,
+//    //    aiTextureType_SPECULAR, "texture_specular");
+//    //textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+//
+//    return Material(textures);
+//}

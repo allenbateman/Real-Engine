@@ -17,8 +17,8 @@ std::ostream& operator <<(std::ostream& out, const ResourceMaterial& resource)
     out << "library path:" << resource.GetLibraryPath().string().c_str() << "\n";
     out << "resource type:" << (int)resource.GetType() << "\n";
 
-    out << "Textures used:" << resource.resourcesTexture.size() << "\n";
-    for (const auto& tex : resource.resourcesTexture)
+    out << "Textures used:" << resource.textures.size() << "\n";
+    for (const auto& tex : resource.textures)
     {
         out << "type:" << tex.first << "\n";
         out << "Textue id:" << tex.second->GetID() << "\n";
@@ -67,7 +67,7 @@ void ResourceMaterial::Load(std::shared_ptr<Resource>& resource, std::ifstream& 
             if (r == nullptr) break;
             shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(r);
             std::pair<std::string, shared_ptr<ResourceTexture> > tResource{ textureType,rt };
-            rm->resourcesTexture.push_back(tResource);
+            rm->textures.push_back(tResource);
 
         }
 
@@ -76,7 +76,7 @@ void ResourceMaterial::Load(std::shared_ptr<Resource>& resource, std::ifstream& 
     data.close();
 }
 
-void ResourceMaterial::Load(std::ifstream& data)
+void ResourceMaterial::LoadMetaData(std::ifstream& data)
 {
     if (data.is_open())
     {
@@ -96,10 +96,14 @@ void ResourceMaterial::Load(std::ifstream& data)
             if (r == nullptr) break;
             shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(r);
             std::pair<std::string, shared_ptr<ResourceTexture> > tResource{ textureType,rt };
-            resourcesTexture.push_back(tResource);
+            textures.push_back(tResource);
         }
 
     }
 
     data.close();
+}
+
+void ResourceMaterial::GenerateMetaFile()
+{
 }

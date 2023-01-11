@@ -32,12 +32,15 @@ public:
 
 	bool IsLoadedToMemory() const;
 	bool LoadToMemory();
-	virtual void Load(std::ifstream& data) {};
+
 	unsigned int GetRefereneCount() const;
+
 
 	virtual void Save()const;
 	virtual void Load()const;
 	virtual void UnLoad()const;
+	virtual void GenerateMetaFile() {};
+	virtual void LoadMetaData(std::ifstream& data) {};
 
 	void SetAssetPath(std::string  assets_path) { assetsPath = assets_path; };
 	void SetLibraryPath(std::string  library_path) { librayPath = library_path; };

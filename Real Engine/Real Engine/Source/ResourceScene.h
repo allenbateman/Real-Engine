@@ -15,7 +15,11 @@ public :
 	void UnLoad()const;
 	GameObject GetRoot() const { return *root; };
 	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
-	void Load(std::ifstream& data) override;
+	void LoadMetaData(std::ifstream& data) override;
+	void GenerateMetaFile() override;
+
+public:
+
 	//sotre all materials ids used by the obj
 	vector<UID> materials;
 	//sotre all meshes ids used by the obj
@@ -23,10 +27,4 @@ public :
 	//sotre all transforms used by the obj
 	vector<UID> transforms;
 	GameObject* root;
-};
-
-template<typename T>
-class ComponentList
-{
-	vector<vector<T>> componentsList;
 };

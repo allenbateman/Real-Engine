@@ -47,16 +47,14 @@ namespace TextureImporter {
 	bool LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<Resource>& resourceMat);
 }
 namespace MaterialImporter {
-	Material* Import(const aiMaterial* material, shared_ptr<Resource> resource);
-	void Import(shared_ptr<Resource>& resource);
+	void Import(const aiMaterial* material, shared_ptr<ResourceMaterial>& resourceMat);
 	void Load(const Material* mat, const std::string& filename);
-	void Save(const Material mat, const std::string& filename);
+	void Save(const shared_ptr<ResourceMaterial>& mat, const std::string& filename);
 }
 namespace MeshImporter { 
-	Mesh* Import(const aiMesh* mesh, shared_ptr<Resource> resource);
-	void Import(shared_ptr<Resource>& resource);
+	void Import(const aiMesh* mesh, shared_ptr<ResourceMesh>& resource);
 	void Load(const std::string& filename);
-	void Save(const Mesh mesh, const std::string& filename);
+	void Save(const shared_ptr<ResourceMesh>& mesh, const std::string& filename);
 }
 namespace SceneImporter {
 	void Import(shared_ptr<Resource>& resource);

@@ -46,6 +46,20 @@ void ResourceTexture::Save() const
         std::cout << "Error creating meta file" + uid;
     }
     out.close();
+
+
+    //std::ofstream out(filename);
+    //if (out.is_open())
+    //{
+    //    nlohmann::json json_obj;
+    //    json_obj["uid"] = tex.uid;
+    //    json_obj["id"] = tex.id;
+    //    json_obj["path"] = tex.path;
+    //    json_obj["type"] = tex.type;
+    //    std::string json_str = json_obj.dump();
+    //    out << json_str.c_str();
+    //}
+    //out.close();
 }
 
 void ResourceTexture::Load()
@@ -101,7 +115,7 @@ void ResourceTexture::Load(std::shared_ptr<Resource>& resource,std::ifstream& da
     data.close();
 }
 
-void ResourceTexture::Load(std::ifstream& data)
+void ResourceTexture::LoadMetaData(std::ifstream& data)
 {
     if (data.is_open())
     {
@@ -128,4 +142,8 @@ void ResourceTexture::Load(std::ifstream& data)
         app->importer->importedTextures.push_back(GetAssetPath().c_str());
     }
     data.close();
+}
+
+void ResourceTexture::GenerateMetaFile()
+{
 }
