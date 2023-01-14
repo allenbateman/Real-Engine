@@ -10,21 +10,17 @@ public :
     ~ResourceScene();
 
 
-	void Save()const;
-	void Load()const;
-	void UnLoad()const;
+	void SaveData();
+	void LoadData();
+	void Load();
+	void UnLoad();
 	GameObject GetRoot() const { return *root; };
-	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
-	void LoadMetaData(std::ifstream& data) override;
-	void GenerateMetaFile() override;
-
 public:
 
 	//sotre all materials ids used by the obj
 	vector<UID> materials;
 	//sotre all meshes ids used by the obj
 	vector<UID> meshes;
-	//sotre all transforms used by the obj
-	vector<UID> transforms;
+	mat4x4 transform;
 	GameObject* root;
 };

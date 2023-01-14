@@ -79,6 +79,7 @@ inline void ComponentArray<T>::DebugMaps()
 template<typename T>
 inline void ComponentArray<T>::InsertData(Entity entity, T component)
 {
+
 	assert(entityToIndexMap.find(entity) == entityToIndexMap.end() && "Component added to same entity more than once.");
 	size_t newIndex = size;
 	entityToIndexMap[entity] = newIndex;

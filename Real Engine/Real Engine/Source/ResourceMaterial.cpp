@@ -9,101 +9,78 @@ ResourceMaterial::ResourceMaterial(UID id) : Resource(id)
 ResourceMaterial::~ResourceMaterial()
 {
 }
-std::ostream& operator <<(std::ostream& out, const ResourceMaterial& resource)
+void ResourceMaterial::SaveData()
 {
-    out << "name:" << resource.name << '\n';
-    out << "id:" << resource.GetID().c_str() << "\n";
-    out << "assets path:" << resource.GetAssetPath().string().c_str() << "\n";
-    out << "library path:" << resource.GetLibraryPath().string().c_str() << "\n";
-    out << "resource type:" << (int)resource.GetType() << "\n";
+	std::ofstream out;
+	out.open(libraryPath);
+	if (out.is_open())
+	{
+		nlohmann::json material;
+		material["textures"] = nlohmann::json::array();
+		for (auto& texture : textures)
+		{
+			nlohmann::json texture_json;
+			texture_json["path"] = texture.first;
+			texture_json["uid"] = texture.second->GetID();
+			material["textures"].push_back(texture_json);
+		}
+		nlohmann::json shader_json;
+		shader_json["uid"] = shader->GetID();
+		shader_json["vertex_path"] = shader->vertex.string();
+		shader_json["fragment_path"] = shader->fragment.string();
 
-    out << "Textures used:" << resource.textures.size() << "\n";
-    for (const auto& tex : resource.textures)
-    {
-        out << "type:" << tex.first << "\n";
-        out << "Textue id:" << tex.second->GetID() << "\n";
-    }
-    return out;
+		material["shader"] = shader_json;
+		std::string json_str = material.dump();
+		out << json_str.c_str();
+	}
+	out.close();
 }
-void ResourceMaterial::Save() const
+void ResourceMaterial::LoadData()
 {
-    std::ofstream out(assetsPath.string() + ".material.meta");
-    if (out.is_open())
-    {
-        out << *this << '\n';
-    }
-    else {
-        std::cout << "Error creating meta file" + uid;
-    }
-    out.close();
-}
+	std::ifstream in;
+	in.open(libraryPath);
+	if (in.is_open())
+	{
+		nlohmann::json material;
+		in >> material;
+		for (const auto& texture : material["textures"]) {
 
-void ResourceMaterial::Load() const
-{
-}
+			std:string path  = texture["path"].get<std::string>();
+			UID uid = texture["uid"].get<std::string>();
+			shared_ptr<Resource> resource = app->resourceManager->GetResource(uid);
+			if (resource == nullptr)
+			{
+				resource = app->resourceManager->CreateNewResource(path, Resource::Type::Texture);
+			}
+			shared_ptr<ResourceTexture>  rtexture = dynamic_pointer_cast<ResourceTexture>(resource);
+			pair<std::string, shared_ptr<ResourceTexture>> tex(path, rtexture);
+			textures.push_back(tex);
+		}
+		UID uid = material["shader"]["uid"].get<std::string>();
+		std::string vertPath = material["shader"]["vertex_path"];
+		std::string fragPath = material["shader"]["fragment_path"];
 
-void ResourceMaterial::UnLoad() const
-{
-}
+		shared_ptr<Resource> resource = app->resourceManager->GetResource(uid);
 
-void ResourceMaterial::Load(std::shared_ptr<Resource>& resource, std::ifstream& data)
-{
-    std::shared_ptr<ResourceMaterial> rm = std::static_pointer_cast<ResourceMaterial>(resource);
-    if (data.is_open())
-    {
-        //laod vertices
-        std::string nTex;
-        std::getline(data, nTex, ':');
-        std::getline(data, nTex, '\n');
-        for (int i = 0; i < stoi(nTex); i++)
-        {
-            std::string textureType;
-            std::getline(data, textureType, ':');
-            std::getline(data, textureType, '\n');
-            std::string id;
-            std::getline(data, id, ':');
-            std::getline(data, id, '\n');
-            shared_ptr<Resource> r = app->resourceManager->GetResource(id);
-            if (r == nullptr) break;
-            shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(r);
-            std::pair<std::string, shared_ptr<ResourceTexture> > tResource{ textureType,rt };
-            rm->textures.push_back(tResource);
+		if (resource == nullptr)
+			resource = app->resourceManager->CreateNewResource(vertPath, Resource::Type::Shader);
 
-        }
+		shared_ptr<ResourceShader> rShader = dynamic_pointer_cast<ResourceShader>(resource);
+		rShader->Load(vertPath.c_str(), fragPath.c_str());
 
-    }
-
-    data.close();
+		shader = rShader;
+	}
 }
 
-void ResourceMaterial::LoadMetaData(std::ifstream& data)
+void ResourceMaterial::Load()
 {
-    if (data.is_open())
-    {
-        //laod vertices
-        std::string nTex;
-        std::getline(data, nTex, ':');
-        std::getline(data, nTex, '\n');
-        for (int i = 0; i < stoi(nTex); i++)
-        {
-            std::string textureType;
-            std::getline(data, textureType, ':');
-            std::getline(data, textureType, '\n');
-            std::string id;
-            std::getline(data, id, ':');
-            std::getline(data, id, '\n');
-            shared_ptr<Resource> r = app->resourceManager->GetResource(id);
-            if (r == nullptr) break;
-            shared_ptr<ResourceTexture> rt = dynamic_pointer_cast<ResourceTexture>(r);
-            std::pair<std::string, shared_ptr<ResourceTexture> > tResource{ textureType,rt };
-            textures.push_back(tResource);
-        }
-
-    }
-
-    data.close();
+	for (auto& texture : textures)
+	{
+		texture.second->Load();
+	}
+	shader->Load();
 }
 
-void ResourceMaterial::GenerateMetaFile()
+void ResourceMaterial::UnLoad()
 {
 }

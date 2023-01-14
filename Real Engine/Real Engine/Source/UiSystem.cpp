@@ -348,7 +348,7 @@ void UiSystem::SetStyle()
 
 ImVec2 UiSystem::GetPanelSize(PanelID id)
 {
-    for (int i = 0; i < panelList.size(); i++)
+    for (unsigned int i = 0; i < panelList.size(); i++)
     {
         if (panelList.at(i)->id == id)
         {

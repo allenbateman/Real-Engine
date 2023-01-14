@@ -33,28 +33,29 @@ public:
 
 	bool Awake();
 	bool Start();
-	pathList importedTextures{};
+	//pathList importedTextures{};
 	//of the materials to keep track of them, we will store the asset path, where do they comefrom
 	//and if it belongs to any scene we need to know the index
 	std::map<string, std::pair<int, UID>>importedMaterials{};
 	std::map<string, std::pair<int, UID>>importedMeshes{};
+	std::unordered_map<string, UID> importedTextures{};
 };
 
 
 namespace TextureImporter {
 	void Import(shared_ptr<Resource>& resource);
-	void Save(const Texture mat, const std::string& filename);
-	bool LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<Resource>& resourceMat);
+	//void Save(const Texture mat, const std::string& filename);
+	bool LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName, shared_ptr<ResourceMaterial>& resourceMat);
 }
 namespace MaterialImporter {
 	void Import(const aiMaterial* material, shared_ptr<ResourceMaterial>& resourceMat);
-	void Load(const Material* mat, const std::string& filename);
-	void Save(const shared_ptr<ResourceMaterial>& mat, const std::string& filename);
+	//void Load(const Material* mat, const std::string& filename);
+	//void Save(const shared_ptr<ResourceMaterial>& mat, const std::string& filename);
 }
 namespace MeshImporter { 
 	void Import(const aiMesh* mesh, shared_ptr<ResourceMesh>& resource);
-	void Load(const std::string& filename);
-	void Save(const shared_ptr<ResourceMesh>& mesh, const std::string& filename);
+	//void Load(const std::string& filename);
+	//void Save(const shared_ptr<ResourceMesh>& mesh, const std::string& filename);
 }
 namespace SceneImporter {
 	void Import(shared_ptr<Resource>& resource);

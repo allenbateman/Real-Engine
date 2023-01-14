@@ -33,7 +33,9 @@ struct RenderSpace
 		lastSize.x = width;
 		lastSize.y = height;
 
-		cout << "id :"<<type << " x : " << width << " y : " << height << endl;
+		vec2 size = buffer.GetTextureSize();
+		cout << "id :"<<type <<"Tex: " << buffer.FBO << " x : " << width << " y : " << height << endl;
+		//cout << "id :"<<type << " x : " << size.x << " y : " << size.y << endl;
 	}
 
 	void OnFovChange()

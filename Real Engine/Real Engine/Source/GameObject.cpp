@@ -19,6 +19,7 @@ GameObject::GameObject()
 GameObject::GameObject(std::string name)
 {
 	id = app->entityComponentSystem.CreateEntity();
+	cout << "Creating Entity " + name <<endl;
 	Transform t;
 	t.owner = this;
 	AddComponent( t);

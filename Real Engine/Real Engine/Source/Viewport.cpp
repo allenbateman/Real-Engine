@@ -32,8 +32,10 @@ void Viewport::Update()
 	{
 		OnHovered();
 		OnResize();
-		ImGui::Image((ImTextureID)app->renderer->editor.buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)app->renderer->editor.buffer.textureID, availableSize, ImVec2(0, 1), ImVec2(1, 0));
 	
+		//vec2 size = app->renderer->editor.buffer.GetTextureSize();
+		//cout << "id: " << id << "Tex: " << app->renderer->editor.buffer.FBO << " x : " << size.x << " y : " << size.y << endl;
 		//if (ImGui::BeginDragDropTarget()) {
 		//	const ImGuiPayload* itemDrop = ImGui::AcceptDragDropPayload(payload_fileContent);
 		//	if (itemDrop != nullptr)

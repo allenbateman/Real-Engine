@@ -14,16 +14,19 @@ public:
 	GameObject();
 	GameObject(std::string name);
 	~GameObject();
+
+	GameObject* FindChild(const GameObject toFind);
+	GameObject* FindChild(const Entity toFind);
+	void RemoveChild(Entity childToRemove);
+	void Destroy();
+
+	template<typename T>
+	bool HasComponent();
 	template<typename T>
 	T& GetComponent();
 	template<typename T>
 	void AddComponent(T component);
-	GameObject* FindChild(const GameObject toFind);
-	GameObject* FindChild(const Entity toFind);
-	void RemoveChild(Entity childToRemove);
-	template<typename T>
-	bool HasComponent();
-	void Destroy();
+
 
 	//std::vector<Component> components;
 	unsigned int childsCount = 0;

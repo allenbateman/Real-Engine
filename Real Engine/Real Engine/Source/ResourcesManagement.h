@@ -33,7 +33,7 @@ public:
 	vector<shared_ptr<Resource>> GetResourceListOfType(Resource::Type type);
 
 	std::vector<filesystem::path> SearchForFileType(const std::filesystem::path root, const std::string extension);
-
+	std::filesystem::path GetFilePath(string rootFolder,string filename);
 
 	bool Exists(const std::filesystem::path& path)
 	{
@@ -48,10 +48,11 @@ public:
 	}
 	//creates a new resource when needed
 	shared_ptr<Resource> CreateNewResource(const std::filesystem::path assetsFile, Resource::Type type);
+	void RemoveResource(UID uid);
 	//check if a file is already registered as a resource in a meta file
 	bool ExistFileInResources(std::string filePath);
 
-	std::map<string, std::pair<UID, std::shared_ptr<Resource>>> GetResourcesList() { return resources; };
+	std::multimap<string, std::pair<UID, std::shared_ptr<Resource>>> GetResourcesList() { return resources; };
 private:
 
 	//loads the meta file and creates the resource
@@ -75,7 +76,7 @@ private:
 
 	//stores the link beteen UUID of imported resources with the resource it self
 	//std::map<UID,std::shared_ptr<Resource>> resources{};
-	std::map<string, std::pair<UID, std::shared_ptr<Resource>>> resources{};
+	std::multimap<string, std::pair<UID, std::shared_ptr<Resource>>> resources{};
 };
 
 

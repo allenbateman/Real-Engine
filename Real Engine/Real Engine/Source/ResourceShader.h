@@ -13,14 +13,10 @@ class ResourceShader : public Resource
 public:
 	ResourceShader(UID uid);
 	~ResourceShader();
-	void Save()const;
+	void SaveData();
+	void LoadData();
 	void Load();
-	void UnLoad()const;
-
-	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
-	void LoadMetaData(std::ifstream& data) override;
-	void GenerateMetaFile() override;
-
+	void UnLoad();
 	bool Load(const char* vertexPath, const char* fragmentPath);
 	//use/active shader
 	void Use();

@@ -30,7 +30,10 @@ void GameViewport::Update()
 	{
 		OnHovered();
 		OnResize();
-		ImGui::Image((ImTextureID)app->renderer->game.buffer.framebufferTexture, availableSize, ImVec2(0, 1), ImVec2(1, 0));
+		ImGui::Image((ImTextureID)app->renderer->game.buffer.textureID, availableSize, ImVec2(0, 1), ImVec2(1, 0));
+
+		//vec2 size = app->renderer->game.buffer.GetTextureSize();
+		//cout << "id: " << id <<"Tex: "<< app->renderer->game.buffer.FBO << " x : " << size.x << " y : " << size.y << endl;
 	}
 	ImGui::End();
 	ImGui::PopStyleVar();

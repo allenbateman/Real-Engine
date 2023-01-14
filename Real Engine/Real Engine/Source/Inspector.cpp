@@ -141,15 +141,22 @@ void Inspector::DrawComponents(Entity entity)
 		if (ImGui::TreeNodeEx((void*)typeid(Mesh).hash_code(), ImGuiTreeNodeFlags_DefaultOpen, "Mesh"))
 		{
 			auto& mesh = app->entityComponentSystem.GetComponent<Mesh>(entity);
-			ImGui::Text("Vertices %d", mesh.resource->vertices.size());
-			ImGui::Text("Indices %d", mesh.resource->indices.size());
-
 			if (mesh.resource.get() == nullptr)
 			{
-				ImGui::Text("Pointer to resource is empty"); 
-			//	mesh.resource =	ListAvailableResources(Resource::Type::Mesh);
+				ImGui::Text("Pointer to resource is empty");
+				auto resource = ListAvailableResources(Resource::Type::Mesh);
+				if (resource != nullptr)
+				{
+					mesh.resource = std::static_pointer_cast<ResourceMesh>(resource);
+					mesh.resource->Load();
+				}
+				
 			}
-
+			else {
+				ImGui::Text("Name: %s", mesh.resource->name.c_str());
+				ImGui::Text("Vertices %d", mesh.resource->vertices.size());
+				ImGui::Text("Indices %d", mesh.resource->indices.size());
+			}
 			ImGui::TreePop();
 		}
 	}
@@ -161,24 +168,25 @@ void Inspector::DrawComponents(Entity entity)
 			unsigned int diffuseNr = 1;
 			unsigned int specularNr = 1;
 
-			for (unsigned int i = 0; i < material.resource->textures.size(); i++) 
-			{
-		
-			}
 			if (material.resource.get() == nullptr)
 			{
 				ImGui::Text("Pointer to resource is empty");
-
-				//material.resource = ListAvailableResources(Resource::Type::Material);
+				auto resource = ListAvailableResources(Resource::Type::Material);
+				if (resource != nullptr)
+				{
+					material.resource = static_pointer_cast<ResourceMaterial>(resource);
+					material.resource->Load();
+				}
+				
 			}
 			else
 			{
+				ImGui::Text("Name: %s", material.resource->name.c_str());
 				if (material.resource->textures.empty())
 				{
 					ImGui::Text("Material has no textures...");
 					SelectTexture(material, 0);
-				}
-
+				}	
 				for (unsigned int i = 0; i < material.resource->textures.size(); i++)
 				{
 					SelectTexture(material, i);
@@ -197,7 +205,12 @@ void Inspector::DrawComponents(Entity entity)
 				}
 				if (material.resource->shader == nullptr)
 				{
-					//material.resource->shader = ListAvailableResources(Resource::Type::Shader);
+					auto resource = ListAvailableResources(Resource::Type::Shader);
+					if (resource != nullptr)
+					{
+						material.resource->shader = static_pointer_cast<ResourceShader>(resource);
+						material.resource->shader->Load();
+					}
 				}
 			}
 			ImGui::TreePop();
@@ -294,11 +307,13 @@ shared_ptr<Resource> Inspector::ListAvailableResources(Resource::Type type)
 			is_selected = (currentItem == n);
 			if (is_selected) {
 				ImGui::SetItemDefaultFocus();
+				ImGui::EndCombo();
 				return result.at(n);
 			}
 		}
 		ImGui::EndCombo();
 	}
+	return nullptr;
 }
 
 void Inspector::SelectTexture(Material& material, unsigned int id)

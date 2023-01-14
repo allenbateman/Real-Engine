@@ -12,8 +12,7 @@ unsigned int LoadTexture(std::string file_path)//data
     ilBindImage(imageId);
     if (!ilLoadImage(file_path.c_str()))
     {
-        Debug::Log("Error loading texture...");
-        return 0;
+        return -1;
     }
 
     // check if the image needs to be flipped

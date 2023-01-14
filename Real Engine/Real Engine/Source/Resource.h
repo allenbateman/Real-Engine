@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>  
 #include <filesystem>  
-
+#include "nlohmann/json.hpp"
 using UID = std::string;
 
 class Resource
@@ -19,8 +19,8 @@ public:
 		Fbx,
 		Material
 	};
-
 	Resource(UID id);
+	Resource(std::filesystem::path path);
 	virtual ~Resource() {};
 
 	void SetType(Resource::Type type);
@@ -28,22 +28,23 @@ public:
 	UID GetID()const;
 
 	const std::filesystem::path GetAssetPath() const { return assetsPath; };
-	const std::filesystem::path GetLibraryPath() const { return librayPath; };
+	const std::filesystem::path GetLibraryPath() const { return libraryPath; };
 
 	bool IsLoadedToMemory() const;
-	bool LoadToMemory();
-
 	unsigned int GetRefereneCount() const;
 
 
-	virtual void Save()const;
-	virtual void Load()const;
-	virtual void UnLoad()const;
-	virtual void GenerateMetaFile() {};
-	virtual void LoadMetaData(std::ifstream& data) {};
+	virtual void SaveData();
+	virtual void LoadData();
+	virtual void Load();
+	virtual void UnLoad();
+	static Resource LoadFromMetaFile(std::string path);
+
+	void GenerateMetaFile(std::string path);
+	void LoadMetaData(std::string path);
 
 	void SetAssetPath(std::string  assets_path) { assetsPath = assets_path; };
-	void SetLibraryPath(std::string  library_path) { librayPath = library_path; };
+	void SetLibraryPath(std::string  library_path) { libraryPath = library_path; };
 
 	std::string name;
 	bool IsLoaded = false;
@@ -52,7 +53,7 @@ public:
 
 protected:
 	std::filesystem::path  assetsPath;
-	std::filesystem::path librayPath;
+	std::filesystem::path libraryPath;
 
 	UID uid;
 	Type type = Type::UNKNOWN;
@@ -83,28 +84,3 @@ public:
 		}
 	}
 };
-
-//const char* operator << (Resource::Type& type)
-//{
-//	switch (type)
-//	{
-//	case Resource::Type::UNKNOWN:
-//		return "unknown";
-//	case Resource::Type::Texture:
-//		return "Texture";
-//	case Resource::Type::Material:
-//		return "Material";
-//	case Resource::Type::Mesh:
-//		return "Mesh";
-//	case Resource::Type::Fbx:
-//		return "Fbx";
-//	case Resource::Type::GObject:
-//		return "Gameobject";
-//	case Resource::Type::Shader:
-//		return "Shader";
-//	case Resource::Type::Scene:
-//		return "Scene";
-//	default:
-//		break;
-//	}
-//}

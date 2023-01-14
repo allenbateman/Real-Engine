@@ -12,7 +12,7 @@ void FrameBuffer::GenerateBuffer(int width, int height)
 {
 
 	//clear all the elements, for resize things
-	glDeleteTextures(1, &framebufferTexture);
+	glDeleteTextures(1, &textureID);
 	glDeleteFramebuffers(1, &FBO);
 
 	//bind frame buffer
@@ -20,12 +20,12 @@ void FrameBuffer::GenerateBuffer(int width, int height)
 	glBindFramebuffer(GL_FRAMEBUFFER, FBO);
 
 	//color buffer as we want color, bind to color texture
-	glGenTextures(1, &framebufferTexture);
-	glBindTexture(GL_TEXTURE_2D, framebufferTexture);
+	glGenTextures(1, &textureID);
+	glBindTexture(GL_TEXTURE_2D, textureID);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, NULL);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glFramebufferTexture2D(	GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, framebufferTexture, 0);
+	glFramebufferTexture2D(	GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, textureID, 0);
 
 
 	//Depth Stencil, for depht 3d?
@@ -37,12 +37,21 @@ void FrameBuffer::GenerateBuffer(int width, int height)
 
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 		std::cout << "ERROR::FRAMEBUFFER:: Framebuffer is not complete! \n";
-
-
 }
 
 void FrameBuffer::ClearBuffer()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER,FBO);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+vec2 FrameBuffer::GetTextureSize()
+{
+	int w, h;
+	int miplevel = 0;
+	glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_WIDTH, &w);
+	glGetTexLevelParameteriv(GL_TEXTURE_2D, miplevel, GL_TEXTURE_HEIGHT, &h);
+
+	vec2 size{(float) w, (float)h};
+	return size;
 }

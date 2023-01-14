@@ -11,8 +11,8 @@ struct Transform : public  Component
 	vec3 localScale{ 0,0,0 };
 
 	vec3 position{ 0,0,0 };		//Stores position x,y,z
-	vec3 rotation{ 0,0,0};	//Quaternion that stores rotation x,y,z,w
-	//vec4 rotation{ 0,0,0,0 };	//Quaternion that stores rotation x,y,z,w
+	vec3 eulerAngles{ 0,0,0};		//stores euler angles rotation
+	vec4 rotation{ 0,0,0,1 };	//Quaternion that stores rotation x,y,z,w
 	vec3 scale{ 1,1,1 };	    //Stores scale x,y,z
 
 	mat4x4 localMatrix;		//Stores transformation of the object in a matrix from parent reference
@@ -24,7 +24,6 @@ struct Transform : public  Component
 	vec3 up{ 0,1,0 };			//stores normalized vector z
 	vec3 right{ 1,0,0 };		//stores normalized vector z
 
-	vec3 eulerAngles;		//Stores rotation in euler angles x,y,z
 	vec3 localEulerAngles;
 
 	//herarchy data
@@ -125,7 +124,7 @@ struct Transform : public  Component
 		localRotation = localMatrix.rotation();
 
 		worldMatrix = parent->worldMatrix * localMatrix;
-		rotation = worldMatrix.rotation();
+		eulerAngles = worldMatrix.rotation();
 		//world parent to propagate to the childs
 		mat4x4 wpt = tmp * worldMatrix;
 
@@ -149,7 +148,7 @@ struct Transform : public  Component
 		localRotation = localMatrix.rotation();
 
 		worldMatrix = parent->worldMatrix * localMatrix;
-		rotation = worldMatrix.rotation();
+		eulerAngles = worldMatrix.rotation();
 		//world parent to propagate to the childs
 		mat4x4 wpt = tmp * worldMatrix;
 
@@ -241,7 +240,7 @@ struct Transform : public  Component
 
 		position = worldMatrix.translation();
 		scale = worldMatrix.scale();
-		rotation = worldMatrix.rotation();
+		eulerAngles = worldMatrix.rotation();
 
 		//move all childs
 		for (auto& c : childs)
@@ -257,7 +256,7 @@ struct Transform : public  Component
 		worldMatrix = T * localMatrix;
 		position = worldMatrix.translation();
 		scale = worldMatrix.scale();
-		rotation = worldMatrix.rotation();
+		eulerAngles = worldMatrix.rotation();
 		for (auto& c : childs)
 		{
 			c->PropagateTransform(worldMatrix);

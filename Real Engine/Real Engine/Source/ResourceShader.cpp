@@ -2,32 +2,35 @@
 
 ResourceShader::ResourceShader(UID uid) : Resource(uid)
 {
-
+    type = Resource::Type::Shader;
 }
 ResourceShader::~ResourceShader()
 {
 }
-void ResourceShader::Save() const
+
+void ResourceShader::SaveData()
 {
 }
+
+void ResourceShader::LoadData()
+{
+}
+
 void ResourceShader::Load()
 {
+    if(!IsLoaded)
+     Load(vertex.string().c_str(), fragment.string().c_str());
 }
-void ResourceShader::UnLoad() const
+void ResourceShader::UnLoad()
 {
 }
-void ResourceShader::Load(std::shared_ptr<Resource>& resource, std::ifstream& data)
-{
-}
-void ResourceShader::LoadMetaData(std::ifstream& data)
-{
-}
-void ResourceShader::GenerateMetaFile()
-{
-}
+
 bool ResourceShader::Load(const char* vertexPath, const char* fragmentPath)
 {
     bool ret = true;
+    this->vertex = vertexPath;
+    this->fragment = fragmentPath;
+
     // 1. retrieve the vertex/fragment source code from filePath
     std::string vertexCode;
     std::string fragmentCode;
@@ -108,6 +111,7 @@ bool ResourceShader::Load(const char* vertexPath, const char* fragmentPath)
     // delete the shaders as they're linked into our program now and no longer necessary
     glDeleteShader(vertex);
     glDeleteShader(fragment);
+    IsLoaded = true;
     return ret;
 }
 

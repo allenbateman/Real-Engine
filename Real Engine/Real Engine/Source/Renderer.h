@@ -33,7 +33,7 @@ public:
 	void HandleEvent(Event* e);
 
 	void SetGameSpaceCamera(Camera* camera, RenderSpaceType type = noSpace);
-	Entity editorCam;
+	Entity editorCam = -1;
 	RenderSpace editor{};
 	RenderSpace game{};
 	bool onFocus = false;

@@ -4,6 +4,7 @@
 #include <DevIL/ilu.h>
 #include "TextureLoader.h"
 
+
 ResourceTexture::ResourceTexture(UID uid) : Resource(uid)
 {
 	SetType(Type::Texture);
@@ -13,137 +14,62 @@ ResourceTexture::~ResourceTexture()
 {
 }
 
-std::ostream& operator <<(std::ostream& out, const ResourceTexture& resource)
+void ResourceTexture::SaveData()
 {
-    out << "name:" << resource.name << '\n';
-    out << "id:" << resource.GetID().c_str() << "\n";
-    out << "assets path:" << resource.GetAssetPath().string().c_str() << "\n";
-    out << "library path:" << resource.GetLibraryPath().string().c_str() << "\n";
-    out << "resource type:" << (int) resource.GetType() << "\n";
-    out << "width:" << resource.width << "\n";
-    out << "height:" << resource.height << "\n";
-    out << "type:" << resource.type << "\n";
-    out << "format:" << resource.format << "\n";
-    out << "depth:" << resource.depth << "\n";
-    out << "channels:" << resource.channels << "\n";
+    string path = LIBRARY_DIR;
+    std::string storePath = path + "Textures\\" + uid + ".dds";
 
-    return out;
-}
-std::ifstream& operator >>(std::ifstream& in, ResourceTexture& Resource)
-{
-    
-
-    return in;
-}
-void ResourceTexture::Save() const
-{
-    std::ofstream out(assetsPath.string() + ".texture.meta");
-    if (out.is_open())
+    if (ilSave(IL_DDS, storePath.c_str()))
     {
-        out << *this << '\n';
+        cout << "saved file with devil\n";
+        SetLibraryPath(storePath);
+    }
+    else
+    {
+        cout << "could not save file with devil \n";
+        return;
+    }
+
+}
+
+void ResourceTexture::LoadData()
+{
+    if (ilLoadImage(GetLibraryPath().string().c_str()))
+    {
+        cout << "Texture  " << name << " loaded with devIL" << endl;
     }
     else {
-        std::cout << "Error creating meta file" + uid;
+        cout << "Texture not loaded with devIL " << name << endl;
+        return;
     }
-    out.close();
 
-
-    //std::ofstream out(filename);
-    //if (out.is_open())
-    //{
-    //    nlohmann::json json_obj;
-    //    json_obj["uid"] = tex.uid;
-    //    json_obj["id"] = tex.id;
-    //    json_obj["path"] = tex.path;
-    //    json_obj["type"] = tex.type;
-    //    std::string json_str = json_obj.dump();
-    //    out << json_str.c_str();
-    //}
-    //out.close();
+    ILubyte* data = ilGetData();
+    ILenum type = ilGetInteger(IL_IMAGE_TYPE);
+    width = ilGetInteger(IL_IMAGE_WIDTH);
+    height = ilGetInteger(IL_IMAGE_HEIGHT);
+    depth = ilGetInteger(IL_IMAGE_DEPTH);
+    channels = ilGetInteger(IL_IMAGE_CHANNELS);
+    format = ilGetInteger(IL_IMAGE_FORMAT);
 }
 
 void ResourceTexture::Load()
 {
     if (IsLoaded) return;
 
-    unsigned int id = LoadTexture(librayPath.string());
+    unsigned int id = LoadTexture(libraryPath.string());
 
     if (id == 0)
     {
         IsLoaded = false;
-        texture.id = id;
+        this->id = id;
         Debug::Log("Error loading texture..." + name);
         return;
     }
     IsLoaded = true;
-    texture.id = id;
+    this->id = id;
 }
 
-void ResourceTexture::UnLoad() const
+void ResourceTexture::UnLoad() 
 {
-    glDeleteTextures(1,&texture.id);
-}
-
-void ResourceTexture::Load(std::shared_ptr<Resource>& resource,std::ifstream& data)
-{
-    auto rt = std::static_pointer_cast<ResourceTexture>(resource);
-
-    if (data.is_open())
-    {       
-        std::string val;
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        rt->width = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        rt->height = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        rt->type = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        rt->format = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        rt->depth = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        rt->channels = stoi(val);       
-
-        app->importer->importedTextures.push_back(rt->GetAssetPath().c_str());
-    }
-    data.close();
-}
-
-void ResourceTexture::LoadMetaData(std::ifstream& data)
-{
-    if (data.is_open())
-    {
-        std::string val;
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        width = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        height = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        type = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        format = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        depth = stoi(val);
-        std::getline(data, val, ':');
-        std::getline(data, val, '\n');
-        channels = stoi(val);
-
-        app->importer->importedTextures.push_back(GetAssetPath().c_str());
-    }
-    data.close();
-}
-
-void ResourceTexture::GenerateMetaFile()
-{
+    glDeleteTextures(1,&id);
 }

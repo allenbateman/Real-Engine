@@ -114,7 +114,11 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
         break;
     }
 
-    resource->Save();
+    if (resource == nullptr)
+        return "";
+
+    resource->GenerateMetaFile(resource->GetAssetPath().string() + ".meta");
+    resource->SaveData();
 
     UID ret = resource->GetID();
 	return ret;
@@ -184,6 +188,16 @@ std::vector<fs::path> ResourcesManagement::SearchForFileType(const std::filesyst
     return paths;
 }
 
+std::filesystem::path ResourcesManagement::GetFilePath(string rootFolder,string filename)
+{
+    for (const auto& entry : std::filesystem::recursive_directory_iterator(rootFolder)) {
+        if (entry.is_regular_file() && entry.path().filename().string() == filename) {
+            return entry.path();
+        }
+    }
+    return std::filesystem::path();
+}
+
 void ResourcesManagement::ImportFilesFromAssets()
 {
     filesystem::path entry = ASSETS_DIR;
@@ -222,7 +236,9 @@ void ResourcesManagement::ImportFilesFromAssets()
     {
 
         if (!ExistFileInResources(fileToLoad.first.string()));
-            ImportFile(fileToLoad.first.string().c_str(),fileToLoad.second);
+        {   
+            ImportFile(fileToLoad.first.string().c_str(), fileToLoad.second); 
+        }
     }
 }
 
@@ -250,123 +266,104 @@ shared_ptr<Resource> ResourcesManagement::CreateNewResource(const std::filesyste
     case Resource::Type::Mesh: ret = shared_ptr<Resource>(new ResourceMesh(uid)); break;
     case Resource::Type::Fbx: ret = shared_ptr<Resource>(new ResourceScene(uid)); break;
     case Resource::Type::Material: ret = shared_ptr<Resource>(new ResourceMaterial(uid)); break;
+    case Resource::Type::Shader: ret = shared_ptr<Resource>(new ResourceShader(uid)); break;
     case Resource::Type::UNKNOWN:return nullptr; break;
     default: break;
     }
     if (ret != nullptr)
     {
         ret->name = path.stem().string();
-        ret->SetAssetPath(path.string());
+        if ( type == Resource::Type::Material)
+        {
+            std::filesystem::path tmp = path.string();
+            tmp.replace_extension(".material");
+            ret->SetAssetPath(tmp.string());
+
+        }
+        else {
+            ret->SetAssetPath(path.string());
+        }
+       
         Debug::Log("Importing new asset:" + ret->name);
-        resources.insert(std::make_pair(path.string(), std::make_pair(uid, ret)));
+        resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(uid, ret)));
     }
     return ret;
 }
 
-//void ResourcesManagement::LoadMetaFile(shared_ptr<Resource>& resource, std::ifstream& metaFile)
-//{
-//    //if(metaFile.rdbuf() == NULL) return nullptr;
-//    
-//    switch (resource->GetType()) {
-//    case Resource::Type::Texture: resource->load ResourceTexture::Load(resource, metaFile); break;
-//    case Resource::Type::Mesh: ResourceMesh::Load(resource,metaFile); break;
-//    case Resource::Type::Material: ResourceMaterial::Load(resource,metaFile); break;
-//    case Resource::Type::Fbx: ResourceScene::Load(resource, metaFile); break;
-//    case Resource::Type::Shader: ResourceShader::Load(resource, metaFile); break;
-//    case Resource::Type::UNKNOWN:return;
-//    default: break;
-//    }
-//}
+void ResourcesManagement::RemoveResource(UID uid)
+{
+    auto it = resources.begin();
+    while (it != resources.end())
+    {
+        if (uid == it->second.first)
+        {
+            resources.erase(it);
+            return;
+        }
+        it++;
+    }
+}
 
 void ResourcesManagement::LoadMetaFiles()
 {
     filesystem::path entry = ASSETS_DIR;
     cout << "Loading meta files... \n";
-
     vector<filesystem::path>metafiles = SearchForFileType(entry, ".meta");
     //Load meta files
     for (const auto& file : metafiles)
     {
         //read meta file
-        std::ifstream in;
-        in.open(file);
-        if (in.is_open())
+        shared_ptr<Resource> resource(new Resource(file));
+
+        //check that id file is stored in the project library
+        // meaning we have the custom file 
+        //if not load new resource 
+        if (std::filesystem::exists(resource->GetLibraryPath()))
         {
-            std::string name;
-            std::getline(in, name, ':');
-            std::getline(in, name, '\n');
-            std::string id;
-            std::getline(in, id, ':');
-            std::getline(in, id, '\n');
-            std::string assetPath;
-            std::getline(in, assetPath, ':');
-            std::getline(in, assetPath, '\n');
-            std::string libPath;
-            std::getline(in, libPath, ':');
-            std::getline(in, libPath, '\n');
-            std::string type;
-            std::getline(in, type, ':');
-            std::getline(in, type, '\n');
+            cout << "file exist in lib, loading resource...\n";
+            Debug::Log("Loading asset: " + resource->GetID());
 
-            //check that id file is stored in the project library
-            // meaning we have the custom file 
-            //if not load new resource 
-            if (std::filesystem::exists(libPath))
+            switch (resource->GetType()) {
+            case Resource::Type::Texture:
             {
-                cout << "file exist in lib, loading resource...\n";
-                Debug::Log("Loading asset: " + id);
-                shared_ptr<Resource> resource;
-                switch ((Resource::Type)stoi(type)) {
-                case Resource::Type::Texture: resource = shared_ptr<Resource>(new ResourceTexture(id)); break;
-                case Resource::Type::Mesh:resource = shared_ptr<Resource>(new ResourceMesh(id)); break;
-                case Resource::Type::Fbx:resource = shared_ptr<Resource>(new ResourceScene(id)); break;
-                case Resource::Type::Material:resource = shared_ptr<Resource>(new ResourceMaterial(id)); break;
-                case Resource::Type::UNKNOWN: break;
-                default: break;
-                }
-                if (resource != nullptr)
-                {
-                    resource->name = name;
-                    resource->SetAssetPath(assetPath);
-                    resource->SetLibraryPath(libPath);
-                    resource->LoadMetaData(in);
-                    resources.insert(std::make_pair(assetPath, std::make_pair(id, resource)));
-                }
-            }
-            else {
-               cout << "ERROR::RESOURCE_CUSTOM_FORMAT_NOT_FOUND\n";
-               Debug::Log("Reimporting existing asset: " + id);
-               shared_ptr<Resource> resource;
-               switch ((Resource::Type)stoi(type)) {
-               case Resource::Type::Texture: resource = shared_ptr<Resource>(new ResourceTexture(id)); break;
-               case Resource::Type::Mesh:resource = shared_ptr<Resource>(new ResourceMesh(id)); break;
-               case Resource::Type::Fbx:resource = shared_ptr<Resource>(new ResourceScene(id)); break;
-               case Resource::Type::Material:resource = shared_ptr<Resource>(new ResourceMaterial(id)); break;
-               case Resource::Type::UNKNOWN: break;
-               default: break;
-               }
-               if (resource != nullptr)
-               {
-                   resource->SetAssetPath(assetPath);
-                   resource->SetLibraryPath(libPath);
-
-                   switch (resource->GetType())
-                   {
-                   case Resource::Type::Fbx: SceneImporter::Import(resource); break;
-                   case Resource::Type::Texture: TextureImporter::Import(resource); break;
-                   default:
-                       break;
-                   }
-
-                   resource->Save();
-
-                   resources.insert(std::make_pair(assetPath, std::make_pair(id, resource)));
-               }
+                resource->LoadData();
+                shared_ptr<ResourceTexture> ret = std::static_pointer_cast<ResourceTexture>(resource);
+                ret->LoadData();
+                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+            }break;
+            case Resource::Type::Mesh: {
+                shared_ptr<ResourceMesh> ret = std::static_pointer_cast<ResourceMesh>(resource);
+                ret->LoadData();
+                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+            }break;
+            case Resource::Type::Fbx: { 
+                shared_ptr<ResourceScene> ret = std::static_pointer_cast<ResourceScene>(resource);
+                ret->LoadData();
+                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+            }break;
+            case Resource::Type::Material: {
+                shared_ptr<ResourceMaterial> ret = std::static_pointer_cast<ResourceMaterial>(resource);
+                ret->LoadData();
+                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+            }break;
+            case Resource::Type::UNKNOWN: break;
+            default: break;
             }
         }
-        in.close();
+        else {
+           cout << "ERROR::RESOURCE_CUSTOM_FORMAT_NOT_FOUND\n";
+           Debug::Log("Reimporting existing asset: " + resource->GetID());
+           switch (resource->GetType())
+           {
+           case Resource::Type::Fbx: SceneImporter::Import(resource); break;
+           case Resource::Type::Texture: TextureImporter::Import(resource); break;
+           default:
+               break;
+           }
+           resource->GenerateMetaFile(resource->GetAssetPath().string()+".meta");
+           resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+        }
     }
-
 }
 
 std::string ResourcesManagement::MoveToAssets(const string disc_path)
@@ -405,17 +402,6 @@ std::string ResourcesManagement::GenLibraryPath(const string assets_path)
     std::string fileName = assets_path.substr(from + 1, ' ');
     std::string newPathFolder = LIBRARY_DIR;
     return newPathFolder;
-    ////store new file to assets
-    //if (rename(assets_path.c_str(), newPath->c_str()))
-    //{
-    //    Debug::Warning("Couldn't load file: " + fileName);
-    //    return nullptr;
-    //}
-    //else
-    //{
-    //    Debug::Log("File imported to library: " + fileName);
-    //    return *newPath;
-    //}
 }
 
 Resource::Type ResourcesManagement::FilterFile(const char* file_path)
@@ -447,10 +433,6 @@ Resource::Type ResourcesManagement::FilterFile(const char* file_path)
         std::cout << filePath.stem() << " is a valid type.\n";
         type = Resource::Type::Texture;
     }    
-    else if (filePath.extension() == ".meta")
-    {
-
-    }
     else {
         std::cout << "unknown file type";
         type = Resource::Type::UNKNOWN;

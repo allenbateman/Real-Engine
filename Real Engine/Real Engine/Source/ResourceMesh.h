@@ -1,5 +1,7 @@
 #pragma once
 #include "Resource.h"
+#include "ResourceShader.h"
+#include "ResourceMaterial.h"
 #include "glmath.h"
 struct Vertex {
 	vec3 Position;
@@ -13,15 +15,12 @@ public:
 	ResourceMesh(UID id);
 	~ResourceMesh();
 
-	void Save()const;
+	void SaveData();
+	void LoadData();
 	void Load();
-	void UnLoad()const;
-
-	static void Load(std::shared_ptr<Resource>& resource, std::ifstream& data);
-	void LoadMetaData(std::ifstream& data) override;
-	void GenerateMetaFile() override;
+	void UnLoad();
 	unsigned int GetVAO() { return VAO; }
-
+	void Draw(std::shared_ptr < ResourceShader> shader, std::shared_ptr < ResourceMaterial> material);
 public:
 	std::vector<Vertex>       vertices;
 	std::vector<unsigned int> indices;

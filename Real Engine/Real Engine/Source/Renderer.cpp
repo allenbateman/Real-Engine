@@ -136,10 +136,8 @@ bool Renderer::PostUpdate()
 		}
 
 		glEnd();
-		/*
+		
 		//Set Camera shader to render 
-		Shader shader = (*item)->camera->GetShader();
-		shader.resource->Use();
 		float* projection = (*item)->ProjectionMatrix.M;
 		float* view = (*item)->camera->GetViewMatrix();
 		float* model;
@@ -149,7 +147,9 @@ bool Renderer::PostUpdate()
 			auto& transform = app->entityComponentSystem.GetComponent<Transform>(ent);
 			auto& mesh = app->entityComponentSystem.GetComponent<Mesh>(ent);
 			auto& material = app->entityComponentSystem.GetComponent<Material>(ent);
-
+			if (material.resource == nullptr) continue;
+			auto& shader = material.resource->shader;
+			shader->Use();
 			//attach shader 
 			//set attributes for rendering the textures
 			mat4x4 pos = translate(transform.position.x, transform.position.y, transform.position.z);
@@ -159,16 +159,14 @@ bool Renderer::PostUpdate()
 			mat4x4 rotation = (rotationX * rotationY * rotationZ);
 			mat4x4 size = scale(transform.scale.x, transform.scale.y, transform.scale.z);
 			model = (pos * size * rotation).M;
-			shader.resource->SetMat4("projection", projection);
-			shader.resource->SetMat4("model", model);
-			shader.resource->SetMat4("view", view);
+			shader->SetMat4("projection", projection);
+			shader->SetMat4("model", model);
+			shader->SetMat4("view", view);
 			//render obj
-			//mesh.Draw(shader, material);
-		}
-
-		//detach the shader to default so it doesnt affect other render process
-		shader.resource->StopUse();
-		*/
+			mesh.resource->Draw(shader, material.resource);
+ 
+			shader->StopUse();
+		}		
 		//Stop render  -------------------------------------------
 
 		//bind to the default renderer to render everything
@@ -224,8 +222,8 @@ void Renderer::HandleEvent(Event* e)
 	break;
 	case ON_FOV_CHANGE:
 	{
-		game.OnFovChange();
-		editor.OnFovChange();
+		//game.OnFovChange();
+		//editor.OnFovChange();
 	}
 	break;
 	default:
