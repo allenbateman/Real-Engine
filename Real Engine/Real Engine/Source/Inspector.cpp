@@ -144,7 +144,7 @@ void Inspector::DrawComponents(Entity entity)
 			if (mesh.resource.get() == nullptr)
 			{
 				ImGui::Text("Pointer to resource is empty");
-				auto resource = ListAvailableResources(Resource::Type::Mesh);
+				auto resource = SelectResource("select mesh",Resource::Type::Mesh);
 				if (resource != nullptr)
 				{
 					mesh.resource = std::static_pointer_cast<ResourceMesh>(resource);
@@ -154,6 +154,12 @@ void Inspector::DrawComponents(Entity entity)
 			}
 			else {
 				ImGui::Text("Name: %s", mesh.resource->name.c_str());
+				auto resource = SelectResource("change mesh", Resource::Type::Mesh);
+				if (resource != nullptr)
+				{
+					mesh.resource = std::static_pointer_cast<ResourceMesh>(resource);
+					mesh.resource->Load();
+				}
 				ImGui::Text("Vertices %d", mesh.resource->vertices.size());
 				ImGui::Text("Indices %d", mesh.resource->indices.size());
 			}
@@ -171,7 +177,7 @@ void Inspector::DrawComponents(Entity entity)
 			if (material.resource.get() == nullptr)
 			{
 				ImGui::Text("Pointer to resource is empty");
-				auto resource = ListAvailableResources(Resource::Type::Material);
+				auto resource = SelectResource("select material",Resource::Type::Material);
 				if (resource != nullptr)
 				{
 					material.resource = static_pointer_cast<ResourceMaterial>(resource);
@@ -181,7 +187,13 @@ void Inspector::DrawComponents(Entity entity)
 			}
 			else
 			{
-				ImGui::Text("Name: %s", material.resource->name.c_str());
+				ImGui::Text("material: %s", material.resource->name.c_str());
+				auto resource = SelectResource("change material", Resource::Type::Material);
+				if (resource != nullptr)
+				{
+					material.resource = static_pointer_cast<ResourceMaterial>(resource);
+					material.resource->Load();
+				}
 				if (material.resource->textures.empty())
 				{
 					ImGui::Text("Material has no textures...");
@@ -189,8 +201,6 @@ void Inspector::DrawComponents(Entity entity)
 				}	
 				for (unsigned int i = 0; i < material.resource->textures.size(); i++)
 				{
-					SelectTexture(material, i);
-
 					//draw the textures
 					std::string number;
 					std::string name = material.resource->textures[i].second->type;
@@ -200,12 +210,22 @@ void Inspector::DrawComponents(Entity entity)
 						number = std::to_string(specularNr++);
 
 					ImGui::Text((name + number).c_str());
+					SelectTexture(material, i);
 					ImGui::Image((ImTextureID)material.resource->textures.at(i).second->id, ImVec2{ 250,250 });
 
 				}
 				if (material.resource->shader == nullptr)
 				{
-					auto resource = ListAvailableResources(Resource::Type::Shader);
+					auto resource = SelectResource("select shader", Resource::Type::Shader);
+					if (resource != nullptr)
+					{
+						material.resource->shader = static_pointer_cast<ResourceShader>(resource);
+						material.resource->shader->Load();
+					}
+				}
+				else {
+					ImGui::Text("shader: %s" , material.resource->shader->name.c_str());
+					auto resource = SelectResource("change shader", Resource::Type::Shader);
 					if (resource != nullptr)
 					{
 						material.resource->shader = static_pointer_cast<ResourceShader>(resource);
@@ -285,7 +305,7 @@ void Inspector::ShowSearchField(Entity entity)
 
 }
 
-shared_ptr<Resource> Inspector::ListAvailableResources(Resource::Type type)
+shared_ptr<Resource> Inspector::SelectResource(const char* text,Resource::Type type)
 {
 	const auto  listBoxSize = ImVec2(310, 260);
 	auto result = app->resourceManager->GetResourceListOfType(type);
@@ -296,7 +316,7 @@ shared_ptr<Resource> Inspector::ListAvailableResources(Resource::Type type)
 		items[i] = result.at(i)->name.c_str();
 	}
 
-	if (ImGui::BeginCombo("##Resources", "resources...")) {
+	if (ImGui::BeginCombo("##Resources", text)) {
 
 		for (int n = 0; n < result.size(); ++n) {
 			bool is_selected = false;
@@ -326,7 +346,7 @@ void Inspector::SelectTexture(Material& material, unsigned int id)
 		items[i] = result.at(i)->name.c_str();
 	}
 
-	if (ImGui::BeginCombo("##Texture", "textures...")) {
+	if (ImGui::BeginCombo("##Texture", "change texture")) {
 
 		for (unsigned int n = 0; n < result.size(); ++n) {
 			bool is_selected = false;

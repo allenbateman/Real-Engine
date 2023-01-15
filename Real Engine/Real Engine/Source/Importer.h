@@ -41,6 +41,9 @@ public:
 	std::unordered_map<string, UID> importedTextures{};
 };
 
+namespace ShaderImporter {
+	void Import(shared_ptr<Resource>& resource);
+}
 
 namespace TextureImporter {
 	void Import(shared_ptr<Resource>& resource);

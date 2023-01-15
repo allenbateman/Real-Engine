@@ -6,6 +6,7 @@ class ResourceMaterial : public Resource
 {
 public:
 	ResourceMaterial(UID id);
+	ResourceMaterial();
 	~ResourceMaterial();
 
     void SaveData();

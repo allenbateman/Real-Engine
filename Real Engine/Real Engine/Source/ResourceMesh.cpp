@@ -7,6 +7,10 @@ ResourceMesh::ResourceMesh(UID id) : Resource(id)
 {
     SetType(Type::Mesh);
 }
+ResourceMesh::ResourceMesh()
+{
+    SetType(Type::Mesh);
+}
 ResourceMesh::~ResourceMesh()
 {
 
@@ -18,6 +22,7 @@ void ResourceMesh::SaveData()
     if (out.is_open())
     {
         nlohmann::json mesh;
+        mesh["material_index"] = materialIndex;
         mesh["num_vertices"] = vertices.size();
         mesh["num_indices"] = indices.size();
         mesh["vertices"] = nlohmann::json::array();
@@ -66,6 +71,7 @@ void ResourceMesh::LoadData()
     {
         nlohmann::json mesh;
         in >> mesh;
+        materialIndex = mesh["material_index"].get<int>();
         unsigned int num_indices = mesh["num_indices"].get<unsigned int>();
 
         for (const auto& index : mesh["indices"])

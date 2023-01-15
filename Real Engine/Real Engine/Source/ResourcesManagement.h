@@ -48,15 +48,22 @@ public:
 	}
 	//creates a new resource when needed
 	shared_ptr<Resource> CreateNewResource(const std::filesystem::path assetsFile, Resource::Type type);
+	//creates an empty resource of any type
+	shared_ptr<Resource> CreateRawResource(Resource::Type type);
 	void RemoveResource(UID uid);
 	//check if a file is already registered as a resource in a meta file
 	bool ExistFileInResources(std::string filePath);
+	//load resource give a meta file
+	shared_ptr<Resource> LoadMetaFile(std::string metaFile);
+
+	void AddResource(shared_ptr<Resource>& resource);
+
 
 	std::multimap<string, std::pair<UID, std::shared_ptr<Resource>>> GetResourcesList() { return resources; };
 private:
 
 	//loads the meta file and creates the resource
-	void LoadMetaFile(shared_ptr<Resource>& resource, std::ifstream& metaFile);
+
 
 	//Load all the meta files in the program, if a file is not in lib
 	//it imports the file again
@@ -75,7 +82,6 @@ private:
 	Resource::Type FilterFile(const char* filePath);
 
 	//stores the link beteen UUID of imported resources with the resource it self
-	//std::map<UID,std::shared_ptr<Resource>> resources{};
 	std::multimap<string, std::pair<UID, std::shared_ptr<Resource>>> resources{};
 };
 

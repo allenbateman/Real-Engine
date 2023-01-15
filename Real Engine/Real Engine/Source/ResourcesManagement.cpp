@@ -110,6 +110,7 @@ UID ResourcesManagement::ImportFile(const string assets_path, Resource::Type typ
     {
     case Resource::Type::Fbx: SceneImporter::Import(resource); break;
     case Resource::Type::Texture: TextureImporter::Import(resource);break;
+    case Resource::Type::Shader: ShaderImporter::Import(resource);break;
     default:
         break;
     }
@@ -145,13 +146,11 @@ void ResourcesManagement::ReleaseResource(UID uid)
 
 shared_ptr<Resource> ResourcesManagement::GetResource(UID uid)
 {
-    //std::map<UID, shared_ptr<Resource>>::iterator it = resources.begin();
     std::map<string,pair<UID, shared_ptr<Resource>>>::iterator it = resources.begin();
     while (it != resources.end())
     {
         if (it->second.first == uid)
             return it->second.second;
-        
         it++;
     }
     return nullptr;
@@ -166,7 +165,6 @@ vector<shared_ptr<Resource>> ResourcesManagement::GetResourceListOfType(Resource
     {
         if (it->second.second->GetType() == type)
             resourcesFound.push_back(it->second.second);
-
         it++;
     }
 
@@ -255,6 +253,67 @@ bool ResourcesManagement::ExistFileInResources(std::string filePath)
     return false;
 }
 
+shared_ptr<Resource> ResourcesManagement::LoadMetaFile(std::string metaFile)
+{
+    shared_ptr<Resource> resource(new Resource(metaFile));
+
+    //check that id file is stored in the project library
+    // meaning we have the custom file 
+    //if not load new resource 
+    if (std::filesystem::exists(resource->GetLibraryPath()))
+    {
+        Debug::Log("Loading asset: " + resource->name);
+
+        switch (resource->GetType()) {
+        case Resource::Type::Texture:
+        {
+            shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceTexture());
+            *ret = *resource;
+            ret->LoadData();
+            resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+        }break;
+        case Resource::Type::Mesh: {
+            shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceMesh());
+            *ret = *resource;
+            ret->LoadData();
+            resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+            return ret;
+        }break;
+        case Resource::Type::Fbx: {
+            shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceScene());
+            *ret = *resource;
+            ret->LoadData();
+            resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+            return ret;
+        }break;
+        case Resource::Type::Material: {
+            shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceMaterial());
+            *ret = *resource;
+            ret->LoadData();
+            resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+            return ret;
+        }break;
+        case Resource::Type::Shader: {
+            shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceShader());
+            *ret = *resource;
+            ret->LoadData();
+            resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+            return ret;
+        }break;
+        case Resource::Type::UNKNOWN:     return nullptr; break;
+        default:return nullptr; break;
+        }
+    }
+    else {
+        return nullptr;
+    }
+}
+
+void ResourcesManagement::AddResource(shared_ptr<Resource>& resource)
+{
+    resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+}
+
 
 shared_ptr<Resource> ResourcesManagement::CreateNewResource(const std::filesystem::path path, Resource::Type type)
 {
@@ -283,9 +342,24 @@ shared_ptr<Resource> ResourcesManagement::CreateNewResource(const std::filesyste
         else {
             ret->SetAssetPath(path.string());
         }
-       
-        Debug::Log("Importing new asset:" + ret->name);
+        Debug::Log("Importing new asset:" + ret->GetAssetPath().stem().string());
         resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(uid, ret)));
+    }
+    return ret;
+}
+
+shared_ptr<Resource> ResourcesManagement::CreateRawResource(Resource::Type type)
+{
+    shared_ptr<Resource> ret;
+
+    switch (type) {
+    case Resource::Type::Texture: ret = shared_ptr<Resource>(new ResourceTexture()); break;
+    case Resource::Type::Mesh: ret = shared_ptr<Resource>(new ResourceMesh()); break;
+    case Resource::Type::Fbx: ret = shared_ptr<Resource>(new ResourceScene()); break;
+    case Resource::Type::Material: ret = shared_ptr<Resource>(new ResourceMaterial()); break;
+    case Resource::Type::Shader: ret = shared_ptr<Resource>(new ResourceShader()); break;
+    case Resource::Type::UNKNOWN:return nullptr; break;
+    default: break;
     }
     return ret;
 }
@@ -315,6 +389,10 @@ void ResourcesManagement::LoadMetaFiles()
         //read meta file
         shared_ptr<Resource> resource(new Resource(file));
 
+        auto tmp = GetResource(resource->GetID());
+        if (tmp != nullptr)
+            continue;
+
         //check that id file is stored in the project library
         // meaning we have the custom file 
         //if not load new resource 
@@ -326,25 +404,34 @@ void ResourcesManagement::LoadMetaFiles()
             switch (resource->GetType()) {
             case Resource::Type::Texture:
             {
-                resource->LoadData();
-                shared_ptr<ResourceTexture> ret = std::static_pointer_cast<ResourceTexture>(resource);
+                shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceTexture());
+                *ret = *resource;
                 ret->LoadData();
                 resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
             }break;
             case Resource::Type::Mesh: {
-                shared_ptr<ResourceMesh> ret = std::static_pointer_cast<ResourceMesh>(resource);
+                shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceMesh());
+                *ret = *resource;
                 ret->LoadData();
-                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+                resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
             }break;
             case Resource::Type::Fbx: { 
-                shared_ptr<ResourceScene> ret = std::static_pointer_cast<ResourceScene>(resource);
+                shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceScene());
+                *ret = *resource;
                 ret->LoadData();
-                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+                resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
             }break;
             case Resource::Type::Material: {
-                shared_ptr<ResourceMaterial> ret = std::static_pointer_cast<ResourceMaterial>(resource);
+                shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceMaterial());
+                *ret = *resource;
                 ret->LoadData();
-                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+                resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+            }break;   
+            case Resource::Type::Shader: {
+                shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceShader());
+                *ret = *resource;
+                ret->LoadData();
+                resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
             }break;
             case Resource::Type::UNKNOWN: break;
             default: break;
@@ -410,31 +497,40 @@ Resource::Type ResourcesManagement::FilterFile(const char* file_path)
     Resource::Type type = Resource::Type::UNKNOWN;
     if (filePath.extension() == ".fbx") // Heed the dot.
     {
-        std::cout << filePath.stem() << " is a valid type.\n";
+        std::cout << filePath.filename() << " is a valid type.\n";
         type = Resource::Type::Fbx;
     }
     else if (filePath.extension() == ".dds")
     {
-        std::cout << filePath.stem() << " is a valid type.\n";
+        std::cout << filePath.filename() << " is a valid type.\n";
         type = Resource::Type::Texture;
     }
     else if (filePath.extension() == ".png")
     {
-        std::cout << filePath.stem() << " is a valid type.\n";
+        std::cout << filePath.filename() << " is a valid type.\n";
         type = Resource::Type::Texture;
     }
     else if (filePath.extension() == ".jpg")
     {
-        std::cout << filePath.stem() << " is a valid type.\n";
+        std::cout << filePath.filename() << " is a valid type.\n";
         type = Resource::Type::Texture;
     } 
     else if (filePath.extension() == ".tga")
     {
-        std::cout << filePath.stem() << " is a valid type.\n";
+        std::cout << filePath.filename() << " is a valid type.\n";
         type = Resource::Type::Texture;
-    }    
+    }
+    else if (filePath.extension() == ".vertex")
+    {
+        std::cout << filePath.filename() << " is a valid type.\n";
+        type = Resource::Type::Shader;
+    }
+    else if (filePath.extension() == ".meta")
+    {
+        type = Resource::Type::UNKNOWN;
+    }
     else {
-        std::cout << "unknown file type";
+        std::cout << "unknown file type "<< filePath.filename() <<"\n";
         type = Resource::Type::UNKNOWN;
     }
     return type;

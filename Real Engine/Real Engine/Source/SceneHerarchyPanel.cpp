@@ -80,8 +80,6 @@ void SceneHerarchyPanel::Update()
 void SceneHerarchyPanel::DrawGONode(GameObject go)
 {
 	Transform* t = go.GetComponent<Transform>().parent;
-	Transform test = go.GetComponent<Transform>();
-	
 	Entity entity = go.id;
 
 	auto& tagComponent = app->entityComponentSystem.GetComponent<TagComponent>(entity);
@@ -165,7 +163,14 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 
 			for (Transform* i : childs)
 			{
-				DrawGONode(*i->owner);
+				if(i == nullptr ||  i->owner == nullptr || i->owner == NULL)
+				{
+					Debug::Error("transform owner is null =?");
+				}
+				else {
+					DrawGONode(*i->owner);
+				}
+
 			}		
 		}
 		ImGui::TreePop();

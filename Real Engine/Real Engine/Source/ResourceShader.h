@@ -12,6 +12,7 @@ class ResourceShader : public Resource
 {
 public:
 	ResourceShader(UID uid);
+	ResourceShader();
 	~ResourceShader();
 	void SaveData();
 	void LoadData();
@@ -30,7 +31,7 @@ public:
 
 	static void SetShaderUniform(GLuint shaderProgram, const char* uniformName, float value);
 	static std::unordered_map<std::string, float> GetShaderUniforms(GLuint shaderProgram);
-
+	void OnEdit();
 public:
 	//program ID
 	unsigned int ID;

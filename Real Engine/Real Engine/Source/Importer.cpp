@@ -311,7 +311,6 @@ void SceneImporter::Import(shared_ptr<Resource>& resource)
         SceneImporter::ProcessaNode(scene->mRootNode, scene, rScene->root, rScene);
 
         string savePath = rScene->GetLibraryPath().string();
-        rScene->SaveData();
         app->sceneManager->currentScene->AddGameObject(root);
         try
         {
@@ -331,24 +330,6 @@ void SceneImporter::Import(shared_ptr<Resource>& resource)
 
 void SceneImporter::ProcessaNode(aiNode* node, const aiScene* scene, GameObject* rNode, shared_ptr<ResourceScene>& rFbx)
 {
-    //// process all the node's meshes (if any)  
-    //for (unsigned int i = 0; i < node->mNumMeshes; i++)
-    //{
-    //    aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-    //    rNode->meshIndex.push_back(i);
-    //    rNode->name = scene->mMeshes[node->mMeshes[i]]->mName.C_Str();
-    //    SceneImporter::ProcessaMesh(mesh, scene, rNode,rFbx);
-    //}
-    //// then do the same for each of its children
-    //for (unsigned int i = 0; i < node->mNumChildren; i++)
-    //{
-    //    GameObject* newNode = new GameObject(node->mName.C_Str());
-    //    newNode->GetComponent<Transform>().parent = &rNode->GetComponent<Transform>();
-    //    rNode->GetComponent<Transform>().AddChild(&newNode->GetComponent<Transform>());
-    //    rNode->meshCount = node->mNumMeshes;
-    //    rNode->childsCount= node->mNumChildren;
-    //    SceneImporter::ProcessaNode(node->mChildren[i], scene, newNode,rFbx);
-    //}
     GameObject newNode;
     aiMatrix4x4 transform;
     if (node->mNumMeshes > 0)
@@ -521,8 +502,6 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
         shader->Load("../Output/Assets/Shaders/default.vertex", "../Output/Assets/Shaders/default.fragment");
         rm->shader = shader;
     }
-
-
     rm->SetLibraryPath("..\\Output\\Library\\Materials\\" + resourceMat->GetID() + ".material");
     rm->SaveData();
     rm->Load();
@@ -535,4 +514,14 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
 }
 void SceneImporter::LoadObject(const std::string file_path)
 {
+}
+
+void ShaderImporter::Import(shared_ptr<Resource>& resource)
+{
+    shared_ptr<ResourceShader> rShader = std::static_pointer_cast<ResourceShader>(resource);
+    string vertex,fragment;
+    vertex = rShader->GetAssetPath().string();
+    filesystem::path tmp = rShader->GetAssetPath();
+    fragment = tmp.replace_extension("fragment").string();
+    rShader->Load(vertex.c_str(), fragment.c_str());
 }

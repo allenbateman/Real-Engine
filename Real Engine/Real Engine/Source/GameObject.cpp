@@ -2,6 +2,7 @@
 #include "Tag.h"
 #include "Transform.h"
 #include "Mesh.h"
+#include "Material.h"
 
 
 GameObject::GameObject()
@@ -75,7 +76,12 @@ void GameObject::Destroy()
 	if (HasComponent<Mesh>())
 	{
 		Mesh m = GetComponent<Mesh>();
-		m.~Mesh();
+		m.resource.reset();
+	}
+	if (HasComponent<Material>())
+	{
+		Material m = GetComponent<Material>();
+		m.resource.reset();
 	}
 	// remove entity from ECS
 	app->entityComponentSystem.DestroyEntity(id);

@@ -5,6 +5,7 @@ class ResourceTexture : public Resource
 {
 public: 
     ResourceTexture(UID uid);
+    ResourceTexture();
     ~ResourceTexture();
 
     void SaveData();

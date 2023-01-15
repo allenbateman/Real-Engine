@@ -20,12 +20,14 @@ public:
 		Material
 	};
 	Resource(UID id);
+	Resource();
 	Resource(std::filesystem::path path);
 	virtual ~Resource() {};
 
 	void SetType(Resource::Type type);
 	Resource::Type GetType() const;
 	UID GetID()const;
+	void SetUID(UID uid) { this->uid = uid; };
 
 	const std::filesystem::path GetAssetPath() const { return assetsPath; };
 	const std::filesystem::path GetLibraryPath() const { return libraryPath; };
@@ -48,11 +50,11 @@ public:
 
 	std::string name;
 	bool IsLoaded = false;
-
+	bool IsDataLoaded = false;
 	const char* GetTypeChar();
 
 protected:
-	std::filesystem::path  assetsPath;
+	std::filesystem::path assetsPath;
 	std::filesystem::path libraryPath;
 
 	UID uid;

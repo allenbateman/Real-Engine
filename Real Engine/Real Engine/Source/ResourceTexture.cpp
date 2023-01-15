@@ -10,6 +10,11 @@ ResourceTexture::ResourceTexture(UID uid) : Resource(uid)
 	SetType(Type::Texture);
 }
 
+ResourceTexture::ResourceTexture()
+{
+    SetType(Type::Texture);
+}
+
 ResourceTexture::~ResourceTexture()
 {
 }

@@ -7,6 +7,7 @@ class ResourceScene : public Resource
 {
 public :
     ResourceScene(UID uid);
+    ResourceScene();
     ~ResourceScene();
 
 
@@ -15,6 +16,9 @@ public :
 	void Load();
 	void UnLoad();
 	GameObject GetRoot() const { return *root; };
+private:
+	nlohmann::json SaveNodeData(Transform* root);
+	void LoadNodeData(nlohmann::json& node,GameObject* root);
 public:
 
 	//sotre all materials ids used by the obj

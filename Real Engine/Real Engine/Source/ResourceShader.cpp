@@ -4,16 +4,42 @@ ResourceShader::ResourceShader(UID uid) : Resource(uid)
 {
     type = Resource::Type::Shader;
 }
+ResourceShader::ResourceShader()
+{
+    type = Resource::Type::Shader;
+}
 ResourceShader::~ResourceShader()
 {
 }
 
 void ResourceShader::SaveData()
 {
+    std::ofstream out;
+    out.open(libraryPath);
+    if (out.is_open())
+    {
+        nlohmann::json shader;
+        shader["vertex"] = vertex;
+        shader["fragment"] = fragment;
+        std::string dump = shader.dump();
+
+        out << dump.c_str();
+    }
+    out.close();
 }
 
 void ResourceShader::LoadData()
 {
+    std::ifstream in;
+    in.open(libraryPath);
+    if (in.is_open())
+    {
+        nlohmann::json shader;
+        in >> shader;
+        vertex = shader["vertex"].get<std::string>();
+        fragment = shader["fragment"].get<std::string>();
+    }
+    in.close();
 }
 
 void ResourceShader::Load()
@@ -27,6 +53,7 @@ void ResourceShader::UnLoad()
 
 bool ResourceShader::Load(const char* vertexPath, const char* fragmentPath)
 {
+    if (IsLoaded)return true;
     bool ret = true;
     this->vertex = vertexPath;
     this->fragment = fragmentPath;
@@ -105,7 +132,7 @@ bool ResourceShader::Load(const char* vertexPath, const char* fragmentPath)
     {
         glGetProgramInfoLog(ID, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
-        ret = false;
+         ret = false;
     }
 
     // delete the shaders as they're linked into our program now and no longer necessary

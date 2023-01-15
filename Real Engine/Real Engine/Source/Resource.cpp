@@ -4,6 +4,9 @@ Resource::Resource(UID id)
 {
     uid = id;
 }
+Resource::Resource()
+{
+}
 Resource::Resource(std::filesystem::path path)
 {
 	std::ifstream inputFile(path);
@@ -61,6 +64,11 @@ void Resource::Load()
 
 void Resource::UnLoad()
 {
+}
+
+Resource Resource::LoadFromMetaFile(std::string path)
+{
+	return Resource();
 }
 
 
