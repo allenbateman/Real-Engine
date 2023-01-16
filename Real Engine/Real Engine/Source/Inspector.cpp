@@ -70,9 +70,6 @@ void Inspector::DrawComponents(Entity entity)
 			vec3 pos = transform.LocalPosition();
 			vec3 rot = transform.LocalRotation();
 			vec3 scale = transform.LocalScale();
-			//vec3 pos = transform.localPosition;
-			//vec3 rot = transform.localRotation;
-			//vec3 scale = transform.localScale;
 				
 			float* p[] = { &pos.x,&pos.y,&pos.z };
 			float* r[] = { &rot.x,&rot.y,&rot.z };
@@ -80,36 +77,24 @@ void Inspector::DrawComponents(Entity entity)
 
 
 		//translate matrix * rotation matrix * scale matrix = final matrix
-			
+			vec3 tmp = rot;
 			if (ImGui::DragFloat3("Position", (*p), 0.1f) )
 			{
 				transform.Translate(pos.x, pos.y, pos.z);
 			}
 			if (ImGui::DragFloat3("Rotation", (*r), 0.1f))
 			{
-				//transform.Rotate(rot.x,rot.y,rot.z);
-				if (*r[0] != rot.x)
+				if (*r[0] != tmp.x)
 					transform.Rotate(rot.x, vec3(1, 0, 0));
-				else if(*r[1] != rot.y)
+				else if(*r[1] != tmp.y)
 					transform.Rotate(rot.y, vec3(0, 1, 0));
-				else if(*r[2] != rot.z)
+				else if(*r[2] != tmp.z)
 					transform.Rotate(rot.z, vec3(0, 0, 1));
 			}
 			if (ImGui::DragFloat3("Scale", (*s), 0.1f))
 			{
 				transform.Scale(scale.x, scale.y, scale.z);
 			}
-
-			//mat4x4 newTransformation;
-			//bool OnChange = false;
-			//if (ImGui::DragFloat3("Position", (*p), 0.1f) || ImGui::DragFloat3("Rotation", (*r), 0.1f) || ImGui::DragFloat3("Scale", (*s), 0.1f))
-			//{
-			//	newTransformation = newTransformation.GetMatrixFromTransform(pos, rot, scale);
-			//	OnChange = true;
-			//}
-
-			//if(OnChange)
-			//	transform.ApplyTransformation(newTransformation);
 			
 			if (transform.parent != nullptr)
 			{
@@ -194,6 +179,29 @@ void Inspector::DrawComponents(Entity entity)
 					material.resource = static_pointer_cast<ResourceMaterial>(resource);
 					material.resource->Load();
 				}
+				ImGui::Dummy(ImVec2(0.0f, 20.0f));
+				if (material.resource->shader == nullptr)
+				{
+					auto resource = SelectResource("select shader", Resource::Type::Shader);
+					if (resource != nullptr)
+					{
+						material.resource->shader = static_pointer_cast<ResourceShader>(resource);
+						material.resource->shader->Load();
+						material.resource->shader->LoadActiveUniforms();
+					}
+				}
+				else {
+					ImGui::Text("shader: %s", material.resource->shader->name.c_str());
+					auto resource = SelectResource("change shader", Resource::Type::Shader);
+					if (resource != nullptr)
+					{
+						material.resource->shader = static_pointer_cast<ResourceShader>(resource);
+						material.resource->shader->Load();
+						material.resource->shader->LoadActiveUniforms();
+					}
+					material.resource->shader->UpdateUniformValues();
+				}
+				ImGui::Dummy(ImVec2(0.0f, 20.0f));
 				if (material.resource->textures.empty())
 				{
 					ImGui::Text("Material has no textures...");
@@ -213,24 +221,6 @@ void Inspector::DrawComponents(Entity entity)
 					SelectTexture(material, i);
 					ImGui::Image((ImTextureID)material.resource->textures.at(i).second->id, ImVec2{ 250,250 });
 
-				}
-				if (material.resource->shader == nullptr)
-				{
-					auto resource = SelectResource("select shader", Resource::Type::Shader);
-					if (resource != nullptr)
-					{
-						material.resource->shader = static_pointer_cast<ResourceShader>(resource);
-						material.resource->shader->Load();
-					}
-				}
-				else {
-					ImGui::Text("shader: %s" , material.resource->shader->name.c_str());
-					auto resource = SelectResource("change shader", Resource::Type::Shader);
-					if (resource != nullptr)
-					{
-						material.resource->shader = static_pointer_cast<ResourceShader>(resource);
-						material.resource->shader->Load();
-					}
 				}
 			}
 			ImGui::TreePop();
@@ -285,16 +275,7 @@ void Inspector::ShowSearchField(Entity entity)
 						Debug::Log("Game object already has a Material");
 					}
 					break;	
-				//case 2:
-				//	if (!app->entityComponentSystem.HasComponent<Texture>(entity))
-				//	{
-				//		app->entityComponentSystem.AddComponent(entity, Texture());
-				//		Debug::Log("Added component");
-				//	}
-				//	else {
-				//		Debug::Log("Game object already has a Texture");
-				//	}
-				//	break;
+					
 
 				}
 				
@@ -316,7 +297,7 @@ shared_ptr<Resource> Inspector::SelectResource(const char* text,Resource::Type t
 		items[i] = result.at(i)->name.c_str();
 	}
 
-	if (ImGui::BeginCombo("##Resources", text)) {
+	if (ImGui::BeginCombo(text, text)) {
 
 		for (int n = 0; n < result.size(); ++n) {
 			bool is_selected = false;
@@ -378,3 +359,4 @@ void Inspector::SelectTexture(Material& material, unsigned int id)
 		ImGui::EndCombo();
 	}
 }
+

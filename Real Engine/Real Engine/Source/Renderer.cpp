@@ -49,7 +49,7 @@ bool Renderer::Awake()
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_LIGHTING);
 	glEnable(GL_COLOR_MATERIAL);
-
+	glEnable(GL_ALPHA_TEST);
 
 	app->eventSystem->SubscribeModule(this, PANEL_RESIZE);
 	app->eventSystem->SubscribeModule(this, ON_PANEL_FOCUS);
@@ -153,9 +153,9 @@ bool Renderer::PostUpdate()
 			//attach shader 
 			//set attributes for rendering the textures
 			mat4x4 pos = translate(transform.position.x, transform.position.y, transform.position.z);
-			mat4x4 rotationX = rotate(transform.rotation.x, transform.right);
-			mat4x4 rotationY = rotate(transform.rotation.y, transform.up);
-			mat4x4 rotationZ = rotate(transform.rotation.z, transform.forward);
+			mat4x4 rotationX = rotate(transform.eulerAngles.x, transform.right);
+			mat4x4 rotationY = rotate(transform.eulerAngles.y, transform.up);
+			mat4x4 rotationZ = rotate(transform.eulerAngles.z, transform.forward);
 			mat4x4 rotation = (rotationX * rotationY * rotationZ);
 			mat4x4 size = scale(transform.scale.x, transform.scale.y, transform.scale.z);
 			model = (pos * size * rotation).M;

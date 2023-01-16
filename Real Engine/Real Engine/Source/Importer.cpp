@@ -340,7 +340,11 @@ void SceneImporter::ProcessaNode(aiNode* node, const aiScene* scene, GameObject*
         rNode->GetComponent<Transform>().AddChild(&newNode.GetComponent<Transform>());
         newNode.meshCount = node->mNumMeshes;
         newNode.childsCount = node->mNumChildren;
-        newNode.GetComponent<Transform>().localMatrix = rFbx->transform;
+        auto t = newNode.GetComponent<Transform>();
+        t.localMatrix = rFbx->transform;
+        t.position = rFbx->transform.translation();
+        t.eulerAngles = rFbx->transform.rotation();
+        //t.scale = rFbx->transform.scale();
         // process all the node's meshes (if any)  
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {

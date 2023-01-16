@@ -413,42 +413,64 @@ void ResourcesManagement::LoadMetaFiles()
                 shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceMesh());
                 *ret = *resource;
                 ret->LoadData();
-                resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
             }break;
             case Resource::Type::Fbx: { 
                 shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceScene());
                 *ret = *resource;
                 ret->LoadData();
-                resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
             }break;
             case Resource::Type::Material: {
                 shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceMaterial());
                 *ret = *resource;
                 ret->LoadData();
-                resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
             }break;   
             case Resource::Type::Shader: {
                 shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceShader());
                 *ret = *resource;
                 ret->LoadData();
-                resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+                resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
             }break;
             case Resource::Type::UNKNOWN: break;
             default: break;
             }
         }
         else {
-           cout << "ERROR::RESOURCE_CUSTOM_FORMAT_NOT_FOUND\n";
-           Debug::Log("Reimporting existing asset: " + resource->GetID());
+           Debug::Log("Reimporting existing asset: " + resource->GetAssetPath().stem().string());
            switch (resource->GetType())
            {
-           case Resource::Type::Fbx: SceneImporter::Import(resource); break;
-           case Resource::Type::Texture: TextureImporter::Import(resource); break;
+           case Resource::Type::Fbx: { 
+               shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceScene());
+               *ret = *resource;
+               SceneImporter::Import(ret); 
+               resource->GenerateMetaFile(resource->GetAssetPath().string() + ".meta");
+               resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+               break; 
+           }
+           case Resource::Type::Texture:
+           {
+               shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceTexture());
+               *ret = *resource;
+               TextureImporter::Import(ret); 
+               ret->GenerateMetaFile(ret->GetAssetPath().string() + ".meta");
+               resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+           break; 
+           }
+           case Resource::Type::Shader:
+           {
+               shared_ptr<Resource>  ret = shared_ptr<Resource>(new ResourceShader());
+               *ret = *resource;
+               ShaderImporter::Import(ret);
+               ret->GenerateMetaFile(ret->GetAssetPath().string() + ".meta");
+               resources.insert(std::make_pair(ret->GetAssetPath().string(), std::make_pair(ret->GetID(), ret)));
+               break; 
+           }
            default:
                break;
            }
-           resource->GenerateMetaFile(resource->GetAssetPath().string()+".meta");
-           resources.insert(std::make_pair(resource->GetAssetPath().string(), std::make_pair(resource->GetID(), resource)));
+
         }
     }
 }

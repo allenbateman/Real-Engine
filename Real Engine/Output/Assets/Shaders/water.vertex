@@ -1,6 +1,7 @@
 #version 330
 
 uniform float time;  // Current time, used to animate the mesh
+uniform float v; 
 
 in vec3 position;    // Position of the vertex
 in vec3 color;       // Color of the vertex
@@ -10,13 +11,13 @@ out vec3 vColor;     // Vertex color to be passed to the fragment shader
 void main()
 {
     // Calculate a random offset for the vertex position
-    float offset = sin(position.x + position.y + position.z + time);
+    float offset = sin(position.x + position.y + position.z + time + v);
 
     // Displace the vertex position
-    vec3 displacedPosition = position + offset * vec3(0.0, 1.0, 0.0);
+    vec3 displacedPosition = position + offset * vec3(1.0, 1.0, 0.0);
 
     // Calculate the color of the vertex based on its height
-    vColor = color * (displacedPosition.y + 1.0) / 2.0;
+    vColor = color * (displacedPosition.y + 1.5) / 2.0;
 
     // Set the displaced position as the position to be rendered
     gl_Position = vec4(displacedPosition, 1.0);
