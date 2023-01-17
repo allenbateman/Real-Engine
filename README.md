@@ -42,5 +42,23 @@ The street house is not set as we had some last minute issue with the obj import
 
 ## A3 - Tool Implementation
 
+Select shader editor
 
-![alt text](https://github.com/Real-Engine/RepoImages/editparams.PNG?raw=true)
+![alt text](https://github.com/allenbateman/Real-Engine/blob/main/Real%20Engine/RepoImages/selecteditor.PNG)
+
+Select to edit the vertex or fragment shader
+
+![alt text](https://github.com/allenbateman/Real-Engine/blob/main/Real%20Engine/RepoImages/shader%20editor.png)
+
+Save changes
+
+![alt text](https://github.com/allenbateman/Real-Engine/blob/main/Real%20Engine/RepoImages/save.PNG)
+
+Choose the shader to use in the editor
+
+![alt text](https://github.com/allenbateman/Real-Engine/blob/main/Real%20Engine/RepoImages/selectshader.PNG)
+
+Edit parameters
+
+
+![alt text](https://github.com/allenbateman/Real-Engine/blob/main/Real%20Engine/RepoImages/editparams.PNG)
