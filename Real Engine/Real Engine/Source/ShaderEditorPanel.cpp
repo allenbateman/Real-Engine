@@ -129,11 +129,12 @@ void ShaderEditorPanel::ShowTextEditor(const char* filepath)
 		std::stringstream buffer;
 		buffer << file.rdbuf();
 		content = buffer.str();
+		file.close();
 		Editing = true;
 	}
 
 	// Create a text edit box to edit the file content
-	ImGui::InputTextMultiline("##source", &content[0], MAX_SHADER_LENGTH,ImVec2(550,600));
+	ImGui::InputTextMultiline("##source", &content[0], sizeof(char) *  MAX_SHADER_LENGTH,ImVec2(550,600));
 
 	if (ImGui::Button("Save")) {
 		// Open the file and write the new content

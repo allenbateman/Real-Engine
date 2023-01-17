@@ -40,6 +40,7 @@ public:
 	void SetBool(const std::string& name, bool value) const;
 	void SetInt(const std::string& name, int value) const;
 	void SetFloat(const std::string& name, float value) const;
+	void SetVec2(const std::string& name, vec2& value) const;
 	void SetVec3(const std::string& name, vec3& value) const;
 	void SetMat4(const std::string& name, float* mat4)const;
 
@@ -61,9 +62,6 @@ public:
 		// If uniform not found, add it to the list
 		uniforms.push_back({ name, value, location, type });
 	}
-
-	Uniform test{ "",1.0f,1,1 };
-	vec3 color{0,0,0};
 
 public:
 	//program ID

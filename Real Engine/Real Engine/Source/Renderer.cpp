@@ -142,6 +142,7 @@ bool Renderer::PostUpdate()
 		float* view = (*item)->camera->GetViewMatrix();
 		float* model;
 		//render Every Go
+
 		for (auto& ent : entities)
 		{
 			auto& transform = app->entityComponentSystem.GetComponent<Transform>(ent);

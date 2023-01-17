@@ -38,6 +38,7 @@ public:
 	//and if it belongs to any scene we need to know the index
 	std::map<string, std::pair<int, UID>>importedMaterials{};
 	std::map<string, std::pair<int, UID>>importedMeshes{};
+	//tex path and uid
 	std::unordered_map<string, UID> importedTextures{};
 };
 

@@ -10,27 +10,33 @@ SceneManager::~SceneManager()
 
 bool SceneManager::Awake()
 {
-	cout << "Starting Scene Manager\n";
+
 	return true;
 }
 
 bool SceneManager::Start()
 {
-
+	if (currentScene != nullptr)
+	{
+		app->eventSystem->SubscribeModule(this, ON_GO_CREATION);
+		return true;
+	}
+	cout << "Starting Scene Manager\n";
 	Scene* sampleScene = CreateScene("Sample Scene");
 	//sampleScene->LoadGameObject("../Output/Assets/BakerHouse.fbx");
 	//sampleScene->LoadGameObject("../Output/Assets/water_plane.fbx");
 	//sampleScene->LoadGameObject("../Output/Assets/street/Street environment_V01.fbx");
 	currentScene = sampleScene;
-
+	currentScene->Init();
 	app->eventSystem->SubscribeModule(this, ON_GO_CREATION);
 
 	return true;
 }
 
-bool SceneManager::Updte(float dt)
+bool SceneManager::Update(float dt)
 {
 
+	currentScene->Update(dt);
 	return true;
 }
 
@@ -78,7 +84,7 @@ bool SceneManager::ChangeScene(Scene newScene)
 
 Scene* SceneManager::CreateScene(std::string name)
 {
-	if (sceneCount < MAX_SCENES)
+	if (sceneCount >= MAX_SCENES)
 	{
 
 		cout << "Max scene reached";

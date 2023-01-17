@@ -13,16 +13,16 @@ public:
 
 	bool Awake();
 	bool Start();
-	bool Updte(float dt);
+	bool Update(float dt);
 	bool PreUpdate();
 	bool PostUpdate();
 	bool CleanUp();
 	void HandleEvent(Event* e);
 
-	unsigned int sceneCount;
+	unsigned int sceneCount = 0;
 
-	Scene* currentScene;
-	std::vector<Scene> sceneList;
+	Scene* currentScene = nullptr;
+	std::vector<Scene> sceneList{};
 	bool ChangeScene(Scene newScene);
 	Scene* CreateScene(std::string name);
 	//ObjectLoader objLoader;

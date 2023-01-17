@@ -17,6 +17,7 @@ public:
 
 	GameObject* FindChild(const GameObject toFind);
 	GameObject* FindChild(const Entity toFind);
+	GameObject* FindChildByName(const std::string toFind);
 	void RemoveChild(Entity childToRemove);
 	void Destroy();
 
@@ -27,7 +28,7 @@ public:
 	template<typename T>
 	void AddComponent(T component);
 
-
+	void Save();
 	//std::vector<Component> components;
 	unsigned int childsCount = 0;
 	vector<unsigned int> meshIndex;//array of indices to the mesh used

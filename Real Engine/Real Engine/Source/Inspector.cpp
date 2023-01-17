@@ -82,14 +82,16 @@ void Inspector::DrawComponents(Entity entity)
 			{
 				transform.Translate(pos.x, pos.y, pos.z);
 			}
-			if (ImGui::DragFloat3("Rotation", (*r), 0.1f))
+			if (ImGui::DragFloat3("Rotation", &rot, 0.1f))
 			{
-				if (*r[0] != tmp.x)
+
+				transform.Rotate(rot.x, rot.y, rot.z);
+	/*			if (*r[0] != tmp.x)
 					transform.Rotate(rot.x, vec3(1, 0, 0));
 				else if(*r[1] != tmp.y)
 					transform.Rotate(rot.y, vec3(0, 1, 0));
 				else if(*r[2] != tmp.z)
-					transform.Rotate(rot.z, vec3(0, 0, 1));
+					transform.Rotate(rot.z, vec3(0, 0, 1));*/
 			}
 			if (ImGui::DragFloat3("Scale", (*s), 0.1f))
 			{

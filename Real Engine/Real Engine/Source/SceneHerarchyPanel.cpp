@@ -151,6 +151,10 @@ void SceneHerarchyPanel::DrawGONode(GameObject go)
 		{
 			DeletedEntity = true;
 			toDelete = entity;
+		}		
+		if (ImGui::MenuItem("Save Entity"))
+		{
+			go.Save();
 		}
 		
 		ImGui::EndPopup();

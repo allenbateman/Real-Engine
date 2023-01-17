@@ -172,12 +172,20 @@ void ResourceShader::SetInt(const std::string& name, int value) const
 
 void ResourceShader::SetFloat(const std::string& name, float value) const
 {
-    glUniform1f(glGetUniformLocation(ID, name.c_str()), value);
+    GLint location = glGetUniformLocation(ID, name.c_str());
+    glUniform1f(location, value);
+}
+
+void ResourceShader::SetVec2(const std::string& name, vec2& value) const
+{
+    GLint location = glGetUniformLocation(ID, name.c_str());
+    glUniform2f(location, value.x, value.y);
 }
 
 void ResourceShader::SetVec3(const std::string& name, vec3& value) const
 {
-    glUniform3f(glGetUniformLocation(ID, name.c_str()), value.x, value.y, value.z);
+    GLint location = glGetUniformLocation(ID, name.c_str());
+    glUniform3f(location, value.x, value.y, value.z);
 }
 
 void ResourceShader::SetMat4(const std::string& name, float* mat4) const
@@ -261,41 +269,52 @@ void ResourceShader::LoadActiveUniforms()
 
 void ResourceShader::UpdateUniformValues()
 {
-    for (auto uniform : uniforms)
+    Use();
+    int id_counter = 0;
+    for (auto& uniform : uniforms)
     {
         ImGui::Text(uniform.name.c_str());
+        ImGui::PushID(id_counter);
         switch (uniform.type)
         {
         case GL_FLOAT:
         {
+            if (uniform.name == "time")
+            {
+                glUniform1f(uniform.location, ImGui::GetTime());
+            }
+            else {
+             
+                if (ImGui::InputFloat("", &std::get<float>(uniform.value), 0.0f, 100.0f))
+                {
 
-          if (ImGui::SliderFloat(uniform.name.c_str(), &std::get<float>(uniform.value), 0.0f, 1.0f))
-          {
-              glUniform1f(uniform.location, std::get<float>(uniform.value));
-          }
+                    glUniform1f(uniform.location, std::get<float>(uniform.value));
+                }
+
+            }
+
         }break;
         case GL_INT:
         {
 
-           if (ImGui::SliderInt(uniform.name.c_str(), &std::get<int>(uniform.value), 0.0f, 100.0f))
+           if (ImGui::SliderInt("##Y", &std::get<int>(uniform.value), 0.0f, 100.0f))
            {
                glUniform1i(uniform.location, std::get<int>(uniform.value));
            }
         }break;   
         case GL_FLOAT_VEC3:
         {   
-           //if (ImGui::SliderFloat3("##X", &std::get<vec3>(uniform.value), 0.0f, 1.0f))
-           //{
-           //    glUniform3f(uniform.location, std::get<vec3>(uniform.value).r, std::get<vec3>(uniform.value).g, std::get<vec3>(uniform.value).b);
-           //    std::cout << "value: " << std::get<vec3>(uniform.value).r << " " << std::get<vec3>(uniform.value).g << " " << std::get<vec3>(uniform.value).b << "\n";
-           //}
-           if (ImGui::SliderFloat3("##X", &color, 0.0f, 1.0f))
-           {
-             
-               SetVec3(uniform.name, color);
-             
+           if (ImGui::SliderFloat3("##X", &std::get<vec3>(uniform.value), 0.0f, 1.0f))
+           {  
+               SetVec3(uniform.name, std::get<vec3>(uniform.value));
            }
-
+        }break;
+        case GL_FLOAT_VEC2:
+        {
+            if (ImGui::SliderFloat2("##X", &std::get<vec2>(uniform.value), 0.0f, 1.0f))
+            {
+                SetVec2(uniform.name, std::get<vec2>(uniform.value));
+            }
         }break;
         case GL_UNSIGNED_INT:
         {
@@ -305,8 +324,10 @@ void ResourceShader::UpdateUniformValues()
         {
         } break;
         }
+        id_counter++;
+        ImGui::PopID();
     }
-   
+    StopUse();
 
 }
 

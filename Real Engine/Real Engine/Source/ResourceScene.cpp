@@ -45,7 +45,7 @@ void ResourceScene::SaveData()
             scene["materials"].push_back(material_json);
         }
         scene["root"] = nlohmann::json::array();
-        scene["root"].push_back(SaveNodeData(&root->GetComponent<Transform>()));
+        scene["root"].push_back(SaveNodeData(root->GetComponent<Transform>()));
         
         
         std::string json_str = scene.dump();
@@ -79,6 +79,7 @@ void ResourceScene::LoadData()
     }
     in.close();
     Load();
+ 
 }
 
 void ResourceScene::Load()
@@ -109,22 +110,30 @@ void ResourceScene::UnLoad()
 
 void ResourceScene::LoadNodeData(nlohmann::json& node,GameObject* root)
 {
+  
     root->name = node["name"].get<string>();
+    std::cout << "Laoding: " << root->name <<"\n";
     root->GetComponent<TagComponent>() = node["name"].get<string>();;
+    if (root->name == "City_building_007")
+    {
+        std::cout << "stop\n";
+    }
 
     auto& transform = root->GetComponent<Transform>();
-    transform.position.x = node["transform"]["position"]["x"].get<float>();
-    transform.position.y = node["transform"]["position"]["y"].get<float>();
-    transform.position.z = node["transform"]["position"]["z"].get<float>();
+    transform.localPosition.x = node["transform"]["position"]["x"].get<float>();
+    transform.localPosition.y = node["transform"]["position"]["y"].get<float>();
+    transform.localPosition.z = node["transform"]["position"]["z"].get<float>();
     
-    transform.rotation.x = node["transform"]["rotation"]["x"].get<float>();
-    transform.rotation.y = node["transform"]["rotation"]["y"].get<float>();
-    transform.rotation.z = node["transform"]["rotation"]["z"].get<float>();
-    transform.rotation.w = node["transform"]["rotation"]["w"].get<float>();
+    transform.eulerAngles.x = node["transform"]["rotation"]["x"].get<float>();
+    transform.eulerAngles.y = node["transform"]["rotation"]["y"].get<float>();
+    transform.eulerAngles.z = node["transform"]["rotation"]["z"].get<float>();
 
-    transform.scale.x = node["transform"]["scale"]["x"].get<float>();
-    transform.scale.y = node["transform"]["scale"]["x"].get<float>();
-    transform.scale.z = node["transform"]["scale"]["x"].get<float>();
+    transform.localScale.x = node["transform"]["scale"]["x"].get<float>();
+    transform.localScale.y = node["transform"]["scale"]["y"].get<float>();
+    transform.localScale.z = node["transform"]["scale"]["z"].get<float>();
+
+    transform.localMatrix.translate(transform.localPosition.x, transform.localPosition.y, transform.localPosition.z);
+    transform.localMatrix.rotate(transform.eulerAngles.x, transform.eulerAngles.y, transform.eulerAngles.z);
 
     if (node.contains("mesh"))
     {
@@ -193,40 +202,39 @@ void ResourceScene::LoadNodeData(nlohmann::json& node,GameObject* root)
 
 }
 
-nlohmann::json ResourceScene::SaveNodeData(Transform* root)
+nlohmann::json ResourceScene::SaveNodeData(Transform& root)
 {
      nlohmann::json child_json;
-     child_json["name"] = root->owner->name;
+     child_json["name"] = root.owner->name;
      child_json["transform"]["position"] =
      {
-         {"x",root->position.x},
-         {"y",root->position.y},
-         {"z",root->position.z}
+         {"x",root.localPosition.x},
+         {"y",root.localPosition.y},
+         {"z",root.localPosition.z}
      };
      child_json["transform"]["scale"] = {
-         {"x",root->scale.x},
-         {"y",root->scale.y},
-         {"z",root->scale.z}
+         {"x",root.localScale.x},
+         {"y",root.localScale.y},
+         {"z",root.localScale.z}
      };
      child_json["transform"]["rotation"] = {
-         {"x",root->rotation.x},
-         {"y",root->rotation.y},
-         {"z",root->rotation.z},
-         {"w",root->rotation.w}
+         {"x",root.eulerAngles.x},
+         {"y",root.eulerAngles.y},
+         {"z",root.eulerAngles.z}
      };
 
-     if (root->owner->HasComponent<Mesh>())
+     if (root.owner->HasComponent<Mesh>())
      {
-         auto mesh = root->owner->GetComponent<Mesh>();
+         auto mesh = root.owner->GetComponent<Mesh>();
 
          child_json["mesh"]["uid"] = mesh.resource->GetID();
          child_json["mesh"]["asset_path"] = mesh.resource->GetAssetPath();
          child_json["mesh"]["lib_path"] = mesh.resource->GetLibraryPath();
          child_json["mesh"]["name"] = mesh.resource->name;
      }
-     if (root->owner->HasComponent<Material>())
+     if (root.owner->HasComponent<Material>())
      {
-         auto material = root->owner->GetComponent<Material>();
+         auto material = root.owner->GetComponent<Material>();
          child_json["material"]["uid"] = material.resource->GetID();
          child_json["material"]["asset_path"] = material.resource->GetAssetPath();
          child_json["material"]["lib_path"] = material.resource->GetLibraryPath();
@@ -234,11 +242,11 @@ nlohmann::json ResourceScene::SaveNodeData(Transform* root)
          child_json["material"]["shader"]["uid"] = material.resource->shader->GetID();
          child_json["material"]["shader"]["path"] = material.resource->shader->GetAssetPath();
      }
-     if (!root->childs.empty())
+     if (!root.childs.empty())
      {
          child_json["node"] = nlohmann::json::array();
-         for (const auto child : root->childs)
-             child_json["node"].push_back(SaveNodeData(child));
+         for (const auto& child : root.childs)
+             child_json["node"].push_back(SaveNodeData(*child));
      }
      return child_json;
 }

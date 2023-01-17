@@ -17,7 +17,7 @@ public :
 	void UnLoad();
 	GameObject GetRoot() const { return *root; };
 private:
-	nlohmann::json SaveNodeData(Transform* root);
+	nlohmann::json SaveNodeData(Transform& root);
 	void LoadNodeData(nlohmann::json& node,GameObject* root);
 public:
 

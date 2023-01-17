@@ -99,7 +99,7 @@ bool TextureImporter::LoadAiMaterialTextures(aiMaterial* mat, aiTextureType type
             return true;
         }
     }
-    return false;
+    return true;
 }
 
 void TextureImporter::Import(shared_ptr<Resource>& resource){
@@ -299,7 +299,16 @@ void MeshImporter::Import(const aiMesh* mesh, shared_ptr<ResourceMesh>&  resourc
 //Fbx operators--------------------------------
 void SceneImporter::Import(shared_ptr<Resource>& resource)
 {
-    const aiScene* scene = aiImportFile(resource->GetAssetPath().string().c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+    const aiScene* scene;
+    if (resource->GetAssetPath().stem().string() == "water_plane")
+    {
+        scene = aiImportFile(resource->GetAssetPath().string().c_str(), aiProcessPreset_TargetRealtime_MaxQuality);
+    }
+    else {
+         scene = aiImportFile(resource->GetAssetPath().string().c_str(), aiProcessPreset_TargetRealtime_MaxQuality |
+            aiProcess_PreTransformVertices);
+    }
+    
     shared_ptr<ResourceScene> rScene = static_pointer_cast<ResourceScene>(resource);
 
     if (scene != nullptr && scene->HasMeshes())
@@ -308,10 +317,15 @@ void SceneImporter::Import(shared_ptr<Resource>& resource)
         rScene->SetLibraryPath("..\\Output\\Library\\Objects\\" + rScene->GetID() + ".scene");
         GameObject* root = new GameObject(rScene->name);
         rScene->root = root;
+        root->GetComponent<Transform>().localPosition = (0, 0, 0);
+        root->GetComponent<Transform>().localRotation = (0, 0, 0);
+        root->GetComponent<Transform>().localScale = (1, 1, 1);
         SceneImporter::ProcessaNode(scene->mRootNode, scene, rScene->root, rScene);
 
         string savePath = rScene->GetLibraryPath().string();
+
         app->sceneManager->currentScene->AddGameObject(root);
+
         try
         {
             aiReleaseImport(scene);
@@ -340,11 +354,11 @@ void SceneImporter::ProcessaNode(aiNode* node, const aiScene* scene, GameObject*
         rNode->GetComponent<Transform>().AddChild(&newNode.GetComponent<Transform>());
         newNode.meshCount = node->mNumMeshes;
         newNode.childsCount = node->mNumChildren;
-        auto t = newNode.GetComponent<Transform>();
+        auto& t = newNode.GetComponent<Transform>();
         t.localMatrix = rFbx->transform;
-        t.position = rFbx->transform.translation();
-        t.eulerAngles = rFbx->transform.rotation();
-        //t.scale = rFbx->transform.scale();
+        t.Translate(0, 0, 0);
+        t.Rotate(0, 0, 0);
+        t.localScale =vec3(1,1,1);
         // process all the node's meshes (if any)  
         for (unsigned int i = 0; i < node->mNumMeshes; i++)
         {
@@ -442,14 +456,36 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
     bool HasDiffuse = false;
     shared_ptr<Resource> resourceMat = app->resourceManager->CreateNewResource(rFbx->GetAssetPath(), Resource::Type::Material);
     shared_ptr<ResourceMaterial> rm = static_pointer_cast<ResourceMaterial>(resourceMat);
+    rm->name = rNode->name;
 
     HasDiffuse = TextureImporter::LoadAiMaterialTextures(material,aiTextureType_DIFFUSE, "texture_diffuse", rm);
     HasSpecular =  TextureImporter::LoadAiMaterialTextures(material,aiTextureType_SPECULAR, "texture_specular", rm);
    
     //if resource mat is empty, because the mesh has no mat assigned, 
     //we assing a default mat
-    if (!HasDiffuse  && !HasSpecular)
+    if (!HasDiffuse && !HasSpecular)
     {
+        //set base  shader to the material if has no textures
+        auto shaders = app->resourceManager->GetResourceListOfType(Resource::Type::Shader);
+        bool exist = false;
+        for (auto shader : shaders)
+        {
+            if (shader->name == "basecolor")
+            {
+                rm->shader = dynamic_pointer_cast<ResourceShader>(shader);
+                exist = true;
+                break;
+            }
+        }
+        if (!exist)
+        {
+            // if default shader does not exist create it
+            shared_ptr<Resource> shaderResource = app->resourceManager->CreateNewResource("../Output/Assets/Shaders/basecolor.vertex", Resource::Type::Shader);
+            shared_ptr<ResourceShader> shader = dynamic_pointer_cast<ResourceShader>(shaderResource);
+            shader->name = "basecolor";
+            shader->Load("../Output/Assets/Shaders/basecolor.vertex", "../Output/Assets/Shaders/basecolor.fragment");
+            rm->shader = shader;
+        }
         std::string name = "default_texture.png";
         std::string fullPath = ASSETS_DIR + name;
         if (!app->resourceManager->ExistFileInResources(fullPath))
@@ -484,28 +520,31 @@ UID  SceneImporter::ProcessMaterial(aiMesh* mesh, const aiScene* scene, GameObje
            }       
         }
     }
-
-    //set default shader to the material
-    auto shaders = app->resourceManager->GetResourceListOfType(Resource::Type::Shader);
-    bool exist = false;
-    for (auto shader : shaders)
-    {
-        if (shader->name == "default")
+    else {
+        //set default shader to the material
+        auto shaders = app->resourceManager->GetResourceListOfType(Resource::Type::Shader);
+        bool exist = false;
+        for (auto shader : shaders)
         {
-            rm->shader = dynamic_pointer_cast<ResourceShader>(shader);
-            exist = true;
-            break;
+            if (shader->name == "default")
+            {
+                rm->shader = dynamic_pointer_cast<ResourceShader>(shader);
+                exist = true;
+                break;
+            }
+        }
+        if (!exist)
+        {
+            // if default shader does not exist create it
+            shared_ptr<Resource> shaderResource = app->resourceManager->CreateNewResource("../Output/Assets/Shaders/default.vertex", Resource::Type::Shader);
+            shared_ptr<ResourceShader> shader = dynamic_pointer_cast<ResourceShader>(shaderResource);
+            shader->name = "default";
+            shader->Load("../Output/Assets/Shaders/default.vertex", "../Output/Assets/Shaders/default.fragment");
+            rm->shader = shader;
         }
     }
-    if (!exist)
-    {
-        // if default shader does not exist create it
-        shared_ptr<Resource> shaderResource = app->resourceManager->CreateNewResource("../Output/Assets/Shaders/default.vertex", Resource::Type::Shader);
-        shared_ptr<ResourceShader> shader = dynamic_pointer_cast<ResourceShader>(shaderResource);
-        shader->name = "default";
-        shader->Load("../Output/Assets/Shaders/default.vertex", "../Output/Assets/Shaders/default.fragment");
-        rm->shader = shader;
-    }
+
+
     rm->SetLibraryPath("..\\Output\\Library\\Materials\\" + resourceMat->GetID() + ".material");
     rm->SaveData();
     rm->Load();

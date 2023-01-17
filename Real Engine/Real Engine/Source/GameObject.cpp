@@ -59,6 +59,20 @@ GameObject* GameObject::FindChild(const Entity toFind)
 	return nullptr;
 }
 
+GameObject* GameObject::FindChildByName(const std::string toFind)
+{
+	vector<Transform*> childs = GetComponent<Transform>().childs;
+	for (auto& child : childs)
+	{
+		if (child->owner->GetComponent<TagComponent>() == toFind)
+			return child->owner;
+		else
+			return child->owner->FindChild(toFind);
+	}
+
+	return nullptr;
+}
+
 void GameObject::Destroy()
 {
 	//if has childs destroy them too
@@ -87,4 +101,8 @@ void GameObject::Destroy()
 	app->entityComponentSystem.DestroyEntity(id);
 	//destroy go
 	this->~GameObject();
+}
+
+void GameObject::Save()
+{
 }

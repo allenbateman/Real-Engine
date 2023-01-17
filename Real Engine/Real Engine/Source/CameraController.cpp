@@ -59,18 +59,18 @@ void CameraController::HandleEvent(Event* e)
 			{
 
 				int speedMulti = 1;
-				if (ki->keys[GLFW_KEY_LEFT_SHIFT] == KEY_REPEAT) speedMulti = 2;
+				if (ki->keys[GLFW_KEY_LEFT_SHIFT] == KEY_DOWN) speedMulti = 2;
 
-				if (ki->keys[GLFW_KEY_W] == KEY_REPEAT)newPos -= camera.Z * camera.cameraSpeed * speedMulti;
-				if (ki->keys[GLFW_KEY_S] == KEY_REPEAT)newPos += camera.Z * camera.cameraSpeed * speedMulti;				
-				if (ki->keys[GLFW_KEY_A] == KEY_REPEAT)newPos -= camera.X * camera.cameraSpeed * speedMulti;
-				if (ki->keys[GLFW_KEY_D] == KEY_REPEAT)newPos += camera.X * camera.cameraSpeed * speedMulti;
+				if (ki->keys[GLFW_KEY_W] == KEY_DOWN)newPos -= camera.Z * camera.cameraSpeed * speedMulti;
+				if (ki->keys[GLFW_KEY_S] == KEY_DOWN)newPos += camera.Z * camera.cameraSpeed * speedMulti;
+				if (ki->keys[GLFW_KEY_A] == KEY_DOWN)newPos -= camera.X * camera.cameraSpeed * speedMulti;
+				if (ki->keys[GLFW_KEY_D] == KEY_DOWN)newPos += camera.X * camera.cameraSpeed * speedMulti;
 			}
 
 			if (ki->keys[GLFW_KEY_LEFT_ALT] == KEY_UP) camera.altKey = false;
 
-			if (ki->keys[GLFW_KEY_T] == KEY_REPEAT) camera.ResetCameraRotation();
-			if (ki->keys[GLFW_KEY_G] == KEY_REPEAT)	camera.ResetCameraPosition();
+			if (ki->keys[GLFW_KEY_T] == KEY_DOWN) camera.ResetCameraRotation();
+			if (ki->keys[GLFW_KEY_G] == KEY_DOWN)	camera.ResetCameraPosition();
 
 			if (ki->keys[GLFW_KEY_F] == KEY_DOWN) camera.Focus(camera.target);
 

@@ -3,7 +3,7 @@
 #include "Application.h"
 #include <string>
 #include "ResourceShader.h"
-#define MAX_SHADER_LENGTH 2048
+#define MAX_SHADER_LENGTH 5000
 class ShaderEditorPanel : public Panel
 {
 public:
@@ -24,5 +24,6 @@ private:
 	int id = 0;
 	bool Editing = false;
 	std::string content;
+
 };
 

@@ -72,10 +72,10 @@ Application::Application(int argc, char* args[]) : argc(argc), args(args)
 	//add modules order is important, cleanup is reverse order
 	modules.push_back(window);
 	modules.push_back(input);
+	modules.push_back(sceneManager);
 	modules.push_back(importer);
 	modules.push_back(resourceManager);
 	modules.push_back(cameraController);
-	modules.push_back(sceneManager);
 	modules.push_back(cameraUpdater);
 	//last
 	modules.push_back(uiSystem);
@@ -229,8 +229,6 @@ bool Application::DoUpdate()
 {
 	bool ret = true;
 	//calculate frame rate
-
-
 	for (list<shared_ptr<Module>>::iterator current = modules.begin(); current != modules.end(); current++)
 	{
 		if ((*current)->active == false)

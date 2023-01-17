@@ -3,6 +3,7 @@
 #include "Primitives.h"
 #include "Camera.h"
 #include "Renderer.h"
+#include "Tag.h"
 
 Scene::Scene()
 {
@@ -37,6 +38,20 @@ void Scene::Disable()
 {
 }
 
+void Scene::Update(float dt)
+{
+	for(auto go : gameObejects)
+	{
+		auto waterPlane = go.FindChildByName("Plane");
+		if(waterPlane != nullptr){
+			vec3 color = { sin(dt),1,1 };
+			waterPlane->GetComponent<Material>().resource->shader->SetVec3("iColor", color);
+		}
+	}
+
+
+}
+
 void Scene::CreateGameObject(gameObjectType goType)
 {
 	switch (goType)
@@ -53,39 +68,39 @@ void Scene::CreateGameObject(gameObjectType goType)
 
 	case CUBE:
 	{
-		GameObject* go = new GameObject("Cube");
+	//	GameObject* go = new GameObject("Cube");
 
-		Cube cubeInfo;
-		Mesh cubeMesh{};
-		cubeMesh.resource->vertices = cubeInfo.vertices;
-		cubeMesh.resource->indices =  cubeInfo.indices;
-		Material cubeMaterial;
-	//	cubeMaterial.textures.push_back(app->sceneManager->objLoader.loadedtextures[0]);
+	//	Cube cubeInfo;
+	//	Mesh cubeMesh{};
+	//	cubeMesh.resource->vertices = cubeInfo.vertices;
+	//	cubeMesh.resource->indices =  cubeInfo.indices;
+	//	Material cubeMaterial;
+	////	cubeMaterial.textures.push_back(app->sceneManager->objLoader.loadedtextures[0]);
 
-		origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
-		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
-		
-		go->AddComponent<Mesh>(cubeMesh);
-		go->AddComponent<Material>(cubeMaterial);
-		gameObejects.push_back(*go);
+	//	origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
+	//	go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
+	//	
+	//	go->AddComponent<Mesh>(cubeMesh);
+	//	go->AddComponent<Material>(cubeMaterial);
+	//	gameObejects.push_back(*go);
 	}break;
 	case SPHERE:
 	{
-		GameObject* go = new GameObject("Sphere");
+	//	GameObject* go = new GameObject("Sphere");
 
-		Sphere spherereInfo;
-		Mesh shpereMesh{};
-		shpereMesh.resource->vertices = spherereInfo.vertices;
-		shpereMesh.resource->indices = spherereInfo.indices;
-		Material sphereMaterial;
-	//	sphereMaterial.textures.push_back(app->sceneManager->objLoader.loadedtextures[0]);
+	//	Sphere spherereInfo;
+	//	Mesh shpereMesh{};
+	//	shpereMesh.resource->vertices = spherereInfo.vertices;
+	//	shpereMesh.resource->indices = spherereInfo.indices;
+	//	Material sphereMaterial;
+	////	sphereMaterial.textures.push_back(app->sceneManager->objLoader.loadedtextures[0]);
 
-		origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
-		go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
-		
-		go->AddComponent<Mesh>(shpereMesh);
-		go->AddComponent<Material>(sphereMaterial);
-		gameObejects.push_back(*go);
+	//	origin.GetComponent<Transform>().childs.push_back(&go->GetComponent<Transform>());
+	//	go->GetComponent<Transform>().parent = &origin.GetComponent<Transform>();
+	//	
+	//	go->AddComponent<Mesh>(shpereMesh);
+	//	go->AddComponent<Material>(sphereMaterial);
+	//	gameObejects.push_back(*go);
 	}break;
 	default:
 		break;

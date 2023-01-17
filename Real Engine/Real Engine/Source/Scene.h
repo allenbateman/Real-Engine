@@ -14,6 +14,7 @@ public:
 	void Init();
 	void Enable();
 	void Disable();
+	void Update(float dt);
 	void CreateGameObject(gameObjectType goType);
 	void AddGameObject(GameObject* object);
 	void LoadGameObject(const std::string file_path);

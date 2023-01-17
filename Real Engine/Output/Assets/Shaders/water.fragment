@@ -1,10 +1,12 @@
-#version 330
+#version 330 core
+out vec4 FragColor;
 
-in vec3 vColor;  // Vertex color passed from the vertex shader
+in vec2 TexCoords;
+in vec4 Color;
 
-out vec4 fragColor;  // Fragment color to be output to the framebuffer
+uniform sampler2D texture_diffuse1;
 
 void main()
-{
-    fragColor = vec4(vColor, 1.0);
+{    
+    FragColor = texture(texture_diffuse1, TexCoords) * Color;
 }

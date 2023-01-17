@@ -15,8 +15,8 @@ struct Transform : public  Component
 	vec4 rotation{ 0,0,0,1 };	//Quaternion that stores rotation x,y,z,w
 	vec3 scale{ 1,1,1 };	    //Stores scale x,y,z
 
-	mat4x4 localMatrix;		//Stores transformation of the object in a matrix from parent reference
-	mat4x4 worldMatrix;		//Stores transformation of the object in a matrix from world reference
+	mat4x4 localMatrix{};		//Stores transformation of the object in a matrix from parent reference
+	mat4x4 worldMatrix{};		//Stores transformation of the object in a matrix from world reference
 
 	mat4x4 worldToLocal;
 
@@ -99,8 +99,10 @@ struct Transform : public  Component
 		localMatrix.translate(x, y, z);
 		localPosition = localMatrix.translation();
 
-		worldMatrix = parent->worldMatrix * localMatrix;
+	    worldMatrix = parent->worldMatrix * localMatrix;
+
 		position = worldMatrix.translation();
+		
 		//world parent to propagate to the childs
 		mat4x4 wpt =  tmp * worldMatrix;
 
@@ -148,7 +150,7 @@ struct Transform : public  Component
 		localRotation = localMatrix.rotation();
 
 		worldMatrix = parent->worldMatrix * localMatrix;
-		eulerAngles = worldMatrix.rotation();
+		eulerAngles = vec3(pitch, yaw, roll);
 		//world parent to propagate to the childs
 		mat4x4 wpt = tmp * worldMatrix;
 
@@ -191,15 +193,16 @@ struct Transform : public  Component
 	}
 	vec3 LocalPosition()
 	{
-		return localMatrix.translation();
+		return localPosition;
 	}
 	vec3 LocalRotation()
 	{
-		return localMatrix.rotation();
+		//return localMatrix.rotation();
+		return eulerAngles;
 	}
 	vec3 LocalScale()
 	{
-		return localMatrix.scale();
+		return localScale;
 	}
 	//void ApplyTransformation(vec3 _position, vec3 _rotation,vec3 _scale)
 	//{
